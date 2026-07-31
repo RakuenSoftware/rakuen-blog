@@ -79,10 +79,66 @@ Qwen3 was out. The 0.6B model was the weakest finalist. The 4B model tied nomic
 while costing 3.3x the vector storage and embedding 3.1x slower. The ladder
 topped out at parity with a 475M model.
 
-The sharper reversal was code. In June, Qwen3 beat text-only nomic-v1.5 on
-aimee's C functions. In July, on the actual corpus with nomic-v2-moe,
-Qwen3-Embedding-0.6B came last on code: 0.7325 against nomic's 0.8104. The 4B
-model did not rescue the ladder; it scored 0.7394, still below nomic.
+## The benchmark was the problem
+
+The suite's whole value is that it is unpublished.
+
+frozen-ab-v1 is built from our own knowledge base content. It is de-identified.
+It has never been released. The builder's rule is explicit: the manifest's source
+hashes, every emitted case ID, and every emitted document ID are excluded from
+training.
+
+No model on the market could have trained on it.
+
+That is not a nice property. It is the property. It is the only reason the suite
+can tell capability apart from memorisation. A public benchmark cannot make that
+distinction about any model, ever.
+
+Qwen3's publishers report near-perfect code retrieval on MTEB:
+
+| task | 0.6B | 4B | 8B |
+| --- | ---: | ---: | ---: |
+| CodeSearchNet | 0.943 | 0.960 | 0.966 |
+| CodeSearchNet-CC | 0.933 | 0.967 | 0.971 |
+| StackOverflowQA | 0.900 | 0.943 | 0.948 |
+| CodeFeedback-MT | 0.908 | 0.932 | 0.937 |
+
+Those are the publishers' figures, not ours.
+
+Then we put the same family on code nobody had trained on:
+
+| model | dim | code |
+| --- | ---: | ---: |
+| nomic-embed-text-v2-moe | 768 | **0.8104** |
+| bekko-embedding-v1-a25m | 384 | **0.7718** |
+| Qwen3-Embedding-4B | 2,560 | **0.7394** |
+| Qwen3-Embedding-0.6B | 1,024 | **0.7325** |
+
+*Source: `embedder-selection-frozen-ab-v1`, code category of the selection run.*
+
+Both Qwen3 models came last.
+
+They were behind nomic-v2-moe. They were also behind bekko-a25m: a 384-dimension
+model, ten days old at the time, with no published baselines of any kind.
+
+We did not run Qwen3-8B on frozen-ab-v1. We did not need it to see the failure
+shape.
+
+A model that publishes near-perfect code retrieval and then places last on code
+the moment it meets a corpus it has not seen has not demonstrated code retrieval.
+Whatever the mechanism, the published number did not survive contact with unseen
+data.
+
+A number that does not survive that is not a measurement of capability. It
+describes the benchmark, not the model.
+
+That is the strongest finding in the campaign.
+
+And it generalises. Every figure a model publishes is measured on a test set the
+publisher chose and could have trained on. The only figure that tells you what a
+model will do on your data is one measured on your data.
+
+That is why the suite exists.
 
 bge lost differently each time:
 
