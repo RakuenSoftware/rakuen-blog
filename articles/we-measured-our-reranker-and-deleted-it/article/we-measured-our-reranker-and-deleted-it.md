@@ -6,10 +6,10 @@ alongside this post.*
 The number I was watching was reranker quality. The constraint was candidate
 membership.
 
-Dense retrieval missed the labelled document entirely for **11-13%** of queries.
-No reranker can recover a document that was never retrieved. Across **twenty**
-reranking configurations, the best reranker bought **+0.0032 NDCG@10**, because
-it was reordering a pool whose problem was what it contained.
+Dense retrieval missed the labelled document entirely for **11-13%** of queries,
+which meant no reranker could recover it, and across **twenty** reranking
+configurations the best reranker bought **+0.0032 NDCG@10** because it was
+reordering a pool whose problem was what it contained.
 
 So we deleted the reranker.
 
@@ -24,16 +24,16 @@ reranker trap, the replacement, and the thing that shipped.
 This is not a general law of retrieval. It is one corpus, silver labels, one
 positive per query, and queries that may be lexically derived from their
 documents, which flatters BM25. Speaking from this corpus, the first question is
-not whether the retrieved list is in the right order. It is whether the right
+not whether the retrieved list is in the right order, it is whether the right
 document is in the list at all.
 
 ## The corpus made candidate membership the binding constraint
 
-Our KB does dense retrieval over ~26k documents. It reranked the top candidates
-with a cross-encoder before answering.
+Our KB does dense retrieval over ~26k documents, then reranked the top
+candidates with a cross-encoder before answering.
 
 I had a new evaluation suite: 10,000 queries against the full corpus, built from
-our own content. It has prose, code, and cited artifacts.
+our own content, with prose, code, and cited artifacts.
 
 The plan was to pick an embedder and move on.
 
@@ -43,22 +43,24 @@ The plan was wrong.
 
 The shortlist took three rounds across two suites.
 
-June explains the starting point. LoCoMo ranked nomic-v1.5 above Qwen3. I later
-marked that screen as under-discriminating and superseded. The June
+June explains the starting point. LoCoMo ranked nomic-v1.5 above Qwen3, and I
+later marked that screen as under-discriminating and superseded. The June
 BEIR-plus-code round leaned on published MTEB code scores and dropped nomic for
-the Qwen3 ladder. That dropped model was nomic-embed-text-v1.5: text-only, no
-code training. It was not nomic-embed-text-v2-moe, the retrieval-trained model
-that won on code in July.
+the Qwen3 ladder, but that dropped model was nomic-embed-text-v1.5: text-only,
+no code training. It was not nomic-embed-text-v2-moe, the retrieval-trained
+model that won on code in July.
 
-The June rounds used different suites. They are not comparable to July. The
+Those June rounds used different suites, so they are not comparable to July. The
 late-July campaign is the comparable block: 2026-07-26 through 2026-07-30,
 frozen-ab-v1, manifest SHA-256
 `16d2c16add86052ff24be410699ab9452ee1a36252de6dba31ab5391de7ab81c`, 10,000
 paired cases over the same corpus. Jul 30 closed it with the full-length GTE
 pipeline result and the hybrid BM25+RRF work.
 
-Jul 26-28 started with the ab-v1 baselines. I tested the Gemma-4 unified-base
-idea as configured. It was not close.
+Jul 26-28 started with the ab-v1 baselines, where I tested the Gemma-4
+unified-base idea as configured.
+
+It was not close.
 
 | model | width | NDCG@10 | MRR@10 | R@10 | vectors/s |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -69,13 +71,14 @@ idea as configured. It was not close.
 
 These are their own result: same manifest, 10,000 cases, ranked against
 **23,688** candidate documents. The Jul 29 selection run ranked against
-**26,473** documents, so I do not take a numeric margin between the two. The
-Gemma result was still far short of the field I needed to choose from.
+**26,473** documents, so I do not take a numeric margin between the two,
+although the Gemma result was still far short of the field I needed to choose
+from.
 
-The E2B run was a stock untrained instruction checkpoint: a pre-training control,
-not evidence that Gemma-4 was ready to replace the supported embedder. This
-eliminated the unified-base idea as I had configured it. It did not prove that
-Gemma-4 can never embed.
+The E2B run was a stock untrained instruction checkpoint, a pre-training control
+rather than evidence that Gemma-4 was ready to replace the supported embedder.
+This eliminated the unified-base idea as I had configured it. It did not prove
+that Gemma-4 can never embed.
 
 The same ab-v1 block also ran the incumbent-family reranking controls, on the
 ab-v1 reranking view: Ettin 68M at **0.607353** NDCG@10, and Ettin 400M at
@@ -97,50 +100,50 @@ documents, each model at its best, card prefix, native pooling, full corpus.
 
 *Source: `embedder-selection-frozen-ab-v1`, "Results, every model at its best".*
 
-Qwen3 was out on this corpus. The 0.6B model was the weakest finalist. The 4B
-model tied nomic while costing 3.3x the vector storage and embedding 3.1x
-slower. The ladder topped out at parity with a 475M model.
+Qwen3 was out on this corpus. The 0.6B model was the weakest finalist, while the
+4B model tied nomic, cost 3.3x the vector storage, embedded 3.1x slower, and
+topped out at parity with a 475M model.
 
 ## Qwen3's public scores are real scores on the wrong condition
 
 Qwen3's publishers are not lying about their code figures. Their reported code
-retrieval numbers are near-perfect. The same family also reproduced our harness
-on SciFact and NFCorpus.
+retrieval numbers are near-perfect, and the same family also reproduced our
+harness on SciFact and NFCorpus.
 
 That is the strong case for Qwen3.
 
 It still did not survive our corpus.
 
 Every query a deployed model answers is data it has never seen. A production
-retrieval model sees documents outside its training set. If it only works on
+retrieval model sees documents outside its training set, and if it only works on
 material it has absorbed, it fails the moment you point it at your corpus.
 
-A benchmark measures that condition only when the model could not have trained on
-it. Otherwise it scores a situation production does not use.
+A benchmark measures that condition only when the model could not have trained
+on it. Otherwise it scores a situation production does not use.
 
-The requirement is novelty, not secrecy. frozen-ab-v1 did not exist when these
-models were trained, so a score on it measures capability rather than recall.
-Nothing is withheld. The data is newer than the weights.
+Novelty is the requirement, not secrecy. frozen-ab-v1 did not exist when these
+models were trained, so a score on it measures capability rather than recall,
+and nothing is withheld because the data is newer than the weights.
 
 The suite ships with this article: corpus, all views, manifest hashes. A
-measurement nobody can reproduce is not evidence. Hiding the data would buy
+measurement nobody can reproduce is not evidence, and hiding the data would buy
 nothing the timing has not already bought.
 
 Publication changes the next generation. Once the suite is public, it can enter
-a future training set. A model trained after today tells you nothing by scoring
-well on it. That is the lifecycle of every benchmark. Ours is now in it.
+a future training set, so a model trained after today tells you nothing by
+scoring well on it. That is the lifecycle of every benchmark. Ours is now in it.
 
 That lifecycle already ran to completion on the public code benchmarks.
 CodeSearchNet and its relatives have been public for years, with every incentive
-pointing at topping them. A near-perfect score on a benchmark that old tells you
-the model has seen it. It cannot tell you anything about unseen code. This is not
-a claim about one vendor. It is what happens to any benchmark that predates the
-models being scored on it.
+pointing at topping them, so a near-perfect score on a benchmark that old tells
+you the model has seen it. It cannot tell you anything about unseen code. This
+is not a claim about one vendor. It is what happens to any benchmark that
+predates the models being scored on it.
 
-**Rule: the harness is durable; the data is the consumable.** The builder,
-scoring, validation records, and acceptance checks are reusable. Point them at
-content created since the last model generation. Publish that too. Then cut the
-next sample.
+The harness is durable; the data is the consumable. The builder, scoring,
+validation records, and acceptance checks are reusable, so point them at content
+created since the last model generation, publish that too, then cut the next
+sample.
 
 Qwen3's publishers report near-perfect code retrieval on MTEB:
 
@@ -164,9 +167,9 @@ Then I put the same family on code it could not have trained on when I measured:
 
 *Source: `embedder-selection-frozen-ab-v1`, code category of the selection run.*
 
-Both Qwen3 models came last. They were behind nomic-v2-moe. They were also
-behind bekko-a25m: a 384-dimension model, ten days old at the time, with no
-published baselines of any kind.
+Both Qwen3 models came last, behind nomic-v2-moe and behind bekko-a25m: a
+384-dimension model, ten days old at the time, with no published baselines of
+any kind.
 
 I did not run Qwen3-8B on frozen-ab-v1. I did not need it to see the failure
 shape.
@@ -177,9 +180,9 @@ Whatever the mechanism, the published number did not survive contact with unseen
 data. It describes the benchmark, not this deployment.
 
 The broader rule is narrower than it sounds: every figure a model publishes is
-measured on a test set the publisher chose and could have trained on. The only
-figure that tells you what a model will do on your data is one measured on your
-data.
+measured on a test set the publisher chose and could have trained on, while the
+only figure that tells you what a model will do on your data is one measured on
+your data.
 
 Measure on data that postdates the weights. Publish it, so the measurement can
 be checked. Cut the next sample against the next generation. Keep the harness.
@@ -187,7 +190,7 @@ Keep making data.
 
 This is the same lesson as the prefix trap, on a different axis. There, a
 benchmark number stopped being a deployment number because the serving path did
-not reproduce the benchmark's input conditions. Here, it stops being one because
+not reproduce the benchmark's input conditions; here, it stops being one because
 the benchmark does not reproduce deployment's data condition: material the model
 has never seen.
 
@@ -214,20 +217,22 @@ serving path did not.
 
 Before prefixes, I hit the smaller version of the same failure.
 
-`AIMEE_LLM_EMBED_POOLING` defaulted to `last`. That is correct for Qwen3. It is
+`AIMEE_LLM_EMBED_POOLING` defaulted to `last`, which is correct for Qwen3 and
 silently wrong for nomic, which needs `mean`.
 
-Nothing crashed. The vectors had the right dimension. The API returned success.
-The index would have accepted them. We would have shipped well-formed wrong
-vectors, with no error and no warning.
+Nothing crashed. The vectors had the right dimension, the API returned success,
+the index would have accepted them, and we would have shipped well-formed wrong
+vectors with no error and no warning.
 
 Loud-wrong is easy. Silent-wrong looks like a number.
 
 ## Benchmark scores are not deployed scores unless serving matches the harness
 
-I assumed the number I measured was the number we would serve. It was not.
+I assumed the number I measured was the number we would serve.
 
-The first candidate won its benchmark. Then I noticed the harness was scoring
+It was not.
+
+The first candidate won its benchmark, then I noticed the harness was scoring
 every model **with its card-recommended prefix**: `search_query:` /
 `search_document:` for one model, an instruction sentence for another, nothing
 for a third.
@@ -241,16 +246,16 @@ Our serving code applied no prefixes.
 | bekko-a25m | 0.5909 | 0.5909 *(card defines none)* |
 
 The ranking **inverts** between the two columns. A model that needs no prefix
-carries its benchmark score into production intact. A prefix-dependent one does
-not. I was about to select on the left column and ship the right one.
+carries its benchmark score into production intact, while a prefix-dependent one
+does not. I was about to select on the left column and ship the right one.
 
-**Rule: a benchmark number is only a deployment number if the consumer
-reproduces the benchmark's input conditions.**
+A benchmark number is only a deployment number if the consumer reproduces the
+benchmark's input conditions.
 
 ## Operational cost put a25m back in contention
 
-I had ranked on score and treated cost as bookkeeping. That order was wrong.
-Cost put a25m back in contention.
+I had ranked on score and treated cost as bookkeeping. That order was wrong, and
+cost put a25m back in contention.
 
 After the prefix trap, the question was no longer "which model scores highest?"
 It was "which model scores highest after paying its operational costs?"
@@ -266,9 +271,9 @@ It was "which model scores highest after paying its operational costs?"
 | Q8_0 quality cost |  | **−0.0037** vs bf16 |
 
 a25m is faster, smaller, simpler, and carries its score into production as-is.
-nomic is slower and wider. Its lead exists only after prefix plumbing plus a full
-re-embed. Without that work, nomic falls to 0.5823, a **−0.0249** regression
-against its own 0.6072 prefixed run.
+nomic is slower and wider, and its lead exists only after prefix plumbing plus a
+full re-embed. Without that work, nomic falls to 0.5823, a **−0.0249**
+regression against its own 0.6072 prefixed run.
 
 nomic had quality and maturity. a25m had cost and simplicity. Both were
 defensible.
@@ -292,7 +297,7 @@ view.*
 That view is not comparable to the 10,000-case selection run above. It is the
 same-run view where the reranker and embedder decision collided.
 
-Reranking removed 77% of the difference between the two embedders. That was the
+Reranking removed 77% of the difference between the two embedders, which was the
 strongest argument for a25m: with GTE in the pipeline, a25m was within 0.004 of
 nomic while being 3.6x faster on CPU, half the vector width, and needing no
 prefix machinery.
@@ -300,8 +305,9 @@ prefix machinery.
 That argument only appeared when I measured embedder and reranker together. An
 embedder-only table or reranker-only table would not show it.
 
-Deleting the reranker deleted that argument. In this same view, with no reranker,
-the embedder gap returns to **0.0158**, and the case for nomic returns with it.
+Deleting the reranker deleted that argument. In this same view, with no
+reranker, the embedder gap returns to **0.0158**, and the case for nomic returns
+with it.
 
 ## Reranking looked transformative on the reranking view
 
@@ -318,12 +324,12 @@ order, one relevant, reranking looked like a win:
 | bge-reranker-v2-m3 | 0.6174 |
 | gte-multilingual-reranker-base | **0.7178** |
 
-GTE scores 0.7178 against 0.2279 for no rerank. In that view, reranking is
-transformative. It sorts a randomly ordered candidate list.
+GTE scores 0.7178 against 0.2279 for no rerank, and in that view reranking is
+transformative because it sorts a randomly ordered candidate list.
 
 That view is not production.
 
-Production feeds the reranker the dense top-k, which is already ordered. So I
+Production feeds the reranker the dense top-k, which is already ordered, so I
 ran the pipeline end to end, over the full corpus, 10,000 queries:
 
 | pipeline | NDCG@10 | vs dense |
@@ -341,13 +347,17 @@ ceiling is below the ranking it is being asked to improve**, so on average every
 reordering is a step backwards.
 
 The two tables answer different questions. Can this model sort a random list is
-not the same as can this model beat my embedder. Only the second is the
-production question, and it had not been run.
+not the same as can this model beat my embedder, and only the second is the
+production question.
+
+It had not been run.
 
 ## The 600-query fix was not a fix
 
 An earlier run on a 600-query subsample showed reranking helping by **+0.020**.
-At 10,000 queries the same configuration measured **−0.0048**. A sign flip.
+At 10,000 queries the same configuration measured **−0.0048**.
+
+A sign flip.
 
 I nearly shipped a recommendation on the subsample.
 
@@ -355,13 +365,13 @@ I nearly shipped a recommendation on the subsample.
 
 Cross-encoders are expensive because cost scales with `candidates × tokens`,
 paid per query, uncacheable. Late interaction, ColBERT-style, precomputes
-document token vectors at index time. Query time is one encode plus MaxSim.
+document token vectors at index time, then query time is one encode plus MaxSim.
 
 Storage is the common mistake. Late interaction stores one vector per token, so
-the bill is `tokens × dims × bytes`. I measured bge-m3 in this shape. It cost
-**743 GB per million documents**, because it emits 1024-dimension token vectors.
-That figure got quoted as the cost of the architecture. It is the cost of that
-model.
+the bill is `tokens × dims × bytes`. I measured bge-m3 in this shape, and it
+cost **743 GB per million documents** because it emits 1024-dimension token
+vectors. That figure got quoted as the cost of the architecture. It is the cost
+of that model.
 
 A purpose-built ColBERT is an order of magnitude cheaper, by arithmetic rather
 than measurement:
@@ -380,7 +390,7 @@ from its published vector shape, not measured.*
 storage-prohibitive. bge-m3 was.
 
 I did run colbert-xm through the pipeline. It was bad: worse than dense
-retrieval, and worse at depth 50 than at depth 20. That is the signature of a
+retrieval, and worse at depth 50 than at depth 20, which is the signature of a
 model promoting irrelevant documents. Cascade and fusion variants failed too.
 
 **Rule: I am not going to quote those numbers, because I cannot produce the
@@ -395,11 +405,11 @@ for it. Somebody should measure it properly.
 
 ## Hybrid retrieval fixed the pool instead of reordering it
 
-I spent the night on the component that reorders results. I had not measured the
-component that chooses them.
+I spent the night on the component that reorders results, not the component that
+chooses them.
 
 So I added a second retrieval leg: BM25 over the lexical signal our KB already
-indexes. I fused it with the dense leg by Reciprocal Rank Fusion.
+indexes, fused with the dense leg by Reciprocal Rank Fusion.
 
 | pipeline | NDCG@10 | Recall@10 |
 | --- | ---: | ---: |
@@ -423,26 +433,26 @@ The pool shows why:
 | dense ∪ BM25 top-50 | **0.9739** |
 
 Dense retrieval missed the target entirely for **11-13%** of queries. **No
-reranker can recover those.** Reranking reorders a fixed pool. A decorrelated
-retriever changes the pool. Twenty reranking configurations bought at most
-**+0.0032** because the candidate set had a membership problem.
+reranker can recover those.** Reranking reorders a fixed pool, a decorrelated
+retriever changes the pool, and **twenty** reranking configurations bought at
+most **+0.0032** because the candidate set had a membership problem.
 
-I recorded the prediction before measuring. If recall ceiling was the cause,
-Recall@10 should move more than NDCG@10. It did: **+0.0662 against +0.0262** in
+I recorded the prediction before measuring: if recall ceiling was the cause,
+Recall@10 should move more than NDCG@10. It did, **+0.0662 against +0.0262** in
 the same configuration, a factor of 2.5.
 
-Two details carry over. **Rule: the textbook RRF constant `k=60` is wrong for
-this corpus.** `k=10` dominates it on every metric, which is free quality from a
-constant nobody tunes. Fusion can also cost top-1 precision, because RRF sees
-rank position and discards score magnitude. A `tiered` variant that lets the
-dense leg own rank 1 has **zero** top-1 regression by construction and still
-gains +0.074 Recall@10.
+Two details carry over. The textbook RRF constant `k=60` is wrong for this
+corpus, and `k=10` dominates it on every metric, which is free quality from a
+constant nobody tunes. Fusion can also cost top-1 precision because RRF sees
+rank position and discards score magnitude, so a `tiered` variant lets the dense
+leg own rank 1, has **zero** top-1 regression by construction, and still gains
++0.074 Recall@10.
 
 Of course, this is where the evidence is thinnest against my own conclusion. The
 suite's queries read like document summaries with key terms appended, which
 flatters BM25. Treat **BM25's absolute win as suspect** and the **+10 points of
-pool recall as the part that survives**. Two retrievers finding different documents is less
-sensitive to phrasing than one retriever matching words.
+pool recall as the part that survives**. Two retrievers finding different
+documents is less sensitive to phrasing than one retriever matching words.
 
 ## The reranker lost to the replacement by mechanism and by measurement
 
@@ -456,7 +466,7 @@ on the metric they share, plus a recall gain the reranker cannot produce. Tuning
 the fusion constant pushes recall to +0.1028.
 
 So we deleted the reranker. That removes a GGUF conversion pipeline, a separate
-score-head artifact, a release workflow, and a serving component. It also makes
+score-head artifact, a release workflow, and a serving component, and it makes
 the CPU and GPU tiers return identical rankings, which they previously could
 not.
 
@@ -479,22 +489,22 @@ nomic won the selection run at 0.6072. a25m ships at 0.5909.
 
 The prefix lesson still holds. The operational question changed again.
 
-a25m runs from weights baked into the kb container image. It needs no inference
+a25m runs from weights baked into the kb container image, needs no inference
 service, no GPU, and no network. Bundling nomic cost **1.8 GB** of image for a
 MoE that exists only as safetensors or GGUF. A deployment that wants a wider or
-stronger embedder points `AIMEE_EMBEDDER_URL` at its own GPU endpoint instead.
-That is the supported route above **384** dimensions.
+stronger embedder points `AIMEE_EMBEDDER_URL` at its own GPU endpoint instead,
+which is the supported route above **384** dimensions.
 
-The prefix machinery landed, and today it has no work to do. a25m declares empty
-query and document prefixes.
+The prefix machinery landed, and today it has no work to do because a25m
+declares empty query and document prefixes.
 
-The shape is still right. The failure it prevents is undetectable at runtime, and
-an operator overlay can declare a prefixed model. I built the safety rail for a
-hazard we then engineered away.
+The shape is still right. The failure it prevents is undetectable at runtime,
+and an operator overlay can declare a prefixed model. I built the safety rail
+for a hazard we then engineered away.
 
-This part is easy: the registry expresses the lesson as code. **Rule: every
-field is required.** Empty prefixes are not missing data. They mean "this model
-card defines none." The system can distinguish "declared none" from "not
+This part is easy: the registry expresses the lesson as code. Every field is
+required. Empty prefixes are not missing data, they mean "this model card
+defines none", and the system can distinguish "declared none" from "not
 registered" and refuse to serve the latter rather than guess.
 
 Implementation found two more silent-wrong failures:
@@ -510,9 +520,9 @@ The reranker is gone. The shipped registry has one entry: bekko-a25m, **384**
 dimensions, mean pooling, and empty prefixes.
 
 The smallest, youngest, least-credentialled model in the field is the one in
-production. It has no published baselines. It was ten days old when I measured
-it. It lost the selection run to nomic by **0.0163**, 0.6072 against 0.5909, the
-same run, and then won the deployment because every larger candidate lost on
+production. It has no published baselines, it was ten days old when I measured
+it, it lost the selection run to nomic by **0.0163**, 0.6072 against 0.5909, the
+same run, and then it won the deployment because every larger candidate lost on
 something that was not the score: an inference service, a GPU, network access,
 or **1.8 GB** of image.
 
@@ -531,7 +541,7 @@ measuring:
 - "truncate documents, don't trim candidates", true for capability, false for usefulness
 - "uniform embedding dimensions are an architectural win", the system already handled it
 
-The pattern matters. **Rule: almost every failure was silent, not loud.**
+The pattern matters: almost every failure was silent, not loud.
 
 - a pooling default that produced well-formed wrong vectors
 - a prefix flag worth 0.025 NDCG that nothing warned about
@@ -552,18 +562,18 @@ size, and harness for every figure. A number without it is not evidence.
 
 I tripped over that while writing this post. nomic's prefixed score appears in
 my own notes as 0.6058, 0.6072 and 0.6075: independent runs of the same suite,
-agreeing within its documented noise. One handoff document had quietly computed a
-delta between two of them. Harmless here. Same shape as every bug above: a
+agreeing within its documented noise. One handoff document had quietly computed
+a delta between two of them. Harmless here. Same shape as every bug above: a
 plausible number, no error, and provenance that stopped travelling with the
 figure.
 
-The expensive lesson was simpler. **Rule: measure candidate membership before
-you measure candidate ordering.** I spent the night improving the ordering of a
-candidate set whose problem was its membership. Reranking was the component I
-was asked about, so it was the component I measured.
+The expensive lesson was simpler: measure candidate membership before you
+measure candidate ordering. I spent the night improving the ordering of a
+candidate set whose problem was its membership, because reranking was the
+component I was asked about, so reranking was the component I measured.
 
-On Monday, take your retrieval stack and measure whether the labelled document is
-in the candidate pool before the reranker sees it. If dense retrieval misses it,
-add a decorrelated retrieval leg and fuse the pools. Tune `k`. Keep a tiered
+On Monday, take your retrieval stack and measure whether the labelled document
+is in the candidate pool before the reranker sees it. If dense retrieval misses
+it, add a decorrelated retrieval leg and fuse the pools. Tune `k`. Keep a tiered
 variant if top-1 regression matters. Only measure reranking after the right
 document is in the list.
