@@ -1,14 +1,21 @@
 # We spent a night measuring our retrieval stack, and deleted the reranker
 
-*Draft — 2026-07-30. Numbers from `docs/validation/`, raw artifacts in
-`benchmarks/results/`.*
+*Draft — 2026-07-31. Every figure traces to a document or artifact published
+alongside this post.*
 
 We set out to answer a small question: which embedding model should our knowledge
-base use? We ended up answering a much larger one, which is that our reranker —
-a component nobody was questioning — was making retrieval *worse*.
+base use? We came back with two answers we had not asked for.
 
-This is a writeup of what we measured, what we got wrong, and the one
-methodological lesson that turned out to matter more than any individual number.
+We went in assuming the reranker was settled. We came out having deleted it — the
+component nobody was questioning was making retrieval *worse*.
+
+We went in expecting one of the larger, better-credentialled models to win. We
+came out shipping the smallest, youngest thing in the field: 384 dimensions, ten
+days old, no published baselines at all.
+
+What follows is the chain of decisions between those two points, including the
+four times we were confidently wrong. The numbers live in their sections. The
+reasoning is the point.
 
 ## The setup
 
@@ -20,6 +27,10 @@ content, with three categories: prose, code, and cited artifacts.
 The plan was to pick an embedder and move on.
 
 ## The embedder field
+
+We expected this to be a shortlist exercise: score the candidates, take the top
+one, move on. It took three rounds across two suites before the field stopped
+reordering itself.
 
 June was how we got here, not the campaign. First LoCoMo ranked nomic-v1.5
 above Qwen3, and we later marked that screen as under-discriminating and
@@ -80,6 +91,10 @@ while costing 3.3x the vector storage and embedding 3.1x slower. The ladder
 topped out at parity with a 475M model.
 
 ## The benchmark was the problem
+
+One result would not sit still. A model whose published code scores were close to
+perfect kept placing last on ours. We had two options — distrust our corpus, or
+distrust the published number — and we went looking at the benchmark first.
 
 Every query a deployed model answers is data it has never seen.
 
@@ -215,6 +230,9 @@ looks like a number.
 
 ## Trap 1: benchmark scores are not deployed scores
 
+We assumed the number we measured was the number we would serve. It is not, and
+the gap is not small enough to ignore.
+
 Our first candidate won its benchmark decisively. Then we noticed the harness was
 scoring every model **with its card-recommended prefix** — `search_query:` /
 `search_document:` for one model, an instruction sentence for another, nothing at
@@ -236,6 +254,10 @@ not. We had been about to select on the left column and ship the right one.
 reproduces the benchmark's input conditions.**
 
 ## The cost ledger
+
+Up to here we had been ranking on score and treating cost as bookkeeping to settle
+afterwards. That order turned out to be backwards, and reversing it put a model we
+had nearly dismissed back in contention.
 
 After the prefix trap, the choice was no longer "which model scores highest?" It
 was "which model scores highest after paying its operational costs?"
@@ -259,6 +281,10 @@ The case for nomic is quality and maturity. The case for a25m is cost and
 simplicity. At this point both were defensible.
 
 ## The twist: the reranker changed the embedder decision
+
+We had been treating these as two independent choices: pick the embedder, then
+pick the reranker. Measuring them together showed they were not independent at
+all, and the direction of the dependency surprised us.
 
 Then the two decisions collided.
 
@@ -292,6 +318,10 @@ So the embedder decision and the reranker decision were coupled. We could not
 make either one independently.
 
 ## Trap 2: capability is not usefulness
+
+We had a reranker that scored **0.7178** where the incumbent managed 0.2969, and
+we took that as settled evidence it would help. We had never asked it the
+production question.
 
 With the embedder settled we turned to the reranker, which was English-only and
 had to be replaced for multilingual support anyway.
@@ -381,6 +411,10 @@ architecture has no viable candidate for us today. The cost profile still argues
 for it. Somebody should measure it properly.
 
 ## The thing we should have measured first
+
+By this point we had spent the entire night on the component that *reorders*
+results and none at all on the component that *chooses* them. This is the section
+we would run first if we started again.
 
 At this point we had spent a night on the component that reorders results, and
 none on the component that *chooses* them. So we added a second retrieval leg —
@@ -497,9 +531,17 @@ None of these were style bugs. They were plausible configurations that would hav
 served plausible vectors.
 
 The reranker is gone. The shipped registry has one entry: bekko-a25m, 384
-dimensions, mean pooling, and empty prefixes. nomic remains the stronger measured
-embedder, but not the bundled default. Above 384 dimensions, bring your own
-endpoint.
+dimensions, mean pooling, and empty prefixes.
+
+So the smallest, youngest, least-credentialled model in the field is the one in
+production. It has no published baselines. It was ten days old when we measured
+it. It lost the selection run to nomic by **0.0163** — 0.6072 against 0.5909, the
+same run — and then won the deployment anyway, because every larger candidate
+lost on something that was not the score: an inference service, a GPU, network
+access, or **1.8 GB** of image.
+
+nomic remains the stronger measured embedder. It is not the bundled default.
+Above 384 dimensions, bring your own endpoint.
 
 ## The lesson that mattered most
 
