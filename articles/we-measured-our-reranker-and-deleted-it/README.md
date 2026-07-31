@@ -1,6 +1,6 @@
 # We spent a night measuring our retrieval stack, and deleted the reranker
 
-**Status: draft, unpublished.** Campaign ran 2026-07-26 to 2026-07-30.
+**Published 2026-07-31** at <https://rakuensoftware.com>. Campaign ran 2026-07-26 to 2026-07-30.
 
 The post argues that a benchmark number is only a deployment number if the
 consumer reproduces the benchmark's input conditions — and that on a retrieval

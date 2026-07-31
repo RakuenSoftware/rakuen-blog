@@ -1,7 +1,11 @@
 # We measured the wrong part of retrieval, then deleted the reranker
 
-*Draft, 2026-07-31. Every figure traces to a document or artifact published
-alongside this post.*
+*2026-07-31. Every figure here traces to a document or artifact in the
+[evidence repository](https://github.com/RakuenSoftware/rakuen-blog/tree/main/articles/we-measured-our-reranker-and-deleted-it): the validation writeups under
+[`evidence/`](https://github.com/RakuenSoftware/rakuen-blog/tree/main/articles/we-measured-our-reranker-and-deleted-it/evidence), the raw result artifacts under
+[`benchmarks/`](https://github.com/RakuenSoftware/rakuen-blog/tree/main/articles/we-measured-our-reranker-and-deleted-it/benchmarks), and the frozen suite itself under
+[`benchmarks/fixtures/ab-v1/`](https://github.com/RakuenSoftware/rakuen-blog/tree/main/articles/we-measured-our-reranker-and-deleted-it/benchmarks/fixtures/ab-v1). Run your own
+model against it and check the numbers.*
 
 The number I was watching was reranker quality. The constraint was candidate
 membership.
@@ -577,3 +581,7 @@ is in the candidate pool before the reranker sees it. If dense retrieval misses
 it, add a decorrelated retrieval leg and fuse the pools. Tune `k`. Keep a tiered
 variant if top-1 regression matters. Only measure reranking after the right
 document is in the list.
+
+The suite, the artifacts behind every table, and the validation writeups are in
+the [evidence repository](https://github.com/RakuenSoftware/rakuen-blog/tree/main/articles/we-measured-our-reranker-and-deleted-it). The two figures I withdrew are listed there
+too, with the reason.
