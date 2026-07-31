@@ -51,16 +51,22 @@ different candidate construction.
 | `benchmarks/embedder-gate/` | the June rounds: LoCoMo, SciFact, multi-BEIR, and the aimee-own-code task |
 | `benchmarks/rank-gate-2026-07-30/` | the fusion follow-on: RRF constant sweep, deltas against production |
 
-## Known gaps
+## Resolved provenance questions
 
-Two figures in the post could not be traced to an artifact in this folder, and
-are flagged rather than quietly dropped:
+Two figures were queried during review. Both are settled; recorded here so the
+next reader does not re-open them.
 
-- **colbert-xm at 41 GB per million documents and 3.2 ms per query.** No source
-  document records these. `retrieval-stack-report-2026-07-30.md` gives 66
-  GB/million at fp16 and 33 GB at int8; the decision record says 42 GB. Three
-  numbers, no run behind any of them. Resolve before publishing.
-- **bge-v2-m3 at 20x512.** `benchmarks/reranker-2026-07-29/config-sweep-bge.json`
-  records 0.622698 over 3,000 cases; `retrieval-stack-report-2026-07-30.md`
-  states 0.6174. The post uses the report's figure. Which is canonical is
-  unresolved.
+**colbert-xm's query cost and storage — withdrawn from the article.** The draft
+quoted 3.2 ms per query and 41 GB per million documents, alongside a table of
+pipeline quality figures. No artifact in this folder produces any of them, and
+the surviving prose disagrees with itself: `retrieval-stack-report-2026-07-30.md`
+computes 66 GB/million at fp16 and 33 GB at int8, while the decision record says
+42 GB. The colbert-xm pipeline run was never committed. The article now states
+the direction was abandoned and declines to quote the numbers, which is the only
+position consistent with what it argues everywhere else.
+
+**bge-v2-m3 at 20x512 — not a discrepancy.** `config-sweep-bge.json` records
+0.622698 over 3,000 cases. `reranker-and-pipeline-2026-07-29.md` records 0.6174.
+These are two different runs at different sample sizes, not two values for one
+run. The article's reranker table is the capability view, where 0.6174 is the
+correct figure; the config sweep is a separate later run. Both stand.

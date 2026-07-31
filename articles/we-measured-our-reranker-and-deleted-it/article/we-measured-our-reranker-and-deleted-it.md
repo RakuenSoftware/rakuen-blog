@@ -81,12 +81,20 @@ topped out at parity with a 475M model.
 
 ## The benchmark was the problem
 
-A benchmark measures capability only if the model could not have trained on it.
+Every query a deployed model answers is data it has never seen.
 
-That is the whole requirement. Not secrecy — **novelty**. frozen-ab-v1 did not
-exist when these models were trained, so a score on it is capability rather than
-recall. Nothing is being withheld to achieve that. The data is simply newer than
-the weights.
+That is not an edge case. It is the entire job. A retrieval model in production
+is asked, without exception, about documents that were not in its training set —
+and if it were only good at material it had already absorbed, it would be
+useless the moment you pointed it at your own corpus.
+
+So a benchmark is only measuring the deployed condition if the model could not
+have trained on it. Otherwise it is scoring a situation that never happens.
+
+That is the whole requirement, and it is not secrecy — it is **novelty**.
+frozen-ab-v1 did not exist when these models were trained, so a score on it is
+capability rather than recall. Nothing is withheld to achieve that. The data is
+simply newer than the weights.
 
 So we publish it. The suite ships with this article: corpus, all three views,
 manifest hashes. A measurement nobody can reproduce is not evidence, and hiding
@@ -163,6 +171,12 @@ model will do on your data is one measured on your data.
 Measure on data that postdates the weights. Publish it, so the measurement can be
 checked. Then cut the next sample against the next generation. Keep the harness.
 Keep making data.
+
+This is the same lesson as the prefix trap, on a different axis. There, a
+benchmark number stopped being a deployment number because the serving path did
+not reproduce the benchmark's input conditions. Here, it stops being one because
+the benchmark does not reproduce deployment's *data* condition — which is, always,
+material the model has never seen.
 
 bge lost differently each time:
 
@@ -329,30 +343,42 @@ Cross-encoders are expensive because cost scales with `candidates × tokens`, pa
 per query, uncacheable. Late interaction (ColBERT-style) precomputes document
 token vectors at index time; query time is one encode plus MaxSim.
 
-The cost profile is everything you would want:
+The storage cost is the thing people get wrong about it, so start there. Late
+interaction stores one vector per token, so the bill is `tokens × dims × bytes`.
+We measured bge-m3 in this shape and it was ruinous — **743 GB per million
+documents**, because it emits 1024-dimension token vectors. That figure got
+quoted as the cost of the architecture. It is the cost of that model.
 
-| | colbert-xm | GTE cross-encoder |
-| --- | ---: | ---: |
-| query cost | **3.2 ms** | 143 ms |
-| storage | 41 GB / million docs | none |
+A purpose-built ColBERT is an order of magnitude cheaper, by arithmetic rather
+than measurement:
 
-**45× cheaper per query.** And then the quality:
+| model | vectors/doc | dims | per million docs |
+| --- | ---: | ---: | ---: |
+| bge-m3 (measured) | 363 | 1024 | **743 GB** |
+| colbert-xm (fp16, calculated) | 256 | 128 | 66 GB |
+| colbert-xm (int8, calculated) | 256 | 128 | **33 GB** |
+| *dense embedding, for scale* | 1 | 768 | 1.5 GB |
 
-| pipeline | NDCG@10 | vs dense |
-| --- | ---: | ---: |
-| dense only | **0.5909** | — |
-| colbert-xm @ depth 20 | 0.4663 | −0.1247 |
-| colbert-xm @ depth 50 | 0.4437 | −0.1473 |
-| cascade colbert→GTE | 0.5346 | −0.0563 |
-| RRF fusion | 0.5342 | −0.0567 |
+*Source: `retrieval-stack-report-2026-07-30`. The colbert-xm rows are computed
+from its published vector shape, not measured.*
 
-It gets *worse* with more candidates, meaning it actively promotes irrelevant
-documents. Every cascade and fusion variant failed too.
+33 GB per million is an ordinary index size. So late interaction is not
+inherently storage-prohibitive; bge-m3 was.
 
-We think this is a domain-mismatch result rather than an indictment of late
-interaction — the cost profile proves the architecture works. But it is the only
-licence-clean multilingual ColBERT available, so the architecture currently has
-no viable candidate for us.
+We did run colbert-xm through the pipeline, and it was bad — worse than dense
+retrieval, and worse at depth 50 than at depth 20, which is the signature of a
+model actively promoting irrelevant documents. Cascade and fusion variants failed
+too.
+
+**We are not going to quote those numbers, because we cannot produce the run.**
+No artifact for it was committed, and the figures that survive in our notes
+disagree with each other. By the standard the rest of this post is written to,
+that makes them unusable. Treat the colbert-xm result as a direction we
+abandoned, not as a measurement you can check.
+
+What stands: it is the only licence-clean multilingual ColBERT available, so the
+architecture has no viable candidate for us today. The cost profile still argues
+for it. Somebody should measure it properly.
 
 ## The thing we should have measured first
 

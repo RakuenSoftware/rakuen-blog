@@ -40,3 +40,12 @@ copies drift.
 
 The validation documents themselves stay in `aimee`. Only the artifacts they
 compute from move here, plus the copies under `articles/*/evidence/`.
+
+## Known duplicate
+
+`benchmarks/results/rank-gate-2026-07-30/` was copied here but not deleted from
+`aimee`: it lives on session branch `25fb29ea`, which the removal branch cannot
+reach. Low stakes — that branch is unmerged, and if it never merges the duplicate
+resolves itself. The one thing to watch is the reverse: if `25fb29ea` merges to
+`testing` after the removal branch does, it reintroduces artifacts the migration
+took out. Check for that path before merging either.
