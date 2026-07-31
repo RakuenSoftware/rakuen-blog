@@ -81,18 +81,39 @@ topped out at parity with a 475M model.
 
 ## The benchmark was the problem
 
-The suite's whole value is that it is unpublished.
+A benchmark measures capability only if the model could not have trained on it.
 
-frozen-ab-v1 is built from our own knowledge base content. It is de-identified.
-It has never been released. The builder's rule is explicit: the manifest's source
-hashes, every emitted case ID, and every emitted document ID are excluded from
-training.
+That is the whole requirement. Not secrecy — **novelty**. frozen-ab-v1 did not
+exist when these models were trained, so a score on it is capability rather than
+recall. Nothing is being withheld to achieve that. The data is simply newer than
+the weights.
 
-No model on the market could have trained on it.
+So we publish it. The suite ships with this article: corpus, all three views,
+manifest hashes. A measurement nobody can reproduce is not evidence, and hiding
+the data would buy us nothing the timing has not already bought.
 
-That is not a nice property. It is the property. It is the only reason the suite
-can tell capability apart from memorisation. A public benchmark cannot make that
-distinction about any model, ever.
+What publication does change is the *next* generation. Once the suite is public
+it can be absorbed into a future training set, and a model trained after today
+tells you nothing by scoring well on it. That is not a flaw in publishing. It is
+the ordinary lifecycle of every benchmark, and ours is now in it.
+
+That lifecycle already ran to completion on the public code benchmarks.
+
+CodeSearchNet and its relatives have been public for years, with every incentive
+in the industry pointing at topping them. A near-perfect score on a benchmark
+that old tells you the model has seen it. It cannot tell you anything about code
+the model has not seen.
+
+That is not a claim about one vendor's conduct. It is what happens to any
+benchmark that predates the models being scored on it.
+
+The fix is not to hide anything. It is to keep cutting new data. **The harness is
+durable; the data is the consumable.** The builder, the scoring, the validation
+records and the acceptance checks are all reusable — point them at content
+created since the last model generation and you have a fresh, honest measurement.
+Publish that too. Then do it again. You keep the instrument and you keep spending
+samples, and the cost of a sample is far below the cost of a number that means
+nothing.
 
 Qwen3's publishers report near-perfect code retrieval on MTEB:
 
@@ -105,7 +126,8 @@ Qwen3's publishers report near-perfect code retrieval on MTEB:
 
 Those are the publishers' figures, not ours.
 
-Then we put the same family on code nobody had trained on:
+Then we put the same family on code it could not have trained on when we
+measured:
 
 | model | dim | code |
 | --- | ---: | ---: |
@@ -138,7 +160,9 @@ And it generalises. Every figure a model publishes is measured on a test set the
 publisher chose and could have trained on. The only figure that tells you what a
 model will do on your data is one measured on your data.
 
-That is why the suite exists.
+Measure on data that postdates the weights. Publish it, so the measurement can be
+checked. Then cut the next sample against the next generation. Keep the harness.
+Keep making data.
 
 bge lost differently each time:
 
