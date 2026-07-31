@@ -1,0 +1,16 @@
+{
+  "cases_scored": 10000,
+  "checkpoint": "/mnt/media/aimee-encoder/state/h100-trunk/checkpoint",
+  "corpus_documents": 26473,
+  "embedding_width": 768,
+  "max_tokens": 512,
+  "mrr_at_10": 0.05078428571428569,
+  "ndcg_at_10": 0.061159924277453544,
+  "pooling": "mean",
+  "profile_width": null,
+  "recall_at_1": 0.03,
+  "recall_at_10": 0.0941,
+  "recall_at_5": 0.0746,
+  "suite": "/mnt/media/eurobert-full210/eval/frozen-ab-v1",
+  "vectors_per_second": 379.452643728011
+}

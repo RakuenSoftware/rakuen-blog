@@ -41,6 +41,7 @@ that catches that class of bug. A number without it is not evidence.
 | [smoothgui-0-9-site-primitives](articles/smoothgui-0-9-site-primitives/) | yes | none |
 | [token-compression-tools-cost-more-than-they-save](articles/token-compression-tools-cost-more-than-they-save/) | yes | external sources, cited inline |
 | [we-measured-our-reranker-and-deleted-it](articles/we-measured-our-reranker-and-deleted-it/) | **draft** | 8 documents, 5 artifact sets |
+| [synthesis-model-selection](articles/synthesis-model-selection/) | **not written** | evidence only, no prose yet |
 
 ## Publishing
 
