@@ -45,8 +45,8 @@ different candidate construction.
 
 | folder | what it is |
 | --- | --- |
-| `benchmarks/gemma4-unified/ab-v1/` | the frozen-suite baselines: Gemma-4 E2B/E4B embedding, Ettin 68M/400M reranking, Gemma-4 12B synthesis. Includes raw append-only logs — select the last row per `case_id` before computing metrics. |
-| `benchmarks/fixtures/ab-v1/` | the frozen suite itself: corpus, and the embedding, reranking and synthesis views |
+| `benchmarks/gemma4-unified/ab-v1/` | the frozen-suite baselines: Gemma-4 E2B/E4B embedding, Ettin 68M/400M reranking. Includes raw append-only logs — select the last row per `case_id` before computing metrics. |
+| `benchmarks/fixtures/ab-v1/` | the frozen suite: corpus, plus the embedding and reranking views |
 | `benchmarks/reranker-2026-07-29/` | the reranker campaign: config sweeps, GTE ONNX quality, late interaction, hybrid fusion, CPU latency grid |
 | `benchmarks/embedder-gate/` | the June rounds: LoCoMo, SciFact, multi-BEIR, and the aimee-own-code task |
 | `benchmarks/rank-gate-2026-07-30/` | the fusion follow-on: RRF constant sweep, deltas against production |
@@ -70,3 +70,12 @@ position consistent with what it argues everywhere else.
 These are two different runs at different sample sizes, not two values for one
 run. The article's reranker table is the capability view, where 0.6174 is the
 correct figure; the config sweep is a separate later run. Both stand.
+
+## Scope: retrieval only
+
+The ab-v1 suite exposes one 10,000-case population through three views —
+embedding, reranking, and synthesis. Only the first two are retrieval, and only
+those are kept here. The synthesis view and the Gemma-4 12B synthesis results
+belong to the Tier-A extraction question, which is a different decision with a
+different gold set, and they were removed from this folder rather than left to
+imply they informed the embedder choice.
