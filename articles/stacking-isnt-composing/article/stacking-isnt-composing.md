@@ -56,23 +56,26 @@ That is the finding. A joint trace is needed to quantify the resulting bill,
 recall loss or frequency. It is not needed to establish that independently
 integrated add-ons lack a guaranteed shared order of operation.
 
-## The bus makes operation order explicit
+## The bus provides the guarantees composition needs
 
 The current [`aimee` event-bus
 contract](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/modules/bus.md)
 gives each source FIFO delivery and stamps a global accepted order before
 routing. Operations that use the bus therefore enter the system in an order
-chosen by the host, and consumers observe that order. This is the sequencing
-contract the add-on stack lacks.
+chosen by the host, and consumers observe that order. It also gives the stages
+bounded backpressure, typed absence and one full-stream tap. These are the
+cross-stage guarantees that let their contracts compose.
 
 The bus does not own workflow scheduling. A scheduler still decides which
 operations a workflow should issue and when to issue them. The bus controls the
-accepted order of those operations once issued. It also applies the declared
-backpressure and exposes the same ordered stream to capture and audit.
+accepted order of those operations once issued. Every stage therefore acts
+against the same sequence instead of the order in which independent hooks
+happen to run.
 
-Business schemas and objectives remain with their modules. The bus does not
-invent their meaning. It gives them one place to order their effects, which is
-what turns separate operations into one system rather than a stack of hooks.
+Composition is the stage contracts plus the bus. The contracts define what an
+operation means, which stage owns it and what the next stage may assume. The bus
+enforces the shared order and delivery rules across those contracts. Remove
+either half and the stages stop composing.
 
 ## The bus makes replay possible
 

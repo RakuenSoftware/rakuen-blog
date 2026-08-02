@@ -70,7 +70,8 @@ and deterministic module execution replay to owners outside the bus core.
 Those exclusions assign ownership. They do not remove the bus's control of
 operation order. A scheduler decides which workflow operations to issue; the
 bus host stamps their global accepted order before routing, and consumers
-observe that order.
+observe that order. FIFO delivery, bounded backpressure, typed absence and the
+full-stream tap supply guarantees across stages that the scheduler does not.
 
 The working guide says replay presents the accepted stream to an inspector. It
 does not execute tools or drive modules. It also says the bus currently carries
@@ -91,9 +92,9 @@ authoritative, WORM dual-write is default-off and best-effort, and off-host
 witnessing plus guaranteed filesystem immutability are not present.
 
 The gateway contract assigns ownership of the canonical ordered request
-pipeline. That supports the rewrite's architectural distinction between a
-workflow owner and the bus that orders its issued operations. It does not
-establish a measured cost or quality result.
+pipeline. The stage contracts define operation meaning and ownership; the bus
+provides the ordering and delivery guarantees that let those contracts compose.
+It does not establish a measured cost or quality result.
 
 ## Prior first-party work and corrections
 

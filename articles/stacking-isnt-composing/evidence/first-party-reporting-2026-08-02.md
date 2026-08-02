@@ -122,12 +122,15 @@ its extension surface is not a claim that every subsystem has moved.
 The exclusion of workflow scheduling is an ownership boundary, not an ordering
 limit. The scheduler decides which workflow operations to issue. The bus host
 stamps their accepted order before routing and therefore controls their order
-inside the bus.
+inside the bus. FIFO delivery, bounded backpressure, typed absence and the
+full-stream tap are cross-stage guarantees supplied by the bus rather than by
+the scheduler.
 
-Disposition: corrected. The rewrite describes the bus as the bounded ordering
-and enabling seam inside `aimee`, the gateway as the request-pipeline owner and
-audit as the record owner reached through that seam. It makes no claim about
-the effort needed to add a module.
+Disposition: corrected. The rewrite defines composition as stage contracts plus
+the bus guarantees that operate across them. The gateway owns the request
+pipeline, the bus orders its issued operations, and audit receives governed
+events through that seam. It makes no claim about the effort needed to add a
+module.
 
 ## Bus performance, ordering and delivery
 
