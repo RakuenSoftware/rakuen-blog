@@ -3,100 +3,231 @@ title: "Token compression tools measure the wrong thing"
 date: 2026-07-24
 author: Rakuen Software
 tags: [agents, llm, cost, aimee]
-excerpt: "RTK and Headroom count tokens removed. Your provider bills cache writes, cache reads and replayed context. The real drain isn't the tool output. It's resending it four hundred times, and the fix is architectural, not a plugin."
+excerpt: "A token counter cannot tell you whether a compression tool lowered your bill. The useful measure is cost per successful task, with cache writes, cache reads, retries and task quality included."
 ---
 
-I spent two days working out why an Anthropic reseller was billing me more than its own rate card said it should. The answer became a rule I now run every "compress your context" tool against: **tokens removed and money saved are different numbers. A tool that only measures the first isn't measuring your bill.**
+Token compression can lower an agent's bill. A counter showing tokens removed
+cannot prove that it did. In the best independent test I found, `RTK` 0.43.0
+made low-effort Claude Code tasks **7.6% more expensive at the median** and
+saved nothing at high effort. I found no equivalent paired, independent result
+for `Headroom` on GPT-5.6. The useful number is cost per successful task, not
+the size of a tool's output.
 
-I ran the same dig against GPT-5.6 and the OpenAI API, on two tools that work opposite ends: `RTK` rewrites command output, `Headroom` proxies the model request. Then I read someone else's trace of where a real coding session's tokens actually go, and it moved the problem to a different layer than I expected. Fair warning: this is a wall of text, and it gets geeky.
+This is reported analysis. The prices, benchmark results and software behaviour
+below come from named sources or pinned code. The conclusions are mine.
 
-## The number that actually gets billed
+Disclosure: Rakuen Software builds `aimee`, which competes for some of the same
+users by managing agent memory, context and model routing. We benefit if you
+accept the architectural alternative argued here. That interest does not turn
+our own counters into evidence, so `aimee` gets the same measurement rule at
+the end.
 
-Providers don't charge for tokens in the abstract. They charge for cache writes, cache reads, uncached input, output, and reasoning. Each one is a different price.
+*Substantially revised on 2 August 2026. The revision adds the strongest result
+I found in favour of cache-aware compression, separates RTK's low- and
+high-effort results, and pins fast-moving software claims to commits.*
 
-On GPT-5.6 the spread is wide. A cache read costs 10% of ordinary input. A cache write costs 125% of it. So a token that moves from "cached read" to "cache write" costs **12.5 times more**, not less.
+## A removed token can cost 12.5 times more
 
-That changes the maths on any tool that edits your prompt. Caching keys on an exact prefix match: same tokens, same order, byte for byte. Change one token in a cached prefix and everything after it stops matching. The whole suffix gets written again at 125%.
+Providers do not bill one undifferentiated token count. They price uncached
+input, cache writes, cache reads and output differently.
 
-Work the break-even and it's brutal. For an edit to an already-cached prefix to pay for itself on the *next* request, it has to strip more than **92% of the entire invalidated suffix**. Not 92% of the block it touched. 92% of everything downstream of the first changed token. Almost no real edit clears that bar.
+For GPT-5.6, OpenAI's 9 July 2026 launch post says, "[cache writes are billed at
+1.25x](https://openai.com/index/gpt-5-6/)" the ordinary input rate, while a
+cache read receives a 90% discount. In API-price units, writing one token costs
+1.25. Reading the same token from cache costs 0.10.
 
-I hit Anthropic first, and that's where the rule came from. Anthropic runs its own cache, and it's widely misunderstood. It's unforgiving in one specific way: if a message isn't byte-identical to what was there last request, it isn't a cache hit. You pay full, uncached input for it. There's no partial credit for "nearly the same."
+That creates a narrow but important break-even rule. Let an already-cached
+suffix contain `x` tokens. Reading it again costs `0.10x`. If a tool changes the
+prefix before that suffix and forces the compressed replacement to be written,
+the next request costs `1.25(1-r)x`, where `r` is the share removed. The edit
+breaks even when:
 
-That's exactly what a "compress your context" tool does to you, two ways. One: if it ever goes back and pulls the full original it compressed (some call it rehydrating), you've already spent more that session than the compression could ever save. Two: the moment it changes how a provider expects the prefix to look, you fall off the cached tokens onto the full-price ones. Every case I measured, losing the cache cost more than the tokens the tool removed. The saving is a rounding error next to the penalty.
+`1.25(1-r)x <= 0.10x`
 
-It's worse in practice, because every Anthropic reseller caches a bit differently. That's how I got over-billed in the first place. Cutting tokens in a way that survives all of them, without tripping any one provider's cache, turned out to be hard and provider-specific, not the one-line win the plugins sell. GPT-5.6 just sharpens the same edge. The numbers above are the OpenAI version of a penalty I first watched on Anthropic.
+So `r` must be at least **92% of the invalidated suffix**. Removing 92% of one
+tool block is not enough when the edit also invalidates material after it.
 
-## RTK measures text, not money
+This does not mean every compression pass destroys the whole cache. OpenAI says
+"[cache hits are only possible for exact prefix
+matches](https://openai.com/index/unrolling-the-codex-agent-loop/)," and
+GPT-5.6 now supports explicit breakpoints. A tool can compress new content
+before its first write, or change only material after a known breakpoint. Both
+can save money. The expensive case is mutating a prefix that was already cheap
+to read.
 
-`RTK` rewrites command output before it lands in history. Trims a chatty test run, collapses a big file listing. Its `rtk gain` counter reports how many tokens it saved.
+## Compression works when it respects the cache
 
-It can't report that number, because it can't see it. RTK sees command output, nothing else. Not the API request, not the cache breakpoints, not the cache state, not the write or read token counts. `rtk gain` compares raw output to filtered output at about `characters / 4`. It's counting characters it deleted, not credits the provider never charged.
+The strongest case against a blanket rejection of compression arrived before
+the original version of this article and should have been in it.
 
-That gap matters, because coding agents already truncate big output before it reaches the model. RTK will happily claim it stripped hundreds of thousands of tokens from a file the agent would only have shown a few thousand of anyway. My own install reported about 6.1 million tokens saved on work where the real input was a fraction of that.
+Yan Song's 17 July 2026 preprint, [*Cache-Aware Prompt
+Compression*](https://arxiv.org/abs/2607.15516), tested a query-stable
+compressor with explicit cache control on Anthropic's Sonnet 4.6. On the public
+50-task tau-bench retail test, the method cost **7.9% less than an uncompressed
+baseline** with the same task reward, **36 successful tasks out of 50** in both
+arms. Query-aware compression, which changed the cached prefix for each query,
+cost **40.1% more** than the baseline.
 
-The independent benchmarks land where you'd expect. The one public GPT-5.6 comparison I could find ([Tura's benchmark lab](https://moltpress.org/tura_benchmark_lab/token-savings-completed-task-cost)) put RTK at +7.18% cost, except its own two-run arm varied by 30.78%, so that figure proves nothing on its own. The JetBrains benchmark is firmer: it debunked the headline 60% to 90% savings claim outright, and found RTK ran 14.3% more cache reads on 13.8% more turns. The tech news site TechTimes reported it on 21 July, under the headline [RTK raises Claude Code costs at low effort, JetBrains benchmark debunks 60-90% claim](https://www.techtimes.com/articles/321223/20260721/rtk-raises-claude-code-costs-low-effort-jetbrains-benchmark-debunks-6090-claim.htm).
+Those are the author's results from one preprint, one model family and one
+five-minute cache policy. The paper says its provider-specific numbers "[will
+need re-measurement](https://arxiv.org/html/2607.15516v1)" elsewhere. It does
+not validate RTK, Headroom or GPT-5.6.
 
-One thing about that JetBrains result, because people keep drawing the wrong lesson from it. "RTK randomly nukes your cache" is wrong. RTK formats *new* output before it enters history. It doesn't rewrite a prefix that's already cached. Once the compressed result is in history, later requests reuse it fine. The extra cache reads are mostly the extra turns re-reading context, plus thin command coverage and provider-side truncation doing the real work anyway. More turns, not a busted cache.
+It does settle the mechanism. Compression is not the problem. Changing the
+wrong part of the prompt is.
 
-There's a sharper failure than cost, though. I reproduced a correctness bug in RTK 0.43.0. My pytest config already passed `-q`. RTK added its own `-q`. The effective `-qq` swallowed the summary RTK then went looking for, and it failed. That's not a bigger bill on its face. But a rewrite that changes the result buys you a re-run and another turn, which *is* a bigger bill, by the back door.
+## RTK now says its counter is not your bill
 
-## Headroom is more capable and harder to trust
+RTK's case is straightforward. It rewrites supported shell-command output
+before the agent reads it. A long `git status` becomes a compact status. Passing
+tests collapse to a count while failures keep their useful lines. Less text
+enters the conversation.
 
-`Headroom` proxies the real model request, so in principle it has what RTK lacks. It can compress large, brand-new tool output before that output enters the cache. With GPT-5.6 charging 125% on writes, shrinking something before it's written is exactly where the money is.
+The project has also narrowed its public claim. In its development README at
+[commit `e0ffd40`, dated 1 August
+2026](https://github.com/rtk-ai/rtk/blob/e0ffd40ef7c450489aca4a50c0ab1358e4375691/README.md#how-savings-work),
+RTK says it cuts up to 90% of Bash output and adds: "That is what RTK measures,
+and it is not the same as cutting your bill by 90%." Its absolute counts use a
+`bytes / 4` estimate rather than a model tokenizer.
 
-The catch is what it still can't see. Headroom sees explicit breakpoints if the client sends them. It can't see OpenAI's internal cache: which implicit breakpoint matched, or what OpenAI actually kept.
+That is an accurate description of the counter. RTK can see the command output
+before and after its filter. It cannot see the full provider request or know
+the counterfactual number of agent turns. A smaller result may prevent later
+replay. It may also omit something the agent then retrieves in another turn.
+The counter records the first effect and cannot price the second.
 
-Two things in the current code make me distrust its dashboard as a GPT-5.6 ledger:
+Denis Shiryaev tested that counterfactual for JetBrains on 20 July 2026. The
+[paired benchmark](https://blog.jetbrains.com/ai/2026/07/rtk-claude-code-token-savings/)
+used RTK 0.43.0, Claude Code 2.1.201, Claude Sonnet 5 and SkillsBench. Across
+**80 clean low-effort pairs**, RTK increased median cost per task by **7.6%**
+(`p=0.004`), turns by **13.8%** (`p=0.03`) and cache reads by **14.3%**
+(`p=0.008`). At high effort the cost difference was **+0.1%** (`p=0.99`). Task
+quality was statistically tied in both arms.
 
-- It doesn't seem to support GPT-5.6's new explicit-breakpoint fields. It injects a `prompt_cache_key` and guesses which messages are still live. A stable cache key helps routing. It doesn't make two different prefixes match.
-- Its cost model is stale. The code assumes cached reads cost 50% and writes carry no premium, and infers writes as uncached input because it says OpenAI exposes no write counter. On GPT-5.6 that's all wrong: reads are 10%, writes are 125%, and writes come back in `cache_write_tokens`.
+The strong case for RTK survives that result. Its filters worked, the
+compression was real, and quality did not fall. The test was on Claude Code,
+not GPT-5.6. It found a low-effort cost penalty and a high-effort tie, not a
+universal law that RTK always costs more.
 
-Then there's rehydration. Headroom compresses something, the model later asks for the full original, and now you've paid for the compressed version, the retrieval tool call, another model turn, and the original in full. Unless the compressed version was reused enough times first to bank a saving, that one retrieval erases it.
+It found no saving either. Shiryaev's useful line is that a tool's
+self-reported saving is "[a claim about its counterfactual, not about your
+bill](https://blog.jetbrains.com/ai/2026/07/rtk-claude-code-token-savings/)."
 
-In its favour, the current code restores frozen messages byte-for-byte, so I won't claim Headroom definitely busts the cache. That's unmeasured, not proven. But a dashboard doing counterfactual accounting on last year's prices isn't evidence it saved you anything.
+Install RTK if compact Bash output is the outcome you want. Do not install it
+because `rtk gain` says it cut your bill. On the only substantial independent
+paired test I found, it did not.
 
-## The bill isn't the tool output. It's replaying it.
+## Headroom reaches the right layer but still needs the right test
 
-Here's where I changed my mind about the whole category. Both tools fight over how big a single tool result is. That's not where a coding session's tokens go.
+Headroom has the stronger architecture. It proxies the model request, so it can
+compress large, new tool output before that output enters the provider cache.
+It stores the original for retrieval and freezes previously forwarded prefixes.
+The current code can [replay a compressed prefix
+byte-for-byte](https://github.com/headroomlabs-ai/headroom/blob/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9/headroom/cache/prefix_tracker.py#L267-L368).
+I will not claim that Headroom simply destroys the cache. Its code is trying to
+prevent exactly that.
 
-The clearest evidence I've seen isn't mine. It's a trace-level writeup on r/codex, [Important findings on cache and baked-in Codex behaviour](https://www.reddit.com/r/codex/comments/1v4vawj/important_findings_on_cache_and_baked_in_codex/), and the numbers below are the author's, not mine. They pulled traces from ten `gpt-5.6-sol` Codex rollouts. Ten sessions came to **252.2 million tokens: 251.7 million input, 581 thousand output.** Input was 99.77% of everything. Across 2,007 model calls, the average call took in **125,394 input tokens and produced 290.** Some of those sessions made three edits total.
+The project's [README at commit `6d5516d`, dated 1 August
+2026](https://github.com/headroomlabs-ai/headroom/blob/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9/README.md#proof),
+leads with "15-20% fewer tokens (for coding agents)" and reports larger
+reductions on selected tool workloads. It also publishes small accuracy checks.
+Those are vendor-run before-and-after token measurements, not paired GPT-5.6
+costs per completed coding task.
 
-That's the shape of it. The model isn't spending your tokens thinking or writing. It's re-sending its accumulated context (system prompt, tool schemas, repository instructions, file contents, shell output, patches, test logs, prior messages) hundreds of times. The average task made about 200 model calls, and peak input averaged 233,012 tokens, past 90% of the window, before compaction kicked in. The worst single task burned **61 million tokens over 434 calls in 98 minutes**, re-inspecting and re-checking against a history that only grew.
+The GPT-5.6 accounting paths are not settled either. At that same commit,
+Headroom's OpenAI Responses handler [infers cache writes from uncached
+input](https://github.com/headroomlabs-ai/headroom/blob/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9/headroom/proxy/handlers/openai.py#L1246-L1257)
+because it says OpenAI exposes no separate write counter, then says OpenAI has
+no write premium. GPT-5.6 exposes `cache_write_tokens` and charges the 1.25x
+premium. A separate [manual cost
+fallback](https://github.com/headroomlabs-ai/headroom/blob/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9/headroom/providers/openai.py#L530-L587)
+prices cached reads at 50% of input rather than 10%.
 
-The waste starts before you do. In those traces the first request alone averaged about **30,550 input tokens**, before the model read one source file or ran one test. Most of that is the runtime's own furniture: system and safety instructions, tool schemas, skill descriptions, plugin and repo rules, environment metadata. The tool put it there, not you. Then it compounds. That worst task ran 132 file reads, 98 shell commands, 93 searches, and 78 patches, and every one stayed in the history the next call resent. Across the ten sessions the model was fed **8.21 million characters of tool output**. The author reckons an 8,000-character cap per result would have cut 2.93 million of them, 35.7%, before you count the saving from not replaying that text on every later call.
+Those paths do not prove every Headroom dashboard number is wrong. Headroom
+uses LiteLLM pricing when it can, and other response paths may supply exact
+provider usage. They do show that its source contains fallbacks that cannot
+price GPT-5.6 correctly as of 1 August.
 
-Now hold that next to the caching argument. The worst task had a **98.89% cache rate** and still logged 60.9 million input tokens. Across all ten, the weighted rate was 97.8%: 246 million cached against 5.5 million uncached. A high cache rate is exactly what makes people wave this off: "it's cached, it's basically free." On GPT-5.6 a cached read is 10% of input, not 0%. 10% of 246 million isn't free, and it's the same context going round again, not new work.
+Retrieval belongs in the same test. If the model asks Headroom for the full
+original, the task adds a tool call, another model turn and the retrieved text.
+That may still be cheaper after enough reuse. A token-reduction counter cannot
+tell you whether it was.
 
-The writeup is careful on one point, and so am I. The traces don't show how a given plan meters cached tokens against a subscription, so neither of us is calling it a billing bug. But metering is the small question. The runtime makes enormous context traffic, keeps used-up material live far too long, and gives you no way to see or stop it. That holds whatever the discount on the replayed half.
+Headroom could save money on GPT-5.6. I have not found the paired task result
+that establishes it.
 
-Two more things fell out of the same analysis. Subagents make the accounting worse, not better. One 18-minute child agent ate 16.4 million tokens by itself. The parent spawned four, and only one child's trace was available, so the real total is higher than any number here. If your UI shows only the root task, you never see any of it. And the runtime ships with the savings switched off. The author read the source and found a `turn_cost_guard` that picks the earlier, cheaper summarisation, with every call site passing it `false`. A token-saving switch, hard-coded off, that no prompt you write can flip.
+## One user's Codex traces put the larger cost in replay
 
-What turns this from waste into a grievance is that you can't switch any of it off. You can't shrink the base prompt, stop a skill being re-read twenty times, drop the schemas the task will never call, retire history the runtime is still hauling around, force a compaction, or cap it at fifty calls instead of four hundred. Compaction only fires at the cliff, past 90% of the window, not at the natural break between investigating and implementing where the old context stops earning its place. The author keeps a local fork and patched some of this back by hand. Almost nobody can do that, and nobody should have to fork their coding tool to stop it draining them.
+Tool output is only the material added on one turn. An agent sends its live
+history again on the next turn, then again on the one after that. This is where
+a small local saving can disappear inside a large bill.
 
-## What actually lowers the bill
+The most concrete trace I found is single-sourced. On 24 July 2026, Reddit user
+`ikhDark` published [an analysis of ten `gpt-5.6-sol` Codex
+rollouts](https://www.reddit.com/r/codex/comments/1v4vawj/important_findings_on_cache_and_baked_in_codex/).
+The author reported **252.2 million total tokens**, of which **251.7 million
+were input**, across **2,007 model calls**. The average call received **125,394
+input tokens** and produced **290 output tokens**. The weighted cache rate was
+**97.8%**. The source's conclusion was that Codex was "not primarily consuming
+usage by producing answers or performing deep reasoning."
 
-Line the failures up and they point one way. Compressing a tool result after the fact is the wrong layer. The bill is set by things a plugin can't touch:
+I did not receive the raw traces and did not reproduce that analysis. These are
+one user's figures, not an independent measurement. The traces also do not show
+how a Codex subscription meters cached input, so they do not establish a
+billing or quota bug.
 
-- **Retire used-up context.** Once a file read or a passing test log has done its job, the model doesn't need its full text on the next 300 calls. Keep the raw log on disk. Leave a compact receipt in the prompt: status, the paths that mattered, what changed.
-- **Don't reinject what hasn't changed.** An unchanged `AGENTS.md`, an unchanged skill file, the same source file read twice: represent it by a stored fact or a content hash, not a fresh copy pasted back into context on every call.
-- **Load only the schemas the task needs.** A config change shouldn't open with every email, calendar, browser, and connector definition loaded. Defer the ones this task will never call.
-- **Budget the output, not just the input.** A command that succeeded doesn't need the same 10,000-token allowance as one that failed with a stack trace. Ordinary success belongs closer to 1,500 to 2,500 tokens.
-- **Compact at boundaries, not at the cliff.** Summarise when you cross from investigating to implementing, while you still know what mattered, instead of waiting for the context to hit 90% and dumping whatever's oldest.
-- **Send the small model the small job.** A 125K-token context that produces 290 output tokens has no business on the top model. Most sub-tasks (a scoped edit, a lookup, a summary) belong on a cheaper one.
-- **Cap the runtime, and show the bill.** Model calls, cumulative input, child agents, tool-output bytes, context percentage, repair cycles: budgets you can see and enforce, with root and child usage on the same screen, not a `turn_cost_guard` someone else nailed shut.
+They do show the workload shape reported by the source. In those ten sessions,
+the dominant traffic was accumulated context sent through the model call by
+call, even with a high cache rate. A cached API token costs less. It does not
+cost zero.
 
-None of that is compression. It's holding less context, for less time, and refusing to replay it.
+OpenAI's own 2026 guidance points at the same architectural levers. Its
+GPT-5.6 guide tells API developers to expose only relevant tools, keep prompts
+lean and [track both cached and cache-write
+tokens](https://developers.openai.com/api/docs/guides/latest-model). Its 9 July
+launch post says Programmatic Tool Calling can filter intermediate data and
+reduce model round trips. That does not verify the Reddit figures. It does make
+context lifecycle a provider-recognised engineering problem, not a theory that
+depends on one trace.
 
-## This is what we build aimee to do
+## The replacement is context lifecycle, not a better counter
 
-I didn't reverse-engineer that list from the blog post. It's the design brief for `aimee`, our local server that sits between a coding tool and the model. The controls Codex withholds are the ones aimee hands back, so getting them doesn't mean forking a runtime almost nobody can maintain.
+The useful controls sit where the runtime can see the whole request and the
+task outcome:
 
-Memory is the "stored fact, not a fresh re-read" point made real. Facts about the repo and past decisions are written once and recalled when they matter, so a session doesn't rebuild the same understanding, and re-pay that 30,550-token entry fee, every time it starts. A map of your code lets the agent navigate by structure instead of dumping files into the prompt to find one function. Cheap delegate models take the bounded jobs off the expensive one, so a 290-token edit doesn't ride on the top tier. The economizer is the accounting and the budgets the traces above show Codex withholding: where the tokens went, root and child on one screen, with caps you set on calls, input, child agents, tool-output bytes, and context. Not limits set for you, and switches nailed shut. And guardrails it can't write past, for the same reason. The runtime should answer to you, not the other way round.
+- **Measure completed work.** Run the same task with and without the change,
+  reset the repository, keep the model and effort fixed, and score success
+  before comparing the full bill.
+- **Preserve the cheap prefix.** Put stable instructions and schemas first. Put
+  changing material after an explicit breakpoint, then record writes and reads
+  separately.
+- **Retire used output.** Keep raw files and logs on disk. Once they have served
+  their purpose, leave a receipt in context with the result and the locations
+  that still matter.
+- **Defer unused tools.** A task should not pay to carry schemas it will not
+  call.
+- **Route bounded work down.** A lookup or scoped edit should use the cheapest
+  model that clears its quality test, without hauling the parent task's whole
+  working set behind it.
+- **Expose a budget.** Show cumulative input, cache writes, cache reads, model
+  calls and child-agent use, then let the user cap them.
 
-I'm not going to hand you a savings percentage for aimee. That's the exact `rtk gain` move this whole post is against. The only honest number is cost per successful task, measured in paired runs: tool on, tool off, same model, same effort, same repos reset to the same state, same success check, several times over. That's the bar aimee has to clear too, and the one we hold it to.
+[The working `aimee` source is
+public](https://github.com/RakuenSoftware/aimee). We build it to retain facts
+outside the live prompt, navigate code by structure, route bounded work to
+cheaper models, and account for the whole run. Those features are a design
+response to the mechanism above. They are not evidence that the response works.
 
-## Bottom line
+I will not give you an `aimee` savings percentage without paired runs. That
+would be the same counterfactual mistake.
 
-Delete the compression plugins. On the evidence, `RTK` shows no saving and sometimes a higher bill, plus a correctness bug I hit myself. `Headroom` could help on GPT-5.6 in theory, but its current build won't tell you whether it did. Both fight over the size of one tool result while the real bill is the same context replayed across hundreds of calls.
+## The number to demand is cost per successful task
 
-The lever that reliably lowers your bill isn't compressing the context you send. It's sending less of it, keeping what you do send byte-stable so the cache keeps working, retiring it once it's used, and putting the cheap jobs on cheap models. That's an architecture problem, not a plugin. It's why we build `aimee` around it, and why I'd still tell you to measure it before you believe it.
+RTK 0.43.0 did not save money in the JetBrains benchmark. Headroom operates at
+a layer where it could, but its public token reductions and current GPT-5.6
+accounting do not establish that result. Cache-aware compression itself has a
+promising measured case on Sonnet 4.6, with limits the author states.
+
+Disable any compression tool you cannot test against the full task. Keep one
+only when paired runs show a lower cost per successful task, including cache
+writes, cache reads, retries, retrievals and quality.
