@@ -40,12 +40,13 @@ that catches that class of bug. A number without it is not evidence.
 | [hello-rakuen-software](articles/hello-rakuen-software/) | yes | none |
 | [smoothgui-0-9-site-primitives](articles/smoothgui-0-9-site-primitives/) | yes | none |
 | [token-compression-tools-cost-more-than-they-save](articles/token-compression-tools-cost-more-than-they-save/) | yes | external sources, cited inline |
+| [stacking-isnt-composing](articles/stacking-isnt-composing/) | yes | source audit, reporting record |
 | [we-measured-our-reranker-and-deleted-it](articles/we-measured-our-reranker-and-deleted-it/) | yes | 8 documents, 5 artifact sets |
 | [synthesis-model-selection](articles/synthesis-model-selection/) | **not written** | evidence only, no prose yet |
 
 ## Publishing
 
 The live site (`rakuensoftware-web`) still builds from its own
-`src/content/blog/`. The three published posts here are the archived copies;
-the site has not been repointed. Changing that is a separate decision — see
+`src/content/blog/`. The published posts here are archived copies; the site has
+not been repointed. Changing that is a separate decision — see
 [MIGRATION.md](MIGRATION.md) for what was moved and what was left alone.
