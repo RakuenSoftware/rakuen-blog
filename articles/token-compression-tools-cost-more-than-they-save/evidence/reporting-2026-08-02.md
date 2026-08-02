@@ -121,17 +121,35 @@ was not independently reproduced. It does not reveal Codex subscription
 metering and cannot establish a billing or quota bug. The article states all
 three limits before interpreting the reported workload shape.
 
-## Claims removed from the old article
+## Prior first-party reporting remains in the record
 
-The rewrite removes claims that lacked a local artifact or adequate external
-support, including the author's two-day reseller investigation, the 6.1
-million-token local RTK counter, the local pytest reproduction, differences
-among unspecified Anthropic resellers, and claims about controls allegedly
-hard-coded off in Codex.
+The complete disposition is in
+[`first-party-testing-2026-08-02.md`](first-party-testing-2026-08-02.md). The
+article reports the author's two-day reseller investigation, the 6.1
+million-token local RTK counter observation, the RTK 0.43.0 pytest reproduction,
+and the pinned RTK and Headroom source audits. It states which work was a
+runtime observation and which was static review.
 
-The rewrite also removes the categorical instruction to delete every
+The raw invoices, provider usage export, RTK analytics export, terminal output
+and pytest fixture were not present in the migrated article folder. The article
+discloses that limit where each result appears. Those observations cannot carry
+a universal claim or numerical effect size, but missing raw support is not a
+reason to erase prior reporting.
+
+The rewrite still removes the categorical instruction to delete every
 compression plugin. The cache-aware-compression preprint supplies a measured
-counterexample. The replacement decision is conditional and testable.
+counterexample. It also removes claims about unspecified reseller differences
+and controls allegedly hard-coded off in Codex because the prior article did
+not preserve a basis for them. Their removal is recorded here rather than left
+silent.
+
+## Raw artifacts are append-only
+
+The repository-wide rules are in [`articles/AGENTS.md`](../../AGENTS.md). New
+raw reporting output belongs under `evidence/raw/` with its command, version,
+fixture, environment and outcome. A later correction marks an artifact invalid
+and points to the superseding run. It does not overwrite or silently remove the
+original. Deletion requires a recorded reason and explicit user approval.
 
 ## Right of reply required before publication
 
@@ -146,6 +164,8 @@ Questions for RTK:
    results?
 2. Does the current project claim any reduction in provider cost, beyond the
    documented reduction in Bash output?
+3. Does RTK account for project-level pytest `addopts` when deciding whether to
+   add `-q`, and can 0.43.0 misreport a run when the effective option is `-qq`?
 
 Questions for Headroom:
 

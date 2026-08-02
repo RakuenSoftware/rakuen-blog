@@ -24,7 +24,8 @@ the end.
 
 *Substantially revised on 2 August 2026. The revision adds the strongest result
 I found in favour of cache-aware compression, separates RTK's low- and
-high-effort results, and pins fast-moving software claims to commits.*
+high-effort results, restores the original first-party observations with their
+limits, and pins fast-moving software claims to commits.*
 
 ## A removed token can cost 12.5 times more
 
@@ -54,6 +55,24 @@ GPT-5.6 now supports explicit breakpoints. A tool can compress new content
 before its first write, or change only material after a known breakpoint. Both
 can save money. The expensive case is mutating a prefix that was already cheap
 to read.
+
+## My billing tests formed the hypothesis, not proof
+
+The original article began with first-party work. I spent two days reconciling
+an Anthropic reseller bill against the rate card, then examined the same cache
+mechanism on GPT-5.6 and the OpenAI API. In every case I measured, the extra
+cost associated with losing cached input exceeded the saving attributed to the
+text removed.
+
+That result has a hard limit. The invoices, request traces and case table were
+not archived with the article when it moved into this repository. The published
+version is the surviving contemporaneous record. I cannot give you a
+reproducible effect size or generalise it across resellers from that record.
+
+The test still belongs in the account. It produced the hypothesis. OpenAI's
+published rates supply the break-even calculation, while the paired RTK and
+cache-aware-compression benchmarks below test whether the mechanism appears in
+completed work.
 
 ## Compression works when it respects the cache
 
@@ -96,6 +115,24 @@ the counterfactual number of agent turns. A smaller result may prevent later
 replay. It may also omit something the agent then retrieves in another turn.
 The counter records the first effect and cannot price the second.
 
+My own RTK installation supplied an example of that gap. Its counter reached
+about **6.1 million estimated tokens saved** on work whose actual input, as the
+original article recorded it, was a fraction of that figure. I did not preserve
+the RTK analytics export and matching usage record with the original article,
+so I cannot publish the ratio or reconstruct the comparison. It is a local
+observation about what the counter displayed, not a measured bill saving.
+
+I also reproduced a correctness edge case in the same release. The project's
+pytest configuration already supplied `-q`. RTK supplied another `-q`, making
+the effective option `-qq`; the summary its filter expected disappeared, and
+the wrapped command did not report the result correctly. The [pinned 0.43.0
+source](https://github.com/rtk-ai/rtk/blob/5a7880d404db8364d602f2ecdc41dd790f64013f/src/cmds/python/pytest_cmd.rs#L28-L43)
+supports the mechanism: it checks the command-line arguments for `-q`, but
+cannot see `addopts` in pytest configuration. The raw terminal output and
+minimal fixture were not archived, so this remains a disclosed local
+reproduction rather than a frequency estimate. A retry would add a turn and a
+cost; this test does not say how often that happens.
+
 Denis Shiryaev tested that counterfactual for JetBrains on 20 July 2026. The
 [paired benchmark](https://blog.jetbrains.com/ai/2026/07/rtk-claude-code-token-savings/)
 used RTK 0.43.0, Claude Code 2.1.201, Claude Sonnet 5 and SkillsBench. Across
@@ -118,6 +155,10 @@ because `rtk gain` says it cut your bill. On the only substantial independent
 paired test I found, it did not.
 
 ## Headroom reaches the right layer but still needs the right test
+
+For this revision I cloned Headroom 0.33.0 at commit `6d5516d` and traced its
+prefix tracker, OpenAI Responses accounting and manual price fallback. That was
+a static code-path audit, not a live request or a paired cost benchmark.
 
 Headroom has the stronger architecture. It proxies the model request, so it can
 compress large, new tool output before that output enters the provider cache.
