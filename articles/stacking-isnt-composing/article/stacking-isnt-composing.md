@@ -3,7 +3,7 @@ title: "Stacking isn't composing"
 date: 2026-07-24
 author: Rakuen Software
 tags: [agents, llm, architecture, aimee]
-excerpt: "RTK rewrites shell output. Semantic memory stores the resulting view. Headroom compresses the assembled request. Each works, and together they edit one history blind."
+excerpt: "RTK rewrites shell output. Memory stores that view. Headroom compresses it again. Each reports a saving; the combined agent can add turns and raise the bill."
 ---
 
 [RTK](https://github.com/rtk-ai/rtk/blob/e0ffd40ef7c450489aca4a50c0ab1358e4375691/README.md#how-savings-work)
@@ -16,22 +16,17 @@ compresses the assembled request again.
 Headroom can recover the original block Headroom received. It cannot restore
 detail RTK removed before that request existed, and memory cannot recall detail
 it never indexed. RTK reduced the shell output. Memory found a match. Headroom
-reduced the request. All three worked. The agent can still need another model
-call, work from an incomplete fact, or recall the same fact again.
+reduced the request. All three worked.
 
-That is stacking. `aimee` does the same work as ordered stages over canonical
-IR. Its [economizer
-contract](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/features/economizer.md)
-puts policy checks before folding and tool condensation, then cache alignment,
-then provider translation. Stage contracts define the view each stage receives.
-The event bus enforces their shared order. That is composing.
+The combined agent can still need another model call to retrieve what Headroom
+removed, work from detail RTK already discarded, or recall the same incomplete
+fact again. Another call replays the live context and adds more history for the
+call after it. Three local savings have become a larger bill.
 
-This is reported analysis based on pinned public source for RTK, Headroom and
-`aimee`. The source establishes how the parts work. The conclusion about their
-composition is mine.
-
-Disclosure: Rakuen Software builds `aimee`. Its architecture is evidence for
-the ordering and ownership claims here, not for a cost or quality outcome.
+That is stacking. Each add-on is deterministic inside its own hook. Their
+combined behaviour depends on which view each hook receives, which client path
+ran and which transformation landed first. No add-on owns that sequence. No
+add-on can predict the bill it produces. Installability is not composition.
 
 ## Three correct tools see three different sessions
 
@@ -66,6 +61,13 @@ integrated add-ons lack a guaranteed shared order of operation.
 *Correction, 2 August 2026: The previous version did not preserve the traces
 behind its joint add-on account, so its exact cost and recall outcome is not a
 measurement. That limit does not change the architectural finding.*
+
+This is reported analysis based on pinned public source for RTK, Headroom and
+`aimee`. The source establishes how the parts work. The conclusion about their
+composition is mine.
+
+Disclosure: Rakuen Software builds `aimee`. Its architecture is evidence for
+the ordering and ownership claims here, not for a cost or quality outcome.
 
 ## The bus provides the guarantees composition needs
 
