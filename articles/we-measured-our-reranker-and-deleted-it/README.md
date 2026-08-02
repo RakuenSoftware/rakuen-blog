@@ -1,24 +1,26 @@
-# We spent a night measuring our retrieval stack, and deleted the reranker
+# Our reranker made production retrieval worse
 
 **Published 2026-07-31** at <https://rakuensoftware.com>. Campaign ran 2026-07-26 to 2026-07-30.
 
-The post argues that a benchmark number is only a deployment number if the
-consumer reproduces the benchmark's input conditions — and that on a retrieval
-stack the dominant failure mode is silent-wrong, not loud-wrong. Everything it
-claims is measured, and the measurements are here.
+The post reports that the reranker made the dense-ordered production result
+worse in nearly every tested configuration. Candidate membership was a separate
+problem: dense retrieval omitted the labelled document from its top 50 for
+11-13% of queries, and a second retrieval leg changed that pool.
 
 ## Where each claim's evidence lives
 
 | the post claims | evidence |
 | --- | --- |
-| the embedder field and its eliminations | `evidence/embedder-selection-frozen-ab-v1.md` |
-| Gemma-4 E2B/E4B and the Ettin reranking controls | `benchmarks/gemma4-unified/ab-v1/README.md` |
-| the June rounds that reached different answers | `evidence/embedder-gate-locomo.md`, `evidence/embedder-gate-scifact.md` |
-| reranking degrades a dense-ordered list | `evidence/reranker-and-pipeline-2026-07-29.md` |
-| the synthesis, and the hybrid BM25+RRF addendum | `evidence/retrieval-stack-report-2026-07-30.md` |
-| what was decided and what shipped | `evidence/decision-nomic-cutover-and-reranker-removal.md` |
-| the prefix work the decision depended on | `evidence/proposal-embedder-query-document-prefixes.md` |
-| where the remaining quality lives | `evidence/retrieval-fusion-and-learning-inventory-2026-07-30.md` |
+| arbitrary-order reranker capability | `evidence/reranker-and-pipeline-2026-07-29.md` |
+| the full-suite reranker decision and removal | `evidence/decision-nomic-cutover-and-reranker-removal.md` |
+| negative cascade and RRF-fusion reranking results | `evidence/decision-nomic-cutover-and-reranker-removal.md`, with the raw-artifact limit stated in the article |
+| candidate-pool recall and hybrid BM25+RRF | `evidence/retrieval-stack-report-2026-07-30.md`, `benchmarks/reranker-2026-07-29/hybrid-nomic.json` |
+| RRF constant and tiered-variant results | `benchmarks/reranker-2026-07-29/fusion-frontier-nomic.json` |
+| every first-party result cut or retained by the rewrite | `evidence/rewrite-disposition-2026-08-02.md` |
+
+The embedder-selection, serving-parity, late-interaction, and silent-failure
+reporting remains in this folder. The rewrite ledger records why it no longer
+appears in the article.
 
 ## The suites, and what is comparable to what
 
@@ -61,15 +63,20 @@ quoted 3.2 ms per query and 41 GB per million documents, alongside a table of
 pipeline quality figures. No artifact in this folder produces any of them, and
 the surviving prose disagrees with itself: `retrieval-stack-report-2026-07-30.md`
 computes 66 GB/million at fp16 and 33 GB at int8, while the decision record says
-42 GB. The colbert-xm pipeline run was never committed. The article now states
-the direction was abandoned and declines to quote the numbers, which is the only
-position consistent with what it argues everywhere else.
+42 GB. The colbert-xm pipeline run was never committed. The rewrite removes the
+digression; the reporting ledger preserves the disposition.
 
 **bge-v2-m3 at 20x512 — not a discrepancy.** `config-sweep-bge.json` records
 0.622698 over 3,000 cases. `reranker-and-pipeline-2026-07-29.md` records 0.6174.
 These are two different runs at different sample sizes, not two values for one
 run. The article's reranker table is the capability view, where 0.6174 is the
 correct figure; the config sweep is a separate later run. Both stand.
+
+**The 10,000-query GTE depth sweep is document-sourced.** The decision record
+reports 0.5803 at depth 10, 0.5861 at depth 20, and 0.5942 at depth 50 against a
+0.5909 dense baseline. No separate raw artifact for that sweep is committed in
+this folder. The article retains the result because it carried the production
+decision and states the provenance limit next to the table.
 
 ## Scope: retrieval only
 
