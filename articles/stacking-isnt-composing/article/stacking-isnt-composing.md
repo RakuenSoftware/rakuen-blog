@@ -3,7 +3,7 @@ title: "Stacking isn't composing"
 date: 2026-07-24
 author: Rakuen Software
 tags: [agents, llm, architecture, aimee]
-excerpt: "RTK rewrites shell output. Memory stores that view. Headroom compresses it again. Each reports a saving; the combined agent can add turns and raise the bill."
+excerpt: "RTK rewrites shell output. Memory stores that view. Headroom compresses it again. One confused extra turn can cost more than the context they removed."
 ---
 
 [RTK](https://github.com/rtk-ai/rtk/blob/e0ffd40ef7c450489aca4a50c0ab1358e4375691/README.md#how-savings-work)
@@ -20,8 +20,19 @@ reduced the request. All three worked.
 
 The combined agent can still need another model call to retrieve what Headroom
 removed, work from detail RTK already discarded, or recall the same incomplete
-fact again. Another call replays the live context and adds more history for the
-call after it. Three local savings have become a larger bill.
+fact again. Three local savings have become a larger bill.
+
+Context cost is linear: send twice as many uncached input tokens in one call
+and you pay for twice as many input tokens. Turn cost compounds. Each new call
+resends the accumulated conversation and adds another turn to it. If that
+history grows by a similar amount per turn, the total context processed follows
+`1 + 2 + ... + n`. It grows quadratically with the number of turns.
+
+This is why unusable context is not merely a quality problem. If the agent
+cannot make sense of a shortened, recalled and recompressed view, the recovery
+turn pays for that view again, the rest of the live history and the new request.
+Giving the agent the original context once can be cheaper than giving it less
+context and making it ask twice.
 
 That is stacking. Each add-on is deterministic inside its own hook. Their
 combined behaviour depends on which view each hook receives, which client path
