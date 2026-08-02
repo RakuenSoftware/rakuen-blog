@@ -3,19 +3,17 @@ title: "Stacking isn't composing"
 date: 2026-07-24
 author: Rakuen Software
 tags: [agents, llm, architecture, aimee]
-excerpt: "Modules do not compose because they share a process, a plugin API or an event bus. They compose when the system settles ownership, order, failure and evidence at every shared boundary."
+excerpt: "Every add-on can be correct and the stack can still be wrong. Composition needs stage contracts and an event bus that enforces their shared order."
 ---
 
-Modules do not compose because they can be installed together. They compose
-when the system defines what each module may change, in what order, and what
-happens when one cannot proceed. A plugin API can settle the shape of a call.
-It cannot settle who owns the state behind it.
+Every add-on can be correct and the stack can still be wrong. One shortens
+command output. One protects a cached prefix. Memory inserts what it thinks the
+model needs. Without a shared order, each changes the state the next one
+inherits. No add-on has to regress for the combined system to cost more and
+remember less.
 
-*Correction, 2 August 2026: The previous version did not preserve the traces
-behind its joint add-on account, so the exact cost and recall outcome is not a
-measurement. The architectural finding remains: separately integrated add-ons
-have no shared contract guaranteeing cross-tool order or visibility, and their
-combined behaviour can therefore be unpredictable.*
+That is the difference between stacking and composing. A stack shares bytes.
+A composition shares stage contracts and an event bus that enforces them.
 
 This is reported analysis based on the public `aimee` source at commit
 [`7223411`](https://github.com/RakuenSoftware/aimee/tree/72234117fb4155103a59a484459fa902363e2715).
@@ -55,6 +53,10 @@ again.
 That is the finding. A joint trace is needed to quantify the resulting bill,
 recall loss or frequency. It is not needed to establish that independently
 integrated add-ons lack a guaranteed shared order of operation.
+
+*Correction, 2 August 2026: The previous version did not preserve the traces
+behind its joint add-on account, so its exact cost and recall outcome is not a
+measurement. That limit does not change the architectural finding.*
 
 ## The bus provides the guarantees composition needs
 
