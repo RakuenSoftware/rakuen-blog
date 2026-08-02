@@ -48,6 +48,22 @@ This is an illustrative calculation from OpenAI's published multipliers. It
 applies only when the edit forces that suffix to be written and compares the
 next request. It is not a claim about every compression operation.
 
+### Growing-history turn calculation
+
+For a fixed block of `c` tokens retained across `n` later calls, the additional
+input traffic is `nc`.
+
+For a base prompt of `b` tokens and `d` new live tokens added on each of `n`
+turns:
+
+- per-turn input: `b + kd`
+- cumulative input: `T(n) = nb + d n(n+1)/2`
+
+The quadratic term follows from replaying a history that grows on every turn.
+It is an illustrative workload model, not a provider price formula. Compaction,
+truncation, eviction, variable turn sizes and cache categories change realised
+traffic and cost.
+
 ### Cache-aware compression
 
 - Yan Song, "Cache-Aware Prompt Compression: A Two-Tier Cost Model for LLM API
@@ -75,6 +91,14 @@ Figures used: 80 clean low-effort pairs; median task cost +7.6% (`p=0.004`),
 turns +13.8% (`p=0.03`), cache reads +14.3% (`p=0.008`); high-effort task cost
 +0.1% (`p=0.99`); quality tied in both arms. These are JetBrains measurements
 of RTK 0.43.0 with Claude Code 2.1.201 and Claude Sonnet 5, not GPT-5.6.
+
+Structural findings used: Claude Code's built-in `Read` and `Grep` tools bypass
+the Bash hook; its native output limit would truncate a 1.2 MB `cat` result to a
+few thousand tokens; RTK counted about 320,000 tokens saved for that command;
+and `rtk gain` reported 96.2 million tokens saved across the low-effort run while
+the measured bill increased. JetBrains also found a broken compound-`find`
+rewrite, compression-induced re-reads and additional turns. These findings
+support client-pipeline interaction, not randomness inside RTK's filters.
 
 The current development README explicitly limits its percentage to Bash output
 and says it is not a bill reduction. The article includes that clarification.
@@ -166,6 +190,8 @@ Questions for RTK:
    documented reduction in Bash output?
 3. Does RTK account for project-level pytest `addopts` when deciding whether to
    add `-q`, and can 0.43.0 misreport a run when the effective option is `-qq`?
+4. How does `rtk gain` account for output the host client would have truncated
+   or transformed without RTK, and for retries or re-reads caused by a rewrite?
 
 Questions for Headroom:
 

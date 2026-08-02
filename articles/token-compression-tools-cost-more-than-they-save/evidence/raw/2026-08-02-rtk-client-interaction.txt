@@ -1,0 +1,1 @@
+Here's an additional problem with the article as I read it through: Clients truncate and do other behaviors that is similar to what RTK does. RTK tries to override and can compete against that, causing non-deteriminsitic behavior. It can also result in things like rtk -qq (Or was it headroom -qq?) that I ran into that is thoroughly negative.

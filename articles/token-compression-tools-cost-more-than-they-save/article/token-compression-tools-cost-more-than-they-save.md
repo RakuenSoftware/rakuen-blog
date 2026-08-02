@@ -7,11 +7,12 @@ excerpt: "A token counter cannot tell you whether a compression tool lowered you
 ---
 
 Token compression can lower an agent's bill. A counter showing tokens removed
-cannot prove that it did. In the best independent test I found, `RTK` 0.43.0
-made low-effort Claude Code tasks **7.6% more expensive at the median** and
-saved nothing at high effort. I found no equivalent paired, independent result
-for `Headroom` on GPT-5.6. The useful number is cost per successful task, not
-the size of a tool's output.
+cannot prove that it did. It may count text the client would have truncated
+without it while missing extra turns caused by a competing rewrite. In the best
+independent test I found, `RTK` 0.43.0 made low-effort Claude Code tasks **7.6%
+more expensive at the median** and saved nothing at high effort. I found no
+equivalent paired, independent result for `Headroom` on GPT-5.6. The useful
+number is cost per successful task, not the size of a tool's output.
 
 This is reported analysis. The prices, benchmark results and software behaviour
 below come from named sources or pinned code. The conclusions are mine.
@@ -25,7 +26,8 @@ the end.
 *Substantially revised on 2 August 2026. The revision adds the strongest result
 I found in favour of cache-aware compression, separates RTK's low- and
 high-effort results, restores the original first-party observations with their
-limits, and pins fast-moving software claims to commits.*
+limits, accounts for native client truncation and extra turns, and pins
+fast-moving software claims to commits.*
 
 ## A removed token can cost 12.5 times more
 
@@ -115,6 +117,43 @@ the counterfactual number of agent turns. A smaller result may prevent later
 replay. It may also omit something the agent then retrieves in another turn.
 The counter records the first effect and cannot price the second.
 
+## RTK competes with the client's own output controls
+
+Raw shell output is the wrong baseline for an incremental saving. Coding
+clients already truncate large results, use built-in file and search tools, and
+apply their own output limits. RTK's hook rewrites eligible Bash calls before
+the client handles the result. The useful comparison is therefore the output
+the client would have retained without RTK against the output and behaviour of
+the combined pipeline.
+
+JetBrains demonstrated the difference in its baseline replay. Claude Code's
+`Read` and `Grep` paths bypassed RTK, while its native limit would have truncated
+a 1.2 MB `cat` result to a few thousand tokens. RTK counted that command as
+about **320,000 tokens saved** against the full raw file. Across the low-effort
+run, [`rtk gain` reported 96.2 million tokens
+saved](https://blog.jetbrains.com/ai/2026/07/rtk-claude-code-token-savings/)
+while the measured bill increased.
+
+The interaction can look nondeterministic from the user's seat. More precisely,
+it depends on the client, its version, the command form and which tool path the
+model chose. A built-in read, a Bash `cat`, a compound command RTK declines to
+rewrite and a supported direct command can all pass through different
+transformation paths. Two individually deterministic layers do not produce one
+stable cross-client behaviour.
+
+An extra turn is the expensive failure mode. A fixed block of `c` tokens kept
+for `n` later calls adds `nc` input-token traffic, which is linear. In a simple
+growing-history model with a base prompt of `b` tokens and `d` new live tokens
+per turn, cumulative input over `n` turns is:
+
+`T(n) = nb + d n(n+1)/2`
+
+The second term grows with the square of the turn count. The next turn replays
+the whole live prefix, adds its own output and can enlarge every request after
+it. Cache discounts, compaction and truncation change the realised bill, so this
+is a workload model rather than a universal price law. They do not make an
+extra turn equivalent to one extra block of context.
+
 My own RTK installation supplied an example of that gap. Its counter reached
 about **6.1 million estimated tokens saved** on work whose actual input, as the
 original article recorded it, was a fraction of that figure. I did not preserve
@@ -131,7 +170,11 @@ supports the mechanism: it checks the command-line arguments for `-q`, but
 cannot see `addopts` in pytest configuration. The raw terminal output and
 minimal fixture were not archived, so this remains a disclosed local
 reproduction rather than a frequency estimate. A retry would add a turn and a
-cost; this test does not say how often that happens.
+cost; this test does not say how often that happens. The failure was not
+Headroom. It was RTK composing its own quiet flag with pytest's configuration.
+That is not a neutral compression miss: it damages test observability and can
+force the agent to spend another turn recovering information the unwrapped
+client path would have shown.
 
 Denis Shiryaev tested that counterfactual for JetBrains on 20 July 2026. The
 [paired benchmark](https://blog.jetbrains.com/ai/2026/07/rtk-claude-code-token-savings/)
@@ -239,6 +282,12 @@ task outcome:
 - **Measure completed work.** Run the same task with and without the change,
   reset the repository, keep the model and effort fixed, and score success
   before comparing the full bill.
+- **Measure after native client handling.** The baseline is the output the model
+  would actually receive after the client's own truncation and filtering, not
+  the command's unlimited raw stream.
+- **Give one layer ownership.** A wrapper that changes verbosity or output shape
+  must compose with project configuration and client limits. Test those
+  combinations before enabling the rewrite globally.
 - **Preserve the cheap prefix.** Put stable instructions and schemas first. Put
   changing material after an explicit breakpoint, then record writes and reads
   separately.
@@ -271,4 +320,6 @@ promising measured case on Sonnet 4.6, with limits the author states.
 
 Disable any compression tool you cannot test against the full task. Keep one
 only when paired runs show a lower cost per successful task, including cache
-writes, cache reads, retries, retrievals and quality.
+writes, cache reads, retries, retrievals and quality. A smaller tool result is
+not a saving when the client would have truncated it anyway or the rewrite adds
+a turn.

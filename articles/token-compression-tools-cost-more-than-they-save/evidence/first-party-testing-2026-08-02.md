@@ -67,6 +67,44 @@ Permissible claim: report this as a local correctness reproduction with the
 missing fixture disclosed. It does not establish the frequency of the bug or a
 task-cost effect beyond the possibility of a retry.
 
+## Client output-pipeline interaction
+
+During review, the author identified a missing mechanism: coding clients already
+truncate and transform tool output, while RTK inserts another transformation
+layer. The resulting behaviour depends on the client, version, command form and
+whether the model uses a built-in tool or Bash. The original observation is
+preserved verbatim in
+[`raw/2026-08-02-rtk-client-interaction.txt`](raw/2026-08-02-rtk-client-interaction.txt),
+with its source note beside it.
+
+The `-qq` reproduction is an instance of that composition problem at the CLI
+configuration layer. RTK supplied a quiet flag without visibility into the
+quiet flag already supplied by pytest configuration. This attribution is to
+RTK, not Headroom.
+
+JetBrains independently supplies the client-side evidence: Claude Code native
+truncation reduced the counterfactual size of giant results; built-in tools
+bypassed RTK; a broken rewrite caused retries; and compression caused some
+re-reads. This supports the narrower description "client- and path-dependent."
+It does not prove that RTK's filter is internally random.
+
+## Additional turns compound replay
+
+The author's follow-up observation is preserved verbatim in
+[`raw/2026-08-02-turn-cost-observation.txt`](raw/2026-08-02-turn-cost-observation.txt),
+with its assumptions in the adjacent source note.
+
+The article formalises the point with a simple growing-history model. A fixed
+block of `c` tokens kept for `n` calls adds `nc` traffic. If every turn adds `d`
+live tokens, cumulative input includes `d n(n+1)/2`. The total therefore has a
+quadratic term in turn count. The marginal next turn grows roughly linearly with
+the history already accumulated.
+
+Permissible claim: additional turns can outweigh a local context reduction
+because they replay the whole live prefix and enlarge later requests. Do not
+state that every provider bill is literally quadratic. Caching, compaction,
+truncation and variable turn sizes change the result.
+
 ## RTK source audit
 
 On 2 August 2026, the rewrite cloned and inspected two RTK revisions:
