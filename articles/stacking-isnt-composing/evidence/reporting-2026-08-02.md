@@ -40,12 +40,30 @@ claims being corrected. The live article supplied no linked evidence folder.
   contract](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/modules/bus.md);
 - [event-bus working
   guide](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/EVENT_BUS.md);
+- [economizer
+  contract](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/features/economizer.md);
 - [audit module
   contract](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/modules/audit.md);
 - [gateway module
   contract](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/modules/gateway.md); and
 - [memory module
   contract](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/modules/memory.md).
+
+### Reviewed RTK and Headroom source
+
+- RTK development README, commit
+  [`e0ffd40ef7c450489aca4a50c0ab1358e4375691`](https://github.com/rtk-ai/rtk/blob/e0ffd40ef7c450489aca4a50c0ab1358e4375691/README.md#how-savings-work);
+- RTK 0.43.0 source, commit
+  [`5a7880d404db8364d602f2ecdc41dd790f64013f`](https://github.com/rtk-ai/rtk/tree/5a7880d404db8364d602f2ecdc41dd790f64013f);
+- Headroom 0.33.0 source, commit
+  [`6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9`](https://github.com/headroomlabs-ai/headroom/tree/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9);
+- Headroom [prefix replay](https://github.com/headroomlabs-ai/headroom/blob/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9/headroom/cache/prefix_tracker.py#L267-L368);
+  and
+- Headroom [retrieval continuation](https://github.com/headroomlabs-ai/headroom/blob/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9/headroom/ccr/response_handler.py#L420-L529).
+
+The full static audits are recorded in the sibling article's
+[`reporting-2026-08-02.md`](../../token-compression-tools-cost-more-than-they-save/evidence/reporting-2026-08-02.md).
+This article uses only the integration points established there.
 
 The audit read committed objects with `git show origin/main:<path>`. The local
 `aimee` working tree had unrelated changes and was not used as publication
@@ -95,6 +113,13 @@ The gateway contract assigns ownership of the canonical ordered request
 pipeline. The stage contracts define operation meaning and ownership; the bus
 provides the ordering and delivery guarantees that let those contracts compose.
 It does not establish a measured cost or quality result.
+
+The RTK source establishes its Bash-output rewrite boundary. The Headroom source
+establishes its assembled-request, prefix-preservation and retrieval boundaries.
+A semantic-memory add-on stores and recalls the view its host supplies. The
+article's combined sequence is analysis from those boundaries: Headroom can
+recover what reached Headroom, but it cannot restore detail an upstream RTK
+rewrite already removed.
 
 ## Prior first-party work and corrections
 

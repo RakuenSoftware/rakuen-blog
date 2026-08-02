@@ -41,15 +41,21 @@ was preserving, RTK retaining context Headroom was removing, and load order
 deciding the result. It described Headroom as measuring token count and RTK as
 measuring cache hits.
 
-Evidence available: none beyond the article. No static source audit or runtime
-trace was preserved for these claims. The article also did not establish that
-the named versions owned those roles.
+Evidence available at original publication: none beyond the article. No static
+source audit or runtime trace was preserved for these claims. The article also
+did not establish that the named versions owned those roles.
 
-Disposition: narrowed. A deterministic hook inside either product is not a
-shared contract between products. The rewrite therefore retains the general
-finding that separate add-ons can interact unpredictably through shared state.
-The unarchived description of each named product's exact role is not used to
-quantify or universalise the result.
+The rewrite uses a later static audit instead. RTK's development README at
+commit `e0ffd40` and its 0.43.0 source establish that it rewrites supported
+shell-command output before the agent reads it. Headroom 0.33.0 at commit
+`6d5516d` establishes that its proxy works on the assembled request, preserves
+stable prefixes, keeps the block it compressed and appends a recovered block as
+a tool result before another continuation call.
+
+Disposition: narrowed to those source facts. A deterministic hook inside either
+product is not a shared contract between products. The rewrite therefore names
+RTK and Headroom while attributing the conflict to the stacked arrangement. It
+does not publish a product-specific effect size or frequency.
 
 ## Claimed memory interaction and long-term drift
 

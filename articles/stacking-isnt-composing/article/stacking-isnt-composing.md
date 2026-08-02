@@ -3,52 +3,61 @@ title: "Stacking isn't composing"
 date: 2026-07-24
 author: Rakuen Software
 tags: [agents, llm, architecture, aimee]
-excerpt: "Every add-on can be correct and the stack can still be wrong. Composition needs stage contracts and an event bus that enforces their shared order."
+excerpt: "RTK rewrites shell output. Semantic memory stores the resulting view. Headroom compresses the assembled request. Each works, and together they edit one history blind."
 ---
 
-Every add-on can be correct and the stack can still be wrong. One shortens
-command output. One protects a cached prefix. Memory inserts what it thinks the
-model needs. Without a shared order, each changes the state the next one
-inherits. No add-on has to regress for the combined system to cost more and
-remember less.
+[RTK](https://github.com/rtk-ai/rtk/blob/e0ffd40ef7c450489aca4a50c0ab1358e4375691/README.md#how-savings-work)
+rewrites supported shell output before the agent reads it. Bolt on a semantic
+memory add-on and it stores the view it receives, which now contains
+RTK's rewrite. When memory recalls that view later,
+[Headroom](https://github.com/headroomlabs-ai/headroom/blob/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9/headroom/ccr/response_handler.py#L420-L529)
+compresses the assembled request again.
 
-That is the difference between stacking and composing. A stack shares bytes.
-A composition shares stage contracts and an event bus that enforces them.
+Headroom can recover the original block Headroom received. It cannot restore
+detail RTK removed before that request existed, and memory cannot recall detail
+it never indexed. RTK reduced the shell output. Memory found a match. Headroom
+reduced the request. All three worked. The agent can still need another model
+call, work from an incomplete fact, or recall the same fact again.
 
-This is reported analysis based on the public `aimee` source at commit
-[`7223411`](https://github.com/RakuenSoftware/aimee/tree/72234117fb4155103a59a484459fa902363e2715).
-The source establishes what the parts promise. The conclusions about system
-design are mine.
+That is stacking. `aimee` does the same work as ordered stages over canonical
+IR. Its [economizer
+contract](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/features/economizer.md)
+puts policy checks before folding and tool condensation, then cache alignment,
+then provider translation. Stage contracts define the view each stage receives.
+The event bus enforces their shared order. That is composing.
+
+This is reported analysis based on pinned public source for RTK, Headroom and
+`aimee`. The source establishes how the parts work. The conclusion about their
+composition is mine.
 
 Disclosure: Rakuen Software builds `aimee`. Its architecture is evidence for
 the ordering and ownership claims here, not for a cost or quality outcome.
 
-## Add-ons have no guaranteed shared order
+## Three correct tools see three different sessions
 
-Pure functions compose because one produces a value and the next consumes it.
-Agent tools usually work on state: a request under construction, a cached
-prefix, a memory store, a budget or a policy decision. Two modules can expose
-clean interfaces and still make incompatible edits to the same state.
+RTK's contract ends when it emits shorter shell output. It cannot say whether a
+later memory hook stores the raw command result or the rewritten one, because
+the raw result has already gone. That is not a defect in RTK. Filtering the
+output is its job.
 
-An add-on may be deterministic inside its own hook. That does not give it a
-contract with another add-on attached through a client, proxy or memory layer.
-Unless the host defines a shared pipeline, their combined order emerges from
-those separate integration points. Neither add-on can guarantee which view of
-the shared state the other will receive. A client update or configuration
-change can change the result without changing either add-on.
+The semantic memory add-on indexes the session its host exposes. When it recalls
+a fact, it puts text back into a later request. It does not know that RTK removed
+detail upstream, or that Headroom may replace the recalled block downstream.
+Similarity can be high while the available fact is incomplete.
+
+Headroom's contract begins at the assembled model request. Its proxy compresses
+new material, preserves stable cache prefixes and keeps the pre-compression
+block for retrieval. That recovery is real. It reaches back to Headroom's
+input, not past it to the shell output RTK already changed. When retrieval
+fires, Headroom appends the recovered block as a tool result and makes another
+continuation call.
 
 The strongest case for stacking is replaceability. Independent tools let an
 operator choose one component, upgrade it alone and remove it without replacing
-the system. Keep that property. Add a joint contract wherever two tools touch
-the same resource.
-
-Consider a tool that shortens command output, a stage that decides which prompt
-prefix must stay stable, and memory that injects recalled context. Their names
-do not determine their shared order. The pipeline must say which view memory
-sees, where reduction happens, and which stage owns the final request. Without
-that contract, each part can behave correctly while the combination changes a
-cache boundary, removes context another part needs, or recalls the same fact
-again.
+the system. Keep that property. It does not supply the missing cross-tool
+contract. RTK owns its output rewrite. Memory owns its index and recall.
+Headroom owns its request compression and recovery. No component owns the
+history all three are changing.
 
 That is the finding. A joint trace is needed to quantify the resulting bill,
 recall loss or frequency. It is not needed to establish that independently
@@ -135,19 +144,26 @@ Memory would receive an explicit original or reduced view rather than whichever
 string happened to be left. The specific design can change. The ownership
 cannot stay implicit.
 
-## `aimee` uses the bus as the enabling seam
+## `aimee` keeps one recoverable history
 
-At the reviewed commit, `aimee` has useful pieces of this replacement. The bus
-provides a bounded typed seam for C and Go modules, enables full-stream capture
-and carries governed actions to the audit sinks. The [gateway
-contract](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/modules/gateway.md)
-owns the ordered request pipeline. Audit owns its records. Those boundaries are
-what make the bus compositional: one shared route, with separate owners for the
-meaning, execution and evidence around each event.
+`aimee` converts each provider request to canonical IR before the economizer
+touches it. In the safe tier, command condensation keeps failures and
+diagnostics, writes the full tool output to a bounded spill and leaves a
+recovery pointer. Folding and condensation happen before cache alignment.
+Provider translation happens last. One stage owns each transformation, and the
+next stage receives the result named by that contract.
 
-They do not prove that adding another module is easy, that no path bypasses the
-bus, or that the whole system lowers cost without harming results. Source
-architecture cannot prove those outcomes. Full-system tests have to.
+Memory runs inside the [ordered gateway
+pipeline](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/modules/gateway.md).
+The event bus gives operations across those stages one accepted order, enables
+full-stream capture and carries governed actions to audit. Memory does not have
+to infer which add-on rewrote the session. Cache alignment does not discover a
+context edit after it happened. Recovery reaches the tool output preserved by
+the same system, not the last lossy view one add-on happened to receive.
+
+That architecture does not prove a lower cost or better answer. It proves the
+difference the article turns on: the stack gives three tools three partial
+histories; `aimee` gives contracted stages one ordered, recoverable history.
 
 Before installing two agent add-ons, write down the shared resources, the owner
 of each final value, the stage order, the failure rule and the outcome measure.
