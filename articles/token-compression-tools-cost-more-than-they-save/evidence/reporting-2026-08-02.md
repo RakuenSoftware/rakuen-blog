@@ -2,7 +2,7 @@
 
 Date: 2026-08-02
 
-Status: draft complete; publication hold for right of reply.
+Status: draft complete; RTK and Headroom contacted; responses pending.
 
 This file records the load-bearing sources, calculations, source limits and
 outstanding reporting for the rewritten article. It is not itself evidence that
@@ -184,12 +184,15 @@ fixture, environment and outcome. A later correction marks an artifact invalid
 and points to the superseding run. It does not overwrite or silently remove the
 original. Deletion requires a recorded reason and explicit user approval.
 
-## Right of reply required before publication
+## Right of reply
 
-No external messages were sent as part of this rewrite. Before republication,
-send the specific claims with a response deadline to RTK, Headroom and OpenAI.
-Record the replies where they bear, or record that no reply arrived by the
-deadline without implying why.
+No external messages had been sent when this reporting record was assembled.
+During editorial review on 2026-08-02, the author confirmed that the RTK and
+Headroom projects had since been contacted. No response was reported at that
+point. Contact artifacts and response deadlines have not been added to this
+folder. If either project responds, update the article where the response bears
+on its findings and append the correspondence record without replacing earlier
+reporting artifacts.
 
 Questions for RTK:
 
@@ -212,10 +215,3 @@ Questions for Headroom:
    non-CCR re-reads or corrective turns separately from local token reduction?
 4. Does Headroom adapt its compression policy or back off based on
    completed-task cost and quality segmented by client, provider and model?
-
-Questions for OpenAI:
-
-1. How does Codex subscription metering treat cached input, cache writes and
-   child-agent usage?
-2. Which user controls currently exist for cumulative input, model calls,
-   child-agent use, tool-output retention and compaction timing?
