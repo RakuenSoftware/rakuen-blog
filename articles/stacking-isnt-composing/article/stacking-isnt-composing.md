@@ -56,23 +56,23 @@ That is the finding. A joint trace is needed to quantify the resulting bill,
 recall loss or frequency. It is not needed to establish that independently
 integrated add-ons lack a guaranteed shared order of operation.
 
-## A bus carries contracts; it does not create them
+## The bus makes operation order explicit
 
 The current [`aimee` event-bus
 contract](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/modules/bus.md)
-is narrower than the old article claimed. It gives each source FIFO delivery,
-stamps a global accepted order, declares bounded backpressure by event kind and
-provides one full-stream tap. A successful publish means the producer ring
-accepted an event. It does not mean a consumer acted on it or stored it.
+gives each source FIFO delivery and stamps a global accepted order before
+routing. Operations that use the bus therefore enter the system in an order
+chosen by the host, and consumers observe that order. This is the sequencing
+contract the add-on stack lacks.
 
-Those are useful guarantees. They do not define the meaning of an event, choose
-the order of business stages or give two modules a shared objective. The bus
-document explicitly excludes workflow scheduling, WORM storage, network
-transport between services and module business schemas.
+The bus does not own workflow scheduling. A scheduler still decides which
+operations a workflow should issue and when to issue them. The bus controls the
+accepted order of those operations once issued. It also applies the declared
+backpressure and exposes the same ordered stream to capture and audit.
 
-A transport can carry two incompatible decisions perfectly. Composition lives
-one level above it, in the ownership and stage contracts that decide which
-decision is allowed to exist.
+Business schemas and objectives remain with their modules. The bus does not
+invent their meaning. It gives them one place to order their effects, which is
+what turns separate operations into one system rather than a stack of hooks.
 
 ## The bus makes replay possible
 

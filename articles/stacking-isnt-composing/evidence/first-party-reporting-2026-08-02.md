@@ -114,15 +114,20 @@ system. It said adding the tenth module was as easy as adding the second.
 Evidence available: the current module documents declare explicit dependencies,
 consumers and an ordered gateway pipeline. The [event-bus
 contract](https://github.com/RakuenSoftware/aimee/blob/72234117fb4155103a59a484459fa902363e2715/docs/modules/bus.md)
-limits the bus to intra-daemon transport and excludes business schemas,
-workflow scheduling and network transport. The working guide says the bus
-currently carries observability and audit traffic and explicitly warns that its
-extension surface is not a claim that every subsystem has moved.
+assigns business schemas and workflow scheduling to other owners while
+guaranteeing host-stamped accepted order. The working guide says the bus
+currently carries observability and audit traffic and explicitly warns that
+its extension surface is not a claim that every subsystem has moved.
 
-Disposition: corrected. The rewrite describes the bus as one bounded enabling
-seam inside `aimee`, the gateway as the request-pipeline owner and audit as the
-record owner reached through that seam. It makes no claim about the effort
-needed to add a module.
+The exclusion of workflow scheduling is an ownership boundary, not an ordering
+limit. The scheduler decides which workflow operations to issue. The bus host
+stamps their accepted order before routing and therefore controls their order
+inside the bus.
+
+Disposition: corrected. The rewrite describes the bus as the bounded ordering
+and enabling seam inside `aimee`, the gateway as the request-pipeline owner and
+audit as the record owner reached through that seam. It makes no claim about
+the effort needed to add a module.
 
 ## Bus performance, ordering and delivery
 
@@ -147,8 +152,8 @@ implementations in several languages, and gave Python and Rust sidecars the same
 ordering and recording as native modules.
 
 Evidence available: the reviewed tree contains public C and pure-Go clients
-with conformance vectors. The current bus is Linux-only and intra-daemon. No
-equivalent Python or Rust bus implementation was identified in this audit.
+with conformance vectors. No equivalent Python or Rust shared-memory bus client
+was identified in this audit.
 
 Disposition: narrowed to a C and Go seam. The broader language claim was
 removed.

@@ -64,8 +64,13 @@ The event-bus contract supports these claims:
 - one core full-stream tap and observational capture; and
 - public C and pure-Go implementations with conformance checks.
 
-The same contract excludes business schemas, workflow scheduling, inter-service
-network transport, WORM storage and deterministic module execution replay.
+The same contract assigns business schemas, workflow scheduling, WORM storage
+and deterministic module execution replay to owners outside the bus core.
+
+Those exclusions assign ownership. They do not remove the bus's control of
+operation order. A scheduler decides which workflow operations to issue; the
+bus host stamps their global accepted order before routing, and consumers
+observe that order.
 
 The working guide says replay presents the accepted stream to an inspector. It
 does not execute tools or drive modules. It also says the bus currently carries
@@ -87,8 +92,8 @@ witnessing plus guaranteed filesystem immutability are not present.
 
 The gateway contract assigns ownership of the canonical ordered request
 pipeline. That supports the rewrite's architectural distinction between a
-transport seam and a business-stage owner. It does not establish a measured
-cost or quality result.
+workflow owner and the bus that orders its issued operations. It does not
+establish a measured cost or quality result.
 
 ## Prior first-party work and corrections
 
