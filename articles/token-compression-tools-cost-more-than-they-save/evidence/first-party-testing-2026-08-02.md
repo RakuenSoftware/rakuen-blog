@@ -126,13 +126,16 @@ benchmark.
 ## Headroom source audit
 
 On 2 August 2026, the rewrite cloned Headroom 0.33.0 at commit
-`6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9` and traced three code paths:
+`6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9` and traced four code paths:
 
 1. `headroom/cache/prefix_tracker.py`, including byte-identical replay of the
    previously forwarded prefix;
-2. `headroom/proxy/handlers/openai.py`, where one Responses path infers cache
+2. `headroom/ccr/response_handler.py`, where a retrieval appends the full
+   original and makes another API call, with three retrieval rounds permitted
+   by default;
+3. `headroom/proxy/handlers/openai.py`, where one Responses path infers cache
    writes from uncached input and says OpenAI has no write premium;
-3. `headroom/providers/openai.py`, where the manual fallback assumes cached
+4. `headroom/providers/openai.py`, where the manual fallback assumes cached
    reads receive a 50% discount.
 
 The audit also searched the repository's published benchmarks for a paired
@@ -143,6 +146,46 @@ This was a reproducible static source audit. It found both a cache-preservation
 mechanism in Headroom's favour and GPT-5.6 accounting fallbacks that did not
 match OpenAI's 9 July pricing. It was not a live Headroom request, a dashboard
 comparison or a completed-task benchmark.
+
+## Headroom turn and context interaction
+
+The author's observation is preserved verbatim in
+[`raw/2026-08-02-headroom-turn-context-observation.txt`](raw/2026-08-02-headroom-turn-context-observation.txt),
+with its source note beside it.
+
+Headroom shares the turn-cost limitation but reaches it through a different
+path from RTK. Its proxy changes the observation sent to the model. CCR makes
+that change reversible by injecting retrieval capability, but successful
+retrieval is itself another tool result and continuation API call. The same
+growing-history calculation therefore applies.
+
+The source proves the existence and mechanics of those continuation rounds. It
+does not measure how often coding agents retrieve, re-read or take another path
+after compression. The article reports that distinction before stating the
+risk.
+
+Permissible claim: Headroom can add turns by design when CCR retrieval fires,
+and compression can change agent behaviour because the agent sees a transformed
+observation. Do not publish a frequency, cost delta or quality effect without a
+paired completed-task benchmark.
+
+## Adaptive compression policy
+
+The author's architectural requirement is preserved verbatim in
+[`raw/2026-08-02-adaptive-compression-observation.txt`](raw/2026-08-02-adaptive-compression-observation.txt),
+with its source note beside it.
+
+This is analysis derived from the reported mechanisms, not a product benchmark.
+Client truncation changes the baseline. Provider cache prices and reporting
+change the cost function. Model behaviour changes the likelihood and cost of
+retrieval or correction. Task requirements change whether omitted detail
+matters. A static tokens-removed rule cannot observe all four.
+
+The article defines "self-learning" narrowly: retain control observations,
+measure completed-task cost and quality, segment the result by client,
+provider, model and task class, and back off when the paired outcome
+deteriorates. That definition is auditable and does not claim that online
+adaptation has already produced a saving.
 
 ## Preservation rule
 

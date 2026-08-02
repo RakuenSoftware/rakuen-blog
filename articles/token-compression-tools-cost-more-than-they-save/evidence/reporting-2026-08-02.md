@@ -110,6 +110,8 @@ and says it is not a bill reduction. The article includes that clarification.
   <https://github.com/headroomlabs-ai/headroom/tree/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9>
 - Prefix replay:
   <https://github.com/headroomlabs-ai/headroom/blob/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9/headroom/cache/prefix_tracker.py#L267-L368>
+- CCR retrieval continuation:
+  <https://github.com/headroomlabs-ai/headroom/blob/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9/headroom/ccr/response_handler.py#L420-L529>
 - OpenAI cache-write inference:
   <https://github.com/headroomlabs-ai/headroom/blob/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9/headroom/proxy/handlers/openai.py#L1246-L1257>
 - OpenAI manual price fallback:
@@ -119,6 +121,13 @@ and says it is not a bill reduction. The article includes that clarification.
 
 The article does not claim that Headroom necessarily breaks prompt caching. The
 reviewed source contains explicit prefix-freezing and byte-replay measures.
+
+The reviewed CCR handler also establishes the additional-turn mechanism. When
+the model calls `headroom_retrieve`, it retrieves the full original, appends a
+tool result and makes a continuation API call. The default
+`max_retrieval_rounds` is three. This proves that retrieval can add model calls
+by design. It does not establish a real-task retrieval rate or the frequency of
+other corrective turns.
 
 The article identifies two narrower GPT-5.6 accounting mismatches. One code
 path infers writes and says OpenAI has no write premium. A manual fallback
@@ -199,6 +208,10 @@ Questions for Headroom:
    writes at 1.25 times input?
 2. Does Headroom have a paired GPT-5.6 benchmark reporting cost per successful
    coding task, including retrievals and extra turns?
+3. Do Headroom's coding-agent benchmarks report CCR continuation rounds and
+   non-CCR re-reads or corrective turns separately from local token reduction?
+4. Does Headroom adapt its compression policy or back off based on
+   completed-task cost and quality segmented by client, provider and model?
 
 Questions for OpenAI:
 

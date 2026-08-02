@@ -197,7 +197,7 @@ Install RTK if compact Bash output is the outcome you want. Do not install it
 because `rtk gain` says it cut your bill. On the only substantial independent
 paired test I found, it did not.
 
-## Headroom reaches the right layer but still needs the right test
+## Headroom reaches the right layer but inherits the turn problem
 
 For this revision I cloned Headroom 0.33.0 at commit `6d5516d` and traced its
 prefix tracker, OpenAI Responses accounting and manual price fallback. That was
@@ -208,7 +208,7 @@ compress large, new tool output before that output enters the provider cache.
 It stores the original for retrieval and freezes previously forwarded prefixes.
 The current code can [replay a compressed prefix
 byte-for-byte](https://github.com/headroomlabs-ai/headroom/blob/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9/headroom/cache/prefix_tracker.py#L267-L368).
-I will not claim that Headroom simply destroys the cache. Its code is trying to
+I will not claim that Headroom destroys the cache. Its code is trying to
 prevent exactly that.
 
 The project's [README at commit `6d5516d`, dated 1 August
@@ -232,13 +232,36 @@ uses LiteLLM pricing when it can, and other response paths may supply exact
 provider usage. They do show that its source contains fallbacks that cannot
 price GPT-5.6 correctly as of 1 August.
 
-Retrieval belongs in the same test. If the model asks Headroom for the full
-original, the task adds a tool call, another model turn and the retrieved text.
-That may still be cheaper after enough reuse. A token-reduction counter cannot
-tell you whether it was.
+Headroom does not share RTK's raw-shell counterfactual exactly. Its proxy sees
+the request after the client has assembled it. It shares the larger limitation:
+a local reduction cannot price the behaviour caused by changing what the agent
+sees.
+
+That cost exists in Headroom's documented recovery path. CCR stores the
+original and tells the model it can call `headroom_retrieve`. At commit
+`6d5516d`, the [response handler retrieves the full original, appends it as a
+tool result and makes another API
+call](https://github.com/headroomlabs-ai/headroom/blob/6d5516dcb878b6ffd139a1c7b3d480a1c8c1beb9/headroom/ccr/response_handler.py#L420-L529).
+Its default permits as many as three retrieval rounds. Reversibility prevents
+permanent information loss. It does not make recovery free.
+
+The turn calculation above applies unchanged. The agent first pays to reason
+over the compressed observation. A retrieval then adds the tool call, the full
+original and a continuation that replays the live prefix. If that continuation
+adds more history, its cost carries into later calls. A sufficiently useful
+compression can still repay that cost through later reuse. Headroom's local
+token reduction cannot establish that it did.
+
+There is a second, less measurable effect. An agent enters a tool call with an
+output shape and level of detail established by the client and tool contract.
+Headroom changes that observation and may inject a retrieval capability. The
+model may adapt cleanly. It may retrieve, re-read, take a different reasoning
+path or continue with a detail missing. I found no paired GPT-5.6 coding-task
+benchmark that reports those behavioural turns separately, so this is a
+mechanism and test requirement, not a measured failure rate.
 
 Headroom could save money on GPT-5.6. I have not found the paired task result
-that establishes it.
+that establishes it after retrievals, corrective turns and task quality.
 
 ## One user's Codex traces put the larger cost in replay
 
@@ -276,6 +299,21 @@ depends on one trace.
 
 ## The replacement is context lifecycle, not a better counter
 
+Compression is a control policy, not a text filter. The right decision depends
+on what the client has already truncated, where the new material sits relative
+to the cached prefix, how that provider prices and reports caching, what the
+model can recover, and what the task requires. A rule tuned for one combination
+can become a loss when the client, provider or model changes.
+
+An add-on therefore needs feedback, not only configuration. It should record
+the decision it made and the completed-task outcome, retain occasional
+uncompressed controls, and adapt its policy by client, provider, model and task
+class. Here, "adapt" does not mean optimising against its own tokens-removed
+counter. It means learning from total cost, retrievals, corrective turns and
+quality, then disabling or changing a rewrite when those outcomes deteriorate.
+If it cannot observe those signals, it cannot know that its policy still saves
+money.
+
 The useful controls sit where the runtime can see the whole request and the
 task outcome:
 
@@ -301,6 +339,9 @@ task outcome:
   working set behind it.
 - **Expose a budget.** Show cumulative input, cache writes, cache reads, model
   calls and child-agent use, then let the user cap them.
+- **Detect drift and back off.** Segment results by client, provider, model and
+  task class. Re-test after any of them changes, and stop rewriting when the
+  paired result no longer clears the cost-and-quality threshold.
 
 [The working `aimee` source is
 public](https://github.com/RakuenSoftware/aimee). We build it to retain facts
