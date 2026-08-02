@@ -1,0 +1,1 @@
+Overall, it is important to stress that it's not as simple as just compressing. Any addon that wants to do this must be aware of the circumstances, the specific provider's quirks, and be self-learning to an extent to allow to adapt to changes in the model and provider's behavior.

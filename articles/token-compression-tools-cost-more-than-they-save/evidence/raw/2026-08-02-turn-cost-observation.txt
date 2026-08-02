@@ -1,0 +1,1 @@
+It is important to note that RTK fighting against the client behavior can cost additional turns, which are substantially more expensive then additional context. Additional context follows a linear costing, additional turns follow a turns^2 costing.

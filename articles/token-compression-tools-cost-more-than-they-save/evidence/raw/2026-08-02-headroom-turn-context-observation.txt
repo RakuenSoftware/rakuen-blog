@@ -1,0 +1,1 @@
+Great. It is also important to stress that headroom has the same limitations. Repeated turns are the most expensive operation, and headroom can result in a model needing to take additional turns, plus the impact of trying to compress/mess with context the agent already expects.
