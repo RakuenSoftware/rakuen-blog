@@ -87,7 +87,7 @@ And on throughput the same architecture choice dominates everything:
 | Qwen3.6-27B dense | 27B | 67.8 |
 
 **3.5 times faster, same family, same quant, same card class, writing the same
-amount of text.**
+amount of text, and tied on accuracy** at −0.0106, CI [−0.0294, +0.0088].
 
 So the size question splits in two. Total parameters decide what fits on your card.
 Active parameters decide what it costs to run. A 26B MoE ran at 323 tok/s on a 16 GB
@@ -119,14 +119,14 @@ answering fluently and incorrectly.
 A clean parse rate is not evidence of a working model, and a poor one is not evidence
 of a broken one. Check which you have before you conclude anything about size.
 
-## Half the field never reasons, and I only know why for one of them
+## A third of the field never reasons, and I only know why for one of them
 
-Seven arms emit no reasoning pass at all in this harness. On gemma-4-E4B I traced it:
+Ten arms emit no reasoning pass at all in this harness. On gemma-4-E4B I traced it:
 one sentence in my prompt, `No prose, no markdown.`, suppressed reasoning across
 10,000 notes while every row still recorded `thinking: true`. Removing it restored
 reasoning on 770 of 770 notes and was worth +0.116 relation-agnostic recall.
 
-I have run that diagnostic on four models. Eighteen are unchecked. A model that
+I have run that diagnostic on four models. Twenty-eight arms are unchecked. A model that
 silently loses its reasoning pass scores as a worse model, so some unknown fraction
 of the small end of my field is a prompt problem wearing the costume of a size
 problem.
