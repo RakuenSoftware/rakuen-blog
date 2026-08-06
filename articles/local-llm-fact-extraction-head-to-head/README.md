@@ -4,7 +4,7 @@ Twenty-two local models on one 1,001-note fact-extraction corpus, with a paired 
 
 ## Status
 
-Draft. Not published. Every figure in the article traces to a raw artifact in the
+Published 2026-08-06. Every figure in the article traces to a raw artifact in the
 series evidence base.
 
 ## Evidence
@@ -20,9 +20,9 @@ Raw artifacts for the whole series live under
 | `ARTICLE_NOTES.md` | the running findings ledger |
 | `MEASUREMENT_LOG.md` | the defect log, including every retracted claim |
 
-`evidence/figures.md`, the per-figure map from each number in the article to the
-artifact behind it, is not written yet. Until it is, figures trace through
-`ARTICLE_NOTES.md` and `MEASUREMENT_LOG.md` in the series evidence base.
+`evidence/figures.md` maps each figure in the article to the artifact behind it.
+Every path in it was checked to resolve. Two figures are marked there as
+single-sourced rather than traced: the VRAM readings and the card bandwidth.
 
 ## Reporting record
 
