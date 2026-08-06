@@ -1,0 +1,7 @@
+[10:43:24Z] === 3k QAT pair on the xtx
+[10:43:24Z] --- gemma-4-31B-it.qat.mid3k on xtx, nproc=1, MTP, 3002 notes
+[10:43:29Z] sizing: starting one server to measure resident VRAM
+[10:46:02Z]   one instance uses  MiB of 24560 MiB
+[10:46:02Z]   -> running 1 processes, cache-ram 1024 MiB each
+[10:46:02Z]   all 1 servers up; VRAM now  MiB
+[10:46:02Z] START gemma-4-31B-it.qat.mid3k across 1 shards

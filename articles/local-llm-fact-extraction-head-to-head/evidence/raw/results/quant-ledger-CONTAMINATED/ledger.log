@@ -1,0 +1,29 @@
+[08:43:34Z] === quant ledger rebuild on the 5080
+[08:43:34Z] --- gold70.E2B.UD-Q4_K_XL  (70 notes, 3 procs)
+[08:46:28Z] OK   gold70.E2B.UD-Q4_K_XL strictF1=0.6714
+[08:46:48Z]   WARNING: could not commit gold70.E2B.UD-Q4_K_XL -- COMMIT IT BY HAND
+[08:46:48Z] --- gold70.E2B.UD-Q6_K_XL  (70 notes, 3 procs)
+[08:47:57Z] === quant ledger rebuild on the 5080
+[08:47:57Z] SKIP gold70.E2B.UD-Q4_K_XL
+[08:47:57Z] --- gold70.E2B.UD-Q6_K_XL  (70 notes, 3 procs)
+[08:49:54Z] OK   gold70.E2B.UD-Q6_K_XL strictF1=0.6667
+[08:49:54Z]   committed gold70.E2B.UD-Q6_K_XL
+[08:49:54Z] --- gold70.E2B.UD-Q8_K_XL  (70 notes, 3 procs)
+[08:51:56Z] OK   gold70.E2B.UD-Q8_K_XL strictF1=0.6619
+[08:51:56Z]   committed gold70.E2B.UD-Q8_K_XL
+[08:51:56Z] --- gold70.E4B.UD-Q4_K_XL  (70 notes, 2 procs)
+[08:53:50Z] OK   gold70.E4B.UD-Q4_K_XL strictF1=0.6429
+[08:53:50Z]   committed gold70.E4B.UD-Q4_K_XL
+[08:53:50Z] --- gold70.E4B.UD-Q6_K_XL  (70 notes, 2 procs)
+[08:55:42Z] OK   gold70.E4B.UD-Q6_K_XL strictF1=0.7101
+[08:55:42Z]   committed gold70.E4B.UD-Q6_K_XL
+[08:55:42Z] --- gold70.E4B.UD-Q8_K_XL  (70 notes, 2 procs)
+[08:57:43Z] OK   gold70.E4B.UD-Q8_K_XL strictF1=0.6957
+[08:57:44Z]   committed gold70.E4B.UD-Q8_K_XL
+[08:57:44Z] --- v5small.E2B.UD-Q4_K_XL  (1001 notes, 3 procs)
+[09:17:10Z] OK   v5small.E2B.UD-Q4_K_XL strictF1=0.6213
+[09:17:10Z]   committed v5small.E2B.UD-Q4_K_XL
+[09:17:10Z] --- v5small.E2B.UD-Q6_K_XL  (1001 notes, 3 procs)
+[09:37:30Z] OK   v5small.E2B.UD-Q6_K_XL strictF1=0.6174
+[09:37:30Z]   committed v5small.E2B.UD-Q6_K_XL
+[09:37:30Z] --- v5small.E4B.UD-Q4_K_XL  (1001 notes, 2 procs)
