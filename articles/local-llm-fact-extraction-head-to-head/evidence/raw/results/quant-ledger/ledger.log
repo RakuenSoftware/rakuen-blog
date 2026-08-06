@@ -1,0 +1,53 @@
+[10:02:23Z] === quant ledger rebuild on the 5080
+[10:02:23Z] --- gold70.E2B.UD-Q4_K_XL  (70 notes, 3 procs)
+[10:05:17Z] OK   gold70.E2B.UD-Q4_K_XL strictF1=0.6714
+[10:05:17Z]   committed gold70.E2B.UD-Q4_K_XL
+[10:05:17Z] --- gold70.E2B.UD-Q6_K_XL  (70 notes, 3 procs)
+[10:08:21Z] OK   gold70.E2B.UD-Q6_K_XL strictF1=0.6569
+[10:08:21Z]   committed gold70.E2B.UD-Q6_K_XL
+[10:08:21Z] --- gold70.E2B.UD-Q8_K_XL  (70 notes, 3 procs)
+[10:11:39Z] OK   gold70.E2B.UD-Q8_K_XL strictF1=0.6475
+[10:11:39Z]   committed gold70.E2B.UD-Q8_K_XL
+[10:11:39Z] --- gold70.E4B.UD-Q4_K_XL  (70 notes, 2 procs)
+[10:14:05Z] OK   gold70.E4B.UD-Q4_K_XL strictF1=0.7083
+[10:14:05Z]   committed gold70.E4B.UD-Q4_K_XL
+[10:14:05Z] --- gold70.E4B.UD-Q6_K_XL  (70 notes, 2 procs)
+[10:16:24Z] OK   gold70.E4B.UD-Q6_K_XL strictF1=0.7660
+[10:16:24Z]   committed gold70.E4B.UD-Q6_K_XL
+[10:16:24Z] --- gold70.E4B.UD-Q8_K_XL  (70 notes, 2 procs)
+[10:19:05Z] OK   gold70.E4B.UD-Q8_K_XL strictF1=0.7324
+[10:19:05Z]   committed gold70.E4B.UD-Q8_K_XL
+[10:19:05Z] --- v5small.E2B.UD-Q4_K_XL  (1001 notes, 3 procs)
+[10:39:39Z] OK   v5small.E2B.UD-Q4_K_XL strictF1=0.6138
+[10:39:39Z]   committed v5small.E2B.UD-Q4_K_XL
+[10:39:39Z] --- v5small.E2B.UD-Q6_K_XL  (1001 notes, 3 procs)
+[11:02:37Z] OK   v5small.E2B.UD-Q6_K_XL strictF1=0.6138
+[11:02:38Z]   committed v5small.E2B.UD-Q6_K_XL
+[11:02:38Z] --- v5small.E4B.UD-Q4_K_XL  (1001 notes, 2 procs)
+[11:22:56Z] OK   v5small.E4B.UD-Q4_K_XL strictF1=0.6202
+[11:22:56Z]   committed v5small.E4B.UD-Q4_K_XL
+[11:22:56Z] --- v5small.E4B.UD-Q6_K_XL  (1001 notes, 2 procs)
+[11:42:06Z] OK   v5small.E4B.UD-Q6_K_XL strictF1=0.6396
+[11:42:06Z]   committed v5small.E4B.UD-Q6_K_XL
+[11:42:06Z] --- v3small.E2B.UD-Q4_K_XL  (1001 notes, 3 procs)
+[12:03:02Z] OK   v3small.E2B.UD-Q4_K_XL strictF1=0.5530
+[12:03:02Z]   committed v3small.E2B.UD-Q4_K_XL
+[12:03:02Z] --- v3small.E2B.UD-Q6_K_XL  (1001 notes, 3 procs)
+[12:26:33Z] OK   v3small.E2B.UD-Q6_K_XL strictF1=0.5832
+[12:26:34Z]   committed v3small.E2B.UD-Q6_K_XL
+[12:26:34Z] --- v3small.E4B.UD-Q4_K_XL  (1001 notes, 2 procs)
+[12:47:54Z] OK   v3small.E4B.UD-Q4_K_XL strictF1=0.5770
+[12:47:54Z]   committed v3small.E4B.UD-Q4_K_XL
+[12:47:54Z] --- v3small.E4B.UD-Q6_K_XL  (1001 notes, 2 procs)
+[13:08:11Z] OK   v3small.E4B.UD-Q6_K_XL strictF1=0.5815
+[13:08:11Z]   committed v3small.E4B.UD-Q6_K_XL
+[13:08:11Z] === ledger: every pair that now has BOTH halves under one config
+  gold70    E2B  Q4=0.6714 Q6=0.6569  delta=-0.0145  -
+  gold70    E4B  Q4=0.7083 Q6=0.7660  delta=+0.0577  +
+  v3small   E2B  Q4=0.5530 Q6=0.5832  delta=+0.0302  +
+  v3small   E4B  Q4=0.5770 Q6=0.5815  delta=+0.0045  +
+  v5small   E2B  Q4=0.6138 Q6=0.6138  delta=+0.0000  -
+  v5small   E4B  Q4=0.6202 Q6=0.6396  delta=+0.0194  +
+
+  4/6 pairs positive, from THIS run alone
+[13:08:11Z] === REBUILD COMPLETE ===
