@@ -10,6 +10,28 @@ Then I rented bigger GPUs.
 
 The ceiling moved to 0.7257. Almost none of the movement came from size.
 
+## One note in, zero or more triples out
+
+The model reads a single remembered note and returns subject-relation-object
+triples as JSON. The prompt is the one my production system already sends, read
+out of `kb_memory_facts.c` rather than written for the benchmark, so a result here
+is a statement about the system I run.
+
+    Vera Duarte joined the retrieval team last quarter.
+    {"subject": "Vera Duarte", "relation": "member_of", "object": "retrieval team"}
+
+Notes are one or two sentences, median 53 characters. The relation comes from 24
+canonical predicates, or the model coins a snake_case one when none fits. It has
+to keep durable state and drop everything transient, so `Hoping to get Fairweather
+Chemicals over the line this quarter` is worth no facts at all: 322 of the 1,001
+notes are that kind, and getting them right means returning an empty list. A
+retraction is not an absence either. `Kestrel Freight is no longer a customer`
+wants the original fact back with `negated` set.
+
+F1 is strict. Subject, relation and object all have to match a gold triple, and
+there are 880 of those across the 1,001 notes, spread over ten note categories
+including negation, multi-fact, implicit and deliberately ambiguous.
+
 | model | quant | F1 | prec | rec | parse | abstain | spurious | reasons |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
 | Qwen3.6-35B-A3B | UD-Q4, MoE | **0.7257** | 0.6841 | 0.7727 | 1.00 | 0.699 | 99 | 1.00 |
@@ -35,9 +57,9 @@ The ceiling moved to 0.7257. Almost none of the movement came from size.
 | MiniCPM5-1B | Q8_0 | 0.1652 | 0.2630 | 0.1205 | **0.87** | 0.963 | 12 | 1.00 |
 | LFM2.5-230M | Q8_0 | 0.1309 | 0.1289 | 0.1330 | 1.00 | 0.531 | 151 | 0.00 |
 
-`abstain` is how often a model correctly says nothing on the 322 notes whose
-correct answer is nothing. `spurious` counts triples invented on those notes.
-`reasons` is the fraction of rows carrying a reasoning pass.
+`abstain` is how often a model correctly returns nothing on those 322 factless
+notes. `spurious` counts the triples it invents on them instead. `reasons` is the
+fraction of rows carrying a reasoning pass.
 
 ## Six steps down the leaderboard, none of them real
 
@@ -91,10 +113,10 @@ Throughput follows the same line:
 | gemma-4-12B QAT | 142.4 | RTX 3090 |
 | gemma-4-31B non-QAT | 80.5 | RTX 5090 |
 | gemma-4-31B QAT | 67.3 | RX 7900 XTX |
-| Qwen3.6-27B dense, partial | 64.7 | RTX 5090 |
+| Qwen3.6-27B dense, partial | 67.8 | RTX 5090 |
 
-The 35B is **3.6 times faster than the 27B from its own family**, and the two write
-almost the same amount: median 1,100 completion tokens against 1,269. So the gap is
+The 35B is **3.5 times faster than the 27B from its own family**, and the two write
+almost the same amount: median 1,100 completion tokens against 1,272. So the gap is
 per-token cost. A dense 27B at Q4 reads about 16.4 GiB of weights per token against
 roughly 1.5 GiB for a 3B-active MoE.
 
@@ -189,9 +211,11 @@ on which corpus they ran inside, with 47% of output text differing.
 processes: Q4_K_M is 5.16 GB and three copies exceed a 16 GiB card. Process count
 alone is worth about 0.0105 F1 here.
 
-**One arm is unfinished.** Qwen3.6-27B dense is about a fifth through. Its
-throughput is settled across three readings at 64.5, 64.5 and 64.2 tok/s, so the
-speed claim holds. It has no F1 in this table and I have not written one in.
+**One arm is unfinished.** Qwen3.6-27B dense is two thirds through. Its throughput
+is settled: 67.8 tok/s median over 658 notes, and every hundred-note slice of that
+run sits between 67.7 and 68.0, so the speed claim holds. An earlier reading of
+64.7 came from three samples and was 4.6% low; the figure here supersedes it. It
+has no F1 in this table and I have not written one in.
 
 ## What I would run today
 
