@@ -1,4 +1,17 @@
-# Local LLMs: Speculative Decoding
+---
+title: "Local LLMs: Speculative Decoding"
+date: 2026-08-06
+author: Rakuen Software
+tags: [benchmarks, local-models, speculative-decoding, throughput, aimee]
+excerpt: "A small model guesses the next few words and a big one checks them. It doubles throughput on this task, and costs nothing I could measure."
+---
+
+*Published 2026-08-06. Rakuen builds aimee, the system measured here. Every figure
+traces to the
+[evidence repository](https://github.com/RakuenSoftware/rakuen-blog/tree/main/articles/local-llm-speculative-decoding),
+with a per-figure provenance map in
+[evidence/figures.md](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/local-llm-speculative-decoding/evidence/figures.md).*
+
 
 All six paired runs are banked. The acceptance figures are read from the server's
 own counters rather than inferred from wall clock.

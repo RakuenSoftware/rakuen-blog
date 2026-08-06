@@ -1,4 +1,16 @@
-# Local LLMs: Fact Extraction Head to Head
+---
+title: "Local LLMs: Fact Extraction Head to Head"
+date: 2026-08-06
+author: Rakuen Software
+tags: [benchmarks, local-models, fact-extraction, quantisation, aimee]
+excerpt: "Thirty-two local model runs over the same 1,001 notes, with every ordering claim tested. Six consecutive steps down the leaderboard are noise, the top two cannot be told apart, and the column that decides the choice is not the score."
+---
+
+*Published 2026-08-06. Rakuen builds aimee, the system measured here. Every figure
+traces to the
+[evidence repository](https://github.com/RakuenSoftware/rakuen-blog/tree/main/articles/local-llm-fact-extraction-head-to-head),
+with a per-figure provenance map in
+[evidence/figures.md](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/local-llm-fact-extraction-head-to-head/evidence/figures.md).*
 
 Every run is the same 1,001 notes, the same prompt, and the same scorer, which I
 did not modify between runs. Every column is recomputed from the saved model
