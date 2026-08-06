@@ -42,7 +42,8 @@ that catches that class of bug. A number without it is not evidence.
 | [token-compression-tools-cost-more-than-they-save](articles/token-compression-tools-cost-more-than-they-save/) | yes | external sources, cited inline |
 | [stacking-isnt-composing](articles/stacking-isnt-composing/) | yes | source audit, reporting record |
 | [we-measured-our-reranker-and-deleted-it](articles/we-measured-our-reranker-and-deleted-it/) | yes | 9 documents, 5 artifact sets |
-| [local-llm-fact-extraction-head-to-head](articles/local-llm-fact-extraction-head-to-head/) | yes | 32 arms, figure map, full results tree |
+| [local-llm-fact-extraction-head-to-head](articles/local-llm-fact-extraction-head-to-head/) | yes | 32 runs, figure map, full results tree |
+| [local-llm-speculative-decoding](articles/local-llm-speculative-decoding/) | yes | figure map, shared results tree |
 | [synthesis-model-selection](articles/synthesis-model-selection/) | **not written** | evidence only, no prose yet |
 
 ## Publishing
