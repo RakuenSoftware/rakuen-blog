@@ -1,28 +1,33 @@
-# Speculative Decoding Was Free
+# Local LLMs: Speculative Decoding
 
-Six paired arms measuring what multi-token prediction costs in accuracy, and what it does not explain.
+Six paired runs measuring what letting a small model guess ahead costs in
+accuracy, what it gains in speed, and what it does not explain.
 
 ## Status
 
-Draft. Not published. Every figure in the article traces to a raw artifact in the
+Published 2026-08-06. Every figure in the article traces to a raw artifact in the
 series evidence base.
 
 ## Evidence
 
 Raw artifacts for the whole series live under
-`articles/local-llm-fact-extraction-head-to-head/evidence/raw/`:
+`articles/local-llm-fact-extraction-head-to-head/evidence/raw/`, which every
+article shares rather than copying 173 MB of prediction files per folder:
 
 | directory | contents |
 |---|---|
 | `results/` | every prediction file, score file and run log produced by the benchmark |
-| `corpus/` | corpus v5, the gold sets at 1,001, 3,002 and 10,000 notes |
+| `corpus/` | the note sets at 1,001, 3,002 and 10,000 notes |
 | `harness/` | the runner, scorer, bootstrap and orchestration scripts that produced them |
 | `ARTICLE_NOTES.md` | the running findings ledger |
 | `MEASUREMENT_LOG.md` | the defect log, including every retracted claim |
 
-`evidence/figures.md`, the per-figure map from each number in the article to the
-artifact behind it, is not written yet. Until it is, figures trace through
-`ARTICLE_NOTES.md` and `MEASUREMENT_LOG.md` in the series evidence base.
+`evidence/figures.md` maps each figure in the article to the artifact behind it.
+Every path in it was checked to resolve. Twelve scores were matched against the
+score files, and all six acceptance rates were recomputed from the prediction
+files rather than transcribed. Six figures are marked there as single-sourced
+rather than traced, including the identical-output counts and the startup times,
+which the sweep computed and discarded.
 
 ## Reporting record
 
