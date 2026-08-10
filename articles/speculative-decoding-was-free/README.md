@@ -5,8 +5,10 @@ accuracy, what it gains in speed, and what it does not explain.
 
 ## Status
 
-Published 2026-08-06. Every figure in the article traces to a raw artifact in the
-series evidence base.
+Unpublished 2026-08-10. The article mixed seven controlled MTP on/off pairs with
+unpaired 12B, 26B and 31B acceptance runs. Those larger-model runs have MTP-on
+acceptance and F1 measurements but no same-condition MTP-off partners, so they
+cannot support a causal MTP speed or accuracy comparison.
 
 The RX 7900 XTX follow-up now includes a complete Qwen3.6-27B MTP on/off pair.
 MTP increased throughput from 34.82 to 81.78 tokens/s, a 2.35x speedup, with
