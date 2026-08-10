@@ -25,8 +25,9 @@ appears on a non-QAT build.
 
 ## The main table
 
-One row per arm. The `parse`, `abstain`, `spurious` and `reasons` columns come from
-the same score file as the F1 on that row.
+One row per arm. The `parse`, `abstain` and `spurious` columns come from the same
+score file as the F1 on that row. The `reasons` column comes from the corresponding
+prediction file.
 
 | arm | F1 | artifact |
 |---|---|---|
@@ -42,10 +43,10 @@ the same score file as the F1 on that row.
 | gemma-4-E4B UD-Q6 | 0.6339 | `results/v8-baseline/E4B.UD-Q6_K_XL.mtp.score.json` |
 | gemma-4-E2B UD-Q8 | 0.6226 | `results/v8-baseline/E2B.UD-Q8_K_XL.mtp.score.json` |
 | gemma-4-E4B QAT q4_0 | 0.6194 | `results/qat-vs-ud/gemma-4-E4B-it.qat.score.json` |
+| gemma-4-E4B UD-Q4 | 0.6189 | `results/v8-baseline/E4B.UD-Q4_K_XL.mtp.score.json` |
 | gemma-4-E2B UD-Q6 | 0.6179 | `results/v8-baseline/E2B.UD-Q6_K_XL.mtp.score.json` |
-| gemma-4-E4B UD-Q4 | 0.6166 | `results/v5-rerun-gguf/gemma-4-E4B-it.score.json` |
+| gemma-4-E2B UD-Q4 | 0.6114 | `results/v8-baseline/E2B.UD-Q4_K_XL.mtp.score.json` |
 | gemma-4-E4B UD-Q8 | 0.6094 | `results/v8-baseline/E4B.UD-Q8_K_XL.mtp.score.json` |
-| gemma-4-E2B UD-Q4 | 0.6017 | `results/v5-rerun-gguf/gemma-4-E2B-it.score.json` |
 | LFM2.5-2.6B Q4_K_M | 0.5854 | `results/lfm25-2.6b/LFM2.5-2.6B.Q4_K_M.score.json` |
 | LFM2.5-2.6B Q6_K | 0.5795 | `results/lfm25-2.6b/LFM2.5-2.6B.Q6_K.score.json` |
 | LFM2.5-2.6B Q8_0 | 0.5750 | `results/lfm25-2.6b/LFM2.5-2.6B.Q8_0.score.json` |
@@ -66,6 +67,39 @@ the same score file as the F1 on that row.
 **Four rows are subset extractions**, not native 1,001-note runs: granite-4.1-3b,
 gemma-3n-E4B, Qwen3-1.7B and granite-4.0-1b, all from `results/subset-1001/`. The
 article states that limit against itself.
+
+## Quant verdict graph and correction
+
+The graph defaults to the supported same-model result rather than sorting the
+point estimates. `=` is rendered as a tie; `>` is reserved for a paired range
+that excludes zero. The command form, components and all thirteen paired results
+are recorded in `raw/quant-clarification-2026-08-09.md`.
+
+| family | graph verdict | artifacts |
+|---|---|---|
+| gemma-4-E2B | Q4 = Q6 = Q8 | `results/v8-baseline/E2B.UD-Q{4,6,8}_K_XL.mtp.pred.jsonl` |
+| gemma-4-E4B | Q4 ties both; Q6 > Q8 | `results/v8-baseline/E4B.UD-Q{4,6,8}_K_XL.mtp.pred.jsonl` |
+| LFM2.5-2.6B | Q4 = Q6 = Q8 | `results/lfm25-2.6b/LFM2.5-2.6B.Q{4_K_M,6_K,8_0}.pred.jsonl` |
+| LFM2.5-VL-1.6B | Q6 = Q8 | `results/lfm25-family/LFM2.5-VL-1.6B.Q{6_K,8_0}.pred.jsonl` |
+| LFM2.5-1.2B | Q6 = Q8 | `results/lfm25-family/LFM2.5-1.2B-Instruct.Q{6_K,8_0}.pred.jsonl` |
+| LFM2.5-230M | Q6 = Q8 | `results/lfm25-family/LFM2.5-230M.Q{6_K,8_0}.pred.jsonl` |
+| SmolLM3-3B | Q8 > Q4 | `results/newcomers-1k/SmolLM3-3B.Q{4_K_M,8_0}.pred.jsonl` |
+
+The Smol Q4 comparison-only score is 0.3581 from
+`results/newcomers-1k/SmolLM3-3B.Q4_K_M.score.json`; it is not one of the 32
+leaderboard rows.
+
+**Correction, 2026-08-09.** The original default graph ranked observed F1 and
+therefore placed Q4 above Q6 or Q8 in two families whose paired ranges crossed
+zero. The scores were observations; the vertical ordering communicated an
+unsupported conclusion. The corrected graph states the paired verdict first and
+retains the full score table under Numbers. The two Gemma Q4 rows now use the
+matched v8-baseline campaign alongside their Q6 and Q8 rows. The same audit found
+19 stale `abstain`/`spurious` pairs left from an earlier scorer interpretation;
+the Numbers table, restraint comparison and scatter now read those fields from
+the score artifacts mapped above. A reproduction pass ran each paired interval
+in its own process; several endpoints moved in the fourth decimal and no verdict
+changed.
 
 ## Intervals
 
