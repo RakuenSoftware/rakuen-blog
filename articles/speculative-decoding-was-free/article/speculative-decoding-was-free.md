@@ -1,10 +1,8 @@
----
-title: "Local LLMs: Speculative Decoding"
-date: 2026-08-06
-author: Rakuen Software
-tags: [benchmarks, local-models, speculative-decoding, throughput, aimee]
-excerpt: "Across Gemma and Qwen, multi-token prediction roughly doubled throughput while paired extraction accuracy remained tied."
----
+# Local LLMs: Speculative Decoding
+
+DRAFT. Withdrawn 2026-08-10. The article mixed seven controlled MTP on/off pairs
+with unpaired 12B, 26B and 31B acceptance runs, making the evidence coverage look
+broader than the causal comparison actually was.
 
 *Published 2026-08-06; updated 2026-08-10 with the completed Qwen3.6-27B pair.
 Rakuen builds aimee, the system measured here. Every figure traces to the
