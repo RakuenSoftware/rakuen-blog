@@ -130,9 +130,11 @@ gemma-4-12B, guessing with 82% of its guesses kept on a comparable card, managed
 I had both Qwen runs labelled as guessing in my own notes for several hours,
 because 234 words a second on a 35B model looked impossible without it. The server
 reports it as off. No row in either output file carries a count of guessed words.
-Qwen3.6 ships no guessing model in that repository. I inferred a mechanism from a number
-and the inference outlived three status reports before I checked the field that
-was sitting in every row.
+That is evidence about those runs, not the model family. The primary ggml-org
+[27B repository](https://huggingface.co/ggml-org/Qwen3.6-27B-GGUF/tree/main)
+and [35B-A3B repository](https://huggingface.co/ggml-org/Qwen3.6-35B-A3B-GGUF/tree/main)
+now publish multi-token-prediction sidecars. The XTX follow-up below loads the
+27B sidecar and records `speculative=True` before measuring it.
 
 The real mechanism is architecture. A mixture of experts (MoE) keeps all 35B in
 memory but only runs about 3B of it for any given word, so it reads about 1.5 GiB
@@ -151,6 +153,22 @@ So the ranking is: guessing is worth about 2x, and picking a sparse architecture
 worth 3.5x. If you are optimising throughput and you can choose
 the model, choose the model first. Speculation is what you turn on afterwards, on
 whatever you chose.
+
+That last sentence is now measured for dense Qwen3.6-27B. Both runs used the same
+Q4_K_M model, the same 1,001 notes, concurrency one and the RX 7900 XTX. The only
+intended difference was loading the model's multi-token-prediction sidecar.
+
+| Qwen3.6-27B on the XTX | MTP off | MTP on |
+|---|---:|---:|
+| server throughput | 34.82 tokens/s | **81.78 tokens/s** |
+| wall time | 546 min | **233 min** |
+| strict F1 | 0.7180 | 0.7177 |
+| draft acceptance | — | 79.04% |
+
+**MTP made the 27B run 2.35 times faster.** The F1 difference was −0.0003,
+with a paired 95% range from −0.0109 to +0.0101. That range crosses zero, so the
+accuracy result is a tie at this experiment's resolution. These are same-card
+tokens per second; they do not replace the earlier 5090 words-per-second result.
 
 ## The 5.3x was two numbers with different denominators
 
@@ -227,15 +245,15 @@ for the guessing to reclaim. Quoting one number as "the speedup" would be wrong.
 slower. Both fill the same idle capacity, and once thirty-two requests are in
 flight there is none left, so the checking is added work with nowhere to hide.
 
-I can only vouch for gemma-4. It is still the only family in this field that ships
-a guessing model: I checked Qwen3.6 directly after mislabelling it, and the
-repository has none.
+The six original pairs cover gemma-4. The complete Qwen3.6-27B pair now supplies
+a second family. The 35B-A3B follow-up stays out until both of its runs are
+complete.
 
 ## The zero is bounded, not explained
 
-1. **Acceptance against accuracy, note by note.** I have an acceptance rate and a
-   score for each run, but not whether the notes where the guessing fails are the
-   notes where the model is wrong. That is the question that would explain the
-   zero rather than merely bound it.
-2. **A second family that ships a guessing model.** One family is a limit on the
-   claim, not a gap I can close by running more gemma.
+1. **Acceptance against accuracy, note by note.** The Qwen pair now contains the
+   counters and both predictions needed for that analysis. The aggregate result
+   bounds the accuracy change but does not explain it.
+2. **Sparse Qwen with guessing on and off.** The 27B pair closes the second-family
+   gap. A complete 35B-A3B pair would show whether guessing adds to the sparse
+   architecture's existing speed advantage.

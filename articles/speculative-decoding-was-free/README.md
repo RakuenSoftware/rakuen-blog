@@ -8,6 +8,15 @@ accuracy, what it gains in speed, and what it does not explain.
 Published 2026-08-06. Every figure in the article traces to a raw artifact in the
 series evidence base.
 
+The RX 7900 XTX follow-up now includes a complete Qwen3.6-27B MTP on/off pair.
+MTP increased throughput from 34.82 to 81.78 tokens/s, a 2.35x speedup, with
+79.04% draft acceptance. Strict F1 was 0.7180 off and 0.7177 on; the paired
+difference was −0.0003 with a 95% range of −0.0109 to +0.0101.
+
+The Qwen3.6-35B-A3B follow-up is not part of the article. Its MTP-on run was
+still active when the 27B update was prepared, and no incomplete or unmatched
+run is interpreted.
+
 ## Evidence
 
 Raw artifacts for the whole series live under
