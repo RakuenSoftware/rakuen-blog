@@ -1,6 +1,12 @@
-# Our reranker made production retrieval worse
+---
+title: "Our reranker made production retrieval worse"
+date: 2026-07-31
+author: Rakuen Software
+tags: [retrieval, embeddings, benchmarks, aimee]
+excerpt: "The reranker looked strong on an arbitrary candidate list, then degraded production output across direct, cascade, and fused configurations."
+---
 
-*Published 2026-07-31. Rewritten 2026-08-02. Rakuen builds aimee, the system
+*Rewritten 2026-08-02. Rakuen builds aimee, the system
 measured here. Every figure traces to the
 [evidence repository](https://github.com/RakuenSoftware/rakuen-blog/tree/main/articles/we-measured-our-reranker-and-deleted-it).*
 
