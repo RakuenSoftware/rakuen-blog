@@ -73,6 +73,22 @@ prediction file. All six reproduce the published figure exactly.
 | the two are a tie | −0.0106, range −0.0294 to +0.0088 | `harness/harness/bootstrap_ci.py`, 20,000 replicates |
 | neither uses guessing | no `draft_n` on any row | both prediction files above |
 
+## Qwen3.6-27B with MTP on the XTX
+
+Both runs use Q4_K_M, the same 1,001 notes, prompt v8, concurrency one and the
+RX 7900 XTX (`Vulkan1`). Throughput is total completion tokens divided by summed
+request latency. The paired interval uses seed 42 and 20,000 bootstrap replicates.
+
+| figure | value | artifact |
+|---|---|---|
+| MTP off throughput | 34.82 tokens/s | `results/qwen36-mtp-xtx/Qwen3.6-27b.Q4_K_M.xtx.mtp-off.pred.jsonl` |
+| MTP on throughput | 81.78 tokens/s | `results/qwen36-mtp-xtx/Qwen3.6-27b.Q4_K_M.xtx.mtp-on.pred.jsonl` |
+| speedup | 2.35x | both prediction files above |
+| MTP acceptance | 806,937 / 1,020,888 = 79.04% | MTP-on prediction file |
+| MTP off strict F1 | 0.7180 | `results/qwen36-mtp-xtx/Qwen3.6-27b.Q4_K_M.xtx.mtp-off.score.json` |
+| MTP on strict F1 | 0.7177 | `results/qwen36-mtp-xtx/Qwen3.6-27b.Q4_K_M.xtx.mtp-on.score.json` |
+| paired F1 difference | −0.0003, range −0.0109 to +0.0101 | `harness/harness/bootstrap_ci.py`, seed 42, 20,000 replicates |
+
 ## Not traced to an artifact in this folder
 
 These are in the article and are **not** reproducible from anything committed
