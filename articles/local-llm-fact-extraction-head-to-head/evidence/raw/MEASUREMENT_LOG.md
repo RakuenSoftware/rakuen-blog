@@ -2189,3 +2189,42 @@ abandoned instances, and it means the same thing locally.
 
 **Rule:** whatever starts a server stops it, in the script that started it.
 Clearing a port range proves nothing about a card.
+
+## Defect 43: the MTP-off guard tests for a field that is always present
+
+`arm_gemma4_mtp_pair.sh` verifies that a speculation-off arm really ran without a
+draft head:
+
+```sh
+if grep -q '"draft_n"' "$PRED"; then
+  say "FAIL: MTP-off artifact unexpectedly contains draft counters"
+  exit 1
+fi
+```
+
+Every prediction row carries `draft_n` and `draft_n_accepted` in every run. With
+speculation off the value is `null`; with it on the value is an integer. The
+guard greps for the **key**, which is never absent, so it fires on every
+speculation-off arm and can never fire for the reason it was written.
+
+Seen on 2026-08-10 at 20:06:09Z for the 12B and at 00:34:24Z for the 26B-A4B,
+both immediately after the arm banked and logged `OK ... F1=...`. The `exit 1`
+that follows is why `launcher-5080.log` shows repeated `PAIR START` and `SKIP
+... already banked` cycles: the queue retried an arm that had already succeeded.
+
+**No banked artifact is affected.** All three speculation-off prediction files
+were checked row by row and carry no draft count on any of 1,001 rows, while all
+three speculation-on files carry one on every row, at 80.4%, 79.2% and 79.1%
+acceptance. The runs are sound; the check on them was not.
+
+**Why it matters beyond the noise:** a guard that fires on every clean run
+teaches its operator to ignore it, so the one time speculation genuinely leaks
+into an off arm the message will read as more of the same. That is the failure
+mode this campaign has already been bitten by twice, where a plausible signal
+carried no information.
+
+**Fixed** by testing the value rather than the key. The corrected guard fails
+only when some row records a non-null draft count.
+
+**Found** on 2026-08-11 while reconstructing a runnable workspace for the mid3k
+reruns, not by the guard reporting anything new.

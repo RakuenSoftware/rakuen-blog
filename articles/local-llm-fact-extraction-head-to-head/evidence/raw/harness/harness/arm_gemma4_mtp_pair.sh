@@ -176,7 +176,19 @@ say "OK $LBL $(python3 -c "import json;d=json.load(open('$SCORE'));s=d['strict']
 if [ "$MTP" = on ]; then
   python3 harness/harness/draft_acceptance.py "$PRED" | sed 's/^/  /' | tee -a "$OUT/arms.log"
 else
-  if grep -q '"draft_n"' "$PRED"; then
+  # Test the VALUE, not the key. Every row carries draft_n in every run; it is
+  # null with speculation off and an integer with it on. Grepping for the key
+  # fired on every clean off-arm (defect 43).
+  if ! python3 -c "
+import json,sys
+for line in open(sys.argv[1]):
+    line = line.strip()
+    if not line:
+        continue
+    if (json.loads(line).get('draft_n') or 0) > 0:
+        sys.exit(1)
+sys.exit(0)
+" "$PRED"; then
     say "FAIL: MTP-off artifact unexpectedly contains draft counters"
     exit 1
   fi
