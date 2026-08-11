@@ -8,6 +8,22 @@ first, each built on a zero that was never a measurement.
 
 Draft. Not publication-ready, and deliberately not marked as such.
 
+**The article's mechanism was retracted by the author on 2026-08-11 at 22:00, and
+the prose has not been changed to match.** The piece still argues that the
+persona generated round trips, using the gateway run against the plugin run as a
+natural experiment. That comparison does not hold: the Codex MCP run receives no
+aimee persona at all, and the gateway run's lower round-trip count was a
+tool-routing defect fixed the same day.
+
+The headline survives. The layer costs about three times baseline, re-measured at
+2.97× on credits with identical correctness across all nine cells. What does not
+survive is why. Removing `roundtable_review` saves 26% and does not change the
+round-trip count, so the cost is per-call weight rather than trip count.
+
+Rewriting the argument around that is an editorial decision, not a filing
+correction, so it is left for the author. `evidence/figures.md` records the
+retraction, the replacement measurement, and what still stands.
+
 The voice pass is done and `tools/voice_gate.py` passes the article.
 
 Most of this article needs no external artifact. It is a first-person account of

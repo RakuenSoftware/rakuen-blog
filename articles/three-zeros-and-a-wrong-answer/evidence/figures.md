@@ -117,6 +117,66 @@ This also confirms the article's own mechanism. `baseline` and `aimee` cells
 record real cache rates because those runs report from OpenAI directly. Only the
 gateway run, the one where our code sits in the reporting path, reads zero.
 
+## Retracted by a later measurement, 2026-08-11 22:00
+
+The article's natural experiment is withdrawn. It argued that the gateway run and
+the plugin run expose the same tools, that only the plugin installs the persona,
+and that the round-trip gap between them therefore isolates the persona as the
+cause.
+
+The author re-measured at 22:00 on 2026-08-11, all runs on one image
+`sha256:239f6b3e`, `t01_cache`, three replicates, and retracted it:
+
+- **The Codex MCP run receives no aimee persona at all.** Grepping the transcript
+  for the manager text returns nothing, and the harness sends a plain prompt. So
+  there was never a persona difference between those two runs to attribute
+  anything to.
+- **The gateway run's lower round-trip count was a gateway tool-routing defect**,
+  fixed earlier the same day.
+
+This is the author's measurement and is recorded here as reported. The cells were
+run on CT403 and are not on the machine where this map was written, so nothing in
+this section has been reproduced here.
+
+It does independently explain the unreconcilable gateway row above. That row was
+measured while the tool-routing defect was live, which is why its figures sit
+nowhere near the other three runs.
+
+### What the re-measurement puts in its place
+
+| run | credits, three replicates | mean | against baseline |
+|---|---|---:|---:|
+| baseline | 4.48, 5.24, 5.62 | 5.11 | 1.00× |
+| aimee with `roundtable_review` removed | 10.66, 11.38, 11.82 | 11.29 | 2.21× |
+| aimee as shipped | 14.13, 15.04, 16.31 | 15.16 | 2.97× |
+
+All nine cells returned `hidden_ok` true, `compile` 0 and `smoke` 0, so
+correctness is identical across every run and the extra spend bought nothing
+measurable on this task.
+
+Removing `roundtable_review` is 26% cheaper and 15% faster, and the ranges do not
+overlap: the worst run without it, 11.82, is below the best run with it, 14.13.
+
+**It did not cut round trips.** One cell still made 28 aimee calls. The saving is
+per-call cost, because `roundtable_review` blocks on a delegate and returns a
+large result. That is a different mechanism from the one the article publishes.
+
+The author's own caveat: this task's patch is correct either way, so a reviewer
+has nothing to catch. It measures what `roundtable_review` costs, not that it is
+worthless.
+
+### What survives
+
+The headline. The layer costs about three times baseline, and the re-measurement
+puts it at 2.97× on credits with identical correctness.
+
+What does not survive is the mechanism. The article attributes the cost to the
+persona generating round trips. The persona was not in that comparison, and
+removing the most expensive tool does not change the round-trip count at all.
+
+Restructuring the article around per-call weight rather than round-trip count is
+an editorial decision for the author, not a filing correction.
+
 ## Counts from the corpus
 
 Recomputed on 2026-08-11 by summing `codex.tool_calls` across all 81 cells in
@@ -134,6 +194,12 @@ The `delegate` zero is a measured zero, and this is the artifact that shows it.
 `tool_calls` records every tool actually invoked, so a tool that never appears was
 never called. The article marks that zero as measured in the text, and the
 marking now has a source behind it.
+
+One nuance the article should not lose. The 22:00 re-measurement notes that
+`roundtable_review` blocks on a delegate internally. That does not contradict the
+zero: `tool_calls` records what the agent invoked, and the agent never invoked
+`delegate` itself. Both are true, and the article's point stands, that an
+instruction to always delegate was shipped into a mode that cannot honour it.
 
 | figure | source |
 |---|---|
