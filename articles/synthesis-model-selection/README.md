@@ -1,44 +1,37 @@
-# Synthesis / extraction model selection
+# The 12B Synthesis Run Scored Higher and Missed the CPU Question
 
-**Status: not written.** This folder holds evidence for a future article. Nothing
-here has been turned into prose yet.
+Two 10,000-case GPU configurations measure a quality-and-latency tradeoff. They
+do not select the production CPU model the original campaign set out to choose.
 
-## What the question is
+## Status
 
-Which model performs Tier-A synthesis and extraction — turning a note into
-structured, schema-valid triples — at a quality and latency the CPU tier can
-afford. That is a different decision from which model *embeds*, on a different
-gold set, and it is deliberately kept out of the retrieval article
-([we-measured-our-reranker-and-deleted-it](../we-measured-our-reranker-and-deleted-it/)).
+Publication-ready as of 2026-08-09. Not yet published. The article is deliberately
+narrower than the planned multi-model selection because only two complete model
+runs are committed here.
 
-## What is here
+## Evidence
 
-| folder | what it is |
-| --- | --- |
-| `benchmarks/ab-v1/gemma4_e2b/` | Gemma-4 E2B on the ab-v1 synthesis view, 10,000 cases |
-| `benchmarks/ab-v1/gemma4_12b/` | Gemma-4 12B on the same view |
-| `benchmarks/fixtures/ab-v1/synthesis.jsonl` | the synthesis view of the frozen suite |
+| path | contents |
+|---|---|
+| `benchmarks/fixtures/ab-v1/synthesis.jsonl` | 10,000 frozen silver-label cases |
+| `benchmarks/ab-v1/gemma4_e2b/` | raw rows, summary, validation and hardware record |
+| `benchmarks/ab-v1/gemma4_12b/` | raw rows, summary, validation and hardware record |
+| `benchmarks/ab-v1/paired_content_bootstrap.py` | paired content-score interval |
+| `evidence/figures.md` | figure map and reporting disposition |
 
-These share the ab-v1 case population and manifest SHA-256
-`16d2c16add86052ff24be410699ab9452ee1a36252de6dba31ab5391de7ab81c` with the
-retrieval article's evidence. Same 10,000 cases, different task view. The corpus
-itself lives with the retrieval article rather than being duplicated here.
+Both summaries carry suite manifest SHA-256
+`16d2c16add86052ff24be410699ab9452ee1a36252de6dba31ab5391de7ab81c`.
+The E2B file has 10,000 rows and cases. The 12B file has 10,013 rows for 10,000
+cases; analysis keeps the last row for each `case_id`, preserving failed attempts
+and their successful retries.
 
-Raw logs are append-only. Select the last row per `case_id` before computing
-metrics — E2B has 10,000 unique cases and 12B has 10,013 rows for 10,000 cases,
-with failed attempts superseded by retries.
+The E2B response for case `9490bd93bed2a6ceabb59f3f` matched a credential-syntax
+scanner after scoring. Its committed row replaces only the response text, records
+the original SHA-256 and preserves the pre-redaction metrics.
 
-One redaction to know about: E2B's generated response for case
-`9490bd93bed2a6ceabb59f3f` matched a credential-syntax scanner after scoring. The
-committed row replaces only that response text, records `response_redacted: true`
-and the original SHA-256, and preserves its pre-redaction metrics.
+## Reporting record
 
-## What is missing
-
-The larger Tier-A campaign is not here yet. It lives on the benchmark host at
-`/opt/tierA/bench/tier-a` (LXC 140 on `.253`) and covers roughly 16 models scored
-on GPU and 13 timed on CPU — granite, SmolLM2, LFM2, gemma-3/3n/4 and Qwen3/3.5,
-down to 230M — with ablation, diagnostics and prompt-fix arms, its own 70-note
-gold set, and its own labelling rules. It was still running a `ceiling` arm
-against gemma-4-12B when this folder was created, so it has not been ingested.
-Pull it once that run completes.
+The planned wider Tier-A model matrix is not committed in this article folder and
+contributes no result. This version answers the supported two-run question and
+states that neither run measures CPU affordability. There are no interviews,
+external benchmark claims or material criticisms requiring a reply.
