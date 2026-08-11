@@ -8,24 +8,31 @@ first, each built on a zero that was never a measurement.
 
 Draft. Not publication-ready, and deliberately not marked as such.
 
-The voice pass is done and `tools/voice_gate.py` passes the article. That is not
-the thing standing in the way.
+The voice pass is done and `tools/voice_gate.py` passes the article.
 
-**Every first-party figure is sourced to another repository.** Nothing here
-satisfies the rule this repository exists to enforce, so the article cannot be
-published against its current provenance no matter how it reads.
-`evidence/figures.md` records each figure, where it lives today, and the seven
-steps that close the gap. Two rows are worse than merely missing:
+Most of this article needs no external artifact. It is a first-person account of
+our own debugging, plus a source audit of our own code with a merged fix named in
+the text. `evidence/figures.md` now separates the evidence by kind, which is what
+`articles/AGENTS.md` asks for.
 
-- the gateway run in the cost table has no located cells under
-  `battery/codex_results/cells/`, and it is the row carrying the natural
-  experiment that the argument turns on
-- `summary.json` holds `num_turns` but does not appear to carry input tokens,
-  cache hit rate or credits, which are three of the table's five columns
+**One thing blocks publication: the cost table.** A table of token counts and
+credits is a measurement rather than an experience, and the artifacts behind this
+one are not on this machine. Searched 2026-08-11:
 
-A second corpus exists at `battery/matrix_results/cells/` with the same task and
-replicate naming but only three run prefixes. Which tree the table was computed
-from is not established, and the two must not be mixed.
+- `codex_results/cells/` has `t01_cache` at `r1` only, and no aimee run
+- the only aimee `t01_cache` cell with usage data sits in a directory named
+  `aimee-kb-8bc6aa5-superseded`
+- `/tmp/ptcodex/cells/` holds aimee working directories with no `summary.json`,
+  so fixtures rather than results, and `/tmp` is volatile
+- the located cells report figures well outside the article's published ranges,
+  so they are a different campaign rather than the table's source
+
+This does not show the table is wrong. It shows the table is the one claim here
+that a reader could not check. The author ran the measurement and knows which
+tree it came from; naming it closes this.
+
+The article also states three replicates per run, and every located `t01_cache`
+cell outside `matrix_results` is `r1` only.
 
 ## What the voice pass changed
 
@@ -43,10 +50,11 @@ that standard.
 
 ## Open questions for the author
 
+- Which results tree was the cost table computed from, and does it span three
+  replicates or one.
 - The comparison includes a `ponytail add-on` run that comes out slightly worse
   than baseline. If that is a third party's product, the piece makes an adverse
-  comparative claim and right of reply has not been sought.
-- `files_indexed: 0` is described as always returning zero, with a comment three
-  lines above it saying so. The file and line are not yet cited.
-- The 27 of 27 readiness result, the 52 `roundtable_review` calls, the 2.3× per
-  call and the 2.5× round trips are all uncited so far.
+  comparative claim and right of reply applies.
+- The 52 `roundtable_review` calls and the `delegate` zero need a counting
+  source. The article marks that zero as measured, so by its own standard it has
+  to be able to show the count.
