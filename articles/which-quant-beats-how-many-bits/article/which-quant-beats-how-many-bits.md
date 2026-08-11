@@ -36,9 +36,12 @@ eight bits over four, and it is the weakest model in the set at 0.3933. At E4B,
 six bits beat eight: 0.6339 against 0.6094, a step *down* in width that scored
 better.
 
-On the 10,000-note Gemma ladder, Q4 scored 0.6324, Q6 0.6450 and Q8 0.6321. More
-bits did not provide a consistent direction. An earlier claim that LFM2.5
-worsened with more bits is withdrawn because its range crosses zero.
+The 10,000-note Gemma ladders agree. E2B scored 0.6246, 0.6344 and 0.6329 across
+Q4, Q6 and Q8; E4B scored 0.6301, 0.6452 and 0.6337. Both peak at six bits and
+fall back at eight, so more bits did not provide a consistent direction.
+
+An earlier claim that LFM2.5 worsened with more bits is withdrawn because its
+range crosses zero.
 
 The E2B Q6-minus-Q4 direction was positive in eight runs across five related
 corpora. A sign test under independent, equally likely directions gives 0.008.
