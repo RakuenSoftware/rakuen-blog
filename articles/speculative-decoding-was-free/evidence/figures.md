@@ -63,14 +63,50 @@ the MTP speedup.
 | 35B-A3B minus 27B F1 | −0.0106 [−0.0294, +0.0088] | `harness/harness/bootstrap_ci.py`, paired, seed 42, 20,000 replicates |
 | MTP state | off for both | neither prediction file contains `draft_n` |
 
-## Additional diagnostics
+## Derived from the eleven-pair table
 
-- The 100/100 MTP-off and 74/100 MTP-on identical-output counts are recorded in
-  `MEASUREMENT_LOG.md`; their prediction files were not retained.
-- The 32-request concurrency figures, 4.54x without MTP and 4.34x with it, are
-  recorded in `ARTICLE_NOTES.md` and the comments in
-  `harness/harness/mtp_speed_matrix_xtx.sh`. The paired output artifact was not
-  retained, so the article marks this as single-sourced.
+These need no separate artifact. Each is arithmetic on the throughput columns
+above, restated here so the derivation is checkable.
+
+| figure | derivation |
+|---|---|
+| E2B 1.89x / 1.87x / 1.98x at Q4 / Q6 / Q8 | MTP-on tok/s divided by MTP-off tok/s, E2B rows |
+| E4B 2.09x / 2.17x / 2.32x at Q4 / Q6 / Q8 | same, E4B rows |
+| the two smallest gains are the two mixture-of-experts pairs | 26B-A4B 1.72x and 35B-A3B 1.65x are the minimum two of the eleven ratios |
+| acceptance spans 3.8 points against a 1.65x to 2.54x speedup | 80.39% minus 76.63%, against the ratio column |
+
+## Run configuration and guards
+
+| figure | value | source |
+|---|---|---|
+| llama.cpp build, every RX 7900 XTX run | b10210 | `harness/harness/arm_qwen36_mtp_xtx.sh` and `shard_run.sh` both pin `bin/llama-b10210/llama-server` |
+| llama.cpp build, RTX 5080 pairs | not recorded | `arm_gemma4_mtp_pair.sh` calls an unversioned `/opt/llama.cpp/build-cuda/bin/llama-server` |
+| llama.cpp build, Glimmer diagnostic | b10356 | `results/muse-glimmer-30b-xtx-20260810/PARTIAL-2026-08-11.md` |
+| 1,001-note pairs ran one request at a time | `--concurrency 1` | `arm_gemma4_mtp_pair.sh`, `arm_qwen36_mtp_xtx.sh` |
+| 10,000-note E2B and E4B pairs ran three server processes | `-> running 3 processes` | `results/10k-{nomtp,sharded}/shard_*.10k.log` |
+| speculation guard on `/slots`, identity guard on `/props`, and the assertion that an MTP-off artifact carries no `draft_n` | run refuses to start or fails on mismatch | `arm_gemma4_mtp_pair.sh` |
+| enabling MTP needs `-hf REPO:QUANT` with `-hfd REPO` and no `-md` | an explicit `-md` suppresses sidecar resolution and yields a non-speculative server | `arm_qwen36_mtp_xtx.sh` header, `ARTICLE_NOTES.md` finding 12 |
+
+The `--mtp` flag being registered for the download example only, and the
+`libllama.so` symbol grep that missed Gemma 4, are recorded in `ARTICLE_NOTES.md`
+findings 12 and 13 against build `b10201-9-g0005475` (2026-07-31). The article
+attributes them to that snapshot rather than to b10210.
+
+## Single-sourced diagnostics
+
+Each of these is recorded in one place, with no retained paired artifact. The
+article names each as single-sourced at the point of use.
+
+| figure | value | source |
+|---|---:|---|
+| identical outputs, MTP off then on, 100 notes | 100/100 and 74/100 | `MEASUREMENT_LOG.md`; prediction files not retained |
+| MTP against itself, fresh server each run | 100/100 on E4B and on E2B | `ARTICLE_NOTES.md` finding 12 |
+| 32 slots against sequential | 4.54x | `ARTICLE_NOTES.md` finding 12 |
+| 32 slots with MTP against sequential | 4.34x | same |
+| two runs of the same 32-slot configuration | 71 s and 61 s wall, 63/100 raw and 75/100 extracted facts identical | same, and `harness/harness/mtp_speed_matrix_xtx.sh` comments, which record that the 16% timing spread is wider than the 4.54x-to-4.34x gap and retract reporting that gap as a slowdown |
+| MTP against sequential on E4B and E2B | 1.83x and 1.59x | `ARTICLE_NOTES.md` finding 12 |
+| draft acceptance, QAT against post-hoc quant, Gemma 4 12B | 82.1% against 82.6% | `ARTICLE_NOTES.md` finding 34. The prediction files were deleted during a fleet relaunch before being committed and are not recoverable. Retained here and marked in the article because the question bears on the recommendation, not because the provenance is adequate. |
+| Qwen draft head quant cannot be overridden on b10210 | 664 drafted / 377 accepted, byte-identical with and without the override | `harness/harness/arm_qwen36_mtp_xtx.sh` header |
 
 ## Named external sources
 

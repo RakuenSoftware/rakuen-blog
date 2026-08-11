@@ -29,3 +29,15 @@ calculations.
 This article combines first-party measurement with Meta's model card and public
 llama.cpp issue reports. The Glimmer DFlash-on run is explicitly partial and
 carries no accuracy claim. Only matched on/off pairs support MTP claims.
+
+Four results are carried as single-sourced, each named as such in the article and
+listed with its source in `evidence/figures.md`: the 100/74 identical-output
+diagnostic, the 32-slot concurrency and repeatability figures, the QAT against
+post-hoc acceptance comparison whose prediction files were deleted before commit,
+and the Qwen draft-head quant override that b10210 accepts and ignores.
+
+The 32-slot section reports 4.54x against 4.34x without calling the difference a
+slowdown. `harness/harness/mtp_speed_matrix_xtx.sh` records that the same
+configuration varied by 16% between two runs, which is wider than that gap, and
+retracts the earlier slowdown claim. The article states the retraction rather
+than repeating the claim.
