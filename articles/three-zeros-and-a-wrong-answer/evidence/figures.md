@@ -117,6 +117,46 @@ This also confirms the article's own mechanism. `baseline` and `aimee` cells
 record real cache rates because those runs report from OpenAI directly. Only the
 gateway run, the one where our code sits in the reporting path, reads zero.
 
+## Candidate material: a fourth zero, and a better closing rule
+
+Found by the author on CT403 on 2026-08-11, after the draft was written. Not
+reproduced on this machine and recorded as reported. It is filed here rather than
+folded into the prose because it changes the article's ending, which is an
+editorial decision.
+
+The economizer had four independent gates that each silently made it a no-op:
+
+1. optional and default-off, so the exporter wrote it no row in `server.modules`,
+   and it was missing from `optional_modules_for_placement`, so the image
+   installed the module and nothing could start it
+2. `compose.server-managed.yaml` forwarded no `AIMEE_MODULE_*` variable, and the
+   entrypoint reads them from the process environment
+3. `economizer.mode` unset resolved to `safe`, which is `json_compact` only. Every
+   other behaviour exists at `aggressive` alone
+4. `agent_runtime.c` gated the delegate fold on `&& !chatgpt`, so a
+   `provider:codex` deployment never folded
+
+Fixed in aimee PR 2573 and PR 2574.
+
+**Why this belongs in this article.** Every one of those four produced a clean
+zero rather than an error. That is a fourth reading in the same day, and it fails
+the rule the article currently closes on: it is not a recording-path problem, so
+checking when the recording path last shipped would not have caught any of them.
+
+The mechanism the author names is sharper than the article's current ending. Every
+economizer caller fails open by design, so `econ_module_reduce` returning non-zero
+means the caller ships the original prompt. A fully broken economizer therefore
+looks exactly like a working one on every signal except the token bill.
+
+**And it supplies a method the article does not have.** The finding was settled by
+sending an identical payload with the module attached and detached and comparing
+`prompt_tokens`: 38,826 against 38,826, byte for byte. A constructed differential
+is unarguable where an absent log is not.
+
+That is a stronger closing rule than the one in the draft. Rather than asking when
+a metric started being recorded, build a case where the number must move, and see
+whether it does.
+
 ## Retracted by a later measurement, 2026-08-11 22:00
 
 The article's natural experiment is withdrawn. It argued that the gateway run and
