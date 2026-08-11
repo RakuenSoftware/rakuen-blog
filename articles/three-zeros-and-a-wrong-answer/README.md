@@ -1,48 +1,52 @@
 # Three Zeros and a Wrong Answer
 
-A layer built on Codex to make it cheaper made the same task cost three to four
-times more, and three confident conclusions along the way were each built on a
-zero that was never a measurement.
+A layer built on Codex to make it cheaper cost three to four times more, and the
+reason was round trips rather than the cache. Three confident conclusions came
+first, each built on a zero that was never a measurement.
 
 ## Status
 
-Draft. Not publication-ready, and deliberately not marked as such, so the voice
-gate does not treat it as a candidate. Two things stand between this and the
-publication gate, and they are different in kind.
+Draft. Not publication-ready, and deliberately not marked as such.
 
-**Evidence.** Every first-party figure is currently sourced to another
-repository. `evidence/figures.md` lists each one, where it lives today, and the
-seven things that have to happen before the article can be published against it.
-Two rows are worse than missing: the gateway run in the cost table has no located
-cells, and `summary.json` does not appear to carry the input-token, cache-hit or
-credit fields the table is built from.
+The voice pass is done and `tools/voice_gate.py` passes the article. That is not
+the thing standing in the way.
 
-**Voice.** The draft is in the author's register, not the repository's standard,
-and `tools/voice_gate.py` would fail it on several rules if it were marked ready.
-The known failures are listed below so the rewrite is a decision rather than a
-discovery.
+**Every first-party figure is sourced to another repository.** Nothing here
+satisfies the rule this repository exists to enforce, so the article cannot be
+published against its current provenance no matter how it reads.
+`evidence/figures.md` records each figure, where it lives today, and the seven
+steps that close the gap. Two rows are worse than merely missing:
 
-## Voice gate failures, if this were marked ready
+- the gateway run in the cost table has no located cells under
+  `battery/codex_results/cells/`, and it is the row carrying the natural
+  experiment that the argument turns on
+- `summary.json` holds `num_turns` but does not appear to carry input tokens,
+  cache hit rate or credits, which are three of the table's five columns
 
-| rule | where |
-|---|---|
-| no em dash in prose | throughout |
-| no prose question | the opening question, and the heading `So where did the money actually go?` |
-| no intensifiers | `very easy to make`, `simply never told`, `simply better at economics` |
-| use run, not arm | the cost table and the natural-experiment section use `arm` throughout |
-| 1,300-word gate | the draft is over it |
-| at most four sentences per paragraph | several paragraphs exceed it |
+A second corpus exists at `battery/matrix_results/cells/` with the same task and
+replicate naming but only three run prefixes. Which tree the table was computed
+from is not established, and the two must not be mixed.
 
-The bold-text rule is also worth a pass: the gate only permits bold that contains
-a figure or opens with a rule verb, and the three reading headers are neither.
+## What the voice pass changed
 
-## A note on the subject matter
+Rewritten against Part I and Part III of the voice guide. The finding moved into
+the lead, headings became assertions, the three retracted readings became a
+table, and roughly 240 words came out of the explaining rather than the evidence.
+Em dashes, the decorative question, the intensifiers and `arm` are gone.
 
-The article's thesis is that a zero can be an absence of recording rather than a
-measurement. It contains two zeros of its own, `delegate` called zero times and
-`files_indexed: 0`, and one of them is load-bearing. Holding those to the
-standard the article sets is a publication condition, not a nicety.
+Two things were added rather than cut, both on calibration grounds. The corrected
+cache figure now carries the 46.6% overall rate beside the 80% to 96% warm-turn
+figure, because quoting only the warm turns overstates the recovery. And the
+`delegate` zero is now marked in the text as a measured zero, since an article
+arguing that a zero can be an absence of recording has to hold its own zeros to
+that standard.
 
-The comparison is also with a third-party product's default behaviour, and the
-article draws a comparative cost conclusion about it. Right of reply has not been
-sought.
+## Open questions for the author
+
+- The comparison includes a `ponytail add-on` run that comes out slightly worse
+  than baseline. If that is a third party's product, the piece makes an adverse
+  comparative claim and right of reply has not been sought.
+- `files_indexed: 0` is described as always returning zero, with a comment three
+  lines above it saying so. The file and line are not yet cited.
+- The 27 of 27 readiness result, the 52 `roundtable_review` calls, the 2.3× per
+  call and the 2.5× round trips are all uncited so far.
