@@ -53,54 +53,79 @@ date in the text, which is what this class of claim needs.
 
 ## Benchmark measurement: the cost table
 
-This is the one part that needs committed artifacts, and it is the part that does
-not yet have them here.
+**Source tree located on 2026-08-11:**
+`ponytail-reanalysis/.claude/worktrees/aimee-review-arm/ct403-results/cells/`,
+81 cells across eight run labels. Three earlier candidate trees were checked and
+rejected: `codex_results` has no aimee run, `matrix_results` has no `codex` usage
+block, and the `/tmp/ptcodex` copies are fixtures with no `summary.json`.
 
-Searched on 2026-08-11 for the `t01_cache` cells behind the table. The columns do
-exist in the schema: `summary.json` carries `codex.usage.input_tokens`,
-`codex.usage.cached_input_tokens` and `codex.estimated_credits`. What could not be
-found is a set of cells that reproduces the published table.
+The columns come from `summary.json`: `codex.usage.input_tokens`,
+`codex.usage.cached_input_tokens` and `codex.estimated_credits`.
 
-| location | what is there |
+### Reproduces exactly
+
+| figure | recomputed from the cells |
 |---|---|
-| `ponytail-codex-benchmark/battery/codex_results/cells/` | `t01_cache` at `r1` only, for baseline, ponytail-addon and ponytail-instructions. No aimee cell |
-| `battery/codex_archive/aimee-kb-8bc6aa5-superseded/cells/` | one aimee `t01_cache` cell, in a directory named superseded |
-| `/tmp/ptcodex/cells/` | aimee and aimee-review `t01_cache` working directories with no `summary.json`, so fixtures rather than results |
-| `battery/matrix_results/cells/` | `t01_cache` at three replicates, but a different schema with no `codex` block and no aimee run |
+| baseline 84k to 98k, 66% to 88%, 4.3 to 6.6 credits | 84,546 / 98,310, 66% to 88%, 4.33 / 6.56. Three replicates |
+| aimee plugin 464k to 648k input, 13.8 to 19.2 credits | 464,169 / 647,820, 13.84 / 19.15. Three replicates |
+| baseline and add-on round trips, 4 to 5 | `codex.item_types.agent_message`, 4 to 5 in both |
 
-What the located cells report, against what the article publishes:
+### Does not reproduce
 
-| run | located `r1` input / hit / credits | article's published range |
-|---|---|---|
-| baseline | 127,833 / 83% / 5.51 | 84k to 98k / 66% to 88% / 4.3 to 6.6 |
-| ponytail add-on | 94,948 / 54% / 7.51 | 107k to 143k / 63% to 85% / 5.3 to 7.4 |
-| aimee, superseded cell | 148,189 / 84% / 6.46 | 464k to 648k / 89% to 91% / 13.8 to 19.2 |
+| published | what the cells give |
+|---|---|
+| ponytail add-on credits 5.3 to 7.4 | 5.95, 6.83, 7.40. The lower bound 5.3 is not an add-on cell. `ponytail-instructions__r2` is 5.31 |
+| aimee plugin cache hit 89% to 91% | 90%, 91%, 91%. 89% appears in `aimee-lean__r3` and `aimee-review__r1`, which are different run labels |
+| aimee plugin round trips 13 to 22 | `agent_message` gives 6 to 8. No metric tested reproduces 13 to 22: `item.started` 12 to 14, `item.completed` 21 to 22, `tool_calls` 24 to 28 |
+| aimee gateway 136k to 231k, 25% to 70%, 7.9 to 21.5 | the four gateway cells give 63k to 77k input, **0%** cache, 10.29 to 12.01 credits |
 
-These do not match, and the round-trip column was not compared because
-`turn.completed` reads 1 in every located cell and is plainly not the measure the
-article uses.
+The round-trip column is the sharpest of these. `agent_message` reproduces
+baseline and add-on to the digit, which is strong evidence it is the intended
+metric, and under that same metric the plugin is 6 to 8 rather than 13 to 22.
+That changes the multiplier the article derives.
 
-**This does not establish that the table is wrong.** It establishes that the
-artifacts behind it are not among the ones on this machine, and that the located
-cells belong to a different campaign. The author ran the measurement and knows
-which tree it came from. Until that tree is named, the table is the one claim in
-the article without a source anyone else could check.
+### The gateway row cannot come from client-reported usage
 
-The article also states three replicates per run. Every located `t01_cache` cell
-outside `matrix_results` is `r1` only.
+All four `aimee-gateway` cells record `cached_input_tokens: 0`. They were written
+between 05:43 and 06:49 on 2026-08-11, before the recording fix deployed at
+17:58. No cell anywhere on this machine was written after that deploy.
+
+So the published gateway cache range of 25% to 70% cannot have come from these
+cells, because these cells report the unrecorded zero that the article is about.
+It most likely came from the `token_audit` ledger after the fix, which is a
+server-side measurement.
+
+If so, the table mixes two measurement bases: three rows from client-reported
+usage and one row from our own ledger. That is a methodological point the article
+does not currently make, and it bears directly on the row carrying the natural
+experiment.
+
+This also confirms the article's own mechanism. `baseline` and `aimee` cells
+record real cache rates because those runs report from OpenAI directly. Only the
+gateway run, the one where our code sits in the reporting path, reads zero.
 
 ## Counts from the corpus
 
+Recomputed on 2026-08-11 by summing `codex.tool_calls` across all 81 cells in
+`ct403-results`.
+
+| figure | recomputed |
+|---|---|
+| `roundtable_review` called 52 times across the corpus | **52.** Reproduces exactly |
+| `delegate` called zero times | **absent from every cell.** No `delegate` key appears in any `tool_calls` map |
+
+The full tool-call census is `preview_blast_radius` 68, `index` 56,
+`roundtable_review` 52, `find_symbol` 18, `find_tools` 2.
+
+The `delegate` zero is a measured zero, and this is the artifact that shows it.
+`tool_calls` records every tool actually invoked, so a tool that never appears was
+never called. The article marks that zero as measured in the text, and the
+marking now has a source behind it.
+
 | figure | source |
 |---|---|
-| `roundtable_review` called 52 times across the corpus | not yet cited to a counting source |
-| `delegate` called zero times | not yet cited to a counting source |
 | about 2.3× heavier per call, from nineteen tool schemas and a context envelope | not yet cited |
-| about 2.5× more round trips | derivable from the cells once the right tree is named |
-
-The `delegate` zero carries weight in the argument and the article marks it in
-the text as a measured zero. That marking needs the counting source behind it,
-by the article's own standard.
+| about 2.5× more round trips | see the round-trip discrepancy above. Under `agent_message`, the metric that reproduces baseline and add-on exactly, the plugin ratio is nearer 1.5× than 2.5× |
 
 ## Reporting inventory and disposition
 
@@ -119,13 +144,21 @@ by the article's own standard.
 
 ## What has to happen before this can be published
 
-1. Name the results tree the cost table was computed from, and copy those cells
-   into this article's `benchmarks/`.
-2. Confirm whether the table spans three replicates or one, and correct the
-   article if it is one.
-3. Name the counting source for the 52 `roundtable_review` calls and the
-   `delegate` zero.
-4. Export the `token_audit` rows behind the cache figures, with their deploy
+1. Copy the 81 `ct403-results` cells into this article's `benchmarks/`. They are
+   currently inside a `.claude/worktrees/` directory, which is not a durable home
+   for the only copy of the evidence.
+2. Resolve the round-trip column. `agent_message` reproduces baseline and add-on
+   exactly and gives the plugin 6 to 8, not 13 to 22. Either name the metric that
+   gives 13 to 22 or correct the figure and the multiplier derived from it.
+3. Say where the gateway row came from. If it is `token_audit` rather than
+   client-reported usage, the table mixes measurement bases and should say so.
+4. Check the add-on credit lower bound of 5.3 and the plugin cache lower bound of
+   89%. Neither appears in its own run's cells, and both appear in a neighbouring
+   run label.
+5. Export the `token_audit` rows behind the cache figures, with their deploy
    boundary, into `evidence/raw/`.
-5. Decide whether the `ponytail add-on` run is a third party's product. If it is,
+6. Cite the 2.3× per-call figure.
+7. Decide whether the `ponytail add-on` run is a third party's product. If it is,
    the article makes an adverse comparative claim and right of reply applies.
+
+Items 2, 3 and 4 change what the article says. The rest are filing.
