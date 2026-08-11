@@ -58,13 +58,28 @@ both sides.
 The partial on run is not scored and supports no accuracy claim. Collection and
 stop details are in `results/muse-glimmer-30b-xtx-20260810/PARTIAL-2026-08-11.md`.
 
-## Single-sourced historical checks
+## Qwen architecture control
+
+These runs compare architecture with MTP off on both sides. They do not supply
+the MTP speedup.
+
+| figure | value | artifact |
+|---|---:|---|
+| Qwen3.6-35B-A3B throughput | 234.0 tok/s | `results/vast/Qwen3.6-35B-A3B.UD-Q4_K_XL.live.pred.jsonl` |
+| Qwen3.6-35B-A3B median completion | 1,100 tokens | same file |
+| Qwen3.6-27B throughput | 67.8 tok/s | `results/vast/Qwen3.6-27B.UD-Q4_K_XL.live.pred.jsonl` |
+| Qwen3.6-27B median completion | 1,256 tokens | same file |
+| 35B-A3B minus 27B F1 | −0.0106 [−0.0294, +0.0088] | `harness/harness/bootstrap_ci.py`, paired, seed 42, 20,000 replicates |
+| MTP state | off for both | neither prediction file contains `draft_n` |
+
+## Additional diagnostics
 
 - The 100/100 MTP-off and 74/100 MTP-on identical-output counts are recorded in
   `MEASUREMENT_LOG.md`; their prediction files were not retained.
-- The invalid 5.3x and 1.58x claims are documented with their causes in
-  `MEASUREMENT_LOG.md` and the run logs. They remain in the article as marked
-  corrections, not measurements to reuse.
+- The 32-request concurrency figures, 4.54x without MTP and 4.34x with it, are
+  recorded in `ARTICLE_NOTES.md` and the comments in
+  `harness/harness/mtp_speed_matrix_xtx.sh`. The paired output artifact was not
+  retained, so the article marks this as single-sourced.
 
 ## Named external sources
 
