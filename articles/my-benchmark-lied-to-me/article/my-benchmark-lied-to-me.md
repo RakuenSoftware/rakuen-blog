@@ -1,243 +1,158 @@
-# My benchmark lied to me nine times and the evidence was always already on disk
+---
+title: "Eight of Nine Benchmark Failures Were Visible in Discarded Data"
+date: 2026-08-09
+author: Rakuen Software
+tags: [benchmarks, measurement, local-models, aimee]
+excerpt: "Startup time, client count, sequence position and mechanism counters exposed eight failures that the headline score concealed. The ninth never had an interval."
+---
 
-DRAFT.
+*Rakuen builds aimee, the system measured here. Evidence types and missing raw
+artifacts are identified in the [figure provenance map](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/my-benchmark-lied-to-me/evidence/figures.md).*
 
-Every wrong answer I published in this project came from an instrument biased in
-the direction I wanted. In eight of the nine, the data that would have caught it was
-already sitting in my own output. The one that had no such column is the cheapest to
-prevent and the most expensive to find.
+Nine benchmark defects pushed my conclusions in a convenient direction. In eight
+cases, the output already contained the field that could have caught the error.
+The ninth began with a number that never had an interval.
 
-That is the finding. Not "measure carefully". The repeatable failure is that a
-benchmark computes more than it prints, and the discarded column is the one that
-would have stopped you.
+The repeated failure was not a bad score. It was printing the score and discarding
+the denominator, timer, state or mechanism counter needed to interpret it.
 
-You are watching the model. Sixteen of them, a ladder of quants, an accuracy column.
-What is moving your numbers is a process count, a startup timer, and a threshold you
-borrowed from an unrelated experiment.
+## Startup time reversed the throughput curve
 
-Nine instances, each with its correction, because a defect list without fixes is a
-confession rather than a method. The last three came from renting hardware, which
-did not introduce a new failure mode. It gave the existing ones a meter.
+I measured throughput as completed rows divided by wall time. Wall time included
+server startup, which increased with process count.
 
-## One: throughput that grew with the variable under test
-
-I measured throughput as rows divided by wall clock. Wall clock includes server
-startup, and startup grows with process count:
-
-| card | nproc=1 | nproc=2 | nproc=3 | nproc=4 |
+| card | 1 process | 2 processes | 3 processes | 4 processes |
 |---|---:|---:|---:|---:|
 | RTX 5080 | 56 s | 84 s | 107 s | 137 s |
 | RX 7900 XTX | 61 s | 67 s | 83 s | 99 s |
 
-On a 200-note sweep that is a third to a half of the measurement. I reported two
-conclusions from it: throughput peaks at two processes and declines, and four
-processes are slower than one. Both wrong, both in the direction the bias pointed.
+On a 200-note sweep, startup occupied a third to a half of the measurement. The
+biased calculation said throughput peaked at two processes and that four were
+slower than one. Removing startup and using per-request latency times process
+count changed the decline into a plateau; four processes were 30% to 100% faster
+than one.
 
-**Fix:** compute throughput from per-request latency times process count. Startup
-is excluded by construction. The curve plateaus instead of falling and nproc=4 is
-30% to 100% faster than nproc=1.
+The exact startup seconds are single-sourced in the campaign ledger because the
+sweep computed the column and then discarded it. They require a banked rerun.
 
-**Already on disk:** the sweep computed the startup column and discarded it.
+## Orphaned clients made the card look four times slower
 
-## Two: fifteen processes I thought I had killed
+One run fell to 8.8 notes per minute. Fifteen clients left by killed runs were
+still sending valid requests through the same three ports. The server looked
+healthy because it served every request; the client queue absorbed the delay.
+After I killed the orphans, the same in-flight run reached 38.7 notes per minute.
 
-An arm was running at 8.8 notes/min. I read that as the card. Fifteen orphaned
-client processes from previously killed runs were still issuing requests to the
-same three ports. Every request was served correctly. It queued. The server's own
-timings looked healthy, so only the client saw the cost.
+This is a single-sourced host observation. No process snapshot survives. The
+ledger does retain the clue: a load average of 27 for six hours on a machine used
+only to shuttle structured data through three secure-shell tunnels.
 
-Killing them took the identical in-flight arm to 38.7 notes/min.
+The cleanup handler now reaps children on exit and signals. The run report also
+compares the observed client count with the configured process count.
 
-**Fix:** the cleanup handler now reaps children on EXIT, INT and TERM. And the
-diagnostic that matters is one line: `ps -eo pid,cmd | grep -c run_llamacpp.py`,
-compared against the process count you expect.
+## A borrowed effect size became a significance rule
 
-**Already on disk:** a load average of 27 for six hours, on a machine whose only
-job was shuttling JSON over three SSH tunnels.
+I used 0.0105 as the threshold for a meaningful difference. It was not an
+uncertainty bound. It was the measured effect of process count in another test.
+At 1,001 notes, paired ranges in this campaign were often about ±0.024.
 
-## Three: a significance threshold that was somebody else's effect size
+Replacing 0.0105 with 0.024 would repeat the mistake. Each comparison now gets
+its own paired bootstrap range. The bootstrap tool was already in the repository;
+I had stopped consulting it.
 
-I used 0.0105 all campaign to decide whether a difference was real. It is not an
-interval. It is finding 19's measured effect of process count on F1, from an
-unrelated experiment, and I promoted it to a threshold because it was a number of
-about the right size.
+## Sequence position made a subset a different run
 
-The real interval at n=1001 is near ±0.024. Every ranking claim I made with a gap
-between those two figures was unsupported.
+The same model processed 1,001 notes alone and inside a 3,002-note run.
 
-Then I compounded it by proposing ±0.024 as a new universal threshold, which is
-the same mistake with a better number.
-
-**Fix:** every comparison gets its own paired bootstrap. No shared constant. It
-costs seconds.
-
-**Already on disk:** the bootstrap tool. I wrote it, then kept using the constant.
-
-## Four: a subset is not a run
-
-I ran one model on 1,001 notes, then on 3,002 notes that strictly contain those
-1,001. Same card, same quant, same process count, same prompt.
-
-| | |
+| measurement | result |
 |---|---:|
-| independently run 1,001 arm | 0.6406 |
-| the same 1,001 notes inside the 3,002 arm | 0.6327 |
-| **byte-identical completions** | **529 / 1001** |
+| native 1,001-note score | 0.6406 |
+| same notes inside the 3,002-note run | 0.6327 |
+| byte-identical completions | **529 of 1,001** |
 
-47% of outputs differ on identical inputs in an identical configuration.
+Changing the preceding note did not explain the churn: identity failures were
+44.8% with the same predecessor and 48.3% with a different one. Disabling the
+prompt cache also failed, reducing identity from 52.8% to 49.9%. A seeded shuffle
+with the cache disabled reproduced 52.3% identity.
 
-The obvious explanation is the preceding note. It does not survive its own test:
-notes with the same predecessor churned 44.8%, notes with a different one churned
-48.3%. The prompt cache holds roughly 38 entries, so the carried state is the last
-38 notes rather than the last one, which predicts uniform churn. That is
-consistent with the mechanism and is not a measurement of it.
+The surviving explanation is sequence position. That is an inference from the
+controls, not a demonstrated internal mechanism. The score difference was
+−0.0079 and did not move a ranking, but the comparison was still invalid. Shared
+notes now retain the same sequence positions.
 
-**Fix, and this one surprised me:** disable the prompt cache for comparability
-arms. I had recorded that as too expensive on the reasoning that the 600-token
-system prompt would be re-evaluated per note. Measured, it costs nothing: 38
-minutes against 41 for the same 1,001 notes. The run I declined for two days as
-unaffordable was free.
+## A 70-note estimate spread without an interval
 
-**Consequence:** a table that ranks natively-run arms against arms extracted from
-a larger run is comparing two different things. Mine did. The effect is −0.0079,
-inside the interval, so no ranking moved. It was luck, not design.
+The source files said reasoning was worth +0.084 on the harmonic mean of precision
+and recall (F1) to E4B. The estimate reached their commit messages too. It came
+from 53 true positives across about 70 notes and had no uncertainty interval.
 
-## Five: a constant from 70 notes reached three source files
+Remeasured on 955 paired notes, the gain was **+0.0103**, with a 95% range from
+**−0.0201 to +0.0404**. Only its sign survived. A measured constant now enters
+source code only with its sample, interval and provenance.
 
-The justification for enabling the model's reasoning pass was a constant that
-appeared in `kb_curator_provider.c`, in `provider_client.c`, and in the commit
-messages that introduced both: **thinking is worth +0.084 F1 to E4B.**
+This was the sole failure with no discarded diagnostic column. The interval was
+never computed.
 
-Its provenance was 53 true positives across about 70 notes, with no interval.
+## My display recreated a scorer bug that source had prevented
 
-Re-measured paired over 955 notes: **+0.0103, 95% interval [−0.0201, +0.0404].**
-The constant was eight times its own re-measured value and only the sign survived.
+Three factless categories appeared as 0.0000 in every run, which I described as a
+blind spot in F1. The scorer already returned `null` for those categories and
+explained why in a comment. My analysis script converted `null` back to 0.0.
 
-**Fix:** an interval beside the number, in the source comment, or the number does
-not go in the source.
+Those rows were also present in overall F1. Removing their false positives added
+**0.040 to 0.053** across six runs. The metric was not blind; the display and my
+story were.
 
-**Already on disk:** nothing, and that is the point. This one had no discarded
-column, because no interval was ever computed. It is the cheapest of the six to
-prevent and the most expensive to find, because a number in a source file has no
-provenance attached to it at all.
+## A deprecated endpoint concealed rented machines
 
-## Six: I fitted a story to my own house theme
+During the recorded rental campaign, `GET /api/v0/instances/` returned a
+successful empty fleet. Adding a query string exposed a deprecation response that
+pointed to version 1. That endpoint showed **25 running instances billed at $2.68
+per hour**, while two were doing work. Four had been running for about ten hours.
 
-Splitting the paired arms by category, three categories scored exactly 0.0000 in
-every arm. I wrote that up as a structural blind spot in F1: a third of the
-corpus unscoreable, correct restraint worth nothing.
+The raw application programming interface responses were not retained, so these
+figures are single-sourced operational observations from the campaign ledger.
+The prevention does not depend on that provider: compare each instance start time
+with the oldest running orchestrator. An older instance cannot belong to it.
 
-Two checks against my own source killed it. The scorer already emits `null`
-rather than 0.0 for factless categories, with a comment explaining that printing
-0.0 inverts the meaning. My analysis script printed 0.0 and reintroduced exactly
-the bug the scorer was written to avoid. And the rows are not invisible to F1 at
-all: zeroing their false positives is worth **+0.040 to +0.053**.
+## Duration thresholds diagnosed slow hosts as dead
 
-By then I had five findings of the form "F1 is blind to X". The shape was
-familiar, the data fit it, and I published before checking. Pattern-matching to
-your own house theme is faster than the checks that catch it.
+I abandoned rented hosts after 420 seconds, then 900, then 600 from container
+start, and finally after a 3,600-second cap. All four rules discarded hosts that
+were still working. Larger models took longer to download, so the false-positive
+rate grew with the tested variable and each replacement restarted billing.
 
-**Fix:** the metric I thought I was introducing has been in every score file all
-along, under `over_extraction`. I rediscovered a number that was already there,
-which is the fourth time in this project.
+The useful signals were categorical: an exited instance, a container-engine
+error, disappearance from the provider response, or absent disk activity while a
+later sibling reported progress. These observations survive only in the campaign
+ledger, not raw provider snapshots. A duration can enforce a budget; it cannot by
+itself diagnose a dead host.
 
-## Seven: a successful response that said I owned nothing
+## Throughput did not prove speculative decoding
 
-`GET /api/v0/instances/` returned `{"instances": []}`. Not an error. A parseable,
-200-status, empty fleet.
+Qwen3.6-35B-A3B produced 234 tokens per second. I attributed that speed to
+multi-token prediction (MTP), a speculative-decoding method, without checking the
+mechanism fields. The measured prediction rows contain no draft counters and the
+server properties reported speculation as null. The run therefore provides no
+evidence that speculation was active.
 
-I recorded that in my own operational notes as "intermittently returns empty while
-instances are demonstrably running" and moved on, because I had rentals I could see
-working and a list endpoint that disagreed with them.
+The repository fact also changed. As of 2026-08-09, the primary ggml-org
+[Qwen3.6-27B repository](https://huggingface.co/ggml-org/Qwen3.6-27B-GGUF/tree/main)
+and [Qwen3.6-35B-A3B repository](https://huggingface.co/ggml-org/Qwen3.6-35B-A3B-GGUF/tree/main)
+publish MTP sidecars. Their present availability does not show that the measured
+run used one. The original claim is narrowed to the run: no observed draft
+counters, no mechanism claim.
 
-Ask the same endpoint with a query string and it stops lying:
+## Print the fields that can falsify the score
 
-    {"success":false,"error":"deprecated_endpoint",
-     "msg":"/api/v0/instances/ is deprecated. Use /api/v1/instances/ instead."}
+- Print process count, startup time, sample size, client count, slot count and
+  draft acceptance beside throughput and accuracy.
+- Give every comparison its own paired uncertainty range.
+- Keep shared notes at the same sequence positions or treat the executions as
+  different configurations.
+- Put a sample, interval and source beside every measured constant in code.
+- Use duration as a budget limit, not as a diagnosis.
+- Treat a successful empty response as a claim to verify against billing and
+  local process state.
 
-The v1 endpoint reported **25 running instances billing $2.68 an hour, two of which
-were doing work.** The rest were overnight leaks: containers that failed to start,
-hosts that had exited, and one still serving a model whose arm had finished and been
-committed hours earlier.
-
-**Fix:** the check that finds a leak does not need the provider to cooperate. An
-instance whose `start_date` precedes the start time of the oldest running
-orchestrator process cannot be owned by one. That is a comparison between two facts,
-not a timeout, and it identified four ten-hour-old instances immediately.
-
-**Already on disk:** the deprecation notice, behind a query string, in the same
-endpoint I was already calling. I diagnosed the symptom, wrote the symptom into my
-notes as if it were the cause, and then trusted my own note for eleven hours.
-
-## Eight: four timeouts, each wrong in the same direction
-
-I decided a rented host was stuck four separate times, at 420 seconds, then 900, then
-600 from container start, then a 3,600 second cap. Every one of them abandoned hosts
-that were working.
-
-The bias has a shape. Download time scales with model size and my deadline did not,
-so **the false-positive rate grew with the variable under test.** That is the same
-defect as the throughput timer in section one, one layer up and with a bill attached:
-because the pool re-places on timeout, each large arm burned a full deadline of
-billing and then restarted the download somewhere else, forever.
-
-**Fix:** none of the signals that actually distinguish a dead host from a slow one is
-a duration. The instance reports `exited`. The container reports a docker daemon
-error. The instance disappears from the API. Or `disk_util` sits at −1 with no status
-message while a sibling placed thirty minutes later is already reporting progress.
-Those are categorical, and the last one is a comparison rather than a clock.
-
-**Already on disk:** every one of those fields, in the same API response I was
-timing.
-
-## Nine: I inferred a mechanism from a number
-
-Qwen3.6-35B-A3B ran at 234 tok/s. I decided a 35B model could not do that without
-speculative decoding, labelled both Qwen arms "native MTP" in my notes, and reported
-it that way three times.
-
-`/props` says `speculative: null`. No row in either prediction file carries a
-`draft_n` counter. Qwen3.6 publishes no MTP draft in that repository at all. The real
-mechanism is that roughly 3B of its 35B parameters are active per token, so it reads
-about a tenth as much memory as a dense model of its size.
-
-**Fix:** I had already added `draft_n` and `draft_n_accepted` to every prediction row,
-specifically because wall clock confounds the feature with the host and the model.
-Then I read the throughput column anyway and explained it with a feature the model
-does not have. Recording a mechanism is not the same as consulting it.
-
-**Already on disk:** in every row of both files, in the field I added for this exact
-purpose.
-
-## Print the denominators your harness already has
-
-A benchmark computes more than it prints. The discarded column is the one that
-catches you, and in eight of the nine cases here it was already being computed. The
-one exception had no interval to discard, which is worse.
-
-So the practice is not "be careful". It is:
-
-**Print the denominators.** Process count, startup time, sample size, client count,
-slot count, draft acceptance. Most of these were a number the harness had and did not
-show.
-
-**Never share a threshold across experiments.** A number that was an effect size
-in one place is not a significance bound in another, however similar its
-magnitude.
-
-**Read your own scorer before writing about its limits.** Twice now the tool had
-already handled the case I was about to report as unhandled, and had a comment
-saying why.
-
-**A subset is not a run**, unless you have turned the cache off and checked.
-
-**Never encode a duration as a diagnosis.** Four times I turned "this is taking a
-while" into a constant. A clock cannot tell a slow host from a dead one, and the
-signals that can are all categorical.
-
-**When a response says you own nothing, prove it before believing it.** A successful
-empty answer is the most expensive failure mode available, because nothing about it
-looks like a failure.
-
-Each of those is one line of output or one hour of work. I spent about a week, and
-roughly forty dollars of rented GPU time, on the errors they would have prevented.
+Eight failures needed one more printed field. The ninth needed an interval before
+the number was allowed to travel.

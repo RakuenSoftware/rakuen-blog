@@ -1,11 +1,11 @@
-# Eight Ways A Run Scores Fine And Is Broken
+# Eight Ways a Benchmark Run Can Look Fine and Be Broken
 
-Eight failure modes that produce a plausible number, one of which produced a ranking.
+Six diagnostic columns expose eight failures hidden by plausible scores.
 
 ## Status
 
-Draft. Not published. Every figure in the article traces to a raw artifact in the
-series evidence base.
+Publication-ready as of 2026-08-09. Not yet published. Every figure in the article
+is accounted for in the local provenance map.
 
 ## Evidence
 
@@ -20,9 +20,9 @@ Raw artifacts for the whole series live under
 | `ARTICLE_NOTES.md` | the running findings ledger |
 | `MEASUREMENT_LOG.md` | the defect log, including every retracted claim |
 
-`evidence/figures.md`, the per-figure map from each number in the article to the
-artifact behind it, is not written yet. Until it is, figures trace through
-`ARTICLE_NOTES.md` and `MEASUREMENT_LOG.md` in the series evidence base.
+`evidence/figures.md` maps the article's measurements to raw artifacts or marks
+them as single-sourced. It also records the disposition of every first-party test
+used in the draft.
 
 ## Reporting record
 

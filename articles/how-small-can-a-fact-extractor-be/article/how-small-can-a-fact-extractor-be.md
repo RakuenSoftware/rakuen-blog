@@ -1,169 +1,118 @@
-# How small can a fact extractor be
+---
+title: "A 2B Fact Extractor Came Within 0.047 of a 31B One"
+date: 2026-08-09
+author: Rakuen Software
+tags: [local-models, benchmarks, fact-extraction, aimee]
+excerpt: "On one 1,001-note corpus, model size moved the aggregate score less than architecture, prompting and output discipline did. The remaining risk is hidden by that score."
+---
 
-DRAFT. The full field table lives in the head-to-head piece. This one asks only the
-size question.
+*Rakuen builds aimee, the system measured here. Run identities and figure sources
+are recorded in the [figure provenance map](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/how-small-can-a-fact-extractor-be/evidence/figures.md).*
 
-If you want a local model to turn a note into structured facts, the first question is
-how much model you have to buy. I measured twenty-two arms, from 230M to 35B.
+A two-billion-parameter model scored 0.6406 on 1,001 notes. A
+31-billion-parameter model scored 0.6872. The paired difference in the harmonic
+mean of precision and recall (F1) was **+0.0465**, with a 95% bootstrap range
+from **+0.0220 to +0.0712**.
 
-The answer is smaller than I expected, and the reason it took me three attempts to
-state correctly is worth more than the answer.
+That is a real gain on this corpus. It is also smaller than gains I measured from
+a prompt change on one model and a quantization change on another. Size was not
+the only variable worth buying.
 
-## Fifteen times the parameters is worth 0.047
+## Rung-by-rung comparisons hid the endpoint gain
 
-Every arm below is 1,001 notes on the same corpus with the same prompt.
+Every run below used the same prompt and the same 1,001 notes.
 
-| model | params | F1 |
-|---|---|---:|
+| model | parameters | F1 |
+|---|---:|---:|
 | gemma-4-E2B | 2B | 0.6406 |
-| gemma-4-26B-A4B | 26B total, ~4B active | 0.6804 |
+| gemma-4-26B-A4B | 26B total, about 4B active | 0.6804 |
 | gemma-4-12B | 12B | 0.6854 |
 | gemma-4-31B | 31B | 0.6872 |
 
-> gemma-4-E2B → gemma-4-31B: **+0.0465, 95% CI [+0.0220, +0.0712]**
+I initially compared six adjacent runs down the ranking. Every paired range
+crossed zero:
 
-Real, and small. Going from 2B to 31B is worth less than half of what a *prompt
-clause* was worth on one model in this same project, and about the same as what a
-quant change was worth on another.
+| comparison | difference | 95% range |
+|---|---:|---:|
+| 31B quantization-aware training (QAT) to 12B QAT | −0.0017 | −0.0202 to +0.0162 |
+| 12B QAT to 26B Unsloth | −0.0051 | −0.0256 to +0.0154 |
+| 26B Unsloth to 31B non-QAT | −0.0041 | −0.0258 to +0.0176 |
+| 31B non-QAT to 12B non-QAT | −0.0009 | −0.0197 to +0.0180 |
+| 12B non-QAT to 26B Google | −0.0179 | −0.0434 to +0.0071 |
+| 26B Google to E2B QAT | −0.0168 | −0.0406 to +0.0070 |
 
-## The measurement that nearly said the opposite
+The endpoint comparison still found +0.0465. Each rung had about 0.020 of
+uncertainty in either direction, enough to hide a cumulative change while no
+single step separated. A ladder needs both adjacent and endpoint comparisons.
 
-I first tested it the obvious way: bootstrap each adjacent pair down the ranking.
+## Equal F1 scores concealed different risks
 
-| step | delta | 95% CI | |
-|---|---:|---|---|
-| 31B QAT → 12B QAT | −0.0017 | [−0.0202, +0.0162] | indistinguishable |
-| 12B QAT → 26B unsloth | −0.0051 | [−0.0256, +0.0154] | indistinguishable |
-| 26B unsloth → 31B non-QAT | −0.0041 | [−0.0258, +0.0176] | indistinguishable |
-| 31B non-QAT → 12B non-QAT | −0.0009 | [−0.0197, +0.0180] | indistinguishable |
-| 12B non-QAT → 26B google | −0.0179 | [−0.0434, +0.0071] | indistinguishable |
-| 26B google → E2B QAT | −0.0168 | [−0.0406, +0.0070] | indistinguishable |
+The 31B and 12B quantization-aware-trained (QAT) runs were indistinguishable on
+F1. Their outputs were not.
 
-Six consecutive steps, 2B to 31B, not one of them separable. I wrote "size does
-nothing on this task" in my notes and I was about to publish it.
-
-Then I tested the ends against each other and got +0.0465 with the interval well
-clear of zero.
-
-Both results are correct. Each step carries an interval of roughly ±0.020, and six
-of those stacked end to end have room to hide a real 0.047 with none of the
-individual steps noticing.
-
-**A size ladder compared rung by rung will always tell you size does nothing.** That
-is the shape of the experiment, not a fact about models, and it is the default way
-people run this comparison.
-
-## What size actually changes is not the score
-
-The 31B and the 12B are statistically identical on F1. They are not the same model.
-
-| | F1 | recall | abstains on factless | invented triples |
+| model | F1 | recall | silent on factless notes | invented triples |
 |---|---:|---:|---:|---:|
 | gemma-4-31B QAT | 0.6872 | **0.8000** | **0.463** | **180** |
 | gemma-4-12B QAT | 0.6854 | 0.7330 | 0.702 | 97 |
 
-The 31B finds the most facts in the entire field and invents nearly twice as many on
-the 322 notes that assert nothing. Both 31B arms do this, so it is the model and not
-the quant.
+The 31B run found more facts and invented nearly twice as many triples on the
+322 notes whose correct answer was silence. Both 31B variants behaved this way,
+which points to the model rather than the quantization. That is an inference from
+two variants, not a family-wide result.
 
-Scaling up bought recall and spent restraint. If your pipeline reviews what it
-writes, that is a good trade. If it writes into a graph nothing will audit, it is a
-bad one, and the F1 column shows neither.
+If a reviewer checks every written fact, the recall may be worth the inventions.
+If the model writes directly into a graph, restraint may matter more. F1 alone
+does not make that decision.
 
-## Architecture beat size, twice
+## Sparse models separated resident size from running cost
 
-The largest jump in the whole field is not a size step.
+Qwen3.6-35B-A3B, a mixture-of-experts model with about 3B parameters active per
+token, beat gemma-4-31B QAT by **0.0386**, with a 95% range from **+0.0194 to
++0.0577**. It also produced 234.0 tokens per second, compared with 67.8 for the
+dense Qwen3.6-27B. The 35B sparse and 27B dense runs were tied on accuracy:
+**−0.0106**, with a range from **−0.0294 to +0.0088**.
 
-> gemma-4-31B QAT → Qwen3.6-35B-A3B: **+0.0386, 95% CI [+0.0194, +0.0577]**
+That measurement separates two budgets. Total parameters determine how much
+memory the model occupies. Active parameters help determine how much model data
+is read for each token. A 26B sparse model also reached 323 tokens per second on
+the same 16-gibibyte card class, but throughput still depends on the exact model,
+quantization and server configuration.
 
-That is a mixture of experts with roughly 3B active parameters beating a dense 31B by
-more than the dense 31B beat a 2B.
+Sparsity does not shrink the resident model. LFM2.5-8B-A1B at Q4_K_M occupied
+5.16 gigabytes, so three copies did not fit on a 16-gibibyte card. That run used a
+different process count, a known confound worth about 0.0105 F1 in this campaign.
+Plan memory from total parameters and test speed from the served configuration.
 
-And on throughput the same architecture choice dominates everything:
+## Below 2B, format failures set score floors
 
-| model | active | tok/s |
-|---|---|---:|
-| Qwen3.6-35B-A3B | ~3B of 35B | **234.0** |
-| Qwen3.6-27B dense | 27B | 67.8 |
+LFM2.5-1.2B parsed 73% of its answers and MiniCPM5-1B parsed 87%. Neither run hit
+the context limit. The missing rows therefore point to malformed output, not
+truncation, and their scores are lower bounds until the prompts are matched to
+their formats.
 
-**3.5 times faster, same family, same quant, same card class, writing the same
-amount of text, and tied on accuracy** at −0.0106, CI [−0.0294, +0.0088].
+LFM2.5-230M parsed every answer and scored 0.1309. Its low score was not a parser
+failure. Parse rate distinguishes those cases; it does not prove capability by
+itself.
 
-So the size question splits in two. Total parameters decide what fits on your card.
-Active parameters decide what it costs to run. A 26B MoE ran at 323 tok/s on a 16 GB
-consumer card, faster than a 12B dense model on the same card.
+Ten runs emitted no reasoning pass. On gemma-4-E4B, removing the sentence `No
+prose, no markdown.` restored reasoning on 770 of 770 notes and added 0.116 to
+relation-agnostic recall. I tested that diagnosis on four models. Twenty-eight
+runs remain unchecked, so I cannot attribute every silent reasoning pass to the
+same clause.
 
-## A mixture of experts is not a small model on disk
+## The 2B result is a shortlist rule, not a universal cutoff
 
-All experts stay resident. LFM2.5-8B-A1B at Q4_K_M is 5.16 GB and three copies do not
-fit a 16 GiB card, so that arm ran at a different process count from the rest of the
-field, which makes it incomparable to the ranking by construction. Process count is
-worth about 0.0105 F1 here.
+Start the shortlist around 2B to 4B, then compare its endpoint with the largest
+model that fits. Report recall, invention rate, parse rate and unfloored F1 beside
+the aggregate score. For sparse models, budget memory from total parameters and
+measure throughput from active serving behavior.
 
-Sparsity buys bandwidth, not VRAM. Plan memory by total parameters and speed by
-active ones.
+Two cost observations are single-sourced in the campaign ledger because their
+raw logs were not retained: central processing unit time ranged from 2,233 to
+35,230 milliseconds per note, and the largest E4B quantization took 420 seconds
+to load. Treat those as leads for a timed rerun, not purchasing figures.
 
-## Below 2B, stop measuring capability and check the format
-
-Four arms in my field score under 0.20, and they get there in different ways.
-
-**LFM2.5-1.2B parses 0.73 and MiniCPM5-1B parses 0.87.** A quarter and an eighth of
-their output is unreadable, with **zero** rows hitting the context limit, so this is
-malformed JSON rather than truncation. Those scores are floors on models I have never
-measured properly. That is a format disagreement, not a capability result, and until
-I re-run them with a matched prompt they have no place in a ranking.
-
-**LFM2.5-230M parses 1.00 and scores 0.1309.** Nothing is wrong with its format. It is
-answering fluently and incorrectly.
-
-A clean parse rate is not evidence of a working model, and a poor one is not evidence
-of a broken one. Check which you have before you conclude anything about size.
-
-## A third of the field never reasons, and I only know why for one of them
-
-Ten arms emit no reasoning pass at all in this harness. On gemma-4-E4B I traced it:
-one sentence in my prompt, `No prose, no markdown.`, suppressed reasoning across
-10,000 notes while every row still recorded `thinking: true`. Removing it restored
-reasoning on 770 of 770 notes and was worth +0.116 relation-agnostic recall.
-
-I have run that diagnostic on four models. Twenty-eight arms are unchecked. A model that
-silently loses its reasoning pass scores as a worse model, so some unknown fraction
-of the small end of my field is a prompt problem wearing the costume of a size
-problem.
-
-That is the largest open item in this piece, and it points the same way every time:
-**before concluding a small model cannot do the task, check that your prompt let it
-try.**
-
-## Shortlist at 2B to 4B, then spend the VRAM somewhere else
-
-**Shortlist at 2B to 4B, then check what a bigger card would buy.** In my field that
-is +0.047 for fifteen times the parameters, and I would rather spend the VRAM on a
-sparse 26B that runs at 323 tok/s.
-
-**Decide on restraint, not on F1.** The size step changed invention rate by 1.9x and
-F1 by 0.002.
-
-**Budget for the ladder, not the model.** The cheapest real gains I found were a
-quant change and a prompt clause, both larger than several size steps, and neither
-transfers between models.
-
-**Check parse rate and the unfloored score before believing a low one.** Four of my
-arms scored near zero in three different ways: two emit valid JSON that is never the
-right shape, and two extracted correctly and were emptied by a confidence gate.
-
-**Cost spans a factor of 16 and is a separate axis.** CPU time per note runs from
-2,233 ms at 230M to 35,230 ms at E4B. On GPU the largest E4B quant took 420 seconds
-to load before serving its first note, and that appears in no accuracy column
-anywhere.
-
-## The sub-2B rows are the weakest thing here
-
-1. **The sub-2B models re-run with matched prompts.** Two are floors and one is
-   untested against its own format.
-2. **The reasoning clause tested against the other eighteen.**
-3. **Load time as a column.** I have observed it in passing and it is a real
-   deployment cost.
-4. **A second corpus from a different generator.** Every number here inherits one
-   lineage, and a model trained on data resembling my generator has an advantage I
-   cannot detect from inside.
+The unresolved tests are the sub-2B prompt match, the reasoning-clause check on
+the rest of the field, banked load-time measurements and a second corpus from a
+different generator. Until those exist, 2B is where this corpus says to start,
+not where fact extraction says capability begins.
