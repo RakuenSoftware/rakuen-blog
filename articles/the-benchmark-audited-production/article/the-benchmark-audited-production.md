@@ -1,187 +1,110 @@
-# I built a benchmark to rank models and it audited my production system
+---
+title: "The Benchmark Exposed Four Production Contract Failures"
+date: 2026-08-09
+author: Rakuen Software
+tags: [benchmarks, production, knowledge-graphs, aimee]
+excerpt: "The scorer normalized identities and represented negation more carefully than production. Its ontology was also incomplete, so the audit had to run both ways."
+---
 
-DRAFT. The sample sizes here are the smallest in the series. Most of the defects are
-structural, which is why I am willing to write them at this n.
+*Rakuen builds aimee, the system audited here. Production observations without
+banked source snapshots are labelled in the [figure provenance map](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-benchmark-audited-production/evidence/figures.md).*
 
-The benchmark ranked the models. It also encoded a specification of how a knowledge
-graph should behave, and my production path disagreed with it in four places.
+The benchmark ranked models and specified how a knowledge graph should behave.
+Production disagreed with it on identity, migration, negation and relation names.
+Production was wrong in the first three cases. The benchmark and production were
+both wrong in the fourth.
 
-Production was wrong in all four. One section breaks the pattern and it is the one
-worth reading closely.
+## The scorer normalized names that production split apart
 
-## A scorer is a design document nobody reviews
+Production lowercased entity names and collapsed whitespace. It still treated
+`Sunshine`, `Sunshine team` and `sunshine_team` as three canonical identities, so
+a fact stored under one could be invisible to a query for another.
 
-To grade an answer, a scorer must decide when two names are the same name, when two
-predicates mean the same thing, and what a negated fact is. Production never had to
-state any of that, so it never did. That is not a happy accident: it is what happens
-when one side of a system is forced to be explicit and the other is not.
+The scorer already folded separators, articles, honorifics and edge punctuation.
+The corpus was cloned from production data, so those variations came from the
+system's note stream rather than a grading convenience. Extraction could receive
+credit for a fact that production filed under an unreachable name.
 
-## Three names for one entity
+The fix moved conservative folds into production. Words such as `van`, `gateway`,
+`router`, `server`, `box` and `project` remain because they can be part of a real
+product name. A missed fold can later be joined with an alias; a false fold erases
+the distinction. The operating rule is to under-fold when evidence is ambiguous.
 
-`entity_name_normalize()` in production lower-cased the string and collapsed
-whitespace. Nothing else.
+This finding comes from a static source audit and production observation. The
+source snapshot is not committed here, so it remains single-sourced to the
+reporting ledger.
 
-So `Sunshine`, `Sunshine team` and `sunshine_team` were three distinct
-`canonical_id` values, and a fact stored under any one was invisible to a query
-about either of the others.
+## The identity migration left edges unreachable
 
-The benchmark's scorer had been folding separators, articles, honorifics and edge
-punctuation for months, because otherwise it produced false negatives that were
-obviously false. And the corpus was cloned **from production data**, so those folds
-are not a grading convenience. They describe how names actually vary in the real
-note stream.
+The registry migration merged aliases but did not rewrite edge endpoints stored
+as text. Recall paths then compared those endpoints literally. A fact could remain
+in the table under the discarded display name and become invisible to every
+query.
 
-Which is the sentence that reframed the work: **extraction was measuring cleaner
-than the graph it produced.** The model emitted a correct fact, the scorer folded
-the name and credited it, and production filed it under a name nothing would ever
-resolve to. The benchmark could not see the failure because it had already fixed
-it, locally, for itself.
+A substitute-database test passed because it seeded a legacy alias without a
+legacy edge. A PostgreSQL integration test that created both failed on its first
+run. The migration was intended to prevent memory loss and produced it instead.
 
-The fix went into production rather than into the benchmark, and the exclusions are
-the interesting part. `van`, `gateway`, `router`, `server`, `box` and `project` are
-**not** stripped as trailing descriptors, because product names contain those
-words. `Girder Gateway van` and `Ingot Router` are entities, not entities plus
-noise.
+Substitute-engine tests now check syntax for migrations. Behavior involving
+constraints, types or stored identity runs against the production engine.
 
-The asymmetry justifies the caution. A fold you miss leaves two nodes, and an alias
-can join them later. A fold you get wrong welds two real entities into one and
-there is nothing left in the data to undo it with. **When in doubt, under-fold.**
+## The model extracted negation that the pipeline discarded
 
-## The migration for that fix lost the memory it was fixing
+Production already had a tested retraction operation with bitemporal supersession,
+immutable-edge protection and an authority guard. The language-model path never
+called it. A pattern extractor handled a narrow first-person form; third-party
+statements such as a company no longer being a customer were discarded.
 
-Renormalising the entity registry needed a migration. It merged the registry and
-stopped there.
+The prompt now requests the original fact plus a polarity flag. Keeping the object
+allows retraction of one `(source, relation, target)` edge instead of every target
+for that source and relation.
 
-`entity_edges` stores its endpoints as **text**, and recall matches them literally.
-Both `db2_fact_recall_block` and `db2_fact_current_count` run `WHERE source = ?`
-with no canonicalisation. A fact written under a display name that lost the merge
-stayed filed under a name that no longer resolved to anything: **present in the
-table, invisible to every query.**
+On the 132-note retraction slice of corpus version 5:
 
-Silent memory loss, shipped by a migration whose entire purpose was to stop losing
-memory.
-
-The shim test passed throughout. It seeded a legacy alias row and no legacy edge, so
-the exact condition the bug needs was never constructed. A Postgres integration test
-written to seed precisely that failed on its first run.
-
-That was the second time in one session a real-backend test caught something the
-sqlite shim could not. The shim is now a syntax check rather than a behaviour check
-for anything touching migrations.
-
-## Negation was information and the pipeline threw it away
-
-`db2_fact_retract()` had existed since an early milestone, with bitemporal
-supersede, refusal on immutable edges, and an authority guard so a model cannot
-delete a fact a user stated directly. It is tested.
-
-Nothing on the LLM path called it.
-
-`fact_ingest.c` invoked it only from the pattern extractor, and only for
-first-person attributes of the user. So "I no longer work at X" was handled by a
-regular expression, while "Kestrel Freight isn't a customer any more", which is the
-shape most third-party facts take, was dropped by a prompt that told the model a
-retraction had nothing durable to record.
-
-`member_of` is multi-valued, so nothing superseded it either. The edge stayed active
-no matter how many notes said the relationship had ended.
-
-**The models were already doing the hard part.** On the negation slice they either
-emitted the correct triple with the polarity silently dropped, or invented a
-negative predicate like `removed_from`. Both outcomes were discarded downstream.
-
-The fix was to stop asking for a special retraction shape and ask for **the original
-fact with a polarity flag**, which maps one-to-one onto the existing API. Keeping
-the object is the point: `target` scopes the retraction to a single edge, where a
-NULL target would retract every value of `(source, relation)`.
-
-Measured on two models, corpus v5, 1,001 notes:
-
-| | retractions flagged | usable by `db2_fact_retract` | polarity errors per 869 ordinary notes |
+| model | retractions flagged | usable by production | polarity errors on 869 ordinary notes |
 |---|---:|---:|---:|
-| E4B | 115/132 | 92 | 0 |
-| E2B | 85/132 | 85, every one it flagged | 1 |
+| E4B | 115 of 132 | 92 | 0 |
+| E2B | 85 of 132 | 85 | 1 |
 
-Different failure profiles, both safe. E4B flags more and converts fewer. E2B flags
-fewer and converts all of them.
+Across the two runs, one of 1,738 ordinary notes received an incorrect polarity
+flag. Relocation notes emitted both halves correctly paired 85% of the time.
+These are first-party measurements on two models and one corpus, not a general
+safety rate. They require expansion before an automatic deletion policy.
 
-**One error in 1,738 non-retraction notes** is the number that matters, because the
-risk of a polarity flag is that it fires when it should not and deletes a true fact.
-Relocations emit both halves correctly paired 85% of the time.
+## The gold set used relations missing from its ontology
 
-Stated as mine rather than as the world's: I have not found a polarity failure mode
-beyond that one instance, and I have not looked across enough models to tell you
-there is not one.
+The seed ontology defined 17 relations. The gold set used 12 undefined predicates
+for **167 of 880 triples**, or 19%. `owns_account` and `subscription_tier`
+appeared 39 times each, `customer_of` 26 times and `purchased` 17 times.
 
-## The section where the benchmark was also wrong
+The benchmark asked models to invent names and then penalized them for differing
+from its inventions. Production still wrote novel edges, so the immediate failure
+was fragmentation rather than data loss.
 
-The seed ontology defined 17 relations. **19% of the gold set's own triples, 167 of
-880 across 12 predicates, used relations it did not define**: `owns_account` 39
-times, `subscription_tier` 39, `customer_of` 26, `purchased` 17.
-
-The benchmark was making the model invent a predicate name and then grading it on
-whether it invented the same one. And the gold was not self-consistent: both `owns`
-and `owns_account` appear in it.
-
-So both sides were wrong in different directions. Production defined too few
-relations; the gold set was not coherent either. **"The benchmark is the better
-specification" is a useful prior, not a rule**, and the way you find out which case
-you are in is by diffing them.
-
-My first conclusion about this was also wrong. I assumed those facts were stranded.
-They were not: a NOVEL verdict still writes the edge, and recall filters on
-`superseded_at` and `suppressed` rather than on relation class. The real cost is
-fragmentation, which is slower and harder to notice:
-
-| meaning | facts | split across |
+| meaning | facts | relation names |
 |---|---:|---|
-| hosting and deployment | 112 | runs_on 45, has_hostname 46, operates 16, hosts 5 |
-| ownership | 89 | owns 59, acquired 30 |
-| membership | 396 | works_for 205, member_of 167, contributes_to 24 |
+| hosting and deployment | 112 | `runs_on` 45, `has_hostname` 46, `operates` 16, `hosts` 5 |
+| ownership | 89 | `owns` 59, `acquired` 30 |
+| membership | 396 | `works_for` 205, `member_of` 167, `contributes_to` 24 |
 
-And the auto-promotion rule, which makes a novel relation permanent once it recurs
-three times, would have set that in concrete. Twenty-three of 89 novel names
-qualified. The ontology was on course to about 40 mostly-synonymous entries with no
-way back.
+An automatic rule promoted a novel relation after three uses. Twenty-three of 89
+novel names qualified, putting the ontology on course for about 40 overlapping
+entries. Seven relations and 15 aliases were added conservatively. Generic or
+distinct verbs such as `owns`, `operates`, `runs` and `contributes_to` were not
+folded merely to reduce the count.
 
-I seeded seven relations and 15 aliases. What I refused to fold matters as much:
-`owns` is too generic to be a target, `operates` and `runs` describe running a
-**business** rather than running **on** a host, and `contributes_to` is not
-membership. Each would have traded a fragmentation problem for a precision problem.
+An interrupted 223-note run reduced the novel-predicate rate from 23.5% to 10.0%.
+That result is provisional and survives only in the article notes. The complete
+post-fix fragmentation test has not been run.
 
-Early result at n=223 under the expanded ontology: novel-predicate rate fell from
-23.5% to 10.0%. Provisional, because that arm was interrupted.
+## Audit the benchmark and production in both directions
 
-## Read the scorer as the specification it already is
+Diff every scorer normalization against the production path. Test absence,
+retractions and deletions rather than only facts that should exist. Run identity
+migrations against the real database engine. Compare the gold predicates with
+the ontology before using them to rank models.
 
-**Diff your scorer against your pipeline, line by line.** Every normalisation the
-scorer performs and the pipeline does not is a place where you are measuring a
-system you did not ship. I found my first one by accident and the deliberate diff
-still has not been done.
-
-**Test for absence.** Retractions, negations and deletions are invisible to a test
-that only asserts what should be there. A third of my corpus tests absence and that
-is the part that caught the retraction gap.
-
-**Run identity migrations against the real engine.** The substitute agreed with the
-bug.
-
-**Check your gold against your own ontology before ranking anything on it.** A
-predicate you did not define is a model penalty you did not intend, and 19% of mine
-were undefined.
-
-**When you fold, under-fold.** The error you can undo is better than the error you
-cannot.
-
-## A structural defect does not need a large n, and one claim here is not structural
-
-Sample size. Most of these were found during a 70-note era, and the polarity figure
-is two models on one corpus.
-
-I am writing them up anyway because a structural defect does not need a large n: a
-gate that cannot fire from a path fires zero times regardless of how many notes you
-push through it. Where the claim is statistical rather than structural, the polarity
-number, I have said so and would not act on it alone.
-
-The fragmentation fix has also not been re-measured. Those three families should
-consolidate after the ontology change. Nothing has confirmed that they did.
+The identity, migration and unreachable-negation findings are structural: the
+relevant production paths could not perform the requested behavior. The polarity
+rate and ontology improvement are statistical claims from small or incomplete
+samples. They remain validation tasks, not production guarantees.

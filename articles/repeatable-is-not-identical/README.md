@@ -1,11 +1,11 @@
-# Repeatable Is Not Identical
+# Repeatability Belonged to the Configuration, Not the Model
 
-Every serving configuration reproduces itself exactly and no two agree with each other.
+Isolated processes and speculation repeated exactly; shared slots did not.
 
 ## Status
 
-Draft. Not published. Every figure in the article traces to a raw artifact in the
-series evidence base.
+Publication-ready as of 2026-08-09. Not yet published. Every figure in the article
+is accounted for in the local provenance map.
 
 ## Evidence
 
@@ -20,9 +20,9 @@ Raw artifacts for the whole series live under
 | `ARTICLE_NOTES.md` | the running findings ledger |
 | `MEASUREMENT_LOG.md` | the defect log, including every retracted claim |
 
-`evidence/figures.md`, the per-figure map from each number in the article to the
-artifact behind it, is not written yet. Until it is, figures trace through
-`ARTICLE_NOTES.md` and `MEASUREMENT_LOG.md` in the series evidence base.
+`evidence/figures.md` maps the article's measurements to raw artifacts or marks
+them as single-sourced. It also records the disposition of every first-party test
+used in the draft.
 
 ## Reporting record
 

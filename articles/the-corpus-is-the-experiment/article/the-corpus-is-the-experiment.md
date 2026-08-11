@@ -1,167 +1,120 @@
-# The corpus decides what your benchmark can find
+---
+title: "The Corpus Determined What the Benchmark Could Find"
+date: 2026-08-09
+author: Rakuen Software
+tags: [benchmarks, datasets, evaluation, aimee]
+excerpt: "Factless strata, missing ontology relations, a mislabeled template and unrecoverable generator inputs shaped the model results before inference began."
+---
 
-DRAFT.
+*Rakuen builds aimee, the system measured here. Corpus artifacts and reporting
+dispositions are listed in the [figure provenance map](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-corpus-is-the-experiment/evidence/figures.md).*
 
-I spent most of this project measuring models and most of my mistakes were in the
-corpus. Three of the five worst were properties of how the notes were assembled
-rather than of anything a model did.
+Three of the five most consequential benchmark defects came from corpus assembly,
+not model inference. The corpus assigned one-third of the score to restraint,
+used relations missing from its ontology, and mislabeled one template in a way
+that rewarded the wrong reading.
 
-A benchmark corpus is not a test set. It is the experiment.
+The generator inputs were also lost. Every result therefore depends on one
+versioned corpus artifact that cannot be rebuilt from its recorded source.
 
-## You read down a ranking and compare models
+## One-third of the corpus measured restraint
 
-What decided those numbers is the composition of the corpus: what fraction of notes
-carry no facts at all, which relations the ontology defines, and whether one
-template quietly mislabels a relation across a whole stratum.
+The 10,000-note corpus contained three categories with no facts by construction.
 
-## A third of my corpus is a test of restraint
-
-10,000 notes, ten categories, of which three carry no facts by construction:
-
-| category | n |
+| category | notes |
 |---|---:|
-| transient | 1391 |
-| negation | 1318 |
+| transient | 1,391 |
+| negation | 1,318 |
 | ambiguous | 506 |
-| **total factless** | **3215 (32.1%)** |
+| factless total | **3,215, or 32.1%** |
 
-The correct answer on those is nothing. That is a deliberate and good design
-choice: a fact extractor that cannot decline is worse than useless downstream,
-because every invented edge has to be caught by a write gate later.
+For those notes, the correct output was silence. Removing false positives on them
+added **0.040 to 0.053** on the harmonic mean of precision and recall (F1) across
+six runs. That was larger than the individual model, quantization and decoding
+effects measured in this campaign.
 
-It also means a third of the corpus is scored entirely through false positives.
-Zeroing them is worth **+0.040 to +0.053 F1** across six arms, which is larger
-than every model, quant, and decoding effect in this project combined.
+I first described the rows as a metric blind spot. That was wrong. The scorer
+already returned `null` for category-level scores with no positive gold facts;
+my analysis displayed those values as 0.0. The rows still affected overall F1
+through their false positives.
 
-**Concede the version that damages me:** I first published this as a hole in the
-metric, claiming those rows could only cost points and correct restraint was worth
-nothing. Both halves were wrong. The rows are scored properly, and my own scorer
-already emitted `null` rather than 0.0 for those categories with a comment
-explaining why printing 0.0 inverts the meaning. I had reintroduced the bug it was
-written to avoid.
+The corrected conclusion is narrower: corpus composition determines how much of
+an aggregate score rewards each behavior. Report restraint separately when it
+occupies a third of the test.
 
-The lesson survived the retraction with a different shape. Your corpus composition
-sets the ceiling on what any single number can express, and if a third of it tests
-one behaviour you should report that behaviour separately.
+## Nested tiers did not produce interchangeable runs
 
-## Tiers only help if a subset is a run, and it is not
+The corpus had tiers of 1,001, 3,002 and 10,000 notes, each nested inside the
+next. The same 1,001 notes scored 0.6406 when run alone and 0.6327 inside the
+3,002-note execution. Only 529 of 1,001 completions were byte-identical.
 
-I built three tiers: 1,001 notes, 3,002, and 10,000, each a strict subset of the
-next. The intent was that a cheap arm could be compared against an expensive one,
-and that a 10,000-note run could be scored down to a smaller tier for free.
+The preceding note did not explain the churn: failures were 44.8% with the same
+predecessor and 48.3% with a different one. Disabling the prompt cache also
+failed, reducing identity from 52.8% to 49.9%. With the cache disabled, a seeded
+shuffle produced 52.3% identity.
 
-That does not hold. The same 1,001 notes, same model, same quant, same process
-count, same prompt, score 0.6406 run alone and 0.6327 inside the 3,002-note
-corpus. **529 of 1001 completions are byte-identical**, so 47% of outputs differ
-on identical inputs.
+Sequence position is the supported variable. The experiment does not establish
+which server state carries it. The score change remained inside its paired range,
+so no ranking moved. Shared notes now retain the same positions across tiers.
 
-The prompt cache holds roughly 38 entries, so what carries into a request is the
-last 38 notes rather than the last one, and almost every note has a different
-38-note history between the two corpora. That predicts uniform churn, and uniform
-churn is what appears. The obvious alternative, the immediately preceding note,
-fails its own test: 44.8% churn with the same predecessor against 48.3% with a
-different one.
+## The ontology omitted 19% of its own gold facts
 
-The F1 movement is inside the interval, so nothing in my rankings changed. It was
-luck rather than design, and the fix is cheap: disable the prompt cache for any
-arm you intend to compare across corpora. I recorded that as unaffordable for two
-days and then measured it at 38 minutes against 41.
+The seed ontology defined 17 relations. The gold set used 12 undefined predicates
+for **167 of 880 triples**. `owns_account` and `subscription_tier` appeared 39
+times each, `customer_of` 26 times and `purchased` 17 times.
 
-## The ontology did not cover its own gold
+Models had to invent predicate names and were then graded against the gold set's
+inventions. Across two 1,000-note runs, 22% to 24% of extracted facts used
+non-seed predicates. They spanned 89 names, including 54 singletons.
 
-The seed ontology defined 17 relations. **167 of the gold set's own 880 triples,
-19%, across 12 predicates, used relations it did not define:** `owns_account` 39
-times, `subscription_tier` 39, `customer_of` 26, `purchased` 17.
+An expanded ontology reduced the novel-predicate rate from 23.5% to 10.0% in an
+interrupted 223-note run. That figure is provisional, survives only in the
+article notes and does not establish the completed post-change rate.
 
-The benchmark was making the model invent a predicate name and grading it on
-whether it invented the same one. The gold was not self-consistent either: both
-`owns` and `owns_account` appear in it.
+## One template rewarded the wrong relation
 
-The models mirrored the gap faithfully. Across two 1,000-note runs, 22% to 24% of
-extracted facts used a non-seed predicate, spread over 89 distinct names, 54 of
-which appeared exactly once.
+The gold set contained 51 `has_hostname` triples. Twenty-eight came from a
+template that said “X runs on Y.”
 
-Expanding the ontology moved the novel-predicate rate from 23.5% to 10.0%, on n=223
-from an interrupted run, which is why that figure is a note rather than a
-conclusion.
-
-## One template rewarded reading the sentence wrong
-
-The gold set contains a relation `has_hostname`. Twenty-eight of its 51 gold triples
-came from notes generated by a template phrasing the fact as "X runs on Y".
-
-| note phrasing | n | answers has_hostname | answers runs_on |
+| note wording | notes | model answered `has_hostname` | model answered `runs_on` |
 |---|---:|---:|---:|
-| "X has hostname Y" | 23 | 23/23 | 0 |
-| "X runs on Y" | 28 | 0/28 | 23 |
+| “X has hostname Y” | 23 | 23 | 0 |
+| “X runs on Y” | 28 | 0 | 23 |
 
-Identical in both runs I checked. The model is perfect on one phrasing and scores
-zero on the other, because it reads "runs on" as deployment. Which is what it means.
+Both inspected runs produced the same pattern. “Runs on” describes deployment,
+not a host's name:
 
-They are different facts at different levels of one chain:
-
-```
-service --runs_on--> host --has_hostname--> "wol-realm-dev-9"
+```text
+service --runs_on--> host --has_hostname--> hostname
 ```
 
-One template was manufacturing 28 false negatives and 23 false positives per arm,
-and it penalised precisely the models that read the sentence correctly. **A model
-that answered `has_hostname` to "X runs on Y" would have scored better and
-understood less.**
+The template created 28 false negatives and 23 false positives per run. A model
+that returned `has_hostname` would have scored better while reading the sentence
+less accurately. I found the defect through a bimodal score distribution inside
+one relation. The remaining templates have not received the same audit.
 
-The whole benchmark exists to rank models by how well they read a sentence, and this
-template rewarded reading it wrong.
+## Deterministic generation was not reproducible
 
-I found it as a bimodal score distribution inside a single relation. Nothing has
-audited the other templates the same way, and I have no reason to think this one was
-unique.
+The generator was seeded, but its inventory and synthesis input files were never
+committed. None of four surviving inventories reproduced any of the 1,001 notes
+at the recorded seed.
 
-## The corpus cannot be regenerated
+Corpus version 5 was instead derived from version 4 by changing 368 relation
+labels with no note-text or identifier changes. That stability allowed old
+predictions to be rescored against the new gold. It did not restore the missing
+generator inputs.
 
-The generator is seeded and deterministic, and its README says so. Its `--inventory`
-and `--synth` input files were never tracked in git.
+The original corpus cannot be reconstructed. It must remain a versioned artifact,
+or a replacement corpus must sacrifice comparability with the banked runs.
 
-I tried all four surviving inventory files against the recorded seed. **Zero of
-1,001 notes reproduce.**
+## Preserve the experiment before ranking models
 
-So v5 was not regenerated from v4. It was derived by relabelling: 368 relation
-labels changed, zero note-text differences, zero id differences. That turns out to
-be useful, because stable ids and stable note text mean a v4 prediction file can be
-scored against v5 gold, which is the only reason several comparisons in this series
-were possible at all.
+Commit generator code, inputs, seed and rendered corpus before the first run.
+Verify that the ontology covers the gold set. Report every designed stratum and
+inspect bimodal behavior within relations. Keep shared notes at identical
+sequence positions across tiers.
 
-It is still a benchmark whose input artefact cannot be rebuilt from source.
-
-That is unfixable retroactively. Every result in this project is conditional on a
-file I cannot reproduce, and the only honest options are to version it as a binary
-artifact and say so, or to rebuild from scratch and lose comparability with
-everything already banked.
-
-## Stratify, and keep what built the corpus
-
-**Commit the generator inputs before the first run.** Not after. I lost this and
-cannot get it back.
-
-**Stratify, and report per stratum.** My ten categories are the only reason I can
-tell a real null from two effects cancelling: on one question the aggregate null
-was +0.24 on one subset and −0.02 on another.
-
-**Check your ontology covers your own gold** before you rank anything against it.
-A predicate you did not define is a model penalty you did not intend.
-
-**Look for bimodality inside a single relation.** That is what a mislabelled
-template looks like from the outside.
-
-**Turn the cache off before comparing across corpora**, or accept that a subset is
-a different measurement from a run.
-
-## Every conclusion in this series rides on one corpus
-
-Everything here ran on one corpus from one pipeline with one generator model. Any
-bias in that generator is shared by every arm, so a quant direction and a corpus
-artifact are indistinguishable to me.
-
-The test is a second corpus built by a different pipeline and generator, with the
-same ladders re-run. That is a corpus-generation project rather than a run, and it
-is the largest open item in this work. Until it exists, every conclusion in this
-series carries it.
+Every conclusion in this series still comes from one pipeline and one generator
+model. A second corpus built independently is the required external test. Until
+it exists, a stable model or quantization effect can still be a stable artifact of
+this corpus lineage.

@@ -1,219 +1,130 @@
-# Every configuration reproduces itself exactly and no two agree
+---
+title: "Repeatability Belonged to the Configuration, Not the Model"
+date: 2026-08-09
+author: Rakuen Software
+tags: [reproducibility, benchmarks, local-models, aimee]
+excerpt: "Speculative decoding and isolated processes repeated exactly. Shared slots did not. Process count, cache state and sequence position were part of run identity."
+---
 
-DRAFT. The discriminating run for the last mechanism is in flight.
+*Rakuen builds aimee, the system measured here. Reproduction artifacts and
+single-source probes are listed in the [figure provenance map](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/repeatable-is-not-identical/evidence/figures.md).*
 
-A benchmark arm that takes 44 minutes is one you run once a night. I wanted a
-six-arm ladder over 10,000 notes, which at that rate is 44 hours, so I went looking
-for speed.
+Speculative decoding changed 26 of 100 completions and still repeated itself
+exactly. Thirty-two shared slots were faster and failed to repeat. One and three
+isolated processes each repeated exactly while remaining 0.0105 apart on the
+harmonic mean of precision and recall (F1).
 
-Every option I found changed the model's output. The rule I was using to judge them
-was wrong, and it took the fastest option to show me.
+The model was not the reproducibility unit. The serving configuration was.
 
-## The question is not whether it matches sequential
+## Self-reproduction separated useful speed from noise
 
-It is whether a configuration reproduces **itself**.
+Multi-token prediction (MTP) is the speculative method used in two configurations
+below.
 
 | configuration | speed | matches sequential | repeats itself |
-|---|---:|---:|---|
-| sequential | 1.00x | identical by definition | yes, 4 confirmations |
-| speculative decoding | 1.83x | 74/100 | **yes, 100/100 on both models** |
-| 32 slots | 4.54x | 804/1001 | **no** |
-| 32 slots and MTP | 4.34x | 64/100 | **no, 75/100 against itself** |
-| 3 isolated processes, MTP | not on matched hardware | not measured | yes, 1001/1001 |
+|---|---:|---:|---:|
+| sequential | 1.00× | reference | yes, four confirmations |
+| speculative decoding | 1.83× | 74 of 100 | **100 of 100 on two models** |
+| 32 slots | 4.54× | 804 of 1,001 | no |
+| 32 slots with multi-token prediction (MTP) | 4.34× | 64 of 100 | **75 of 100 facts** |
+| 3 isolated processes with MTP | unmatched hardware | unmeasured | **1,001 of 1,001** |
 
-Speculative decoding fails the first test and passes the second. Thirty-two slots
-fails both. A benchmark compares arms to each other, so it needs one configuration
-held fixed across every arm. It does not need that configuration to agree with one
-it is not using.
+A benchmark need not reproduce a different configuration. It must reproduce
+itself and use the same configuration for every compared run.
 
-## Thirty-two slots is fast and disqualified
+The 32-slot MTP setup failed that test. Two executions matched on 63 of 100 raw
+completions and 75 of 100 extracted fact sets. Wall time also moved from 71 to 61
+seconds. The 804-of-1,001 sequential comparison in the table is single-sourced in
+the reporting ledger because its derived file was not retained.
 
-Twenty-five notes in a hundred extract **different facts between two runs of the
-same configuration on the same hardware**:
+The measurements show scheduling-sensitive output; they do not identify the
+internal numerical mechanism.
 
-| comparison, 32 slots and MTP | identical |
-|---|---:|
-| run 1 against run 2, raw completions | 63/100 |
-| run 1 against run 2, extracted facts | 75/100 |
+Isolated processes held. A single-sourced ledger probe matched two processes on 60
+of 60 notes. Three executions of a three-process run matched byte for byte on all
+1,001 notes in all three pairwise comparisons and scored 0.6138 each time. Two
+prediction pairs are banked; the third execution is single-sourced in the article
+notes.
 
-Wall time varied too, 71 s against 61 s, and that is the mechanism. With 32
-requests in flight, which requests share a batch depends on arrival and scheduling
-timing, and that is not reproducible.
+One process also repeated 1,001 of 1,001 at 0.6033.
 
-Slots batch requests into a **shared forward pass**, so one sequence's logits
-depend on which other requests are in flight beside it. Separate processes have
-separate contexts and never share a matrix multiply. Contention between them
-changes timing, which changes nothing arithmetic.
+## Two stable process counts stayed 0.0105 apart
 
-| parallelism | identical between two runs |
-|---|---:|
-| 32 slots in one process | 44/60 |
-| 2 isolated processes | 60/60 |
-| 3 isolated processes, full corpus | **1001/1001, three ways** |
-| 1 process, full corpus | 1001/1001 |
+The one- and three-process runs used the same model, quantization, prompt and
+decoding settings. They matched on 652 of 1,001 completions and differed by
+**0.0105 F1**.
 
-Three independent runs of the same three-process arm, same 1,001 notes, same card,
-days apart with server restarts between them, produced byte-identical completions
-on every note in all three pairwise comparisons and the same strict F1 to four
-decimals, 0.6138, each time.
+Neither configuration drifted. Comparing across them would still mix serving
+effects with the model variable. Sample size cannot repair a configuration
+boundary.
 
-The three-way check matters more than a second run would. Two identical runs can
-happen because something was cached or copied. A third, launched from a different
-script on a different day, is harder to explain that way.
+An earlier 0.6114 reference looked like a one-slot result but its device record
+showed four slots. It moved 645 completions against one honest configuration and
+688 against the other. A recorded field that analysis ignores does not protect a
+comparison.
 
-## Two configurations, each perfectly repeatable, permanently 0.0105 apart
+## Warm state, batching and cache state changed text
 
-That same three-process arm does **not** agree with a one-process run of the same
-model, quant, prompt and decoding setting. Process count is the only difference.
+A cold server reproduced 20 of 20 notes across restarts. Compared with a warm
+server, it reproduced 14 of 20, with the same six notes changing each time. That
+probe is single-sourced in the reporting ledger and does not isolate which live
+state caused the changes.
 
-| | raw completions matching | strict F1 |
-|---|---:|---:|
-| 3 processes against 1 process | 652/1001 | 0.6138 against 0.6033 |
+Speculative verification changed the target batch shape and 26 of 100
+completions, consistently. Cache on versus cache off matched 792 of 1,001.
+Turning the cache off took 38 minutes rather than 41 on this workload, so its
+expected cost did not appear in the measurement.
 
-And the one-process configuration is not the sloppy one. Run it twice and it is
-also byte-identical at 0.6033 both times. Neither drifts. They disagree with each
-other permanently, by **0.0105 F1**, which is larger than the quant steps this
-benchmark was built to detect (0.0065 to 0.015).
+Each change moved text without moving F1 outside its paired range. Output identity
+and score stability answer different questions.
 
-Comparing an arm run at one process against an arm run at three is not a
-comparison, and sample size does not help.
+## Sequence position made a subset a different run
 
-## Four more ways output moves without accuracy moving
-
-**Warm servers.** Cold, the same 20 notes give the same bytes: 20/20 across
-independent restarts days apart. Against a server that has already served
-requests, 14/20. Exactly 6 drift, the same 6 each time. The prompt cache keeps a
-KV prefix per slot, every request shares the same 600-token system prompt, and
-whether a request recomputes or reuses depends on what ran before it.
-
-The consequence is narrow and sharp: **spot-checking a few notes against a running
-server is not a valid check.** It manufactures disagreements unrelated to what you
-changed.
-
-**Verification batching.** Speculative decoding pushes several tokens through the
-target in one forward pass. Batch shape changes, floating-point reduction order
-changes with it, near-ties flip. 26 notes in a hundred, and the same 26 every time.
-
-**Corpus composition.** The one I did not expect. The same note, model, quant,
-process count and prompt gives different text depending on which corpus it was
-embedded in: 529 of 1,001 identical between a 1,001-note run and a 3,002-note run
-containing it.
-
-It took three hypotheses and two retractions to find the cause, and each test was
-registered in writing before it ran.
+The same 1,001 notes matched on only 529 completions when executed alone and
+inside a 3,002-note corpus. Two plausible explanations failed their controls.
 
 | hypothesis | test | result |
 |---|---|---|
-| the preceding note | split churn by predecessor identity | 44.8% vs 48.3%, **refuted** |
-| prompt-cache history | re-run both corpora with `--cache-ram 0` | 49.9% vs 52.8%, **refuted** |
-| **sequence position** | same notes, seeded shuffle, cache off | **confirmed** |
+| preceding note | split churn by predecessor identity | 44.8% vs 48.3%, refuted |
+| prompt-cache history | rerun with cache disabled | 49.9% vs 52.8%, refuted |
+| sequence position | seeded shuffle with cache disabled | supported |
 
-| | byte-identical |
+| cache-disabled comparison | byte-identical completions |
 |---|---:|
-| same notes, same order, cache off | **1001/1001** |
-| same notes, **shuffled**, cache off | **524/1001** |
-| same notes, inside a 3,002-note corpus | 499/1001 |
+| same notes, same order | **1,001 of 1,001** |
+| same notes, shuffled | **524 of 1,001** |
+| same notes inside 3,002-note corpus | 499 of 1,001 |
 
-Shuffling reproduces the cross-corpus churn to within 25 notes. **A subset is not
-a run because its notes sit somewhere else in the queue.**
+Shuffling reproduced the cross-corpus churn to within 25 notes. Sequence position
+is therefore the supported variable. The test does not show which server state
+carries across requests, so the article does not assign a mechanism.
 
-That implies state carries between requests even with the prompt cache disabled:
-`llama-server` holds a live KV context per slot, and `--cache-ram` governs the
-prompt cache rather than that context. It does not identify which state, and after
-two explanations that fitted the data and died on their own tests, I am not naming
-a fourth without another registered one.
+## The concurrency result lacked its control
 
-**Cache setting.** Cache on against cache off, same corpus: 792/1001.
+Thirty-two slots were 4.54 times faster and changed extracted facts on 197 of
+1,001 notes relative to the reference. Moving from one to 32 slots also changed
+cache reuse, and the warm-server probe had already shown six changes in 20 notes.
+The 197 is an upper bound on the concurrency effect, not a measurement of it.
 
-Every one of those rewrote between 21% and 47% of the output text. None moved F1
-outside its own interval.
+## Hardware changed text within the measured score range
 
-## The control I did not run
+One cross-card test ran the same configuration on an RTX 3090 and RTX 5080. The
+cards matched on 640 of 1,001 completions. The score difference was **+0.0057**,
+with a 95% range from **−0.0136 to +0.0251**.
 
-I measured 32 slots at 4.54x with 197 of 1,001 notes extracting different facts,
-and read that as the concurrency effect.
+The paired prediction files were not retained together, so this result is
+single-sourced in the campaign ledger. No matched Vulkan-to-CUDA crossing exists
+for the RX 7900 XTX and RTX 5080. Long-generation identity was also not tested.
+Throughput for isolated processes and single-process speculation was measured on
+different cards and cannot be divided into a valid speed comparison.
 
-It had no control, and it was pointed out rather than noticed. Going from 1 slot to
-32 changes concurrency **and** the cache-reuse pattern together, and the warm-server
-effect alone is worth 6 in 20.
+## Record the full configuration and make it reproduce itself
 
-So 197 is an upper bound on the concurrency effect, not a measurement of it.
+Run one configuration three times before trusting it. Record and consume slot
+count, process count, cache setting, hardware, server build and decoding mode.
+Keep shared notes at the same sequence positions. Never compare a native run with
+a subset extracted from a larger one.
 
-**When you change a knob and the output moves, check whether the knob moved
-anything else.**
-
-## A run's slot count is part of its identity
-
-I nearly published a worse version of this. My first single-server reference was an
-older banked arm at 0.6114, which made a tidy 0.0024 gap. Its device record says
-`total_slots : 4`. It was never a single-slot run.
-
-It looks respectable from the outside: it sits between the two honest numbers and
-moves 645 of 1,001 notes against one and 688 against the other, which is exactly the
-profile of a third configuration nobody labelled as one.
-
-The slot count was recorded in a `device.txt` next to the predictions and read by
-nobody until a number disagreed. A recorded signal that nothing consumes is the
-recurring defect class in this project.
-
-## Turning the cache off costs nothing, and I assumed otherwise for two days
-
-I recorded the comparability run as unaffordable. The reasoning was sound: the
-600-token system prompt is served from the cache, so disabling it re-evaluates that
-prefix per note.
-
-Measured, the same 1,001 notes take 38 minutes with the cache off against 41 with it
-on. Prefilling 600 tokens is noise next to two seconds of generation.
-
-I wrote "that is the article owner's call" into a defect entry rather than spending
-40 minutes finding out.
-
-## Require self-reproduction three ways before you trust an arm
-
-**Self-reproduction, per configuration, three ways.** Run one arm three times before
-you trust any arm. Two can agree because something was cached.
-
-**No comparison across a configuration boundary.** Speculative against sequential,
-warm against cold, one process against three, a native run against a subset of a
-larger one. Those are different configurations, not two measurements of one thing.
-
-**The slot count, process count and cache setting recorded and read.** All three were
-in my output before they were in my analysis.
-
-**Cache off for any cross-corpus comparison.** It costs about 7% of wall clock,
-which I can say because I measured it rather than reasoned about it.
-
-**Do not read output churn as accuracy movement.** Everything above moved 21% to 47%
-of the text and none of it moved the score outside its interval.
-
-## The bound I now have, and the one I still do not
-
-Identity is a property of a configuration, and hardware is part of the configuration.
-I measured one crossing: a rented RTX 3090 against my local RTX 5080, identical
-settings, same corpus, same prompt.
-
-| | |
-|---|---:|
-| delta | **+0.0057 F1** |
-| 95% CI | [−0.0136, +0.0251] |
-| byte-identical completions | 640/1001 |
-
-So two CUDA cards running the same build agree to within about **±0.019 at n=1001**
-and disagree on a third of their output text. That is the same pattern as every other
-mechanism in this piece: repeatable within a configuration, not identical across one.
-
-The crossing I have never measured is my own two cards. The XTX runs Vulkan on a
-different llama.cpp build, and nothing in this project has ever put the same arm on
-both and compared. Every cross-card number I have published carries an unquantified
-term because of it, which is why the two quant pairs now running keep each pair on a
-single card rather than splitting halves across the field.
-
-## Long generations, and the division I cannot do
-
-Both identity measurements used the standard extraction prompt, a few hundred
-tokens. A configuration that drifts only on long generations would not appear in
-either, and I have not run that.
-
-And the throughput comparison you would most want from this piece, isolated
-processes against single-process speculative decoding, does not exist: the two
-figures were measured on different cards and I cannot divide them.
+Use output identity to detect execution changes and paired score ranges to decide
+whether those changes affect the metric. For this workload, isolated processes
+and speculation passed self-reproduction; shared slots did not.
