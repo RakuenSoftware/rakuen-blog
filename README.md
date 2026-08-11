@@ -62,7 +62,29 @@ is not a publication candidate and the voice gate does not check it.
 
 ## Publishing
 
-The live site (`rakuensoftware-web`) still builds from its own
-`src/content/blog/`. The published posts here are archived copies; the site has
-not been repointed. Changing that is a separate decision — see
-[MIGRATION.md](MIGRATION.md) for what was moved and what was left alone.
+The live site (`rakuensoftware-web`) builds from its own `src/content/blog/`.
+The site has not been repointed at this repository and that remains a separate
+decision — see [MIGRATION.md](MIGRATION.md) for what was moved and what was left
+alone.
+
+`tools/publish.py` is the bridge across that gap:
+
+```sh
+python3 tools/publish.py                     # report what is ready, change nothing
+python3 tools/publish.py --site ../rakuensoftware-web
+```
+
+It exports an article only if the article's README declares it
+`Publication-ready` and `Not yet published`, `tools/voice_gate.py` passes it,
+`evidence/figures.md` exists, and its frontmatter is complete. Every blocker is
+reported in one run rather than one per invocation.
+
+**It never commits, pushes, merges or deploys.** Writing into a site checkout
+leaves modified files there for a human to review, branch and merge. Ingestion is
+a manual merge on purpose: passing every gate in this repository means no person
+has read the piece yet.
+
+The site filename comes from the article's `slug:` frontmatter field when it has
+one, and from the article's directory name otherwise. That is how an article
+whose title changed keeps its published URL. Changing a live URL is a decision,
+so the script never infers one.
