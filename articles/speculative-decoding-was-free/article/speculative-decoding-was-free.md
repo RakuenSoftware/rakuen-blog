@@ -6,22 +6,22 @@ tags: [benchmarks, local-models, speculative-decoding, throughput, aimee]
 excerpt: "Eleven matched Gemma and Qwen pairs made generation 1.65x to 2.54x faster with no accuracy change the data can resolve. The multiple is set by how bandwidth-bound the target is, the obvious llama.cpp flag turns the feature off, and Glimmer's drafter lost 9%."
 ---
 
-Native multi-token prediction made all eleven matched Gemma and Qwen runs
-**1.65x to 2.54x faster**. Not one produced an accuracy change the paired test
+A small model guesses the next few tokens. The big one checks the whole block in
+one pass instead of producing them one at a time, and every guess it agrees with
+is a token you got for nothing. Gemma 4 and Qwen3.6 both ship that small model,
+so I ran eleven matched pairs across the two families, changing nothing inside a
+pair except whether the guessing was on. Generation came out **1.65x to 2.54x
+faster**, and not one of the eleven moved accuracy further than the paired test
 could separate from ordinary run-to-run movement.
 
-That looks like a free speed setting. It is not.
+Then I pointed the same harness at Muse Glimmer, which ships a drafter of its
+own, and it ran **9% slower** on the same card.
 
-Muse Glimmer's matching DFlash drafter made the same RX 7900 XTX **9% slower**.
-The target, draft and backend are the unit that matters. "Speculative decoding"
-is only the name of the mechanism they share.
-
-Which leaves two questions worth an article. Which pairings pay, and whether you
-have switched on the thing you believe you switched on.
-
-I can answer both. The multiple tracks how bandwidth-bound the target is, so you
-can forecast it before you rent anything. And the obvious way to load a draft
-head in llama.cpp is the one combination that quietly turns speculation off.
+Both numbers are right. A target, its draft and the backend underneath them
+behave as one unit, and speculative decoding is only the name of the mechanism
+they have in common. So the multiple is not the thing that transfers between
+deployments. What transfers is where the speed comes from, and you can work that
+out before you rent a card.
 
 *Rakuen builds aimee, the fact-extraction system measured here. Every figure
 traces through the
@@ -29,18 +29,14 @@ traces through the
 
 ## The target can check several guesses at once
 
-Without a draft, a model produces one token, adds it to the prompt, then runs
-again for the next one. Most of the work is reading the same model weights for
-each step.
+Two details the rest of this needs. The target keeps the matching prefix of the
+block and resumes at the first disagreement, so a rejected guess costs a
+verification slot rather than a wrong token.
 
-Speculative decoding puts a cheaper guess in front of that loop. The draft
-proposes several tokens. The target checks the block in one pass, keeps the
-matching prefix, then resumes at the first disagreement. A kept token skips a
-full one-at-a-time target step.
-
-Gemma 4 and Qwen3.6 ship native multi-token prediction (MTP) heads trained for
-that job. Muse Glimmer uses a separate diffusion drafter called DFlash. The
-mechanism is related. The cost is not.
+The second is what does the guessing. Gemma 4 and Qwen3.6 ship a native
+multi-token prediction (MTP) head, trained alongside the model it drafts for,
+where Muse Glimmer uses a separate diffusion drafter called DFlash. The mechanism
+is related. The cost is not.
 
 Where the saving comes from decides every result below. Generating one token
 means hauling the whole target model out of memory, and on a consumer card that
@@ -216,11 +212,12 @@ symbols listed the architectures with a nested MTP graph while missing Gemma 4,
 whose head is a full model of its own. Each of those cost me a confident wrong
 answer about whether the feature existed at all.
 
-A silent failure here looks exactly like a null result. A server with `-md` set
-answers every request correctly, at the speed it would have run anyway, and
-complains about nothing. Benchmark that against a control and you will conclude
-speculative decoding does nothing on your hardware, having measured the same
-configuration twice.
+A failure here looks exactly like a null result. The server prints one line about
+failing to build a draft context, then serves every request correctly at the
+speed it would have run anyway. Nothing at request time and nothing in the output
+tells you the draft is absent, so unless you were reading the startup log you
+will benchmark that against a control, measure the same configuration twice, and
+conclude speculative decoding does nothing on your hardware.
 
 So verify the state rather than the flag. `/slots` reports `speculative` as a
 boolean, and every run above refused to start unless it matched what that run
