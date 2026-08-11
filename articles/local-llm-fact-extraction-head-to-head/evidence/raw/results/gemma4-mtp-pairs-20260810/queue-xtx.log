@@ -1,0 +1,11 @@
+[10:41:35Z] waiting for Qwen3.6-35B-A3B off-side to release the XTX
+[10:43:34Z] waiting for Qwen3.6-35B-A3B off-side to release the XTX
+[13:30:06Z] releasing completed Qwen server pid=3882826 on XTX port 8117
+[13:30:10Z] releasing completed Qwen tunnel pid=457768 on local port 8117
+[13:30:12Z] PAIR START size=31b card=xtx order=off,on
+[13:58:41Z] waiting for Qwen3.6-35B-A3B off-side to release the XTX
+[13:58:41Z] PAIR START size=31b card=xtx order=off,on
+[19:39:27Z] waiting for Qwen3.6-35B-A3B off-side to release the XTX
+[19:39:28Z] PAIR START size=31b card=xtx order=off,on
+[22:08:30Z] PAIR COMPLETE size=31b card=xtx
+[22:08:30Z] QUEUE COMPLETE card=xtx

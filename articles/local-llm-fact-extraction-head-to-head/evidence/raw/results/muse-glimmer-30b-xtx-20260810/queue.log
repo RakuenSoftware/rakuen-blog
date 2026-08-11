@@ -1,0 +1,18 @@
+[17:00:01Z] WAIT: Muse Glimmer is queued behind the complete Gemma 4 31B off/on pair
+[19:08:35Z] BLOCKED: Gemma 4 31B queue exited before both 1001-row scored artifacts were banked
+[19:39:30Z] WAIT: Muse Glimmer is queued behind the complete Gemma 4 31B off/on pair
+[05:19:25Z] WAIT: Muse Glimmer is queued behind the complete Gemma 4 31B off/on pair
+[05:19:25Z] PREREQUISITE OK: Gemma 4 31B off/on are both banked and scored
+[05:19:25Z] PAIR START Muse Glimmer 30B K-Quant-17GB order=off,on card=xtx
+[05:19:26Z] START Muse-Glimmer-30B.K-Quant-17GB.xtx.dflash-off model=meta-models/Muse-Glimmer-30B-GGUF:muse-glimmer-30B-kquant-17gb.gguf draft=(none) rows=1001
+[05:19:41Z] FAIL: Muse-Glimmer-30B.K-Quant-17GB.xtx.dflash-off server exited while loading
+[05:20:30Z] WAIT: Muse Glimmer is queued behind the complete Gemma 4 31B off/on pair
+[05:20:30Z] PREREQUISITE OK: Gemma 4 31B off/on are both banked and scored
+[05:20:30Z] PAIR START Muse Glimmer 30B K-Quant-17GB order=off,on card=xtx
+[05:20:30Z] START Muse-Glimmer-30B.K-Quant-17GB.xtx.dflash-off model=meta-models/Muse-Glimmer-30B-GGUF draft=(none) rows=1001
+[05:22:33Z] loaded=muse-glimmer-30B-kquant-17gb.gguf
+[05:22:33Z] speculative=False as intended
+[10:56:00Z] OK Muse-Glimmer-30B.K-Quant-17GB.xtx.dflash-off F1=0.7100 P=0.6835 R=0.7386 wall=333m
+[10:56:04Z] START Muse-Glimmer-30B.K-Quant-17GB.xtx.dflash-on model=meta-models/Muse-Glimmer-30B-GGUF draft=-hfd meta-models/Muse-Glimmer-30B-GGUF:dflash-kquant --spec-type draft-dflash --spec-draft-n-max 16 rows=1001
+[10:58:38Z] loaded=muse-glimmer-30B-kquant-17gb.gguf
+[10:58:38Z] speculative=True as intended
