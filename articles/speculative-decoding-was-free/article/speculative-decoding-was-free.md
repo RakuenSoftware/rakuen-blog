@@ -1,5 +1,6 @@
 ---
 title: "Local LLMs: Speculative Decoding"
+slug: local-llm-speculative-decoding
 date: 2026-08-11
 author: Rakuen Software
 tags: [benchmarks, local-models, speculative-decoding, throughput, aimee]
