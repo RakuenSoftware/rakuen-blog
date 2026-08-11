@@ -11,6 +11,18 @@ Paths below are relative to the shared series evidence base at
 | gemma-4 E4B Q4, Q6 and Q8 | `results/v8-baseline/E4B.UD-Q{4,6,8}_K_XL.mtp.score.json` |
 | SmolLM3 Q4 and Q8 | `results/newcomers-1k/SmolLM3-3B.*.score.json` |
 | LFM2.5-2.6B Q4, Q6 and Q8 | `results/lfm25-2.6b/LFM2.5-2.6B.*.score.json` |
+| 10,000-note E2B ladder, 0.6246, 0.6344, 0.6329 | `results/10k-sharded/E2B.UD-Q{4,6,8}_K_XL.10k.score.json` |
+| 10,000-note E4B ladder, 0.6301, 0.6452, 0.6337 | `results/10k-sharded/E4B.UD-Q{4,6,8}_K_XL.10k.score.json` |
+
+The 10k ladder figures were corrected on 2026-08-11. The article previously gave
+the E4B ladder as 0.6324, 0.6450 and 0.6321, which are the **quarantined**
+`--cache-ram 8192` originals under
+`results/10k-sharded/quarantine/E4B-10k-cacheram8192-20260804T0041Z/`. Those arms
+were re-taken at `--cache-ram 1024` so both families share one results-affecting
+cache value, and only the re-taken runs carry a ladder comparison. The quarantined
+files are retained, not deleted; `MEASUREMENT_LOG.md` records the re-run and its
+per-arm deltas of −0.0023, +0.0002 and +0.0016. The direction of the finding is
+unchanged: both ladders peak at Q6.
 
 All four gemma quants come from the matched `results/v8-baseline/` campaign. An
 earlier version of this map paired Q6 and Q8 from `v8-baseline` against Q4 from
@@ -25,6 +37,12 @@ third `--pred` argument moves a paired endpoint even at the same seed; the
 one-pair-per-invocation values in `quant-clarification-2026-08-09.md` are the
 published ones. The LFM inverse-ladder claim was withdrawn after its range crossed
 zero.
+
+All five rows were recomputed from the prediction files on 2026-08-11 and
+reproduce exactly, including both `significant` verdicts. That recomputation was
+only possible after the pinned scorer ontology under
+`articles/local-llm-fact-extraction-head-to-head/evidence/src/` was restored; see
+that folder's README for why the pin is version-specific.
 
 ## QAT and packing
 
