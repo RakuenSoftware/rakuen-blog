@@ -1,6 +1,6 @@
 # Local Llm Fact Extraction Head To Head
 
-Twenty-two local models on one 1,001-note fact-extraction corpus, with a paired bootstrap on every ordering claim.
+Twenty-three local models on one 1,001-note fact-extraction corpus, with a paired bootstrap on every ordering claim.
 
 ## Status
 

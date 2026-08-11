@@ -44,5 +44,5 @@ exactly. Using a later ontology does not. The complete E2B output is stored at
 | Gemma 4 E4B Q8 | 0.6327 | 0.6337 | +0.0010 [−0.0021, +0.0041] | crosses zero |
 
 The E4B ranges were already recorded in `ARTICLE_NOTES.md`. Reversing their
-published no-MTP-minus-MTP direction gives the on-minus-off ranges above.
+recorded no-MTP-minus-MTP direction gives the on-minus-off ranges above.
 Paired deltas use unrounded counts; displayed arm scores are rounded separately.

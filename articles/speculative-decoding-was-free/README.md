@@ -5,9 +5,10 @@ Vulkan.
 
 ## Status
 
-Republished 2026-08-11 after the missing Gemma 12B, 26B and 31B pairs and the
-Qwen3.6-35B-A3B pair completed. The article was withdrawn on 2026-08-10 because
-the larger Gemma results lacked same-condition MTP-off partners.
+Prepared for publication on 2026-08-11 after the missing Gemma 12B, 26B and 31B
+pairs and the Qwen3.6-35B-A3B pair completed. An earlier draft could not be
+published because the larger Gemma results lacked same-condition MTP-off
+partners.
 
 ## Evidence
 
@@ -22,7 +23,7 @@ Raw artifacts for the series live under
 | `results/muse-glimmer-30b-xtx-20260810/` | complete DFlash-off run and stopped 22-row DFlash-on diagnostic |
 | `harness/` | runners, scorer and paired bootstrap script |
 
-`evidence/figures.md` maps each published number to an artifact.
+`evidence/figures.md` maps each article number to an artifact.
 `evidence/rewrite-disposition-2026-08-11.md` records what the rewrite kept,
 cut or narrowed. `evidence/paired-ranges-2026-08-11.md` records all eleven
 paired bootstrap calculations.
@@ -30,6 +31,6 @@ paired bootstrap calculations.
 ## Reporting record
 
 This article combines first-party measurement with Meta's model card and public
-llama.cpp issue reports. The Glimmer DFlash run is explicitly partial and carries
-no accuracy claim. Prior invalid speedups remain visible in the article and raw
-logs.
+llama.cpp issue reports. The Glimmer DFlash-on run is explicitly partial and
+carries no accuracy claim. Prior invalid speedups remain visible in the article
+and raw logs.
