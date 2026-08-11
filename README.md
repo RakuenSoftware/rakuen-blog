@@ -54,8 +54,11 @@ that catches that class of bug. A number without it is not evidence.
 | [the-parallelism-limit-was-never-vram](articles/the-parallelism-limit-was-never-vram/) | ready | figure map, shared results tree |
 | [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | ready | figure map, shared results tree |
 | [synthesis-model-selection](articles/synthesis-model-selection/) | ready | figure map; two paired GPU runs, CPU selection open |
+| [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | draft | figure map written; every artifact still lives in another repository |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
+`draft` means the article exists and its provenance gaps are written down, but it
+is not a publication candidate and the voice gate does not check it.
 
 ## Publishing
 
