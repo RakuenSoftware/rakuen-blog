@@ -17,9 +17,9 @@
 #include "db2/rel_types_store.h" /* db2_fact_commit */
 #include "db2/fact_ingest.h"     /* db2_fact_ingest_text (offline pattern extraction) */
 #include "fact_grounding.h"
-#include "rel_types.h"       /* seed ontology: rel_types_seed_* (extractor constraint, §7) */
-#include "memory.h"          /* memory_t */
-#include "memory_ontology.h" /* NODE_* */
+#include "rel_types.h"           /* seed ontology: rel_types_seed_* (extractor constraint, §7) */
+#include "memory.h"              /* memory_t */
+#include "memory_ontology.h"     /* NODE_* */
 
 #include <ctype.h>
 #include <stdio.h>
@@ -63,11 +63,38 @@
  * gate already treats as durable, so an extracted fact commits ACTIVE and
  * recallable instead of being stranded as a provisional Class-C edge. When no
  * seed relation fits, the model emits its own concise predicate (never a generic
- * catch-all), which stays a distinguishable provisional candidate for §7.2. */
-#define MF_SYSTEM_PROMPT_TMPL                                                                      \
+ * catch-all), which stays a distinguishable provisional candidate for §7.2.
+ *
+ * The closing sentence grants reasoning explicitly, and that phrasing is load
+ * bearing. It used to read "No prose, no markdown.", which gemma-4-E4B applies to
+ * its own thought channel and not merely to its answer: reasoning drops to zero on
+ * every note, silently, with valid JSON still coming back.
+ *
+ * What that costs is smaller than it was once reported. The widely-quoted "+0.084
+ * F1 from thinking" came from a 70-note sweep with no interval on it. Paired over
+ * 955 notes of the 10k corpus the strict-F1 delta is +0.010, CI [-0.020, +0.040] —
+ * indistinguishable. The gain is real but shows up elsewhere: scored on entity
+ * pairs rather than exact predicate names, recall goes 0.712 -> 0.828 at flat
+ * precision, because a reasoning model finds more facts AND names them more
+ * variably, and strict scoring charges that variance twice. Abstention gets worse
+ * (0.907 -> 0.870). See MEASUREMENT_LOG.md defect 32.
+ *
+ * Rescoping the constraint to the answer ("the answer itself must be a JSON object
+ * only") does NOT fix it — still 0/20 — so the model is not drawing that
+ * distinction and the exemption has to be stated outright. Deleting the sentence
+ * restores thinking but costs the guardrail: 14 of 20 answers come back fenced in
+ * ```json. Granting reasoning and constraining the answer keeps both, and fences
+ * least of the three (0 of 20).
+ *
+ * Measured on gemma-4-E4B under two independent builds — Unsloth UD-Q4_K_XL and
+ * the stock ggml-org Q8_0, which ship different chat templates — so this is a
+ * property of the model rather than of one vendor's quantisation. E2B never had
+ * the behaviour at all. See bench/tier-a/harness/probe_thinking_prompt.py. */
+#define MF_SYSTEM_PROMPT_TMPL                                                                \
    "You extract durable facts from a single remembered note. Return ONLY a JSON "                  \
    "object: {\"facts\":[{\"subject\":\"\",\"relation\":\"\",\"object\":\"\","                      \
-   "\"confidence\":0.0}]}. Each fact is a stable subject-relation-object triple "                  \
+   "\"confidence\":0.0,\"negated\":false}]}. Each fact is a stable "                               \
+   "subject-relation-object triple "                                                               \
    "grounded strictly in the note. For relation, choose the single nearest fit "                   \
    "from these canonical predicates when one reasonably applies: %s. If NONE fits, "               \
    "emit a concise snake_case predicate of your own (e.g. drives, founded, "                       \
@@ -75,12 +102,23 @@
    "\"other\"/\"unknown\"/\"misc\". subject is the entity the fact is about "                      \
    "(use \"user\" for the note's author when it is first-person). "                                \
    "confidence is 0..1. Extract only durable, generalizable facts; skip transient "                \
-   "state, feelings, plans, and one-off events. If the note RETRACTS or DENIES "                   \
+   "state, feelings, plans, and one-off events. BUT an event that ESTABLISHES a "                  \
+   "durable state yields that state: \"joined X\" gives membership of X, \"moved "                 \
+   "to Y\" gives location Y, \"was promoted to Z\" gives role Z. Record the "                      \
+   "resulting state, not the event. If the note RETRACTS or DENIES "                               \
    "something (\"no longer\", \"did not\", \"never\", \"is not\", \"has left\", "                  \
-   "\"was removed\"), do NOT emit the negated fact - a retraction asserts a fact "                 \
-   "is FALSE, so there is nothing durable to record. "                                             \
+   "\"was removed\"), emit the ORIGINAL fact it retracts with \"negated\":true - "                 \
+   "use the same canonical relation the positive fact would use, NEVER a negative "                \
+   "predicate of your own such as not_member_of or removed_from. \"Kestrel Freight "               \
+   "is no longer a customer\" is {\"subject\":\"Kestrel Freight\",\"relation\":"                   \
+   "\"member_of\",\"object\":\"customer\",\"negated\":true}. A note that MOVES "                   \
+   "something gives both: the new fact, and the old one negated. A RENAME is NOT "                 \
+   "a retraction: \"A is now called B\" means A and B are the same thing, so emit "                \
+   "also_known_as with negated FALSE. For an ordinary "                                            \
+   "fact that is simply true, omit \"negated\" or set it false. "                                  \
    "If the note asserts no durable fact, return exactly {\"facts\":[]} - the "                     \
-   "wrapper object is ALWAYS required, never a bare []. No prose, no markdown."
+   "wrapper object is ALWAYS required, never a bare []. Reason first if it helps; "                 \
+   "the answer that follows must be the JSON object only, no prose, no markdown."
 
 /* Build the extraction system prompt, binding the model to the canonical relation
  * set (autonomous reconciliation, §7). Sourced from the seed ontology so it stays
@@ -273,7 +311,8 @@ static int mf_commit_facts(const char *llm_json, const char *note)
       p++;
    if (p[0] == '[' && p[1] == ']')
    {
-      aimee_log(LOG_DEBUG, "kb.memory.facts", "note yielded an explicit empty extraction ('[]')");
+      aimee_log(LOG_DEBUG, "kb.memory.facts",
+                "note yielded an explicit empty extraction ('[]')");
       return 0;
    }
    const char *start = strchr(llm_json, '{');
@@ -305,6 +344,7 @@ static int mf_commit_facts(const char *llm_json, const char *note)
    fact_norm_text(note, note_norm, sizeof(note_norm));
 
    int committed = 0;
+   int retracted = 0;
    int ungrounded = 0;
    int malformed = 0;
    cJSON *f = NULL;
@@ -316,10 +356,15 @@ static int mf_commit_facts(const char *llm_json, const char *note)
       const cJSON *rel_j = cJSON_GetObjectItemCaseSensitive(f, "relation");
       const cJSON *obj_j = cJSON_GetObjectItemCaseSensitive(f, "object");
       const cJSON *conf_j = cJSON_GetObjectItemCaseSensitive(f, "confidence");
+      const cJSON *neg_j = cJSON_GetObjectItemCaseSensitive(f, "negated");
       const char *subject = cJSON_IsString(subj_j) ? subj_j->valuestring : "";
       const char *raw_relation = cJSON_IsString(rel_j) ? rel_j->valuestring : "";
       const char *object = cJSON_IsString(obj_j) ? obj_j->valuestring : "";
       double conf = cJSON_IsNumber(conf_j) ? conf_j->valuedouble : 0.0;
+      /* Polarity on the ORIGINAL fact, rather than a negative predicate of the
+       * model's own invention. An absent field is false, so a model that never
+       * emits it behaves exactly as before. */
+      int negated = cJSON_IsTrue(neg_j);
 
       if (!subject[0] || !raw_relation[0] || !object[0])
       {
@@ -346,13 +391,32 @@ static int mf_commit_facts(const char *llm_json, const char *note)
       rel_type_canonicalize(raw_relation, relation_buf, sizeof(relation_buf));
       const char *relation = relation_buf[0] ? relation_buf : raw_relation;
 
-      /* The extractor supplies no node kinds, so guess: subject via
-       * mf_subject_kind, object OTHER (unknown). But the kind gate REJECTS a
-       * seed relation whose endpoint kind mismatches its ontology def (e.g.
-       * works_for wants tail=ORG) — a wrong guess silently drops every such
-       * fact. For a known seed relation, take the endpoint kinds the relation
-       * itself implies (its def's canonical kinds) whenever the guess is not
-       * already allowed; novel relations keep the guess (not kind-checked). */
+      /* Endpoint kinds are ADOPTED FROM THE RELATION, not validated against it.
+       *
+       * Say that plainly because the shape of the code invites the opposite
+       * reading. The extractor returns no kinds, so the object starts as
+       * NODE_OTHER — "nobody told me" — and 14 of the 17 seed relations do not
+       * list NODE_OTHER as an allowed tail, so the branch below rewrites it on
+       * EVERY extraction. FACT_GATE_REJECT_KIND is therefore unreachable for
+       * objects on this path: the gate cannot refuse a mistyped object, it
+       * relabels it.
+       *
+       * That is deliberate and it stays. Without it a seed relation drops every
+       * fact it extracts, which is the bug this replaced. What is NOT true is
+       * that the kinds are checked, and the previous comment implied they were.
+       *
+       * Inference was considered and measured rather than assumed: across 1333
+       * seed-relation triples from two 1k runs, the only tail a text rule can
+       * confidently judge is device_has_ip, and all 96 of those objects are
+       * valid IPs. A text-based kind check would have caught zero mistyped
+       * objects, so it would be cost without benefit. The mistyped triples that
+       * DO occur ("member_of enterprise", "has_role <contract>") are wrong in a
+       * way no kind rule can see — the object is a plausible string of the
+       * declared kind.
+       *
+       * The stored kinds are inert: nothing reads entity_edges.subject_kind or
+       * .object_kind back, for gating or recall. If that changes, this is where
+       * the fabricated value comes from. */
       memory_node_kind_t subj_kind = mf_subject_kind(subject);
       memory_node_kind_t obj_kind = NODE_OTHER;
       const rel_type_def_t *sdef = rel_types_seed_lookup(relation);
@@ -363,6 +427,34 @@ static int mf_commit_facts(const char *llm_json, const char *note)
          if (!rel_type_kind_allowed(sdef, 0, obj_kind) && sdef->tail_kind_count > 0)
             obj_kind = sdef->tail_kinds[0];
       }
+      /* A retraction deactivates the edge it names instead of asserting a new
+       * one. Routed to the same API the pattern extractor already uses
+       * (fact_ingest.c), which is where the bitemporal supersede semantics, the
+       * immutable-edge refusal and the §4/§5 authority guard live — a
+       * MODEL-authority retraction cannot touch a user-stated Class-A edge.
+       *
+       * Passing `object` matters and is the reason polarity rides on the
+       * original fact rather than on a not_* predicate: the header is explicit
+       * that `target` scopes the retraction to the specific
+       * {source, relation, target} edge, where NULL retracts every current value
+       * of (source, relation). A model that says "no longer in
+       * drivers/staging/comedi" should not blank the file's location outright.
+       *
+       * Until now nothing on the LLM path could reach this. "I no longer work at
+       * X" was handled by memory_pattern_is_retraction() for first-person user
+       * attributes, and everything else -- every third-party fact, which is most
+       * of them -- was dropped on the floor by a prompt that told the model a
+       * retraction had nothing durable to record. */
+      if (negated)
+      {
+         int n = db2_fact_retract(subject, relation, object, FACT_AUTHORITY_MODEL);
+         if (n > 0)
+            retracted += n;
+         else if (n == FACT_RETRACT_IMMUTABLE)
+            aimee_log(LOG_INFO, "kb.memory.facts",
+                      "retraction refused as immutable: %s %s %s", subject, relation, object);
+         continue;
+      }
       fact_gate_verdict_t v =
           db2_fact_commit(subject, subj_kind, relation, object, obj_kind, FACT_AUTHORITY_MODEL, 1);
       if (v == FACT_GATE_ACCEPT || v == FACT_GATE_NOVEL)
@@ -372,14 +464,20 @@ static int mf_commit_facts(const char *llm_json, const char *note)
     * the job still reports success — that combination once looked exactly like
     * "the model cannot extract". Say so instead of committing silently. */
    if (ungrounded > 0 || malformed > 0)
-      aimee_log(committed == 0 ? LOG_WARN : LOG_INFO, "kb.memory.facts",
-                "dropped %d ungrounded + %d malformed fact(s), committed %d%s", ungrounded,
-                malformed, committed, committed == 0 ? " - NOTHING committed for this note" : "");
+      aimee_log(committed == 0 && retracted == 0 ? LOG_WARN : LOG_INFO, "kb.memory.facts",
+                "dropped %d ungrounded + %d malformed fact(s), committed %d%s",
+                ungrounded, malformed, committed,
+                committed == 0 && retracted == 0 ? " - NOTHING committed for this note" : "");
+   /* Retractions are reported separately: a note that only deactivates edges
+    * commits nothing, and without this it is indistinguishable from a note the
+    * extractor failed on. */
+   if (retracted > 0)
+      aimee_log(LOG_INFO, "kb.memory.facts", "retracted %d edge(s) for this note", retracted);
    cJSON_Delete(root);
    return committed;
 }
 
-static int mf_process_one(const mf_job_t *job)
+static int mf_process_one(const config_t *cfg, const mf_job_t *job)
 {
    memory_t mem;
    memset(&mem, 0, sizeof(mem));
@@ -414,8 +512,8 @@ static int mf_process_one(const mf_job_t *job)
    db2_lease_release_idle();
 
    char err[MF_ERRBUF] = "";
-   char *resp = kb_curator_llm_run(KB_CURATOR_STAGE_EXTRACT_DOCS, sys_prompt, request_json, NULL,
-                                   "", MF_LLM_OUT_CAP, err, sizeof(err));
+   char *resp = kb_curator_llm_run(cfg, KB_CURATOR_STAGE_EXTRACT_DOCS, sys_prompt, request_json,
+                                   NULL, "", MF_LLM_OUT_CAP, err, sizeof(err));
    free(request_json);
    if (!resp)
    {
@@ -432,9 +530,9 @@ static int mf_process_one(const mf_job_t *job)
    return n;
 }
 
-int kb_memory_facts_drain(int batch)
+int kb_memory_facts_drain(const config_t *cfg, int batch)
 {
-   if (!config_typed_facts_enabled() || batch <= 0)
+   if (!cfg || !config_typed_facts_enabled() || batch <= 0)
       return 0;
    if (!db2_conn())
       return 0;
@@ -450,7 +548,7 @@ int kb_memory_facts_drain(int batch)
       memset(&job, 0, sizeof(job));
       if (!mf_claim_job(&job))
          break;
-      (void)mf_process_one(&job);
+      (void)mf_process_one(cfg, &job);
       processed++;
    }
    return processed;
