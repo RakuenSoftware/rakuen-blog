@@ -1,8 +1,9 @@
 # Paired accuracy ranges, 2026-08-11
 
-All four comparisons used corpus v5 `gold_small.jsonl`, seed 42 and 20,000
-paired bootstrap replicates. The script resamples the same note IDs on both sides
-and reports MTP-on minus MTP-off.
+All eleven comparisons use 20,000 paired bootstrap replicates. The script
+resamples the same note IDs on both sides and reports MTP-on minus MTP-off. The
+five 1,001-note pairs and three E2B pairs use seed 42. The E4B ranges were
+banked earlier with their run record.
 
 Command shape:
 
@@ -24,3 +25,24 @@ python3 harness/harness/bootstrap_ci.py \
 Each input is the complete 1,001-row prediction artifact listed in
 `evidence/figures.md`. Qwen3.6-27B was computed earlier with the same seed and
 replicate count.
+
+## Earlier 10,000-note Gemma pairs
+
+These six pairs use corpus v5 `gold_large.jsonl`. The E2B ranges were recomputed
+from the stored per-note artifacts on 2026-08-11. The scorer and ontology were
+checked out at aimee commit `0a7c8cc3a3`, which reproduces the banked scores
+exactly. Using a later ontology does not. The complete E2B output is stored at
+`articles/local-llm-fact-extraction-head-to-head/evidence/raw/results/10k-nomtp/e2b-mtp-paired-ci-20260811.txt`.
+
+| pair | MTP-off F1 | MTP-on F1 | on minus off, 95% range | result |
+|---|---:|---:|---:|---|
+| Gemma 4 E2B Q4 | 0.6207 | 0.6246 | +0.0039 [−0.0015, +0.0092] | crosses zero |
+| Gemma 4 E2B Q6 | 0.6331 | 0.6344 | +0.0013 [−0.0034, +0.0060] | crosses zero |
+| Gemma 4 E2B Q8 | 0.6351 | 0.6329 | −0.0021 [−0.0073, +0.0031] | crosses zero |
+| Gemma 4 E4B Q4 | 0.6306 | 0.6301 | −0.0005 [−0.0036, +0.0028] | crosses zero |
+| Gemma 4 E4B Q6 | 0.6435 | 0.6452 | +0.0017 [−0.0013, +0.0048] | crosses zero |
+| Gemma 4 E4B Q8 | 0.6327 | 0.6337 | +0.0010 [−0.0021, +0.0041] | crosses zero |
+
+The E4B ranges were already recorded in `ARTICLE_NOTES.md`. Reversing their
+published no-MTP-minus-MTP direction gives the on-minus-off ranges above.
+Paired deltas use unrounded counts; displayed arm scores are rounded separately.

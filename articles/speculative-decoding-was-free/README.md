@@ -24,7 +24,7 @@ Raw artifacts for the series live under
 
 `evidence/figures.md` maps each published number to an artifact.
 `evidence/rewrite-disposition-2026-08-11.md` records what the rewrite kept,
-cut or narrowed. `evidence/paired-ranges-2026-08-11.md` records the four new
+cut or narrowed. `evidence/paired-ranges-2026-08-11.md` records all eleven
 paired bootstrap calculations.
 
 ## Reporting record

@@ -36,9 +36,10 @@ F1 is the combined precision and recall score. A change of +0.0079 looks like a
 small accuracy win. It is not one. Its 95% range runs from −0.0050 to +0.0209,
 which includes no change. All five ranges include zero.
 
-The six earlier 10,000-note Gemma pairs agree. Their point changes ran from
-−0.0022 to +0.0039 while throughput rose 1.84x to 2.31x. Across eleven pairs, the
-speed result is large. The accuracy result is unresolved.
+The six earlier 10,000-note Gemma pairs agree. Their paired changes ran from
+−0.0021 to +0.0039, and every 95% range crossed zero, while throughput rose
+1.84x to 2.31x. Across eleven pairs, the speed result is large. The accuracy
+result is unresolved.
 
 ## Glimmer exposed a backend bug, not an MTP verdict
 

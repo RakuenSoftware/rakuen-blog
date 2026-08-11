@@ -23,18 +23,23 @@ The four new ranges were recomputed on 2026-08-11 with
 
 ## Six earlier 10,000-note Gemma pairs
 
-| pair | MTP on / off F1 | throughput gain | artifacts |
-|---|---:|---:|---|
-| E2B Q4 | 0.6246 / 0.6207 | 1.84x | `results/10k-{sharded,nomtp}/E2B.UD-Q4_K_XL.10k.{pred.jsonl,score.json}` |
-| E2B Q6 | 0.6344 / 0.6331 | 1.92x | `results/10k-{sharded,nomtp}/E2B.UD-Q6_K_XL.10k.{pred.jsonl,score.json}` |
-| E2B Q8 | 0.6329 / 0.6351 | 2.03x | `results/10k-{sharded,nomtp}/E2B.UD-Q8_K_XL.10k.{pred.jsonl,score.json}` |
-| E4B Q4 | 0.6301 / 0.6306 | 2.11x | `results/10k-{sharded,nomtp}/E4B.UD-Q4_K_XL.10k.{pred.jsonl,score.json}` |
-| E4B Q6 | 0.6452 / 0.6435 | 2.16x | `results/10k-{sharded,nomtp}/E4B.UD-Q6_K_XL.10k.{pred.jsonl,score.json}` |
-| E4B Q8 | 0.6337 / 0.6327 | 2.31x | `results/10k-{sharded,nomtp}/E4B.UD-Q8_K_XL.10k.{pred.jsonl,score.json}` |
+| pair | MTP on / off F1 | on minus off, 95% range | throughput gain | artifacts |
+|---|---:|---:|---:|---|
+| E2B Q4 | 0.6246 / 0.6207 | +0.0039 [−0.0015, +0.0092] | 1.84x | `results/10k-{sharded,nomtp}/E2B.UD-Q4_K_XL.10k.{pred.jsonl,score.json}` |
+| E2B Q6 | 0.6344 / 0.6331 | +0.0013 [−0.0034, +0.0060] | 1.92x | `results/10k-{sharded,nomtp}/E2B.UD-Q6_K_XL.10k.{pred.jsonl,score.json}` |
+| E2B Q8 | 0.6329 / 0.6351 | −0.0021 [−0.0073, +0.0031] | 2.03x | `results/10k-{sharded,nomtp}/E2B.UD-Q8_K_XL.10k.{pred.jsonl,score.json}` |
+| E4B Q4 | 0.6301 / 0.6306 | −0.0005 [−0.0036, +0.0028] | 2.11x | `results/10k-{sharded,nomtp}/E4B.UD-Q4_K_XL.10k.{pred.jsonl,score.json}` |
+| E4B Q6 | 0.6452 / 0.6435 | +0.0017 [−0.0013, +0.0048] | 2.16x | `results/10k-{sharded,nomtp}/E4B.UD-Q6_K_XL.10k.{pred.jsonl,score.json}` |
+| E4B Q8 | 0.6337 / 0.6327 | +0.0010 [−0.0021, +0.0041] | 2.31x | `results/10k-{sharded,nomtp}/E4B.UD-Q8_K_XL.10k.{pred.jsonl,score.json}` |
 
-The paired ranges published for E4B Q4, Q6 and Q8 all cross zero. The E2B pairs
-carry point estimates only and are not used to claim an accuracy tie by
-themselves.
+All six runs are valid matched pairs, and all six paired ranges cross zero. The
+E2B ranges were computed from the stored per-note artifacts on 2026-08-11. Full
+output is in `results/10k-nomtp/e2b-mtp-paired-ci-20260811.txt`; reproduction
+details are in `paired-ranges-2026-08-11.md`.
+
+Paired deltas use the unrounded counts. The displayed arm scores are rounded
+independently, so subtracting the E2B Q8 cells gives −0.0022 instead of the
+bootstrap script's −0.0021.
 
 ## Muse Glimmer DFlash diagnostic
 

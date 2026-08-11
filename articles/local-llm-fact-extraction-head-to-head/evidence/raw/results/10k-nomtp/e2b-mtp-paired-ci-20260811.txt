@@ -1,0 +1,27 @@
+E2B MTP paired confidence intervals
+Calculated: 2026-08-11 UTC
+Scorer and ontology: RakuenSoftware/aimee commit 0a7c8cc3a3
+Inputs: rakuen-blog commit 1fda5c9, corpus v5 gold_large.jsonl,
+        results/10k-{nomtp,sharded}/E2B.UD-Q{4,6,8}_K_XL.10k.pred.jsonl
+Method: paired note bootstrap, seed 42, 20,000 replicates, MTP-on minus MTP-off
+
+E2B Q4
+run                                 F1            95% CI   tp  fp  fn
+off                             0.6207  [0.6118,0.6296]  5620 3697 3171
+on                              0.6246  [0.6156,0.6335]  5643 3635 3148
+on - off                        0.0039  [-0.0015,+0.0092]  INDISTINGUISHABLE
+n = 10000 notes resampled, 20000 bootstrap replicates.
+
+E2B Q6
+run                                 F1            95% CI   tp  fp  fn
+off                             0.6331  [0.6244,0.6417]  5728 3575 3063
+on                              0.6344  [0.6257,0.6432]  5743 3570 3048
+on - off                        0.0013  [-0.0034,+0.0060]  INDISTINGUISHABLE
+n = 10000 notes resampled, 20000 bootstrap replicates.
+
+E2B Q8
+run                                 F1            95% CI   tp  fp  fn
+off                             0.6351  [0.6261,0.6438]  5760 3589 3031
+on                              0.6329  [0.6240,0.6420]  5744 3616 3047
+on - off                       -0.0021  [-0.0073,+0.0031]  INDISTINGUISHABLE
+n = 10000 notes resampled, 20000 bootstrap replicates.
