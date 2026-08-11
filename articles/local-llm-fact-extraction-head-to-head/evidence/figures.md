@@ -33,6 +33,7 @@ prediction file.
 |---|---|---|
 | Qwen3.6-35B-A3B UD-Q4 MoE | 0.7257 | `results/vast/Qwen3.6-35B-A3B.UD-Q4_K_XL.live.score.json` |
 | Qwen3.6-27B dense UD-Q4 | 0.7152 | `results/vast/Qwen3.6-27B.UD-Q4_K_XL.live.score.json` |
+| Muse Glimmer 30B K-Quant-17GB, DFlash off | 0.7100 | `results/muse-glimmer-30b-xtx-20260810/Muse-Glimmer-30B.K-Quant-17GB.xtx.dflash-off.{pred.jsonl,score.json}` |
 | gemma-4-31B QAT UD-Q4 | 0.6872 | `results/ct140/gemma-4-31B-it.qat-UD-Q4_K_XL.xtx.score.json` |
 | gemma-4-12B QAT UD-Q4 | 0.6854 | `results/vast/gemma-4-12B-it.qat-UD-Q4_K_XL.live.score.json` |
 | gemma-4-26B-A4B QAT UD-Q4 unsloth | 0.6804 | `results/ct140/gemma-4-26B-A4B.qat-unsloth-UDQ4.5080.score.json` |
@@ -119,8 +120,8 @@ All from `harness/harness/bootstrap_ci.py`, paired, resampling notes, fixed seed
 | E2B QAT to 35B-A3B | +0.0851 | [+0.0609, +0.1095] |
 
 The two top-pair rows were run at 20,000 replicates against the finished 27B arm.
-The remaining eight predate it and are unaffected by its insertion, because every
-arm added in this revision scores below E2B QAT and none of them enters the chain.
+The remaining eight predate them. Muse Glimmer has no paired cross-model interval,
+so it is not inserted into the ordering chain and carries no ordering claim.
 
 ## Throughput
 

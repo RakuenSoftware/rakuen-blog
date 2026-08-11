@@ -1,0 +1,56 @@
+[10:41:36Z] === gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-off
+[10:41:36Z] model=unsloth/gemma-4-12B-it-qat-GGUF:UD-Q4_K_XL draft=(none) card=5080 corpus=corpus/data/corpora/v5/gold_small.jsonl rows=1001 concurrency=1
+[10:41:52Z] loaded=gemma-4-12B-it-qat-UD-Q4_K_XL.gguf
+[10:41:52Z] speculative=False as intended
+[13:30:12Z] === gemma-4-31B-it.qat-UD-Q4_K_XL.xtx.mtp-off
+[13:30:12Z] model=unsloth/gemma-4-31B-it-qat-GGUF:UD-Q4_K_XL draft=(none) card=xtx corpus=corpus/data/corpora/v5/gold_small.jsonl rows=1001 concurrency=1
+[13:30:13Z] FAIL: server exited while loading
+[13:58:45Z] === gemma-4-31B-it.qat-UD-Q4_K_XL.xtx.mtp-off
+[13:58:45Z] model=unsloth/gemma-4-31B-it-qat-GGUF:UD-Q4_K_XL draft=(none) card=xtx corpus=corpus/data/corpora/v5/gold_small.jsonl rows=1001 concurrency=1
+[14:00:48Z] loaded=gemma-4-31B-it-qat-UD-Q4_K_XL.gguf
+[14:00:48Z] speculative=False as intended
+[19:08:27Z] OK gemma-4-31B-it.qat-UD-Q4_K_XL.xtx.mtp-off F1=0.6898 P=0.6050 R=0.8023 wall=307m
+[19:08:27Z] FAIL: MTP-off artifact unexpectedly contains draft counters
+[19:39:28Z] SKIP gemma-4-31B-it.qat-UD-Q4_K_XL.xtx.mtp-off, already banked (1001 notes)
+[19:39:28Z] === gemma-4-31B-it.qat-UD-Q4_K_XL.xtx.mtp-on
+[19:39:28Z] model=unsloth/gemma-4-31B-it-qat-GGUF:UD-Q4_K_XL draft=-hfd unsloth/gemma-4-31B-it-qat-GGUF:MTP/mtp-gemma-4-31B-it-Q8_0.gguf card=xtx corpus=corpus/data/corpora/v5/gold_small.jsonl rows=1001 concurrency=1
+[19:41:46Z] loaded=gemma-4-31B-it-qat-UD-Q4_K_XL.gguf
+[19:41:46Z] speculative=True as intended
+[20:06:09Z] OK gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-off F1=0.6854 P=0.6419 R=0.7352 wall=282m
+[20:06:09Z] FAIL: MTP-off artifact unexpectedly contains draft counters
+[20:35:06Z] SKIP gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-off, already banked (1001 notes)
+[20:35:08Z] === gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-on
+[20:35:08Z] model=unsloth/gemma-4-12B-it-qat-GGUF:UD-Q4_K_XL draft=-hfd unsloth/gemma-4-12B-it-qat-GGUF:MTP/mtp-gemma-4-12B-it-Q8_0.gguf card=5080 corpus=corpus/data/corpora/v5/gold_small.jsonl rows=1001 concurrency=1
+[20:35:25Z] loaded=gemma-4-12B-it-qat-UD-Q4_K_XL.gguf
+[20:35:25Z] speculative=True as intended
+[20:35:25Z] FAIL: local port 8994 already occupied
+[20:36:22Z] SKIP gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-off, already banked (1001 notes)
+[20:36:23Z] === gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-on
+[20:36:23Z] model=unsloth/gemma-4-12B-it-qat-GGUF:UD-Q4_K_XL draft=-hfd unsloth/gemma-4-12B-it-qat-GGUF:MTP/mtp-gemma-4-12B-it-Q8_0.gguf card=5080 corpus=corpus/data/corpora/v5/gold_small.jsonl rows=1001 concurrency=1
+[20:37:46Z] SKIP gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-off, already banked (1001 notes)
+[20:37:52Z] === gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-on
+[20:37:52Z] model=unsloth/gemma-4-12B-it-qat-GGUF:UD-Q4_K_XL draft=-hfd unsloth/gemma-4-12B-it-qat-GGUF:MTP/mtp-gemma-4-12B-it-Q8_0.gguf card=5080 corpus=corpus/data/corpora/v5/gold_small.jsonl rows=1001 concurrency=1
+[20:38:09Z] loaded=gemma-4-12B-it-qat-UD-Q4_K_XL.gguf
+[20:38:09Z] speculative=True as intended
+[22:08:26Z] OK gemma-4-31B-it.qat-UD-Q4_K_XL.xtx.mtp-on F1=0.6872 P=0.6022 R=0.8000 wall=146m
+  arm                                               rows   drafted  accepted     rate
+  gemma-4-31B-it.qat-UD-Q4_K_XL.xtx.mtp-on          1001    539715    426881    79.1%
+[22:25:14Z] OK gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-on F1=0.6932 P=0.6436 R=0.7511 wall=107m
+  arm                                               rows   drafted  accepted     rate
+  gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-on         1001   1382371   1111329    80.4%
+[22:25:19Z] === gemma-4-26B-A4B-it.qat-UD-Q4_K_XL.5080.mtp-off
+[22:25:19Z] model=unsloth/gemma-4-26B-A4B-it-qat-GGUF:UD-Q4_K_XL draft=(none) card=5080 corpus=corpus/data/corpora/v5/gold_small.jsonl rows=1001 concurrency=1
+[22:25:36Z] loaded=gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf
+[22:25:36Z] speculative=False as intended
+[00:34:24Z] OK gemma-4-26B-A4B-it.qat-UD-Q4_K_XL.5080.mtp-off F1=0.6833 P=0.6525 R=0.7170 wall=128m
+[00:34:24Z] FAIL: MTP-off artifact unexpectedly contains draft counters
+[05:12:37Z] SKIP gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-off, already banked (1001 notes)
+[05:12:37Z] SKIP gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-on, already banked (1001 notes)
+[05:12:38Z] SKIP gemma-4-26B-A4B-it.qat-UD-Q4_K_XL.5080.mtp-off, already banked (1001 notes)
+[05:12:38Z] === gemma-4-26B-A4B-it.qat-UD-Q4_K_XL.5080.mtp-on
+[05:12:38Z] model=unsloth/gemma-4-26B-A4B-it-qat-GGUF:UD-Q4_K_XL draft=-hfd unsloth/gemma-4-26B-A4B-it-qat-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf card=5080 corpus=corpus/data/corpora/v5/gold_small.jsonl rows=1001 concurrency=1
+[05:12:55Z] loaded=gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf
+[05:12:55Z] speculative=True as intended
+[06:29:42Z] OK gemma-4-26B-A4B-it.qat-UD-Q4_K_XL.5080.mtp-on F1=0.6804 P=0.6501 R=0.7136 wall=76m
+  arm                                               rows   drafted  accepted     rate
+  gemma-4-26B-A4B-it.qat-UD-Q4_K_XL.5080.mtp-on     1001   1360556   1077716    79.2%

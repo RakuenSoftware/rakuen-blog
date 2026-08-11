@@ -1,0 +1,11 @@
+[10:41:35Z] PAIR START size=12b card=5080 order=off,on
+[20:35:06Z] PAIR START size=12b card=5080 order=off,on
+[20:36:21Z] PAIR START size=12b card=5080 order=off,on
+[20:37:46Z] PAIR START size=12b card=5080 order=off,on
+[22:25:18Z] PAIR COMPLETE size=12b card=5080
+[22:25:18Z] PAIR START size=26b card=5080 order=off,on
+[05:12:36Z] PAIR START size=12b card=5080 order=off,on
+[05:12:37Z] PAIR COMPLETE size=12b card=5080
+[05:12:37Z] PAIR START size=26b card=5080 order=off,on
+[06:29:47Z] PAIR COMPLETE size=26b card=5080
+[06:29:47Z] QUEUE COMPLETE card=5080

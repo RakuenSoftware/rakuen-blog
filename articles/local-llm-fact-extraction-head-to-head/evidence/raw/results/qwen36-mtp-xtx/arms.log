@@ -1,0 +1,29 @@
+[08:45:30Z] === Qwen3.6-27b.Q4_K_M.xtx.mtp-on
+[08:45:35Z] starting: -hf ggml-org/Qwen3.6-27B-GGUF:Q4_K_M -hfd ggml-org/Qwen3.6-27B-GGUF
+[08:45:55Z] loaded Qwen3.6-27B-Q4_K_M.gguf
+[08:45:55Z] speculative=True as intended
+[19:03:44Z] === Qwen3.6-27b.Q4_K_M.xtx.mtp-on
+[19:03:49Z] starting: -hf ggml-org/Qwen3.6-27B-GGUF:Q4_K_M -hfd ggml-org/Qwen3.6-27B-GGUF
+[19:07:12Z] loaded Qwen3.6-27B-Q4_K_M.gguf
+[19:07:12Z] speculative=True as intended
+[23:01:03Z] OK Qwen3.6-27b.Q4_K_M.xtx.mtp-on F1=0.7177 P=0.6545 R=0.7943 wall=233m
+[23:01:03Z] === Qwen3.6-27b.Q4_K_M.xtx.mtp-off
+[23:01:08Z] starting: -hf ggml-org/Qwen3.6-27B-GGUF:Q4_K_M (no draft repo)
+[23:03:30Z] loaded Qwen3.6-27B-Q4_K_M.gguf
+[23:03:30Z] speculative=False as intended
+[08:09:56Z] OK Qwen3.6-27b.Q4_K_M.xtx.mtp-off F1=0.7180 P=0.6581 R=0.7898 wall=546m
+[08:09:56Z] === Qwen3.6-35b.Q4_K_M.xtx.mtp-on
+[08:10:01Z] starting: -hf ggml-org/Qwen3.6-35B-A3B-GGUF:Q4_K_M -hfd ggml-org/Qwen3.6-35B-A3B-GGUF
+[08:31:13Z] loaded Qwen3.6-35B-A3B-Q4_K_M.gguf
+[08:31:13Z] speculative=True as intended
+[10:12:50Z] OK Qwen3.6-35b.Q4_K_M.xtx.mtp-on F1=0.7427 P=0.6991 R=0.7920 wall=101m
+[10:12:50Z] === Qwen3.6-35b.Q4_K_M.xtx.mtp-off
+[10:12:56Z] starting: -hf ggml-org/Qwen3.6-35B-A3B-GGUF:Q4_K_M (no draft repo)
+[10:15:59Z] loaded Qwen3.6-35B-A3B-Q4_K_M.gguf
+[10:15:59Z] speculative=False as intended
+[10:35:12Z] FAIL client
+[10:38:56Z] === Qwen3.6-35b.Q4_K_M.xtx.mtp-off
+[10:39:01Z] starting: -hf ggml-org/Qwen3.6-35B-A3B-GGUF:Q4_K_M (no draft repo)
+[10:41:23Z] loaded Qwen3.6-35B-A3B-Q4_K_M.gguf
+[10:41:23Z] speculative=False as intended
+[13:29:52Z] OK Qwen3.6-35b.Q4_K_M.xtx.mtp-off F1=0.7495 P=0.7032 R=0.8023 wall=168m
