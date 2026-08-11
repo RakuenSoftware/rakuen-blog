@@ -1,0 +1,105 @@
+{
+  "arm": "baseline",
+  "arm_env": {},
+  "attempt_id": "6aafbe56",
+  "cell": "baseline__t03_model_migration__r1",
+  "codex": {
+    "errors": [
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation.",
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation."
+    ],
+    "estimated_credits": 8.338675,
+    "event_types": {
+      "item.completed": 14,
+      "item.started": 7,
+      "thread.started": 1,
+      "turn.completed": 1,
+      "turn.started": 1
+    },
+    "events": 24,
+    "item_types": {
+      "agent_message": 5,
+      "command_execution": 10,
+      "error": 2,
+      "file_change": 4
+    },
+    "malformed_lines": 0,
+    "thread_id": "019fedb8-3c2a-7583-861a-ff154e7caa6e",
+    "tool_calls": {
+      "command_execution": 10,
+      "file_change": 4
+    },
+    "usage": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 93184,
+      "input_tokens": 124097,
+      "output_tokens": 4413,
+      "reasoning_output_tokens": 1674
+    }
+  },
+  "compile_exit": 0,
+  "contamination_errors": [],
+  "contamination_valid": true,
+  "cost_comparable": true,
+  "exit_code": 0,
+  "gateway_model": "",
+  "gateway_url": "",
+  "hidden_ok": true,
+  "loc": {
+    "added": 126,
+    "deleted": 5,
+    "excluded_agent_state": [],
+    "files": 2,
+    "net": 121,
+    "per_file": [
+      {
+        "added": 65,
+        "deleted": 5,
+        "kind": "production",
+        "path": "app/models.py"
+      },
+      {
+        "added": 61,
+        "deleted": 0,
+        "kind": "test",
+        "path": "tests/test_models.py"
+      }
+    ],
+    "production_added": 65,
+    "production_deleted": 5,
+    "production_net": 60,
+    "test_added": 61,
+    "test_deleted": 0,
+    "test_net": 61
+  },
+  "model": "gpt-5.6-sol",
+  "ponytail_addon_markers": [],
+  "pre_head": "0b09f84c7262c3bee6b51bd4f58cf828cfc637f8",
+  "prompt_sha256": "a9bf73dcf278d7bd1298ccabea21b18b87b9074a1daa861dc77a82d9436ea594",
+  "quality_static": {
+    "bare_except_handlers_in_touched_files": 0,
+    "branch_nodes_in_touched_files": 11,
+    "max_control_nesting_in_touched_files": 2,
+    "mutable_default_arguments_in_touched_files": 0,
+    "parse_errors": [],
+    "production_files": [
+      "app/models.py"
+    ],
+    "python_functions_in_touched_files": 8,
+    "test_files": [
+      "tests/test_models.py"
+    ]
+  },
+  "raw_stderr_bytes": 39,
+  "raw_stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721",
+  "raw_stream_bytes": 20136,
+  "raw_stream_sha256": "ce4c6e48c53b94c6b4eb95b74c1e4dfdf19ea7648a186585d4aca95579e0ea60",
+  "reasoning_effort": "medium",
+  "replicate": 1,
+  "schema": 1,
+  "session_id": "87d6524a-0908-5dfd-aba4-b50225bf7b3d",
+  "smoke_exit": 0,
+  "task": "t03_model_migration",
+  "timed_out": false,
+  "wall_seconds": 113.19459916802589
+}

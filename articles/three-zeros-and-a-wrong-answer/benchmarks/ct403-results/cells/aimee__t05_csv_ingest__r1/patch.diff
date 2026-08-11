@@ -1,0 +1,59 @@
+diff --git a/app/ingest.py b/app/ingest.py
+index 36b8a86..5a9f36b 100644
+--- a/app/ingest.py
++++ b/app/ingest.py
+@@ -1,9 +1,13 @@
+-"""CSV ingest. Naive splitting - breaks on quoted fields."""
++"""CSV ingest helpers."""
++
++import csv
++import io
++
++
+ def parse_rows(text):
+-    rows = []
+-    for line in text.strip().splitlines():
+-        rows.append(line.split(","))
+-    return rows
++    """Parse CSV text according to the standard quoting rules."""
++    return list(csv.reader(io.StringIO(text, newline="")))
++
+ 
+ def sum_column(text, index):
+     total = 0.0
+diff --git a/tests/test_ingest.py b/tests/test_ingest.py
+new file mode 100644
+index 0000000..1e8c894
+--- /dev/null
++++ b/tests/test_ingest.py
+@@ -0,0 +1,30 @@
++import unittest
++
++from app.ingest import parse_rows, sum_column
++
++
++class IngestTests(unittest.TestCase):
++    def test_parse_rows_preserves_quoted_fields(self):
++        text = 'description,amount\r\n"Widget, large",12.50\r\n'
++
++        self.assertEqual(
++            parse_rows(text),
++            [["description", "amount"], ["Widget, large", "12.50"]],
++        )
++
++    def test_sum_column_handles_quoted_commas_in_earlier_columns(self):
++        text = 'description,amount\n"Widget, large",12.50\n"Widget, small",7.50'
++
++        self.assertEqual(sum_column(text, 1), 20.0)
++
++    def test_parse_rows_handles_escaped_quotes_and_multiline_fields(self):
++        text = 'description,amount\n"A ""special""\nwidget",5.00\n'
++
++        self.assertEqual(
++            parse_rows(text),
++            [["description", "amount"], ['A "special"\nwidget', "5.00"]],
++        )
++
++
++if __name__ == "__main__":
++    unittest.main()

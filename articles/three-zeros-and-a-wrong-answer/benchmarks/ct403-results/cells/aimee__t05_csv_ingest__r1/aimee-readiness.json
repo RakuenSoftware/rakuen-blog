@@ -1,0 +1,96 @@
+{
+  "blast_radius": {
+    "dependencies": [
+      "datetime"
+    ],
+    "dependents": [
+      "app/billing.py",
+      "app/invoices.py",
+      "app/reports.py"
+    ],
+    "file": "app/dates.py",
+    "result_status": "ok"
+  },
+  "build": {
+    "chunks_added": 0,
+    "embeddings_added": 0,
+    "files_indexed": 0,
+    "project": "codex-t05-csv-ingest-r1-46460483",
+    "queued": true,
+    "reason": "queued"
+  },
+  "callers": {
+    "hits": [
+      {
+        "caller": "billing_period_days",
+        "file_path": "app/billing.py",
+        "line": 3,
+        "project": "codex-t05-csv-ingest-r1-46460483"
+      },
+      {
+        "caller": "invoice_due",
+        "file_path": "app/invoices.py",
+        "line": 3,
+        "project": "codex-t05-csv-ingest-r1-46460483"
+      },
+      {
+        "caller": "month_report_path",
+        "file_path": "app/reports.py",
+        "line": 6,
+        "project": "codex-t05-csv-ingest-r1-46460483"
+      }
+    ],
+    "result_status": "ok"
+  },
+  "errors": [],
+  "project": "codex-t05-csv-ingest-r1-46460483",
+  "readiness_mode": "full",
+  "runtime": {
+    "client_sha256": "86b99d75f422012b3a35700a80b7ed0e7121a33c50eab08b97fcfe080dd7f8db",
+    "client_version": "aimee pre-merge-safety-1281-g8e3d2b835d",
+    "kb_version": "pre-merge-safety-1278-g6c53ab4f44",
+    "server_version": "pre-merge-safety-1281-g8e3d2b835d",
+    "server_version_source": "client-build"
+  },
+  "scan": "==> Scan complete: 1 project(s), 34 file(s) re-indexed",
+  "seconds": 14.90977606200613,
+  "semantic": {
+    "fusion_mode_used": "rrf",
+    "hits": [
+      {
+        "artifact_id": "README.md",
+        "citations": [],
+        "doc_id": 1408,
+        "excerpt": "# widgets-servicennSmall internal service. House conventions live in `app/api.py` - all endpointsnuse `require_user`/`require_admin`, `paginate()` for lists, `AppError` subclassesnfor failures, and `audit.record()` for admin actions.nnRun tests: `python3 -m pytest tests/ -q`",
+        "kind": "doc_chunk",
+        "project": "codex-t05-csv-ingest-r1-46460483",
+        "score": 0.504236
+      },
+      {
+        "artifact_id": "TICKET.txt",
+        "citations": [],
+        "doc_id": 1410,
+        "excerpt": "Customers are reporting wrong totals when they upload CSV exports from their accounting software. app/ingest.py handles that upload. Please fix it so real-world CSV files are handled correctly.",
+        "kind": "doc_chunk",
+        "project": "codex-t05-csv-ingest-r1-46460483",
+        "score": 0.174443
+      }
+    ],
+    "next_cursor": null,
+    "total_hits": 2
+  },
+  "semantic_attempts": 4,
+  "symbol": {
+    "hits": [
+      {
+        "file_path": "app/dates.py",
+        "kind": "definition",
+        "line": 7,
+        "project": "codex-t05-csv-ingest-r1-46460483"
+      }
+    ],
+    "result_status": "ok"
+  },
+  "workspace_add": "workspace: added /var/lib/aimee-workspaces/ptcodex/cells/aimee__t05_csv_ingest__r1/codex-t05-csv-ingest-r1-46460483 (1 project(s) discovered)\n  indexed: codex-t05-csv-ingest-r1-46460483",
+  "workspace_tree_sha256": "d4ec33826dcdc8b6e4670a53808fc9852cc72521691a216857bd3461a0cf6d98"
+}

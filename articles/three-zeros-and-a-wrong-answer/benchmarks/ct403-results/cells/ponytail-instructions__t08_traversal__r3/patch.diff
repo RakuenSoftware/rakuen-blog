@@ -1,0 +1,48 @@
+diff --git a/app/files.py b/app/files.py
+index 13f6a7e..bf59344 100644
+--- a/app/files.py
++++ b/app/files.py
+@@ -1,6 +1,9 @@
+ import os
+ UPLOAD_ROOT = "/srv/uploads"
+ 
+-# UNSAFE: user-controlled name joined straight onto the root.
+ def download_path(name):
+-    return os.path.join(UPLOAD_ROOT, name)
++    root = os.path.realpath(UPLOAD_ROOT)
++    path = os.path.realpath(os.path.join(root, name))
++    if os.path.commonpath((root, path)) != root:
++        raise ValueError("download path escapes upload root")
++    return path
+diff --git a/tests/test_files.py b/tests/test_files.py
+new file mode 100644
+index 0000000..c0812d5
+--- /dev/null
++++ b/tests/test_files.py
+@@ -0,0 +1,26 @@
++import os
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from app.files import download_path
++
++
++class DownloadPathTest(unittest.TestCase):
++    def test_path_stays_inside_upload_root(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = os.path.join(directory, "uploads")
++            outside = os.path.join(directory, "outside")
++            os.mkdir(root)
++            os.mkdir(outside)
++            os.symlink(outside, os.path.join(root, "link"))
++
++            with patch("app.files.UPLOAD_ROOT", root):
++                self.assertEqual(download_path("nested/file.txt"), os.path.join(root, "nested/file.txt"))
++                for name in ("../secret.txt", "/etc/passwd", "link/secret.txt"):
++                    with self.subTest(name=name), self.assertRaises(ValueError):
++                        download_path(name)
++
++
++if __name__ == "__main__":
++    unittest.main()

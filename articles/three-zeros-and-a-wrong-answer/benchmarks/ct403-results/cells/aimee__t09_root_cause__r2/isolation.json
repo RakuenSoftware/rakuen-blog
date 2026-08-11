@@ -1,0 +1,97 @@
+{
+  "after": {
+    "mcp_servers": [
+      {
+        "auth_status": "unsupported",
+        "disabled_reason": null,
+        "enabled": true,
+        "name": "aimee",
+        "startup_timeout_sec": null,
+        "tool_timeout_sec": null,
+        "transport": {
+          "args": [
+            "mcp-serve"
+          ],
+          "command": "/usr/local/bin/aimee",
+          "cwd": null,
+          "env": {
+            "AIMEE_HOME": "/var/lib/docker/volumes/aimee_aimee-server-home/_data"
+          },
+          "env_vars": [],
+          "type": "stdio"
+        }
+      }
+    ],
+    "plugins": {
+      "available": [],
+      "installed": [
+        {
+          "authPolicy": "ON_USE",
+          "enabled": true,
+          "installPolicy": "INSTALLED_BY_DEFAULT",
+          "installed": true,
+          "marketplaceName": "local",
+          "marketplaceSource": {
+            "source": "/root",
+            "sourceType": "local"
+          },
+          "name": "aimee",
+          "pluginId": "aimee@local",
+          "source": {
+            "path": "/root/plugins/aimee",
+            "source": "local"
+          },
+          "version": "pre-merge-safety-1281-g8e3d2b835d"
+        }
+      ]
+    }
+  },
+  "before": {
+    "mcp_servers": [
+      {
+        "auth_status": "unsupported",
+        "disabled_reason": null,
+        "enabled": true,
+        "name": "aimee",
+        "startup_timeout_sec": null,
+        "tool_timeout_sec": null,
+        "transport": {
+          "args": [
+            "mcp-serve"
+          ],
+          "command": "/usr/local/bin/aimee",
+          "cwd": null,
+          "env": {
+            "AIMEE_HOME": "/var/lib/docker/volumes/aimee_aimee-server-home/_data"
+          },
+          "env_vars": [],
+          "type": "stdio"
+        }
+      }
+    ],
+    "plugins": {
+      "available": [],
+      "installed": [
+        {
+          "authPolicy": "ON_USE",
+          "enabled": true,
+          "installPolicy": "INSTALLED_BY_DEFAULT",
+          "installed": true,
+          "marketplaceName": "local",
+          "marketplaceSource": {
+            "source": "/root",
+            "sourceType": "local"
+          },
+          "name": "aimee",
+          "pluginId": "aimee@local",
+          "source": {
+            "path": "/root/plugins/aimee",
+            "source": "local"
+          },
+          "version": "pre-merge-safety-1281-g8e3d2b835d"
+        }
+      ]
+    }
+  },
+  "errors": []
+}

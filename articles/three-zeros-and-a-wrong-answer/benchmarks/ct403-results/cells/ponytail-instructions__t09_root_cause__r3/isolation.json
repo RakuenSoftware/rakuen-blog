@@ -1,0 +1,17 @@
+{
+  "after": {
+    "mcp_servers": [],
+    "plugins": {
+      "available": [],
+      "installed": []
+    }
+  },
+  "before": {
+    "mcp_servers": [],
+    "plugins": {
+      "available": [],
+      "installed": []
+    }
+  },
+  "errors": []
+}

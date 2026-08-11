@@ -1,0 +1,96 @@
+{
+  "blast_radius": {
+    "dependencies": [
+      "datetime"
+    ],
+    "dependents": [
+      "app/billing.py",
+      "app/invoices.py",
+      "app/reports.py"
+    ],
+    "file": "app/dates.py",
+    "result_status": "ok"
+  },
+  "build": {
+    "chunks_added": 0,
+    "embeddings_added": 0,
+    "files_indexed": 0,
+    "project": "codex-t07-race-r1-590f1d55",
+    "queued": true,
+    "reason": "queued"
+  },
+  "callers": {
+    "hits": [
+      {
+        "caller": "billing_period_days",
+        "file_path": "app/billing.py",
+        "line": 3,
+        "project": "codex-t07-race-r1-590f1d55"
+      },
+      {
+        "caller": "invoice_due",
+        "file_path": "app/invoices.py",
+        "line": 3,
+        "project": "codex-t07-race-r1-590f1d55"
+      },
+      {
+        "caller": "month_report_path",
+        "file_path": "app/reports.py",
+        "line": 6,
+        "project": "codex-t07-race-r1-590f1d55"
+      }
+    ],
+    "result_status": "ok"
+  },
+  "errors": [],
+  "project": "codex-t07-race-r1-590f1d55",
+  "readiness_mode": "full",
+  "runtime": {
+    "client_sha256": "86b99d75f422012b3a35700a80b7ed0e7121a33c50eab08b97fcfe080dd7f8db",
+    "client_version": "aimee pre-merge-safety-1281-g8e3d2b835d",
+    "kb_version": "pre-merge-safety-1278-g6c53ab4f44",
+    "server_version": "pre-merge-safety-1281-g8e3d2b835d",
+    "server_version_source": "client-build"
+  },
+  "scan": "==> Scan complete: 1 project(s), 34 file(s) re-indexed",
+  "seconds": 10.826441681012511,
+  "semantic": {
+    "fusion_mode_used": "rrf",
+    "hits": [
+      {
+        "artifact_id": "README.md",
+        "citations": [],
+        "doc_id": 1186,
+        "excerpt": "# widgets-servicennSmall internal service. House conventions live in `app/api.py` - all endpointsnuse `require_user`/`require_admin`, `paginate()` for lists, `AppError` subclassesnfor failures, and `audit.record()` for admin actions.nnRun tests: `python3 -m pytest tests/ -q`",
+        "kind": "doc_chunk",
+        "project": "codex-t07-race-r1-590f1d55",
+        "score": 0.504236
+      },
+      {
+        "artifact_id": "TICKET.txt",
+        "citations": [],
+        "doc_id": 1188,
+        "excerpt": "The view counter in app/counter.py reports fewer views than we actually serve when a page is busy. Please fix it.",
+        "kind": "doc_chunk",
+        "project": "codex-t07-race-r1-590f1d55",
+        "score": 0.217081
+      }
+    ],
+    "next_cursor": null,
+    "total_hits": 2
+  },
+  "semantic_attempts": 4,
+  "symbol": {
+    "hits": [
+      {
+        "file_path": "app/dates.py",
+        "kind": "definition",
+        "line": 7,
+        "project": "codex-t07-race-r1-590f1d55"
+      }
+    ],
+    "result_status": "ok"
+  },
+  "workspace_add": "workspace: added /var/lib/aimee-workspaces/ptcodex/cells/aimee__t07_race__r1/codex-t07-race-r1-590f1d55 (1 project(s) discovered)\n  indexed: codex-t07-race-r1-590f1d55",
+  "workspace_tree_sha256": "beda4d6cea4a3e5bef66cb4f61545edee5aa29434222e305c29891203033c83e"
+}

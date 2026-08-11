@@ -1,0 +1,30 @@
+import os
+
+UPLOAD_ROOT = "/srv/uploads"
+
+
+def download_path(name):
+    """Return the canonical path for an upload, rejecting paths outside the root."""
+    if not isinstance(name, (str, bytes, os.PathLike)):
+        raise TypeError("name must be a path-like value")
+
+    root = os.path.realpath(UPLOAD_ROOT)
+    supplied = os.fspath(name)
+    if isinstance(supplied, bytes):
+        root = os.fsencode(root)
+
+    # Do not allow callers to bypass the upload namespace with an absolute name,
+    # even when that name happens to point into UPLOAD_ROOT.
+    if os.path.isabs(supplied):
+        raise ValueError("download path must be relative to the upload root")
+
+    candidate = os.path.realpath(os.path.join(root, supplied))
+    try:
+        contained = os.path.commonpath((root, candidate)) == root
+    except ValueError:
+        # Different drives on platforms which support them cannot be contained.
+        contained = False
+
+    if not contained:
+        raise ValueError("download path escapes the upload root")
+    return candidate

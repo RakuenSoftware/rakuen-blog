@@ -1,0 +1,105 @@
+{
+  "arm": "aimee-review",
+  "attempt_id": "d7e61b1f",
+  "cell": "aimee-review__t01_cache__r1",
+  "codex": {
+    "errors": [
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation.",
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation."
+    ],
+    "estimated_credits": 13.16535,
+    "event_types": {
+      "item.completed": 27,
+      "item.started": 16,
+      "thread.started": 1,
+      "turn.completed": 1,
+      "turn.started": 1
+    },
+    "events": 46,
+    "item_types": {
+      "agent_message": 9,
+      "command_execution": 20,
+      "error": 2,
+      "file_change": 2,
+      "mcp_tool_call": 10
+    },
+    "malformed_lines": 0,
+    "thread_id": "019fecc2-6110-7190-a866-ce6316b564c8",
+    "tool_calls": {
+      "command_execution": 20,
+      "file_change": 2,
+      "mcp:aimee:index": 2,
+      "mcp:aimee:preview_blast_radius": 4,
+      "mcp:aimee:roundtable_review": 4
+    },
+    "usage": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 337408,
+      "input_tokens": 377280,
+      "output_tokens": 5285,
+      "reasoning_output_tokens": 1588
+    }
+  },
+  "compile_exit": 0,
+  "contamination_errors": [],
+  "contamination_valid": true,
+  "cost_comparable": false,
+  "exit_code": 0,
+  "hidden_ok": true,
+  "loc": {
+    "added": 12,
+    "deleted": 3,
+    "excluded_agent_state": [],
+    "files": 2,
+    "net": 9,
+    "per_file": [
+      {
+        "added": 1,
+        "deleted": 1,
+        "kind": "production",
+        "path": "app/cache.py"
+      },
+      {
+        "added": 11,
+        "deleted": 2,
+        "kind": "production",
+        "path": "app/profile.py"
+      }
+    ],
+    "production_added": 12,
+    "production_deleted": 3,
+    "production_net": 9,
+    "test_added": 0,
+    "test_deleted": 0,
+    "test_net": 0
+  },
+  "model": "gpt-5.6-sol",
+  "ponytail_addon_markers": [],
+  "pre_head": "4d7dcfa2725528cbd00a4876220e01399088853f",
+  "prompt_sha256": "59869ef7cbdd16282e9ef39b120468c9e5f55658073232540dc401b29b895ff6",
+  "quality_static": {
+    "bare_except_handlers_in_touched_files": 0,
+    "branch_nodes_in_touched_files": 4,
+    "max_control_nesting_in_touched_files": 1,
+    "mutable_default_arguments_in_touched_files": 0,
+    "parse_errors": [],
+    "production_files": [
+      "app/cache.py",
+      "app/profile.py"
+    ],
+    "python_functions_in_touched_files": 9,
+    "test_files": []
+  },
+  "raw_stderr_bytes": 39,
+  "raw_stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721",
+  "raw_stream_bytes": 43772,
+  "raw_stream_sha256": "50b0c81eae4ef911c17562015c4ccedbfa7bbbe38fb22110aad9ab7e720e45a4",
+  "reasoning_effort": "medium",
+  "replicate": 1,
+  "schema": 1,
+  "session_id": "59304dae-6fa6-5c28-8ca9-ff4ad007fa10",
+  "smoke_exit": 0,
+  "task": "t01_cache",
+  "timed_out": false,
+  "wall_seconds": 135.92113430402242
+}

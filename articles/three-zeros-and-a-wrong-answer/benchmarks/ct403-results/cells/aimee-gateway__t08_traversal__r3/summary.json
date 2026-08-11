@@ -1,0 +1,103 @@
+{
+  "arm": "aimee-gateway",
+  "arm_env": {},
+  "attempt_id": "873547fe",
+  "cell": "aimee-gateway__t08_traversal__r3",
+  "codex": {
+    "errors": [
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation.",
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation."
+    ],
+    "estimated_credits": 11.653,
+    "event_types": {
+      "item.completed": 11,
+      "item.started": 8,
+      "thread.started": 1,
+      "turn.completed": 1,
+      "turn.started": 1
+    },
+    "events": 22,
+    "item_types": {
+      "agent_message": 1,
+      "command_execution": 16,
+      "error": 2
+    },
+    "malformed_lines": 0,
+    "thread_id": "019fef92-e395-7bb2-868f-b2fcfc05a389",
+    "tool_calls": {
+      "command_execution": 16
+    },
+    "usage": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 0,
+      "input_tokens": 71450,
+      "output_tokens": 3629,
+      "reasoning_output_tokens": 0
+    }
+  },
+  "compile_exit": 0,
+  "contamination_errors": [],
+  "contamination_valid": true,
+  "cost_comparable": true,
+  "exit_code": 0,
+  "gateway_model": "aimee",
+  "gateway_url": "http://127.0.0.1:8750/v1",
+  "hidden_ok": false,
+  "loc": {
+    "added": 56,
+    "deleted": 2,
+    "excluded_agent_state": [],
+    "files": 2,
+    "net": 54,
+    "per_file": [
+      {
+        "added": 16,
+        "deleted": 2,
+        "kind": "production",
+        "path": "app/files.py"
+      },
+      {
+        "added": 40,
+        "deleted": 0,
+        "kind": "test",
+        "path": "tests/test_files.py"
+      }
+    ],
+    "production_added": 16,
+    "production_deleted": 2,
+    "production_net": 14,
+    "test_added": 40,
+    "test_deleted": 0,
+    "test_net": 40
+  },
+  "model": "gpt-5.6-sol",
+  "ponytail_addon_markers": [],
+  "pre_head": "931f3b5a339ddc7f0a39e08da58edae8dc45cf0f",
+  "prompt_sha256": "a9bf73dcf278d7bd1298ccabea21b18b87b9074a1daa861dc77a82d9436ea594",
+  "quality_static": {
+    "bare_except_handlers_in_touched_files": 0,
+    "branch_nodes_in_touched_files": 2,
+    "max_control_nesting_in_touched_files": 1,
+    "mutable_default_arguments_in_touched_files": 0,
+    "parse_errors": [],
+    "production_files": [
+      "app/files.py"
+    ],
+    "python_functions_in_touched_files": 1,
+    "test_files": [
+      "tests/test_files.py"
+    ]
+  },
+  "raw_stderr_bytes": 811,
+  "raw_stderr_sha256": "a10f38a9ab4378552a511da4a9034d6987b105b1f0ae3e862e6e435853e661f7",
+  "raw_stream_bytes": 21619,
+  "raw_stream_sha256": "7f965085e6d7837801049c419468fd885eb774708da4c9e28d860c6537c4fd45",
+  "reasoning_effort": "medium",
+  "replicate": 3,
+  "schema": 1,
+  "session_id": "57c8dfa0-dec9-50b4-bbb2-a15f4df18fcf",
+  "smoke_exit": 0,
+  "task": "t08_traversal",
+  "timed_out": false,
+  "wall_seconds": 160.32285080396105
+}

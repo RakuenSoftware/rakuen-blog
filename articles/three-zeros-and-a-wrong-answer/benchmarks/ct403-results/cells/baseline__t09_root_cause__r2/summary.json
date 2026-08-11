@@ -1,0 +1,103 @@
+{
+  "arm": "baseline",
+  "arm_env": {},
+  "attempt_id": "37396988",
+  "cell": "baseline__t09_root_cause__r2",
+  "codex": {
+    "errors": [
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation.",
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation."
+    ],
+    "estimated_credits": 5.262275,
+    "event_types": {
+      "item.completed": 14,
+      "item.started": 7,
+      "thread.started": 1,
+      "turn.completed": 1,
+      "turn.started": 1
+    },
+    "events": 24,
+    "item_types": {
+      "agent_message": 5,
+      "command_execution": 12,
+      "error": 2,
+      "file_change": 2
+    },
+    "malformed_lines": 0,
+    "thread_id": "019fed95-f4c2-7970-8ced-7deb834ffe61",
+    "tool_calls": {
+      "command_execution": 12,
+      "file_change": 2
+    },
+    "usage": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 91392,
+      "input_tokens": 111583,
+      "output_tokens": 2128,
+      "reasoning_output_tokens": 339
+    }
+  },
+  "compile_exit": 0,
+  "contamination_errors": [],
+  "contamination_valid": true,
+  "cost_comparable": true,
+  "exit_code": 0,
+  "hidden_ok": true,
+  "loc": {
+    "added": 31,
+    "deleted": 5,
+    "excluded_agent_state": [],
+    "files": 2,
+    "net": 26,
+    "per_file": [
+      {
+        "added": 6,
+        "deleted": 5,
+        "kind": "production",
+        "path": "app/dates.py"
+      },
+      {
+        "added": 25,
+        "deleted": 0,
+        "kind": "test",
+        "path": "tests/test_billing.py"
+      }
+    ],
+    "production_added": 6,
+    "production_deleted": 5,
+    "production_net": 1,
+    "test_added": 25,
+    "test_deleted": 0,
+    "test_net": 25
+  },
+  "model": "gpt-5.6-sol",
+  "ponytail_addon_markers": [],
+  "pre_head": "6c8fc59c0d9dc218a1d3b8c23e0586acc1ecbc0b",
+  "prompt_sha256": "a9bf73dcf278d7bd1298ccabea21b18b87b9074a1daa861dc77a82d9436ea594",
+  "quality_static": {
+    "bare_except_handlers_in_touched_files": 0,
+    "branch_nodes_in_touched_files": 0,
+    "max_control_nesting_in_touched_files": 0,
+    "mutable_default_arguments_in_touched_files": 0,
+    "parse_errors": [],
+    "production_files": [
+      "app/dates.py"
+    ],
+    "python_functions_in_touched_files": 2,
+    "test_files": [
+      "tests/test_billing.py"
+    ]
+  },
+  "raw_stderr_bytes": 39,
+  "raw_stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721",
+  "raw_stream_bytes": 16134,
+  "raw_stream_sha256": "678686f153f1a0297694af7175528edc22315cc318cfec2b6b7460511bed6ce2",
+  "reasoning_effort": "medium",
+  "replicate": 2,
+  "schema": 1,
+  "session_id": "be3213c9-2d48-5f2d-b7a0-5b928bd3940c",
+  "smoke_exit": 0,
+  "task": "t09_root_cause",
+  "timed_out": false,
+  "wall_seconds": 59.458518043975346
+}

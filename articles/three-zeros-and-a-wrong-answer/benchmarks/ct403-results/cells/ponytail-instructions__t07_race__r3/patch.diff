@@ -1,0 +1,33 @@
+diff --git a/app/counter.py b/app/counter.py
+index f1d0928..8d6096d 100644
+--- a/app/counter.py
++++ b/app/counter.py
+@@ -1,10 +1,22 @@
+-"""View counter. Loses increments under concurrency (read-modify-write)."""
++"""Thread-safe in-memory view counter."""
++import threading
++
++
+ _counts = {}
++_lock = threading.Lock()  # ponytail: shard by key if lock contention becomes measurable.
++
++
+ def increment(key):
+-    current = _counts.get(key, 0)
+-    _counts[key] = current + 1
+-    return _counts[key]
++    with _lock:
++        _counts[key] = _counts.get(key, 0) + 1
++        return _counts[key]
++
++
+ def get(key):
+-    return _counts.get(key, 0)
++    with _lock:
++        return _counts.get(key, 0)
++
++
+ def reset():
+-    _counts.clear()
++    with _lock:
++        _counts.clear()

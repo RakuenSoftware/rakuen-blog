@@ -1,0 +1,107 @@
+{
+  "arm": "ponytail-addon",
+  "arm_env": {},
+  "attempt_id": "713571a8",
+  "cell": "ponytail-addon__t05_csv_ingest__r3",
+  "codex": {
+    "errors": [
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation.",
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation."
+    ],
+    "estimated_credits": 6.809775,
+    "event_types": {
+      "item.completed": 13,
+      "item.started": 6,
+      "thread.started": 1,
+      "turn.completed": 1,
+      "turn.started": 1
+    },
+    "events": 22,
+    "item_types": {
+      "agent_message": 5,
+      "command_execution": 8,
+      "error": 2,
+      "file_change": 4
+    },
+    "malformed_lines": 0,
+    "thread_id": "019fedde-60b1-70c1-9c96-1b9602f4bc9d",
+    "tool_calls": {
+      "command_execution": 8,
+      "file_change": 4
+    },
+    "usage": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 101632,
+      "input_tokens": 126975,
+      "output_tokens": 3162,
+      "reasoning_output_tokens": 1467
+    }
+  },
+  "compile_exit": 0,
+  "contamination_errors": [],
+  "contamination_valid": true,
+  "cost_comparable": true,
+  "exit_code": 0,
+  "gateway_model": "",
+  "gateway_url": "",
+  "hidden_ok": true,
+  "loc": {
+    "added": 25,
+    "deleted": 6,
+    "excluded_agent_state": [],
+    "files": 2,
+    "net": 19,
+    "per_file": [
+      {
+        "added": 10,
+        "deleted": 6,
+        "kind": "production",
+        "path": "app/ingest.py"
+      },
+      {
+        "added": 15,
+        "deleted": 0,
+        "kind": "test",
+        "path": "tests/test_ingest.py"
+      }
+    ],
+    "production_added": 10,
+    "production_deleted": 6,
+    "production_net": 4,
+    "test_added": 15,
+    "test_deleted": 0,
+    "test_net": 15
+  },
+  "model": "gpt-5.6-sol",
+  "ponytail_addon_markers": [
+    "plugins/data/ponytail-ponytail/.ponytail-active"
+  ],
+  "pre_head": "7ce1865909d414cc091edb97c38877dac3feb6df",
+  "prompt_sha256": "a9bf73dcf278d7bd1298ccabea21b18b87b9074a1daa861dc77a82d9436ea594",
+  "quality_static": {
+    "bare_except_handlers_in_touched_files": 0,
+    "branch_nodes_in_touched_files": 2,
+    "max_control_nesting_in_touched_files": 1,
+    "mutable_default_arguments_in_touched_files": 0,
+    "parse_errors": [],
+    "production_files": [
+      "app/ingest.py"
+    ],
+    "python_functions_in_touched_files": 2,
+    "test_files": [
+      "tests/test_ingest.py"
+    ]
+  },
+  "raw_stderr_bytes": 39,
+  "raw_stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721",
+  "raw_stream_bytes": 19990,
+  "raw_stream_sha256": "e8dcc4a25a3cad3c209475923040de08de61f297b321bb6fd1dd641b39c39671",
+  "reasoning_effort": "medium",
+  "replicate": 3,
+  "schema": 1,
+  "session_id": "efa1357a-2b3e-5d0b-9194-be44995f3591",
+  "smoke_exit": 0,
+  "task": "t05_csv_ingest",
+  "timed_out": false,
+  "wall_seconds": 83.6468234200729
+}

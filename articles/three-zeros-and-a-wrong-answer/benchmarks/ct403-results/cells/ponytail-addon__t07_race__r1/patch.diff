@@ -1,0 +1,66 @@
+diff --git a/app/counter.py b/app/counter.py
+index f1d0928..183b0bf 100644
+--- a/app/counter.py
++++ b/app/counter.py
+@@ -1,10 +1,23 @@
+-"""View counter. Loses increments under concurrency (read-modify-write)."""
++"""Thread-safe in-memory view counter."""
++import threading
++
++
+ _counts = {}
++_lock = threading.Lock()
++
++
+ def increment(key):
+-    current = _counts.get(key, 0)
+-    _counts[key] = current + 1
+-    return _counts[key]
++    # ponytail: one global lock; use per-key locks if contention becomes measurable.
++    with _lock:
++        _counts[key] = _counts.get(key, 0) + 1
++        return _counts[key]
++
++
+ def get(key):
+-    return _counts.get(key, 0)
++    with _lock:
++        return _counts.get(key, 0)
++
++
+ def reset():
+-    _counts.clear()
++    with _lock:
++        _counts.clear()
+diff --git a/tests/test_counter.py b/tests/test_counter.py
+new file mode 100644
+index 0000000..c5e8324
+--- /dev/null
++++ b/tests/test_counter.py
+@@ -0,0 +1,26 @@
++import unittest
++import sys
++from concurrent.futures import ThreadPoolExecutor
++
++from app import counter
++
++
++class CounterTest(unittest.TestCase):
++    def test_concurrent_increments_are_not_lost(self):
++        counter.reset()
++        workers = 8
++        increments = 10_000
++
++        interval = sys.getswitchinterval()
++        sys.setswitchinterval(1e-6)
++        try:
++            with ThreadPoolExecutor(max_workers=workers) as pool:
++                list(pool.map(lambda _: [counter.increment("busy") for _ in range(increments)], range(workers)))
++        finally:
++            sys.setswitchinterval(interval)
++
++        self.assertEqual(counter.get("busy"), workers * increments)
++
++
++if __name__ == "__main__":
++    unittest.main()

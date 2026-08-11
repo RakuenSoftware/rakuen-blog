@@ -1,0 +1,99 @@
+diff --git a/app/models.py b/app/models.py
+index b33f21b..4bf3e9b 100644
+--- a/app/models.py
++++ b/app/models.py
+@@ -1,13 +1,43 @@
+-"""Models. `name` is a single field - task 3 splits it."""
++"""Models."""
++_MISSING = object()
++
++
+ class User:
+-    def __init__(self, uid, name, email):
+-        self.uid, self.name, self.email = uid, name, email
++    def __init__(self, uid, first_name, last_name, email=_MISSING):
++        # Keep the old User(uid, name, email) call shape during migration.
++        if email is _MISSING:
++            name, email = first_name, last_name
++            first_name, last_name = self._split_name(name)
++        self.uid = uid
++        self.first_name = first_name
++        self.last_name = last_name
++        self.email = email
++
++    @staticmethod
++    def _split_name(name):
++        parts = name.split(None, 1)
++        return (parts[0], parts[1] if len(parts) == 2 else "") if parts else ("", "")
++
++    @property
++    def name(self):
++        return " ".join(part for part in (self.first_name, self.last_name) if part)
++
+     def to_dict(self):
+-        return {"id": self.uid, "name": self.name, "email": self.email}
++        return {
++            "id": self.uid,
++            "first_name": self.first_name,
++            "last_name": self.last_name,
++            "name": self.name,
++            "email": self.email,
++        }
+ 
+     @classmethod
+     def from_dict(cls, row):
+-        return cls(row["id"], row["name"], row["email"])
++        if "first_name" in row or "last_name" in row:
++            return cls(row["id"], row.get("first_name", ""), row.get("last_name", ""), row["email"])
++        first_name, last_name = cls._split_name(row["name"])
++        return cls(row["id"], first_name, last_name, row["email"])
++
+ 
+ class Item:
+     def __init__(self, iid, owner, title):
+diff --git a/tests/test_models.py b/tests/test_models.py
+new file mode 100644
+index 0000000..7992b0b
+--- /dev/null
++++ b/tests/test_models.py
+@@ -0,0 +1,40 @@
++import unittest
++
++from app.models import User
++
++
++class UserMigrationTest(unittest.TestCase):
++    def test_loads_legacy_row_and_serializes_both_name_shapes(self):
++        user = User.from_dict({"id": "u1", "name": "Ada Lovelace", "email": "ada@example.com"})
++
++        self.assertEqual(user.first_name, "Ada")
++        self.assertEqual(user.last_name, "Lovelace")
++        self.assertEqual(
++            user.to_dict(),
++            {
++                "id": "u1",
++                "first_name": "Ada",
++                "last_name": "Lovelace",
++                "name": "Ada Lovelace",
++                "email": "ada@example.com",
++            },
++        )
++
++    def test_loads_split_row(self):
++        user = User.from_dict(
++            {"id": "u1", "first_name": "Ada", "last_name": "Lovelace", "email": "ada@example.com"}
++        )
++
++        self.assertEqual(user.name, "Ada Lovelace")
++
++    def test_keeps_legacy_constructor(self):
++        user = User("u1", "Ada Lovelace", "ada@example.com")
++
++        self.assertEqual((user.first_name, user.last_name), ("Ada", "Lovelace"))
++
++        blank = User.from_dict({"id": "u2", "name": "", "email": None})
++        self.assertEqual((blank.first_name, blank.last_name, blank.email), ("", "", None))
++
++
++if __name__ == "__main__":
++    unittest.main()

@@ -53,21 +53,29 @@ date in the text, which is what this class of claim needs.
 
 ## Benchmark measurement: the cost table
 
-**Source tree located on 2026-08-11:**
-`ponytail-reanalysis/.claude/worktrees/aimee-review-arm/ct403-results/cells/`,
-81 cells across eight run labels. Three earlier candidate trees were checked and
-rejected: `codex_results` has no aimee run, `matrix_results` has no `codex` usage
-block, and the `/tmp/ptcodex` copies are fixtures with no `summary.json`.
+**Committed here** at `benchmarks/ct403-results/`, 81 cells across eight run
+labels, 841 files. Copied 2026-08-11 from
+`ponytail-reanalysis/.claude/worktrees/aimee-review-arm/ct403-results/` and
+verified byte-identical file by file. The source sat inside a `.claude/worktrees/`
+directory, which is disposable by design, and was the only copy.
+
+Three earlier candidate trees were checked and rejected: `codex_results` has no
+aimee run, `matrix_results` has no `codex` usage block, and the `/tmp/ptcodex`
+copies are fixtures with no `summary.json`.
 
 The columns come from `summary.json`: `codex.usage.input_tokens`,
 `codex.usage.cached_input_tokens` and `codex.estimated_credits`.
 
 ### Reproduces exactly
 
+Reproduce them with `benchmarks/recompute_cost_table.py`, which reads the
+committed cells and exits non-zero if any published figure fails to reproduce.
+
 | figure | recomputed from the cells |
 |---|---|
 | baseline 84k to 98k, 66% to 88%, 4.3 to 6.6 credits | 84,546 / 98,310, 66% to 88%, 4.33 / 6.56. Three replicates |
 | aimee plugin 464k to 648k input, 13.8 to 19.2 credits | 464,169 / 647,820, 13.84 / 19.15. Three replicates |
+| aimee plugin cache hit 89% to 91% | 89.66% to 91.28%. Three replicates |
 | baseline and add-on round trips, 4 to 5 | `codex.item_types.agent_message`, 4 to 5 in both |
 
 ### Does not reproduce
@@ -75,9 +83,14 @@ The columns come from `summary.json`: `codex.usage.input_tokens`,
 | published | what the cells give |
 |---|---|
 | ponytail add-on credits 5.3 to 7.4 | 5.95, 6.83, 7.40. The lower bound 5.3 is not an add-on cell. `ponytail-instructions__r2` is 5.31 |
-| aimee plugin cache hit 89% to 91% | 90%, 91%, 91%. 89% appears in `aimee-lean__r3` and `aimee-review__r1`, which are different run labels |
 | aimee plugin round trips 13 to 22 | `agent_message` gives 6 to 8. No metric tested reproduces 13 to 22: `item.started` 12 to 14, `item.completed` 21 to 22, `tool_calls` 24 to 28 |
-| aimee gateway 136k to 231k, 25% to 70%, 7.9 to 21.5 | the four gateway cells give 63k to 77k input, **0%** cache, 10.29 to 12.01 credits |
+| aimee gateway 136k to 231k, 25% to 70%, 5 to 11 trips, 7.9 to 21.5 | the one `t01_cache` gateway cell gives 77,163 input, **0%** cache, 1 trip, 11.74 credits |
+
+An earlier version of this map listed the plugin cache floor of 89% as a
+discrepancy. That was wrong and is withdrawn. The cells give 89.66% to 91.28%,
+and the article floors the lower bound, so 89% to 91% is correct. The error came
+from comparing values already rounded for display rather than the underlying
+ratios, which is the same mistake in miniature that the article is about.
 
 The round-trip column is the sharpest of these. `agent_message` reproduces
 baseline and add-on to the digit, which is strong evidence it is the intended
@@ -144,21 +157,17 @@ marking now has a source behind it.
 
 ## What has to happen before this can be published
 
-1. Copy the 81 `ct403-results` cells into this article's `benchmarks/`. They are
-   currently inside a `.claude/worktrees/` directory, which is not a durable home
-   for the only copy of the evidence.
-2. Resolve the round-trip column. `agent_message` reproduces baseline and add-on
+1. Resolve the round-trip column. `agent_message` reproduces baseline and add-on
    exactly and gives the plugin 6 to 8, not 13 to 22. Either name the metric that
    gives 13 to 22 or correct the figure and the multiplier derived from it.
-3. Say where the gateway row came from. If it is `token_audit` rather than
+2. Say where the gateway row came from. If it is `token_audit` rather than
    client-reported usage, the table mixes measurement bases and should say so.
-4. Check the add-on credit lower bound of 5.3 and the plugin cache lower bound of
-   89%. Neither appears in its own run's cells, and both appear in a neighbouring
-   run label.
-5. Export the `token_audit` rows behind the cache figures, with their deploy
+3. Check the add-on credit lower bound of 5.3. It is not in any add-on cell, and
+   `ponytail-instructions__r2` is 5.31.
+4. Export the `token_audit` rows behind the cache figures, with their deploy
    boundary, into `evidence/raw/`.
-6. Cite the 2.3× per-call figure.
-7. Decide whether the `ponytail add-on` run is a third party's product. If it is,
+5. Cite the 2.3× per-call figure.
+6. Decide whether the `ponytail add-on` run is a third party's product. If it is,
    the article makes an adverse comparative claim and right of reply applies.
 
-Items 2, 3 and 4 change what the article says. The rest are filing.
+Items 1, 2 and 3 change what the article says. The rest are filing.
