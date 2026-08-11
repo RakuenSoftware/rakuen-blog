@@ -16,12 +16,12 @@ Muse Glimmer's matching DFlash drafter made the same RX 7900 XTX **9% slower**.
 The target, draft and backend are the unit that matters. "Speculative decoding"
 is only the name of the mechanism they share.
 
-So the useful question is not "how fast is it". It is which of those units pays,
-and whether you have enabled the thing you think you enabled.
+Which leaves two questions worth an article. Which pairings pay, and whether you
+have switched on the thing you believe you switched on.
 
-Both have answers here. The multiple tracks how bandwidth-bound the target is,
-which is predictable before you run anything, and in llama.cpp the obvious way to
-load a draft head is the one combination that silently disables speculation.
+I can answer both. The multiple tracks how bandwidth-bound the target is, so you
+can forecast it before you rent anything. And the obvious way to load a draft
+head in llama.cpp is the one combination that quietly turns speculation off.
 
 *Rakuen builds aimee, the fact-extraction system measured here. Every figure
 traces through the
@@ -42,17 +42,16 @@ Gemma 4 and Qwen3.6 ship native multi-token prediction (MTP) heads trained for
 that job. Muse Glimmer uses a separate diffusion drafter called DFlash. The
 mechanism is related. The cost is not.
 
-The saving has a shape worth holding onto, because it explains every result
-below. Generating one token means reading the whole target model out of memory,
-and on a consumer card that read finishes later than the arithmetic does, so the
-compute sits idle waiting for weights. Checking several guesses in one pass
-spends that idle compute instead of buying a second read. So the win is the
-target's idle capacity, and the price is the draft's own time plus verifying
-positions that get thrown away.
+Where the saving comes from decides every result below. Generating one token
+means hauling the whole target model out of memory, and on a consumer card that
+read finishes long after the arithmetic does. The compute sits idle, waiting for
+weights. Checking several guesses in one pass spends that idle time rather than
+buying a second read.
 
-Two things follow. A target that reads more per token has more idle capacity to
-reclaim. And a draft whose guesses are usually rejected costs its time and buys
-nothing.
+What is being sold, then, is the target's idle capacity, and the price is the
+draft's own time plus the verified positions that get discarded. A target that
+reads more per token has more to reclaim. A draft that guesses badly pays the
+price and collects nothing.
 
 That gives the experiment two separate gates. Throughput must rise. Accuracy
 must not move further than the paired data can support. Accuracy here is the
@@ -76,9 +75,9 @@ benchmark.
 Concurrency also differs between the two sets and not inside a pair. The
 1,001-note runs used one request at a time; the 10,000-note E2B and E4B runs
 sharded across three server processes on one card. That the three-process rows
-still gained 1.87x to 2.32x says something on its own: a handful of concurrent
-requests does not exhaust the idle capacity MTP feeds on. Thirty-two of them is a
-different question, and it gets
+still gained 1.87x to 2.32x tells you a handful of concurrent requests does not
+exhaust the idle capacity MTP feeds on. Thirty-two of them is a different
+question, and it gets
 [its own section](#concurrency-is-faster-and-disqualified).
 
 Every RX 7900 XTX run used llama.cpp b10210, and the Glimmer diagnostic used
@@ -117,22 +116,22 @@ range from **76.63% to 80.39%**: about four guesses in five. The 10,000-note E2B
 and E4B prediction files did not retain the counters, so the table leaves those
 cells blank.
 
-Read those two spans against each other. Acceptance moves 3.8 points across five
-models and two families. The speedup moves from 1.65x to 2.54x over the same
-runs. Acceptance is what tells you the draft is working at all, and it is close
-to useless for predicting what the draft is worth.
+Set those two spans beside each other. Acceptance moves 3.8 points across five
+models and two families; the speedup moves from 1.65x to 2.54x over the same
+runs. So acceptance tells you the draft is working. It tells you almost nothing
+about what the draft is worth.
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-pairs" id="fig-pairs-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-pairs" id="fig-pairs-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-pairs-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-pairs-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 382" preserveAspectRatio="xMidYMid meet" role="img" aria-label="MTP speedup for eleven matched model pairs"><line class="sg-chart__rule" x1="220.0" x2="220.0" y1="18" y2="330"/><text class="sg-chart__value" x="220.0" y="350" text-anchor="middle" opacity=".7">1x</text><line class="sg-chart__grid" x1="345.0" x2="345.0" y1="18" y2="330"/><text class="sg-chart__value" x="345.0" y="350" text-anchor="middle" opacity=".7">1.5x</text><line class="sg-chart__grid" x1="470.0" x2="470.0" y1="18" y2="330"/><text class="sg-chart__value" x="470.0" y="350" text-anchor="middle" opacity=".7">2x</text><line class="sg-chart__grid" x1="595.0" x2="595.0" y1="18" y2="330"/><text class="sg-chart__value" x="595.0" y="350" text-anchor="middle" opacity=".7">2.5x</text><text class="sg-chart__label" x="208" y="38" text-anchor="end" font-size="11">Gemma 4 E2B Q4</text><rect class="sg-chart__mark sg-chart__mark--1" x="220" y="29.5" width="222.5" height="9" rx="4"/><text class="sg-chart__value" x="450.5" y="38">1.89x</text><text class="sg-chart__label" x="208" y="65" text-anchor="end" font-size="11">Gemma 4 E2B Q6</text><rect class="sg-chart__mark sg-chart__mark--1" x="220" y="56.5" width="217.5" height="9" rx="4"/><text class="sg-chart__value" x="445.5" y="65">1.87x</text><text class="sg-chart__label" x="208" y="92" text-anchor="end" font-size="11">Gemma 4 E2B Q8</text><rect class="sg-chart__mark sg-chart__mark--1" x="220" y="83.5" width="245.0" height="9" rx="4"/><text class="sg-chart__value" x="473.0" y="92">1.98x</text><text class="sg-chart__label" x="208" y="119" text-anchor="end" font-size="11">Gemma 4 E4B Q4</text><rect class="sg-chart__mark sg-chart__mark--1" x="220" y="110.5" width="272.5" height="9" rx="4"/><text class="sg-chart__value" x="500.5" y="119">2.09x</text><text class="sg-chart__label" x="208" y="146" text-anchor="end" font-size="11">Gemma 4 E4B Q6</text><rect class="sg-chart__mark sg-chart__mark--1" x="220" y="137.5" width="292.5" height="9" rx="4"/><text class="sg-chart__value" x="520.5" y="146">2.17x</text><text class="sg-chart__label" x="208" y="173" text-anchor="end" font-size="11">Gemma 4 E4B Q8</text><rect class="sg-chart__mark sg-chart__mark--1" x="220" y="164.5" width="330.0" height="9" rx="4"/><text class="sg-chart__value" x="558.0" y="173">2.32x</text><text class="sg-chart__label" x="208" y="200" text-anchor="end" font-size="11">Gemma 4 12B QAT</text><rect class="sg-chart__mark sg-chart__mark--1" x="220" y="191.5" width="385.0" height="9" rx="4"/><text class="sg-chart__value" x="613.0" y="200">2.54x</text><text class="sg-chart__label" x="208" y="227" text-anchor="end" font-size="11">Gemma 4 26B-A4B QAT</text><rect class="sg-chart__mark sg-chart__mark--1" x="220" y="218.5" width="180.0" height="9" rx="4"/><text class="sg-chart__value" x="408.0" y="227">1.72x</text><text class="sg-chart__label" x="208" y="254" text-anchor="end" font-size="11">Gemma 4 31B QAT</text><rect class="sg-chart__mark sg-chart__mark--1" x="220" y="245.5" width="262.5" height="9" rx="4"/><text class="sg-chart__value" x="490.5" y="254">2.05x</text><text class="sg-chart__label" x="208" y="281" text-anchor="end" font-size="11">Qwen3.6-27B</text><rect class="sg-chart__mark sg-chart__mark--2" x="220" y="272.5" width="337.5" height="9" rx="4"/><text class="sg-chart__value" x="565.5" y="281">2.35x</text><text class="sg-chart__label" x="208" y="308" text-anchor="end" font-size="11">Qwen3.6-35B-A3B</text><rect class="sg-chart__mark sg-chart__mark--2" x="220" y="299.5" width="162.5" height="9" rx="4"/><text class="sg-chart__value" x="390.5" y="308">1.65x</text><text class="sg-chart__axis" x="470" y="374" text-anchor="middle">THROUGHPUT WITH MTP DIVIDED BY THROUGHPUT WITHOUT IT</text></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>Gemma</span><span><i style="background:var(--sg-chart-2)"></i>Qwen</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">pair</th><th style="text-align:right">notes</th><th style="text-align:right">MTP off</th><th style="text-align:right">MTP on</th><th style="text-align:right">faster</th><th style="text-align:right">F1 change</th><th style="text-align:right">kept</th></tr></thead><tbody><tr><td style="text-align:left">Gemma 4 E2B Q4</td><td style="text-align:right">10,000</td><td style="text-align:right">98.56 tok/s</td><td style="text-align:right">185.79 tok/s</td><td style="text-align:right"><strong>1.89x</strong></td><td style="text-align:right">+0.0039</td><td style="text-align:right">not retained</td></tr><tr><td style="text-align:left">Gemma 4 E2B Q6</td><td style="text-align:right">10,000</td><td style="text-align:right">90.79 tok/s</td><td style="text-align:right">170.05 tok/s</td><td style="text-align:right"><strong>1.87x</strong></td><td style="text-align:right">+0.0013</td><td style="text-align:right">not retained</td></tr><tr><td style="text-align:left">Gemma 4 E2B Q8</td><td style="text-align:right">10,000</td><td style="text-align:right">78.86 tok/s</td><td style="text-align:right">155.88 tok/s</td><td style="text-align:right"><strong>1.98x</strong></td><td style="text-align:right">−0.0021</td><td style="text-align:right">not retained</td></tr><tr><td style="text-align:left">Gemma 4 E4B Q4</td><td style="text-align:right">10,000</td><td style="text-align:right">64.10 tok/s</td><td style="text-align:right">134.07 tok/s</td><td style="text-align:right"><strong>2.09x</strong></td><td style="text-align:right">−0.0005</td><td style="text-align:right">not retained</td></tr><tr><td style="text-align:left">Gemma 4 E4B Q6</td><td style="text-align:right">10,000</td><td style="text-align:right">52.50 tok/s</td><td style="text-align:right">113.92 tok/s</td><td style="text-align:right"><strong>2.17x</strong></td><td style="text-align:right">+0.0017</td><td style="text-align:right">not retained</td></tr><tr><td style="text-align:left">Gemma 4 E4B Q8</td><td style="text-align:right">10,000</td><td style="text-align:right">43.82 tok/s</td><td style="text-align:right">101.48 tok/s</td><td style="text-align:right"><strong>2.32x</strong></td><td style="text-align:right">+0.0010</td><td style="text-align:right">not retained</td></tr><tr><td style="text-align:left">Gemma 4 12B QAT Q4</td><td style="text-align:right">1,001</td><td style="text-align:right">96.33 tok/s</td><td style="text-align:right">244.73 tok/s</td><td style="text-align:right"><strong>2.54x</strong></td><td style="text-align:right">+0.0079</td><td style="text-align:right">80.39%</td></tr><tr><td style="text-align:left">Gemma 4 26B-A4B QAT Q4</td><td style="text-align:right">1,001</td><td style="text-align:right">193.04 tok/s</td><td style="text-align:right">332.36 tok/s</td><td style="text-align:right"><strong>1.72x</strong></td><td style="text-align:right">−0.0029</td><td style="text-align:right">79.21%</td></tr><tr><td style="text-align:left">Gemma 4 31B QAT Q4</td><td style="text-align:right">1,001</td><td style="text-align:right">33.54 tok/s</td><td style="text-align:right">68.93 tok/s</td><td style="text-align:right"><strong>2.05x</strong></td><td style="text-align:right">−0.0026</td><td style="text-align:right">79.09%</td></tr><tr><td style="text-align:left">Qwen3.6-27B Q4</td><td style="text-align:right">1,001</td><td style="text-align:right">34.82 tok/s</td><td style="text-align:right">81.78 tok/s</td><td style="text-align:right"><strong>2.35x</strong></td><td style="text-align:right">−0.0003</td><td style="text-align:right">79.04%</td></tr><tr><td style="text-align:left">Qwen3.6-35B-A3B Q4</td><td style="text-align:right">1,001</td><td style="text-align:right">112.97 tok/s</td><td style="text-align:right">186.78 tok/s</td><td style="text-align:right"><strong>1.65x</strong></td><td style="text-align:right">−0.0068</td><td style="text-align:right">76.63%</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">The same eleven pairs, using one throughput definition for every row. MTP increased generation speed in all eleven.</figcaption></figure>
 
-All eleven rows use the same throughput calculation: total completion tokens
-divided by summed request latency. Server startup and model loading sit outside
-that denominator, which matters more than it sounds like it should. Wall clock
-divided by rows would put a 30-to-60-second load inside the measurement, and the
-MTP side loads a second model.
+All eleven rows use one throughput calculation: total completion tokens divided
+by summed request latency. Server startup and model loading sit outside that
+denominator. Rows over wall clock would fold a 30-to-60-second load into the
+measurement, and the MTP side loads a second model, so the bias would point the
+way the hypothesis does.
 
-What does predict the multiple is the thing the mechanism said it would: how much
-of the target's read the draft gets to hide behind. Hold the family and the card
-still and it comes through cleanly.
+What does predict the multiple is the quantity the mechanism named: how much of
+the target's read the draft hides behind. Hold the family and the card still and
+it comes through clean.
 
 | Gemma 4 on the RX 7900 XTX | Q4 | Q6 | Q8 |
 |---|---:|---:|---:|
@@ -154,9 +153,9 @@ different draft head size, with no way to separate them from the runs I have.
 The signal that does survive both families is architecture. The two mixture-of-experts
 pairs, Gemma 4 26B-A4B at 1.72x and Qwen3.6-35B-A3B at 1.65x, are the two
 smallest gains in the set, and they are the two models that read the least per
-token. That is two points agreeing with the mechanism, not a law. It is enough to
-say that if your target is sparse you should expect the low end of this range,
-and that you are already getting the speed some other way.
+token. Two points agreeing with the mechanism is not a law. If your target is
+sparse, expect the low end of this range, and note that you are already getting
+the speed somewhere else.
 
 Within E2B and E4B, Q4, Q6 and Q8 all became faster and their accuracy ranges all
 crossed zero. So the two choices are separable: pick the quant for fit and
@@ -217,11 +216,11 @@ symbols listed the architectures with a nested MTP graph while missing Gemma 4,
 whose head is a full model of its own. Each of those cost me a confident wrong
 answer about whether the feature existed at all.
 
-The consequence is that a silent failure here looks exactly like a null result.
-A server with `-md` set answers every request correctly, at the speed it would
-have run anyway, and reports nothing unusual. If you benchmark that against a
-control you will conclude that speculative decoding does nothing on your setup,
-and you will be measuring two identical configurations.
+A silent failure here looks exactly like a null result. A server with `-md` set
+answers every request correctly, at the speed it would have run anyway, and
+complains about nothing. Benchmark that against a control and you will conclude
+speculative decoding does nothing on your hardware, having measured the same
+configuration twice.
 
 So verify the state rather than the flag. `/slots` reports `speculative` as a
 boolean, and every run above refused to start unless it matched what that run
@@ -250,19 +249,20 @@ to Qwen acceptance gap is partly the head and partly the model, and this data
 cannot separate them. No newer build was available to fix it.
 
 One thing the draft does not care about is quantisation-aware training. The worry
-was reasonable: QAT moves the target's weights, the head was trained against the
-base model, so acceptance should fall and take the speedup with it. Measured on
-Gemma 4 12B with the same head, same corpus and MTP on both sides, acceptance was
-**82.1% on the QAT build against 82.6% on the post-hoc one** over more than sixty
-thousand drafted tokens. Half a point apart, so the two choices compose and you do
-not have to make one.
+was reasonable: QAT moves the target's weights, the head learned to predict the
+base model, so acceptance should fall and take the speedup down with it. It does
+not.
 
-Treat that pair of figures as single-sourced. They are recorded in the
-measurement log and their prediction files were deleted during a fleet relaunch
-before they were committed, which is the exact condition this project treats as
-unacceptable everywhere else. They are reported here because the alternative is
-leaving a question the reader will ask unanswered, not because the provenance is
-good enough.
+On Gemma 4 12B with the same head, same corpus and MTP on both sides,
+acceptance came out at **82.1% on the QAT build against 82.6% on the post-hoc
+one**, over more than sixty thousand drafted tokens. Half a point. The two
+choices compose, and you do not have to pick one.
+
+I am taking that pair from the measurement log alone. The prediction files behind
+it went during a fleet relaunch, before anything was committed, which is the
+condition this project refuses to accept anywhere else. I keep the figures
+because a reader will ask the question and silence would be worse. The provenance
+is not good enough and I am not going to pretend otherwise.
 
 ## Score-stable does not mean byte-identical
 
@@ -328,57 +328,57 @@ The evidence supports neither shortcut.
 
 ## Concurrency is faster and disqualified
 
-MTP is not the only way to spend a target's idle capacity, and it is not the
-biggest. Sending many requests at once fills the same gap. In a logged Gemma
-test, 32 simultaneous requests ran **4.54x** the single-request throughput
-against MTP's 1.83x on the same model. If throughput were the only requirement,
-this section would recommend batching and stop.
+MTP is not the only way to spend a target's idle capacity, and it is nowhere near
+the biggest. Sending many requests at once fills the same gap. In a Gemma test
+recorded in my notes rather than in a retained artifact, 32 simultaneous requests
+ran **4.54x** the single-request throughput, against MTP's 1.83x on the same
+model. On throughput alone this section would recommend batching and stop.
 
-Running both gave 4.34x, and I reported that as a slowdown before checking
-whether the measurement could see it. It cannot. Two runs of the same 32-slot
-configuration took 71 and 61 seconds, a 16% spread against a 4% gap. So the
-combination did not beat batching alone, and nothing here resolves which way the
-difference points.
+Running both gave 4.34x, and I called that a slowdown before asking whether the
+measurement could see a gap that size. It cannot. Two runs of the same 32-slot
+configuration took 71 and 61 seconds, a 16% spread standing over a 4% difference.
+What I can say is that the combination did not beat batching alone.
 
-The mechanism that would make it a real loss is worth testing on your own
-hardware. Once thirty-two requests are in flight there is no idle compute left
-for a draft to claim, so verification becomes work with nowhere to hide.
+Which way the difference points is not something these runs resolve. The
+mechanism that would make it a genuine loss is worth testing on your hardware:
+once
+thirty-two requests are in flight there is no idle compute left for a draft to
+claim, and verification becomes work with nowhere to hide.
 
-The reason batching still loses is repeatability, and it is the more useful half
-of this comparison. Two runs of the same 32-slot configuration, fresh server
+Batching loses on repeatability instead, which is the half of this comparison
+worth your attention. Two runs of the same 32-slot configuration, fresh server
 each, agreed on **75 of 100** notes' extracted facts. Two MTP runs under the same
-conditions agreed on **100 of 100**, on both E4B and E2B.
+conditions agreed on **100 of 100**, on E4B and on E2B.
 
-The mechanism is the same one that moves the bytes at all. Batch shape decides
-the reduction order, and with thirty-two requests in flight the batch composition
-depends on when each request happened to arrive. MTP's batch shape is fixed by
-the draft length, which is a constant. So MTP perturbs the output relative to a
-sequential run and perturbs it the same way every time, while concurrency
-perturbs it differently every time.
+The cause is the one that moves the bytes at all. Batch shape sets the reduction
+order, and with thirty-two requests in flight the batch composition depends on
+when each request happened to arrive. MTP's batch shape is fixed by the draft
+length, which is a constant. So MTP perturbs the output against a sequential run
+and perturbs it identically every time, while concurrency perturbs it differently
+every time.
 
-That is what makes one usable and the other not. A configuration that does not
-reproduce itself cannot be used to measure anything else, and the quant
-differences this project chases are around 0.01 F1 while 32-slot run-to-run
-disagreement reaches a quarter of the notes. Speed does not redeem that.
+One of those you can measure with. The other you cannot: the quant differences
+this project chases sit around 0.01 F1, and a 32-slot configuration disagrees
+with itself on a quarter of the notes. No speedup buys that back.
 
-All the figures in this section are single-sourced to the experiment notes; the
-paired artifacts were not retained. They are enough to say what to measure on
-your own hardware, and not enough to publish a general limit.
+Every figure in this section comes from the experiment notes with no retained
+paired artifact, so treat it as a prompt to measure your own operating mode
+rather than as a published limit.
 
 ## Turn it on only after the pair wins
 
 The replacement for a universal speedup number is a short gate. It costs two runs
 and it answers the question for your deployment rather than for mine.
 
-- **Prove speculation is on before you time anything.** Read `speculative` from
-  `/slots` and refuse the run if it disagrees with what you intended. On b10210
-  the explicit `-md` draft flag silently produces a non-speculative server, which
-  is indistinguishable from a null result.
-- **Prove the control is a control.** Assert that the MTP-off artifact contains
-  no draft counters, and that `/props` reports the model path you meant to load.
+- **Check both sides are what you asked for, before timing anything.** Read
+  `speculative` from `/slots` and refuse the run when it disagrees with your
+  intent, read the loaded path from `/props`, and assert that the MTP-off
+  artifact carries no draft counters. On b10210 the `-md` flag quietly gives you
+  a non-speculative server, and a stale one will serve the previous model under
+  the new name.
 - **Hold the target still.** Same model, quant, card, notes and concurrency on
-  both sides. The draft head is part of the target: if the build picks its quant
-  for you, record which one it picked.
+  both sides. The draft head counts as part of the target: if the build picks its
+  quant for you, record which one it picked.
 - **Count generation, not wall clock.** Total completion tokens over summed
   request latency. Model loading and server startup belong outside the
   denominator, and the MTP side loads a second model.
@@ -399,16 +399,16 @@ Glimmer on llama.cpp's Vulkan path fails it, at 24.55% acceptance and 9% slower.
 Leave DFlash off on that backend, and rerun the pair when it changes rather than
 concluding anything about Glimmer or about speculative decoding.
 
-## What this still cannot tell you
+## What I still cannot tell you
 
-Two gaps, both load-bearing on how far the result travels.
+Two gaps, and both limit how far any of this travels.
 
-**Acceptance against accuracy, note by note.** There is an acceptance rate and a
-score for every run, but nothing that says whether the notes where the draft gets
-rejected are the notes where the target is wrong. That is the measurement that
-would explain the bounded zero instead of only bounding it.
+**Acceptance against accuracy, note by note.** I have an acceptance rate and a
+score for every run, and nothing that says whether the notes where the draft gets
+rejected are the notes where the target is wrong. That measurement would explain
+the zero. Mine only bounds it.
 
-**Whether the accuracy zero is a zero.** Eleven ranges crossing zero is a bound,
-not an identity. The tightest of them, at 10,000 notes, still admits a movement
-of about three thousandths in either direction. If your task cares about
-differences smaller than that, this experiment has not answered your question.
+**Whether the zero is a zero.** Eleven ranges crossing zero is a bound, not an
+identity. The tightest, at 10,000 notes, still allows a movement of about three
+thousandths either way. If your task turns on differences smaller than that, I
+have not answered your question.
