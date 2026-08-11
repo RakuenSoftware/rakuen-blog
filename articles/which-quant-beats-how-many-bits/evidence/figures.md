@@ -38,6 +38,12 @@ one-pair-per-invocation values in `quant-clarification-2026-08-09.md` are the
 published ones. The LFM inverse-ladder claim was withdrawn after its range crossed
 zero.
 
+All five rows were recomputed from the prediction files on 2026-08-11 and
+reproduce exactly, including both `significant` verdicts. That recomputation was
+only possible after the pinned scorer ontology under
+`articles/local-llm-fact-extraction-head-to-head/evidence/src/` was restored; see
+that folder's README for why the pin is version-specific.
+
 ## QAT and packing
 
 | figure | artifact |
