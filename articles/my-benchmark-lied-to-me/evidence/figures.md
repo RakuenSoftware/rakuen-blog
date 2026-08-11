@@ -22,6 +22,23 @@ Qwen3.6 27B and 35B-A3B Hugging Face repositories inline. Both repository pages
 currently list multi-token-prediction sidecars. Repository contents establish
 availability only; the banked prediction files establish the measured run state.
 
+## Speculation-on control, 2026-08-10
+
+| figure | artifact |
+|---|---|
+| 27B, 79.0% of 1,020,888 drafted tokens accepted | `results/qwen36-mtp-xtx/Qwen3.6-27b.Q4_K_M.xtx.mtp-on.pred.jsonl`, summed over `draft_n` and `draft_n_accepted` |
+| 35B-A3B, 76.6% of 1,034,913 accepted | `results/qwen36-mtp-xtx/Qwen3.6-35b.Q4_K_M.xtx.mtp-on.pred.jsonl`, same fields |
+| no draft counts on either speculation-off run | the matching `.mtp-off.pred.jsonl` files; `draft_n` is absent or zero on all 1,001 rows |
+| 0.7180 and 0.7177; 0.7495 and 0.7427 | the four matching `.score.json` files, strict F1 |
+
+These same-card pairs postdate the article's original reporting and serve as a
+positive control: they show what a drafted run records, which is what the banked
+`results/vast/` runs do not. A first 35B-A3B speculation-off attempt was stopped
+at 115 rows and is retained beside them as
+`Qwen3.6-35b.Q4_K_M.xtx.mtp-off.aborted-115rows.pred.jsonl`, with its stop reason
+in `results/qwen36-mtp-xtx/ABORTED-2026-08-10.md`. It carries no result; the
+completed 1,001-row rerun supplies the speculation-off side.
+
 ## Directly reproducible tables
 
 - **Startup curves:** prediction files and run logs live under

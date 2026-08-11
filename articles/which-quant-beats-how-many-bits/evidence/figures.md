@@ -7,14 +7,24 @@ Paths below are relative to the shared series evidence base at
 
 | comparison | artifacts |
 |---|---|
-| gemma-4 E2B Q4, Q6 and Q8 | `results/v8-baseline/E2B.*.score.json`; Q4 source in `results/v5-rerun-gguf/` |
-| gemma-4 E4B Q4, Q6 and Q8 | `results/v8-baseline/E4B.*.score.json`; Q4 source in `results/v5-rerun-gguf/` |
+| gemma-4 E2B Q4, Q6 and Q8 | `results/v8-baseline/E2B.UD-Q{4,6,8}_K_XL.mtp.score.json` |
+| gemma-4 E4B Q4, Q6 and Q8 | `results/v8-baseline/E4B.UD-Q{4,6,8}_K_XL.mtp.score.json` |
 | SmolLM3 Q4 and Q8 | `results/newcomers-1k/SmolLM3-3B.*.score.json` |
 | LFM2.5-2.6B Q4, Q6 and Q8 | `results/lfm25-2.6b/LFM2.5-2.6B.*.score.json` |
 
+All four gemma quants come from the matched `results/v8-baseline/` campaign. An
+earlier version of this map paired Q6 and Q8 from `v8-baseline` against Q4 from
+`results/v5-rerun-gguf/`. Those are different run campaigns and do not carry a
+quant verdict; `quant-clarification-2026-08-09.md` records the correction and
+the superseded pairing is retained there.
+
 All paired ranges were produced by `harness/harness/bootstrap_ci.py`, resampling
-notes with a fixed seed. The LFM inverse-ladder claim was withdrawn after its
-range crossed zero.
+notes with seed `20260809` and 20,000 replicates, one comparison per process. The
+scorer draws the individual-run and paired intervals from one random stream, so a
+third `--pred` argument moves a paired endpoint even at the same seed; the
+one-pair-per-invocation values in `quant-clarification-2026-08-09.md` are the
+published ones. The LFM inverse-ladder claim was withdrawn after its range crossed
+zero.
 
 ## QAT and packing
 
@@ -41,8 +51,11 @@ reasoning and subset analyses.
 
 ## Reporting inventory and disposition
 
-- **Four bit-width ladders:** kept. Only the SmolLM3 direction clears its paired
-  range.
+- **Five bit-width comparisons:** kept. Two clear their paired range, SmolLM3
+  Q8-over-Q4 and gemma-4-E4B Q6-over-Q8, and they point opposite ways on width.
+  The gemma Q4 rows were repaired to their matched `v8-baseline` runs; the four
+  interval endpoints that moved under one-pair-per-process scoring were updated
+  with them, and no verdict changed side of zero.
 - **Eight historical E2B signs:** kept as a sign test with shared-lineage
   dependence stated against it.
 - **Four QAT size comparisons:** kept. Only E2B supports an accuracy benefit.

@@ -142,6 +142,15 @@ publish MTP sidecars. Their present availability does not show that the measured
 run used one. The original claim is narrowed to the run: no observed draft
 counters, no mechanism claim.
 
+On 2026-08-10 both models were rerun on one card as explicit speculation-on and
+speculation-off pairs. With speculation on, all 1,001 rows carry a draft count:
+the 27B accepted 79.0% of 1,020,888 drafted tokens, the 35B-A3B 76.6% of
+1,034,913. With it off, no row carries one.
+
+That is the signature the 234-tokens-per-second run lacked. Accuracy moved by
+0.0003 and 0.0068 across the two pairs, so the mechanism was legible in a
+recorded field and never in the throughput number.
+
 ## Print the fields that can falsify the score
 
 - Print process count, startup time, sample size, client count, slot count and

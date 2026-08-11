@@ -3,33 +3,42 @@ title: "Quantization Choice Mattered More Than Bit Count"
 date: 2026-08-09
 author: Rakuen Software
 tags: [quantization, local-models, benchmarks, aimee]
-excerpt: "Only one of four bit-width steps cleared its paired range. Quantization-aware training mattered most by moving a 26B model onto a 16-gibibyte card."
+excerpt: "Two of five bit-width steps cleared their paired range, and neither was a step up from four bits. Quantization-aware training mattered most by moving a 26B model onto a 16-gibibyte card."
 ---
 
 *Rakuen builds aimee, the system measured here. Every run and incomplete rerun is
 listed in the [figure provenance map](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/which-quant-beats-how-many-bits/evidence/figures.md).*
 
-Only one of four bit-width comparisons separated within its own paired range. A
-dynamic four-bit packing led a flat four-bit build by 0.0229 on the harmonic mean
-of precision and recall (F1), but that pair crossed hardware and cannot yet
-support the mechanism claim. Quantization-aware training (QAT) mattered most by
-moving a 26B model onto a 16-gibibyte card.
+Two of five bit-width comparisons separated within their own paired ranges, and
+neither was a plain step up from four bits. A dynamic four-bit packing led a flat
+four-bit build by 0.0229 on the harmonic mean of precision and recall (F1), but
+that pair crossed hardware and cannot yet support the mechanism claim.
+Quantization-aware training (QAT) mattered most by moving a 26B model onto a
+16-gibibyte card.
 
-All paired bootstrap ranges resample notes rather than facts.
+All paired bootstrap ranges resample notes rather than facts. Each range below
+was produced in its own process, one comparison per invocation, because the
+scorer draws its individual and paired intervals from a single random stream and
+a third run shifts a paired endpoint.
 
-## One of four bit-width steps separated
+## Two of five bit-width steps separated
 
 | comparison | difference | 95% range |
 |---|---:|---:|
-| gemma-4-E2B, Q6 minus Q4 | +0.0065 | −0.0145 to +0.0272 |
-| gemma-4-E4B, Q6 minus Q4 | +0.0150 | −0.0040 to +0.0333 |
-| SmolLM3-3B, Q8 minus Q4 | **+0.0352** | **+0.0165 to +0.0543** |
-| LFM2.5-2.6B, Q4 minus Q8 | +0.0104 | −0.0153 to +0.0366 |
+| gemma-4-E2B, Q6 minus Q4 | +0.0065 | −0.0142 to +0.0273 |
+| gemma-4-E4B, Q6 minus Q4 | +0.0150 | −0.0035 to +0.0339 |
+| gemma-4-E4B, Q6 minus Q8 | **+0.0245** | **+0.0091 to +0.0405** |
+| SmolLM3-3B, Q8 minus Q4 | **+0.0351** | **+0.0156 to +0.0543** |
+| LFM2.5-2.6B, Q4 minus Q8 | +0.0104 | −0.0153 to +0.0363 |
 
-The separated result belonged to a model scoring 0.3933. On the 10,000-note
-Gemma ladder, Q4 scored 0.6324, Q6 0.6450 and Q8 0.6321. More bits did not provide
-a consistent direction. An earlier claim that LFM2.5 worsened with more bits is
-withdrawn because its range crosses zero.
+The two that separated point opposite ways on bit count. SmolLM3-3B gained from
+eight bits over four, and it is the weakest model in the set at 0.3933. At E4B,
+six bits beat eight: 0.6339 against 0.6094, a step *down* in width that scored
+better.
+
+On the 10,000-note Gemma ladder, Q4 scored 0.6324, Q6 0.6450 and Q8 0.6321. More
+bits did not provide a consistent direction. An earlier claim that LFM2.5
+worsened with more bits is withdrawn because its range crosses zero.
 
 The E2B Q6-minus-Q4 direction was positive in eight runs across five related
 corpora. A sign test under independent, equally likely directions gives 0.008.
@@ -114,10 +123,11 @@ bound has not been computed for 12B.
 ## Choose a quantization by the decision it changes
 
 At E2B, Q4 saves 1.4 gibibytes while the Q6 difference is small and reverses under
-a relation-agnostic score by 0.0052. At E4B, Q6 leads strict and
-relation-agnostic F1, improves abstention and emits seven fewer spurious triples.
-At 12B and above, no accuracy difference here cleared its range, so fit and
-measured throughput carry more weight.
+a relation-agnostic score by 0.0052. At E4B, Q6 is the one width choice here that
+cleared its range: it leads strict and relation-agnostic F1, improves abstention
+and emits seven fewer spurious triples, and it beats the wider Q8 build rather
+than losing to it. At 12B and above, no accuracy difference here cleared its
+range, so fit and measured throughput carry more weight.
 
 Check for a QAT build before buying a larger card. Treat the 26B dynamic packing as
 a same-card test candidate, not a recommendation. Report parse floors beside the
