@@ -3,41 +3,32 @@
 Paths are relative to
 `articles/local-llm-fact-extraction-head-to-head/evidence/raw/`.
 
-## Five completed same-card pairs
+## Eleven same-card pairs
 
-Throughput is total completion tokens divided by summed request latency. Draft
-acceptance is accepted tokens divided by proposed tokens. Accuracy ranges use
-paired note resampling, seed 42 and 20,000 replicates.
+Every row changes only MTP inside its pair. Throughput is total completion tokens
+divided by summed request latency. Accuracy ranges use paired note resampling
+with 20,000 replicates.
 
 | pair | off / on throughput | off / on F1 | on minus off, 95% range | acceptance | artifacts |
 |---|---:|---:|---:|---:|---|
+| Gemma 4 E2B Q4, RX 7900 XTX | 98.56 / 185.79 tok/s | 0.6207 / 0.6246 | +0.0039 [−0.0015, +0.0092] | not retained | `results/10k-{nomtp,sharded}/E2B.UD-Q4_K_XL.10k.{pred.jsonl,score.json}` |
+| Gemma 4 E2B Q6, RX 7900 XTX | 90.79 / 170.05 tok/s | 0.6331 / 0.6344 | +0.0013 [−0.0034, +0.0060] | not retained | `results/10k-{nomtp,sharded}/E2B.UD-Q6_K_XL.10k.{pred.jsonl,score.json}` |
+| Gemma 4 E2B Q8, RX 7900 XTX | 78.86 / 155.88 tok/s | 0.6351 / 0.6329 | −0.0021 [−0.0073, +0.0031] | not retained | `results/10k-{nomtp,sharded}/E2B.UD-Q8_K_XL.10k.{pred.jsonl,score.json}` |
+| Gemma 4 E4B Q4, RX 7900 XTX | 64.10 / 134.07 tok/s | 0.6306 / 0.6301 | −0.0005 [−0.0036, +0.0028] | not retained | `results/10k-{nomtp,sharded}/E4B.UD-Q4_K_XL.10k.{pred.jsonl,score.json}` |
+| Gemma 4 E4B Q6, RX 7900 XTX | 52.50 / 113.92 tok/s | 0.6435 / 0.6452 | +0.0017 [−0.0013, +0.0048] | not retained | `results/10k-{nomtp,sharded}/E4B.UD-Q6_K_XL.10k.{pred.jsonl,score.json}` |
+| Gemma 4 E4B Q8, RX 7900 XTX | 43.82 / 101.48 tok/s | 0.6327 / 0.6337 | +0.0010 [−0.0021, +0.0041] | not retained | `results/10k-{nomtp,sharded}/E4B.UD-Q8_K_XL.10k.{pred.jsonl,score.json}` |
 | Gemma 4 12B UD-QAT Q4, RTX 5080 | 96.33 / 244.73 tok/s | 0.6854 / 0.6932 | +0.0079 [−0.0050, +0.0209] | 80.39% | `results/gemma4-mtp-pairs-20260810/gemma-4-12B-it.qat-UD-Q4_K_XL.5080.mtp-{off,on}.{pred.jsonl,score.json}` |
 | Gemma 4 26B-A4B UD-QAT Q4, RTX 5080 | 193.04 / 332.36 tok/s | 0.6833 / 0.6804 | −0.0029 [−0.0215, +0.0159] | 79.21% | `results/gemma4-mtp-pairs-20260810/gemma-4-26B-A4B-it.qat-UD-Q4_K_XL.5080.mtp-{off,on}.{pred.jsonl,score.json}` |
 | Gemma 4 31B UD-QAT Q4, RX 7900 XTX | 33.54 / 68.93 tok/s | 0.6898 / 0.6872 | −0.0026 [−0.0110, +0.0055] | 79.09% | `results/gemma4-mtp-pairs-20260810/gemma-4-31B-it.qat-UD-Q4_K_XL.xtx.mtp-{off,on}.{pred.jsonl,score.json}` |
 | Qwen3.6-27B Q4_K_M, RX 7900 XTX | 34.82 / 81.78 tok/s | 0.7180 / 0.7177 | −0.0003 [−0.0109, +0.0101] | 79.04% | `results/qwen36-mtp-xtx/Qwen3.6-27b.Q4_K_M.xtx.mtp-{off,on}.{pred.jsonl,score.json}` |
 | Qwen3.6-35B-A3B Q4_K_M, RX 7900 XTX | 112.97 / 186.78 tok/s | 0.7495 / 0.7427 | −0.0068 [−0.0203, +0.0068] | 76.63% | `results/qwen36-mtp-xtx/Qwen3.6-35b.Q4_K_M.xtx.mtp-{off,on}.{pred.jsonl,score.json}` |
 
-The four new ranges were recomputed on 2026-08-11 with
-`harness/harness/bootstrap_ci.py` and recorded in
-`paired-ranges-2026-08-11.md`. The Qwen3.6-27B range was already banked.
+The E2B ranges were recomputed from the stored per-note artifacts on 2026-08-11
+with `harness/harness/bootstrap_ci.py`. Full output is in
+`results/10k-nomtp/e2b-mtp-paired-ci-20260811.txt`. The other ranges were
+already stored or were computed from their complete paired artifacts.
 
-## Six earlier 10,000-note Gemma pairs
-
-| pair | MTP on / off F1 | on minus off, 95% range | throughput gain | artifacts |
-|---|---:|---:|---:|---|
-| E2B Q4 | 0.6246 / 0.6207 | +0.0039 [−0.0015, +0.0092] | 1.84x | `results/10k-{sharded,nomtp}/E2B.UD-Q4_K_XL.10k.{pred.jsonl,score.json}` |
-| E2B Q6 | 0.6344 / 0.6331 | +0.0013 [−0.0034, +0.0060] | 1.92x | `results/10k-{sharded,nomtp}/E2B.UD-Q6_K_XL.10k.{pred.jsonl,score.json}` |
-| E2B Q8 | 0.6329 / 0.6351 | −0.0021 [−0.0073, +0.0031] | 2.03x | `results/10k-{sharded,nomtp}/E2B.UD-Q8_K_XL.10k.{pred.jsonl,score.json}` |
-| E4B Q4 | 0.6301 / 0.6306 | −0.0005 [−0.0036, +0.0028] | 2.11x | `results/10k-{sharded,nomtp}/E4B.UD-Q4_K_XL.10k.{pred.jsonl,score.json}` |
-| E4B Q6 | 0.6452 / 0.6435 | +0.0017 [−0.0013, +0.0048] | 2.16x | `results/10k-{sharded,nomtp}/E4B.UD-Q6_K_XL.10k.{pred.jsonl,score.json}` |
-| E4B Q8 | 0.6337 / 0.6327 | +0.0010 [−0.0021, +0.0041] | 2.31x | `results/10k-{sharded,nomtp}/E4B.UD-Q8_K_XL.10k.{pred.jsonl,score.json}` |
-
-All six runs are valid matched pairs, and all six paired ranges cross zero. The
-E2B ranges were computed from the stored per-note artifacts on 2026-08-11. Full
-output is in `results/10k-nomtp/e2b-mtp-paired-ci-20260811.txt`; reproduction
-details are in `paired-ranges-2026-08-11.md`.
-
-Paired deltas use the unrounded counts. The displayed arm scores are rounded
+Paired deltas use unrounded counts. The displayed arm scores are rounded
 independently, so subtracting the E2B Q8 cells gives −0.0022 instead of the
 bootstrap script's −0.0021.
 

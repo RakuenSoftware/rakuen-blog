@@ -14,7 +14,7 @@ Raw artifacts for the series live under
 
 | directory | contents |
 |---|---|
-| `results/10k-sharded/` and `results/10k-nomtp/` | six 10,000-note Gemma pairs |
+| `results/10k-sharded/` and `results/10k-nomtp/` | E2B and E4B rows in the eleven-pair experiment |
 | `results/gemma4-mtp-pairs-20260810/` | Gemma 12B, 26B and 31B UD-QAT pairs |
 | `results/qwen36-mtp-xtx/` | Qwen3.6 27B and 35B pairs |
 | `results/muse-glimmer-30b-xtx-20260810/` | complete DFlash-off run and stopped 22-row DFlash-on diagnostic |
