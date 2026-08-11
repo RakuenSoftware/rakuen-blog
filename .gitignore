@@ -2,3 +2,7 @@ node_modules/
 .DS_Store
 .aimee/
 .claude/
+
+# Running the vendored scorer byte-compiles the harness in place.
+__pycache__/
+*.pyc
