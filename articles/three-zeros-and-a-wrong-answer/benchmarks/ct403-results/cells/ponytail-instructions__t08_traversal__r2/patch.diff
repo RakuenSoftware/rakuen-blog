@@ -1,0 +1,53 @@
+diff --git a/app/files.py b/app/files.py
+index 13f6a7e..4c4a07a 100644
+--- a/app/files.py
++++ b/app/files.py
+@@ -1,6 +1,11 @@
+ import os
++from app.errors import AppError
++
+ UPLOAD_ROOT = "/srv/uploads"
+ 
+-# UNSAFE: user-controlled name joined straight onto the root.
+ def download_path(name):
+-    return os.path.join(UPLOAD_ROOT, name)
++    root = os.path.realpath(UPLOAD_ROOT)
++    path = os.path.realpath(os.path.join(root, name))
++    if os.path.commonpath((root, path)) != root:
++        raise AppError("invalid file path")
++    return path
+diff --git a/tests/test_files.py b/tests/test_files.py
+new file mode 100644
+index 0000000..f24d800
+--- /dev/null
++++ b/tests/test_files.py
+@@ -0,0 +1,29 @@
++import os
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from app.errors import AppError
++from app.files import download_path
++
++
++class DownloadPathTest(unittest.TestCase):
++    def test_rejects_paths_outside_upload_root(self):
++        with tempfile.TemporaryDirectory() as root, patch("app.files.UPLOAD_ROOT", root):
++            for name in ("../secret", os.path.join(root, "..", "secret")):
++                with self.subTest(name=name), self.assertRaises(AppError):
++                    download_path(name)
++
++    def test_allows_nested_paths_inside_upload_root(self):
++        with tempfile.TemporaryDirectory() as root, patch("app.files.UPLOAD_ROOT", root):
++            self.assertEqual(download_path("nested/file.txt"), os.path.join(root, "nested/file.txt"))
++
++    def test_rejects_symlinks_outside_upload_root(self):
++        with tempfile.TemporaryDirectory() as root, tempfile.TemporaryDirectory() as outside:
++            os.symlink(outside, os.path.join(root, "link"))
++            with patch("app.files.UPLOAD_ROOT", root), self.assertRaises(AppError):
++                download_path("link/secret")
++
++
++if __name__ == "__main__":
++    unittest.main()

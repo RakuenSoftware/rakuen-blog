@@ -1,0 +1,65 @@
+diff --git a/app/ingest.py b/app/ingest.py
+index 36b8a86..d5e7aea 100644
+--- a/app/ingest.py
++++ b/app/ingest.py
+@@ -1,9 +1,19 @@
+-"""CSV ingest. Naive splitting - breaks on quoted fields."""
++"""Helpers for reading uploaded CSV files."""
++
++import csv
++import io
++
++
+ def parse_rows(text):
+-    rows = []
+-    for line in text.strip().splitlines():
+-        rows.append(line.split(","))
+-    return rows
++    """Parse CSV text according to the standard CSV quoting rules.
++
++    Passing the complete stream to :mod:`csv` is important: a quoted field may
++    contain both commas and newlines.  ``newline=""`` also lets the reader
++    handle files produced on Windows without leaving carriage returns in
++    fields.
++    """
++    return list(csv.reader(io.StringIO(text, newline="")))
++
+ 
+ def sum_column(text, index):
+     total = 0.0
+diff --git a/tests/test_ingest.py b/tests/test_ingest.py
+new file mode 100644
+index 0000000..58bb2a4
+--- /dev/null
++++ b/tests/test_ingest.py
+@@ -0,0 +1,30 @@
++import unittest
++
++from app.ingest import parse_rows, sum_column
++
++
++class CsvIngestTests(unittest.TestCase):
++    def test_parses_quoted_commas_and_escaped_quotes(self):
++        text = 'customer,amount\r\n"Widgets, Inc.",10\r\n"A ""quoted"" name",20\r\n'
++
++        self.assertEqual(
++            parse_rows(text),
++            [
++                ["customer", "amount"],
++                ["Widgets, Inc.", "10"],
++                ['A "quoted" name', "20"],
++            ],
++        )
++        self.assertEqual(sum_column(text, 1), 30.0)
++
++    def test_parses_newlines_inside_quoted_fields(self):
++        text = 'description,amount\n"first line\nsecond line",12.50\nplain,7.50\n'
++
++        self.assertEqual(
++            parse_rows(text)[1], ["first line\nsecond line", "12.50"]
++        )
++        self.assertEqual(sum_column(text, 1), 20.0)
++
++
++if __name__ == "__main__":
++    unittest.main()

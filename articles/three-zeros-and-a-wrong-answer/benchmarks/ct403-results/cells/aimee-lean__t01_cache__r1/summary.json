@@ -1,0 +1,116 @@
+{
+  "arm": "aimee-lean",
+  "arm_env": {
+    "AIMEE_MCP_TOOL_PROSE": "lean"
+  },
+  "attempt_id": "58354897",
+  "cell": "aimee-lean__t01_cache__r1",
+  "codex": {
+    "errors": [
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation.",
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation."
+    ],
+    "estimated_credits": 18.823925,
+    "event_types": {
+      "item.completed": 27,
+      "item.started": 16,
+      "thread.started": 1,
+      "turn.completed": 1,
+      "turn.started": 1
+    },
+    "events": 46,
+    "item_types": {
+      "agent_message": 9,
+      "command_execution": 20,
+      "error": 2,
+      "file_change": 4,
+      "mcp_tool_call": 8
+    },
+    "malformed_lines": 0,
+    "thread_id": "019fed34-99d8-7653-8426-4ee6392de683",
+    "tool_calls": {
+      "command_execution": 20,
+      "file_change": 4,
+      "mcp:aimee:index": 2,
+      "mcp:aimee:preview_blast_radius": 2,
+      "mcp:aimee:roundtable_review": 4
+    },
+    "usage": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 690944,
+      "input_tokens": 739381,
+      "output_tokens": 5510,
+      "reasoning_output_tokens": 1768
+    }
+  },
+  "compile_exit": 0,
+  "contamination_errors": [],
+  "contamination_valid": true,
+  "cost_comparable": true,
+  "exit_code": 0,
+  "hidden_ok": true,
+  "loc": {
+    "added": 49,
+    "deleted": 3,
+    "excluded_agent_state": [],
+    "files": 3,
+    "net": 46,
+    "per_file": [
+      {
+        "added": 1,
+        "deleted": 1,
+        "kind": "production",
+        "path": "app/cache.py"
+      },
+      {
+        "added": 11,
+        "deleted": 2,
+        "kind": "production",
+        "path": "app/profile.py"
+      },
+      {
+        "added": 37,
+        "deleted": 0,
+        "kind": "test",
+        "path": "tests/test_profile.py"
+      }
+    ],
+    "production_added": 12,
+    "production_deleted": 3,
+    "production_net": 9,
+    "test_added": 37,
+    "test_deleted": 0,
+    "test_net": 37
+  },
+  "model": "gpt-5.6-sol",
+  "ponytail_addon_markers": [],
+  "pre_head": "4d7dcfa2725528cbd00a4876220e01399088853f",
+  "prompt_sha256": "a9bf73dcf278d7bd1298ccabea21b18b87b9074a1daa861dc77a82d9436ea594",
+  "quality_static": {
+    "bare_except_handlers_in_touched_files": 0,
+    "branch_nodes_in_touched_files": 4,
+    "max_control_nesting_in_touched_files": 1,
+    "mutable_default_arguments_in_touched_files": 0,
+    "parse_errors": [],
+    "production_files": [
+      "app/cache.py",
+      "app/profile.py"
+    ],
+    "python_functions_in_touched_files": 9,
+    "test_files": [
+      "tests/test_profile.py"
+    ]
+  },
+  "raw_stderr_bytes": 391,
+  "raw_stderr_sha256": "1acb97f3588fe9efefa72ce7a0110e53279152f816728d2a8817f573b7e0765b",
+  "raw_stream_bytes": 43740,
+  "raw_stream_sha256": "3bbb0f6564e580e73093754f52339fcb769afcd3f6057468d272ccc1af475af2",
+  "reasoning_effort": "medium",
+  "replicate": 1,
+  "schema": 1,
+  "session_id": "f41c02e3-9d5c-53c5-a8b6-f789286e688a",
+  "smoke_exit": 0,
+  "task": "t01_cache",
+  "timed_out": false,
+  "wall_seconds": 427.85670468595345
+}

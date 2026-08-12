@@ -1,0 +1,74 @@
+diff --git a/app/cache.py b/app/cache.py
+index 97da6e5..d9425b2 100644
+--- a/app/cache.py
++++ b/app/cache.py
+@@ -18,7 +18,7 @@ def cached_profile(uid, loader):
+ 
+ 
+ def invalidate_profile(uid):
+-    pass
++    _profile_cache.pop(uid, None)
+ 
+ 
+ def ttl_get(key, loader, ttl=60, now=time.monotonic):
+diff --git a/app/profile.py b/app/profile.py
+index 504261c..3c976c7 100644
+--- a/app/profile.py
++++ b/app/profile.py
+@@ -1,12 +1,20 @@
+-"""Profile service - hits the DB on every call, no caching."""
++"""Profile service."""
++from app.cache import cached_profile, invalidate_profile
+ from app.db import get_db
+-def get_profile(uid):
++
++
++def _load_profile(uid):
+     db = get_db()
+     db.q(f"SELECT * FROM users WHERE id={uid}")
+     return db.users.get(uid)
+ 
++
++def get_profile(uid):
++    return cached_profile(uid, _load_profile)
++
+ def update_profile(uid, data):
+     db = get_db()
+     db.q(f"UPDATE users SET ... WHERE id={uid}")
+     db.users[uid] = {**db.users.get(uid, {}), **data}
++    invalidate_profile(uid)
+     return db.users[uid]
+diff --git a/tests/test_profile.py b/tests/test_profile.py
+new file mode 100644
+index 0000000..5a7de90
+--- /dev/null
++++ b/tests/test_profile.py
+@@ -0,0 +1,28 @@
++import unittest
++
++from app.cache import reset
++from app.db import get_db
++from app.profile import get_profile, update_profile
++
++
++class ProfileCacheTest(unittest.TestCase):
++    def setUp(self):
++        self.db = get_db()
++        self.db.users.clear()
++        self.db.users["u1"] = {"id": "u1", "name": "before"}
++        self.db.reset_counter()
++        reset()
++
++    def test_reads_are_cached_and_updates_are_immediately_visible(self):
++        self.assertEqual(get_profile("u1")["name"], "before")
++        self.assertEqual(get_profile("u1")["name"], "before")
++        self.assertEqual(self.db.queries, 1)
++
++        update_profile("u1", {"name": "after"})
++
++        self.assertEqual(get_profile("u1")["name"], "after")
++        self.assertEqual(self.db.queries, 3)
++
++
++if __name__ == "__main__":
++    unittest.main()

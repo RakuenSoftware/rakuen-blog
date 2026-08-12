@@ -1,0 +1,14 @@
+{
+  "exit_code": 0,
+  "passed": false,
+  "result": {
+    "t08_traversal": {
+      "err": 0,
+      "fail": 2,
+      "ok": false,
+      "pass": 2,
+      "run": 4
+    }
+  },
+  "stderr": ""
+}

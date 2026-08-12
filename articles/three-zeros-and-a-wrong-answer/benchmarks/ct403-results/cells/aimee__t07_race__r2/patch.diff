@@ -1,0 +1,78 @@
+diff --git a/app/counter.py b/app/counter.py
+index f1d0928..75cfbd7 100644
+--- a/app/counter.py
++++ b/app/counter.py
+@@ -1,10 +1,22 @@
+-"""View counter. Loses increments under concurrency (read-modify-write)."""
++"""Thread-safe in-memory view counter."""
++import threading
++
++
+ _counts = {}
++_counts_lock = threading.Lock()
++
++
+ def increment(key):
+-    current = _counts.get(key, 0)
+-    _counts[key] = current + 1
+-    return _counts[key]
++    with _counts_lock:
++        _counts[key] = _counts.get(key, 0) + 1
++        return _counts[key]
++
++
+ def get(key):
+-    return _counts.get(key, 0)
++    with _counts_lock:
++        return _counts.get(key, 0)
++
++
+ def reset():
+-    _counts.clear()
++    with _counts_lock:
++        _counts.clear()
+diff --git a/tests/test_counter.py b/tests/test_counter.py
+new file mode 100644
+index 0000000..ce9a6a7
+--- /dev/null
++++ b/tests/test_counter.py
+@@ -0,0 +1,39 @@
++import sys
++import threading
++import unittest
++
++from app import counter
++
++
++class CounterTests(unittest.TestCase):
++    def setUp(self):
++        counter.reset()
++
++    def test_concurrent_increments_are_not_lost(self):
++        worker_count = 8
++        increments_per_worker = 5_000
++        start = threading.Barrier(worker_count)
++
++        def increment_views():
++            start.wait()
++            for _ in range(increments_per_worker):
++                counter.increment("busy-page")
++
++        previous_interval = sys.getswitchinterval()
++        sys.setswitchinterval(1e-6)
++        try:
++            threads = [threading.Thread(target=increment_views) for _ in range(worker_count)]
++            for thread in threads:
++                thread.start()
++            for thread in threads:
++                thread.join()
++        finally:
++            sys.setswitchinterval(previous_interval)
++
++        self.assertEqual(
++            counter.get("busy-page"), worker_count * increments_per_worker
++        )
++
++
++if __name__ == "__main__":
++    unittest.main()
