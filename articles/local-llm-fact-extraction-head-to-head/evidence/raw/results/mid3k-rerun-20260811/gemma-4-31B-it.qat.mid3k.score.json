@@ -1,13 +1,3 @@
-[2026-08-11T19:51:25Z] launching mid3k_pairs.sh xtx
-[19:51:25Z] === 3k QAT pair on the xtx
-[19:51:25Z] --- gemma-4-31B-it.qat.mid3k on xtx, nproc=1, MTP, 3002 notes
-[19:51:30Z] sizing: starting one server to measure resident VRAM
-[19:54:34Z]   one instance uses  MiB of 24560 MiB
-[19:54:34Z]   -> running 1 processes, cache-ram 1024 MiB each
-[19:54:34Z]   all 1 servers up; VRAM now  MiB
-[19:54:34Z] START gemma-4-31B-it.qat.mid3k across 1 shards
-merged 3002 rows, 0 missing
-[03:36:35Z] DONE gemma-4-31B-it.qat.mid3k rows=3002/3002 wall=462m1s procs=1 retries=0
 {
   "strict": {
     "precision": 0.5939,
@@ -244,11 +234,3 @@ merged 3002 rows, 0 missing
   "scored_key": "pred_grounded",
   "alias_folding": true
 }
-[03:36:40Z] OK gemma-4-31B-it.qat.mid3k F1=0.6867 P=0.5939 R=0.8138 wall=465m
-[03:36:40Z] --- gemma-4-31B-it.nonqat.mid3k on xtx, nproc=1, MTP, 3002 notes
-[03:36:45Z] sizing: starting one server to measure resident VRAM
-[03:38:33Z]   one instance uses  MiB of 24560 MiB
-[03:38:33Z]   -> running 1 processes, cache-ram 1024 MiB each
-[03:38:33Z]   all 1 servers up; VRAM now  MiB
-[03:38:33Z] START gemma-4-31B-it.nonqat.mid3k across 1 shards
-[2026-08-12T11:33:42Z] mid3k_pairs.sh xtx exited rc=0

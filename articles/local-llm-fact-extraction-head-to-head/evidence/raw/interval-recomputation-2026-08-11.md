@@ -83,6 +83,11 @@ the non-QAT half was still running when this was written.
 second copy of the v4 predictions under `audit/`. The v5 side exists only as
 `E4B.v5-955.score.json`.
 
+Searched the whole machine on 2026-08-12. The only `v5-955` artifacts outside
+this repository are four further copies of the same score file, in old working
+directories under `/tmp`. No prediction file for that run exists anywhere. So it
+was not misplaced during the migration; it was never kept.
+
 A paired bootstrap resamples notes and needs both prediction sets, so the
 aggregate score survives and the interval cannot be re-derived. The published
 delta of +0.0103 is consistent with the two committed score files. The interval

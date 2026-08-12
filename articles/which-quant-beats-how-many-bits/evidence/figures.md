@@ -56,16 +56,45 @@ that folder's README for why the pin is version-specific.
 | speculative acceptance table | the six prediction files mapped in `articles/speculative-decoding-was-free/evidence/figures.md` |
 | model file and resident-memory sizes | server startup logs and `ARTICLE_NOTES.md`; several sizes are single-sourced because no dedicated size artifact was retained |
 
-## Incomplete same-card reruns
+## The 31B same-card rerun, completed 2026-08-12
 
-The registered 3,002-note 12B and 31B QAT comparisons are documented by
-`harness/harness/mid3k_pairs.sh`. Files under `results/mid3k/` contain launch logs
-only: there are no complete prediction or score files. They contribute no result
-to the article. The text preserves the registered prediction as a future test.
+| figure | artifact |
+|---|---|
+| 31B QAT 0.6867 at 3,002 notes | `results/mid3k-rerun-20260811/gemma-4-31B-it.qat.mid3k.score.json` |
+| 31B non-QAT 0.6857 at 3,002 notes | `results/mid3k-rerun-20260811/gemma-4-31B-it.nonqat.mid3k.score.json` |
+| +0.0009, −0.0064 to +0.0085, indistinguishable | recomputed with seed `20260809`, the seed every other interval in the series uses |
 
-`results/mid3k/` is this incomplete same-card campaign. The similarly named
-`results/qat-mid-3k/` is an earlier, completed E2B/E4B prediction set used by the
-reasoning and subset analyses.
+Both halves on one RX 7900 XTX, 3,002 notes, concurrency 1, speculation active on
+every row. `results/mid3k-rerun-20260811/PROVENANCE.md` carries the full
+collection record, the artifact integrity checks and the registered prediction
+quoted verbatim.
+
+The registered prediction called the half-width and missed the effect. It said
+0.0072 and the run gave 0.0073, conditional on the point estimate holding, and
+the point estimate fell from +0.0108 to +0.0009. The condition was stated in
+advance, which is what makes the answer clean rather than arguable.
+
+This supersedes the 1,001-note 31B row, which paired CT140 against a rented host.
+That row is kept in the article beside the new one because the comparison between
+them is the finding: the difference was mostly the hardware.
+
+## The 12B half was never completed
+
+`harness/harness/mid3k_pairs.sh` registers a 12B pair on the 5080. It has no
+prediction or score file anywhere on this machine, searched 2026-08-12.
+
+Its log under `results/mid3k/` records two `START` lines four seconds apart, at
+10:55:09Z and 10:55:13Z on 2026-08-10, from two overlapping launcher invocations
+that would have contended for port 8300 and the card. After that, nothing: no
+`DONE`, no `FAIL`, no stop reason.
+
+Stated precisely, it is not a run that was attempted and failed to finish. It is
+a run started twice and abandoned without recording an outcome. Nothing here
+supersedes the 12B row.
+
+`results/mid3k/` holds those launch logs and is left untouched. The similarly
+named `results/qat-mid-3k/` is an earlier, completed E2B/E4B prediction set used
+by the reasoning and subset analyses.
 
 ## Reporting inventory and disposition
 
@@ -84,8 +113,11 @@ reasoning and subset analyses.
   unverified.
 - **Floor correction:** kept. Failed rows bound the possible repair below the
   experiment's noise.
-- **Second corpus and same-card reruns:** remain open and are not described as
-  completed evidence.
+- **31B same-card rerun:** completed 2026-08-12 and supersedes the 1,001-note
+  cross-machine row. The QAT difference at 31B is indistinguishable from zero
+  once both halves run on one card.
+- **12B same-card rerun and the second corpus:** remain open and are not
+  described as completed evidence.
 
 No interview or external benchmark carries a material conclusion. Model identities
 and parameter counts come from the recorded run configuration.
