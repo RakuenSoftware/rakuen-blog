@@ -1,0 +1,19 @@
+diff --git a/app/dates.py b/app/dates.py
+index df1e524..f118cd4 100644
+--- a/app/dates.py
++++ b/app/dates.py
+@@ -1,11 +1,9 @@
+-"""Shared date helper. Used by billing, reports, scheduler, and invoices.
+-
+-BUG: end_of_month returns the 28th for every month.
+-"""
++"""Shared date helper. Used by billing, reports, scheduler, and invoices."""
++import calendar
+ import datetime
+ 
+ def end_of_month(d: datetime.date) -> datetime.date:
+-    return d.replace(day=28)
++    return d.replace(day=calendar.monthrange(d.year, d.month)[1])
+ 
+ def days_between(a: datetime.date, b: datetime.date) -> int:
+     return (b - a).days

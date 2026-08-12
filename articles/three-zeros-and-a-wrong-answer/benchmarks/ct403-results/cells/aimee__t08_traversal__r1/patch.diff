@@ -1,0 +1,83 @@
+diff --git a/app/files.py b/app/files.py
+index 13f6a7e..a2c0aab 100644
+--- a/app/files.py
++++ b/app/files.py
+@@ -1,6 +1,23 @@
+ import os
++
++from app.errors import AppError
++
+ UPLOAD_ROOT = "/srv/uploads"
+ 
+-# UNSAFE: user-controlled name joined straight onto the root.
++
+ def download_path(name):
+-    return os.path.join(UPLOAD_ROOT, name)
++    """Return a canonical path contained by the upload directory."""
++    root = os.path.realpath(UPLOAD_ROOT)
++    path = os.path.realpath(os.path.join(root, name))
++
++    try:
++        contained = os.path.commonpath((root, path)) == root
++    except ValueError:
++        # Different drives cannot share a common path on platforms that have
++        # drive-qualified paths.
++        contained = False
++
++    if not contained:
++        raise AppError("invalid download path")
++
++    return path
+diff --git a/tests/test_files.py b/tests/test_files.py
+new file mode 100644
+index 0000000..44dc801
+--- /dev/null
++++ b/tests/test_files.py
+@@ -0,0 +1,47 @@
++import os
++import tempfile
++import unittest
++
++from app import files
++from app.errors import AppError
++
++
++class DownloadPathTests(unittest.TestCase):
++    def setUp(self):
++        self.upload_root = tempfile.TemporaryDirectory()
++        self.original_upload_root = files.UPLOAD_ROOT
++        files.UPLOAD_ROOT = self.upload_root.name
++
++    def tearDown(self):
++        files.UPLOAD_ROOT = self.original_upload_root
++        self.upload_root.cleanup()
++
++    def test_returns_canonical_path_inside_upload_root(self):
++        expected = os.path.join(os.path.realpath(self.upload_root.name), "images", "widget.png")
++
++        self.assertEqual(files.download_path("images/widget.png"), expected)
++
++    def test_rejects_parent_directory_traversal(self):
++        with self.assertRaises(AppError):
++            files.download_path("../secret.txt")
++
++    def test_rejects_absolute_path(self):
++        with self.assertRaises(AppError):
++            files.download_path(os.path.join(os.path.sep, "etc", "passwd"))
++
++    def test_rejects_similar_directory_prefix(self):
++        sibling = self.upload_root.name + "-private"
++
++        with self.assertRaises(AppError):
++            files.download_path(os.path.join("..", os.path.basename(sibling), "secret.txt"))
++
++    def test_rejects_symlink_outside_upload_root(self):
++        with tempfile.TemporaryDirectory() as outside:
++            os.symlink(outside, os.path.join(self.upload_root.name, "escape"))
++
++            with self.assertRaises(AppError):
++                files.download_path("escape/secret.txt")
++
++
++if __name__ == "__main__":
++    unittest.main()

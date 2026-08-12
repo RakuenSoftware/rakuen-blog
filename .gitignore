@@ -6,3 +6,10 @@ node_modules/
 # Running the vendored scorer byte-compiles the harness in place.
 __pycache__/
 *.pyc
+
+# mid3k_pairs.sh and shard_run.sh resolve OUT relative to the harness directory,
+# so a run writes its working files here while it is still going. Artifacts are
+# evidence only once the run has completed and been checked, and they belong
+# under evidence/raw/results/ with a provenance note. Committing this directory
+# banks half-written shard files as though they were results.
+articles/*/evidence/raw/harness/results/

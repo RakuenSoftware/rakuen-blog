@@ -1,0 +1,53 @@
+diff --git a/app/dates.py b/app/dates.py
+index df1e524..de7b655 100644
+--- a/app/dates.py
++++ b/app/dates.py
+@@ -1,11 +1,12 @@
+-"""Shared date helper. Used by billing, reports, scheduler, and invoices.
+-
+-BUG: end_of_month returns the 28th for every month.
+-"""
++"""Shared date helper. Used by billing, reports, scheduler, and invoices."""
++import calendar
+ import datetime
+ 
++
+ def end_of_month(d: datetime.date) -> datetime.date:
+-    return d.replace(day=28)
++    last_day = calendar.monthrange(d.year, d.month)[1]
++    return d.replace(day=last_day)
++
+ 
+ def days_between(a: datetime.date, b: datetime.date) -> int:
+     return (b - a).days
+diff --git a/tests/test_billing.py b/tests/test_billing.py
+new file mode 100644
+index 0000000..bae7306
+--- /dev/null
++++ b/tests/test_billing.py
+@@ -0,0 +1,25 @@
++import datetime
++import unittest
++
++from app.billing import billing_period_days
++from app.dates import end_of_month
++
++
++class EndOfMonthTests(unittest.TestCase):
++    def test_billing_period_in_january_has_31_days(self):
++        self.assertEqual(billing_period_days(datetime.date(2026, 1, 1)), 31)
++
++    def test_end_of_month_handles_different_month_lengths(self):
++        cases = (
++            (datetime.date(2026, 4, 1), datetime.date(2026, 4, 30)),
++            (datetime.date(2026, 2, 1), datetime.date(2026, 2, 28)),
++            (datetime.date(2024, 2, 1), datetime.date(2024, 2, 29)),
++        )
++
++        for value, expected in cases:
++            with self.subTest(value=value):
++                self.assertEqual(end_of_month(value), expected)
++
++
++if __name__ == "__main__":
++    unittest.main()

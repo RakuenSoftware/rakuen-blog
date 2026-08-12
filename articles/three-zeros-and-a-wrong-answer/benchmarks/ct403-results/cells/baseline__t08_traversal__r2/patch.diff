@@ -1,0 +1,70 @@
+diff --git a/app/files.py b/app/files.py
+index 13f6a7e..83532d7 100644
+--- a/app/files.py
++++ b/app/files.py
+@@ -1,6 +1,12 @@
+ import os
+ UPLOAD_ROOT = "/srv/uploads"
+ 
+-# UNSAFE: user-controlled name joined straight onto the root.
+ def download_path(name):
+-    return os.path.join(UPLOAD_ROOT, name)
++    """Return a path inside the upload root for a user-supplied name."""
++    root = os.path.realpath(UPLOAD_ROOT)
++    path = os.path.realpath(os.path.join(root, name))
++
++    if os.path.commonpath((root, path)) != root:
++        raise ValueError("download path escapes upload root")
++
++    return path
+diff --git a/tests/test_files.py b/tests/test_files.py
+new file mode 100644
+index 0000000..3ccd7d1
+--- /dev/null
++++ b/tests/test_files.py
+@@ -0,0 +1,45 @@
++import os
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from app.files import download_path
++
++
++class DownloadPathTests(unittest.TestCase):
++    def setUp(self):
++        self.tempdir = tempfile.TemporaryDirectory()
++        self.upload_root = os.path.join(self.tempdir.name, "uploads")
++        os.mkdir(self.upload_root)
++        self.root_patch = patch("app.files.UPLOAD_ROOT", self.upload_root)
++        self.root_patch.start()
++
++    def tearDown(self):
++        self.root_patch.stop()
++        self.tempdir.cleanup()
++
++    def test_returns_path_below_upload_root(self):
++        self.assertEqual(
++            download_path("user/avatar.png"),
++            os.path.join(self.upload_root, "user", "avatar.png"),
++        )
++
++    def test_rejects_parent_traversal(self):
++        with self.assertRaises(ValueError):
++            download_path("../secret.txt")
++
++    def test_rejects_absolute_path(self):
++        with self.assertRaises(ValueError):
++            download_path(os.path.join(self.tempdir.name, "secret.txt"))
++
++    def test_rejects_symlink_escape(self):
++        outside = os.path.join(self.tempdir.name, "outside")
++        os.mkdir(outside)
++        os.symlink(outside, os.path.join(self.upload_root, "linked"))
++
++        with self.assertRaises(ValueError):
++            download_path("linked/secret.txt")
++
++
++if __name__ == "__main__":
++    unittest.main()

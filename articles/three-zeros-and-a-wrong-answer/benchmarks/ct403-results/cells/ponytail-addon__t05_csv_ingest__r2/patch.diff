@@ -1,0 +1,42 @@
+diff --git a/app/ingest.py b/app/ingest.py
+index 36b8a86..943ce71 100644
+--- a/app/ingest.py
++++ b/app/ingest.py
+@@ -1,9 +1,10 @@
+-"""CSV ingest. Naive splitting - breaks on quoted fields."""
++"""CSV ingest."""
++import csv
++import io
++
++
+ def parse_rows(text):
+-    rows = []
+-    for line in text.strip().splitlines():
+-        rows.append(line.split(","))
+-    return rows
++    return list(csv.reader(io.StringIO(text, newline="")))
+ 
+ def sum_column(text, index):
+     total = 0.0
+diff --git a/tests/test_ingest.py b/tests/test_ingest.py
+new file mode 100644
+index 0000000..b9002e2
+--- /dev/null
++++ b/tests/test_ingest.py
+@@ -0,0 +1,16 @@
++import unittest
++
++from app.ingest import parse_rows, sum_column
++
++
++class IngestTests(unittest.TestCase):
++    def test_quoted_fields(self):
++        text = 'description,amount\r\n"Consulting, phase 1",10.25\r\n"Multi-line\nwork",20.50\r\n'
++
++        self.assertEqual(parse_rows(text)[1][0], "Consulting, phase 1")
++        self.assertEqual(parse_rows(text)[2][0], "Multi-line\nwork")
++        self.assertEqual(sum_column(text, 1), 30.75)
++
++
++if __name__ == "__main__":
++    unittest.main()

@@ -1,0 +1,65 @@
+diff --git a/app/counter.py b/app/counter.py
+index f1d0928..da9750e 100644
+--- a/app/counter.py
++++ b/app/counter.py
+@@ -1,10 +1,22 @@
+-"""View counter. Loses increments under concurrency (read-modify-write)."""
++"""In-memory view counter."""
++import threading
++
++
+ _counts = {}
++_lock = threading.Lock()  # ponytail: global lock; use per-key locks if contention matters
++
++
+ def increment(key):
+-    current = _counts.get(key, 0)
+-    _counts[key] = current + 1
+-    return _counts[key]
++    with _lock:
++        _counts[key] = _counts.get(key, 0) + 1
++        return _counts[key]
++
++
+ def get(key):
+-    return _counts.get(key, 0)
++    with _lock:
++        return _counts.get(key, 0)
++
++
+ def reset():
+-    _counts.clear()
++    with _lock:
++        _counts.clear()
+diff --git a/tests/test_counter.py b/tests/test_counter.py
+new file mode 100644
+index 0000000..703ae28
+--- /dev/null
++++ b/tests/test_counter.py
+@@ -0,0 +1,26 @@
++import threading
++import unittest
++
++from app import counter
++
++
++class CounterTest(unittest.TestCase):
++    def test_concurrent_increments_are_not_lost(self):
++        counter.reset()
++        threads = [threading.Thread(target=self._increment, args=(1_000,)) for _ in range(20)]
++
++        for thread in threads:
++            thread.start()
++        for thread in threads:
++            thread.join()
++
++        self.assertEqual(counter.get("page"), 20_000)
++
++    @staticmethod
++    def _increment(times):
++        for _ in range(times):
++            counter.increment("page")
++
++
++if __name__ == "__main__":
++    unittest.main()

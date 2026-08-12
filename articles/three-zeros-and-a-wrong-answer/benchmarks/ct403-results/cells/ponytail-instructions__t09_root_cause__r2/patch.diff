@@ -1,0 +1,39 @@
+diff --git a/app/dates.py b/app/dates.py
+index df1e524..f118cd4 100644
+--- a/app/dates.py
++++ b/app/dates.py
+@@ -1,11 +1,9 @@
+-"""Shared date helper. Used by billing, reports, scheduler, and invoices.
+-
+-BUG: end_of_month returns the 28th for every month.
+-"""
++"""Shared date helper. Used by billing, reports, scheduler, and invoices."""
++import calendar
+ import datetime
+ 
+ def end_of_month(d: datetime.date) -> datetime.date:
+-    return d.replace(day=28)
++    return d.replace(day=calendar.monthrange(d.year, d.month)[1])
+ 
+ def days_between(a: datetime.date, b: datetime.date) -> int:
+     return (b - a).days
+diff --git a/tests/test_dates.py b/tests/test_dates.py
+new file mode 100644
+index 0000000..a96d9d4
+--- /dev/null
++++ b/tests/test_dates.py
+@@ -0,0 +1,14 @@
++import datetime
++import unittest
++
++from app.billing import billing_period_days
++
++
++class BillingPeriodDaysTest(unittest.TestCase):
++    def test_uses_actual_month_length(self):
++        self.assertEqual(billing_period_days(datetime.date(2026, 1, 1)), 31)
++        self.assertEqual(billing_period_days(datetime.date(2024, 2, 1)), 29)
++
++
++if __name__ == "__main__":
++    unittest.main()

@@ -1,0 +1,107 @@
+{
+  "arm": "ponytail-addon",
+  "arm_env": {},
+  "attempt_id": "14a627b5",
+  "cell": "ponytail-addon__t07_race__r2",
+  "codex": {
+    "errors": [
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation.",
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation."
+    ],
+    "estimated_credits": 5.168525,
+    "event_types": {
+      "item.completed": 13,
+      "item.started": 6,
+      "thread.started": 1,
+      "turn.completed": 1,
+      "turn.started": 1
+    },
+    "events": 22,
+    "item_types": {
+      "agent_message": 5,
+      "command_execution": 10,
+      "error": 2,
+      "file_change": 2
+    },
+    "malformed_lines": 0,
+    "thread_id": "019fedad-fb88-7f72-b415-7c674fb55e4b",
+    "tool_calls": {
+      "command_execution": 10,
+      "file_change": 2
+    },
+    "usage": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 106752,
+      "input_tokens": 124009,
+      "output_tokens": 2236,
+      "reasoning_output_tokens": 666
+    }
+  },
+  "compile_exit": 0,
+  "contamination_errors": [],
+  "contamination_valid": true,
+  "cost_comparable": true,
+  "exit_code": 0,
+  "gateway_model": "",
+  "gateway_url": "",
+  "hidden_ok": true,
+  "loc": {
+    "added": 49,
+    "deleted": 6,
+    "excluded_agent_state": [],
+    "files": 2,
+    "net": 43,
+    "per_file": [
+      {
+        "added": 14,
+        "deleted": 6,
+        "kind": "production",
+        "path": "app/counter.py"
+      },
+      {
+        "added": 35,
+        "deleted": 0,
+        "kind": "test",
+        "path": "tests/test_counter.py"
+      }
+    ],
+    "production_added": 14,
+    "production_deleted": 6,
+    "production_net": 8,
+    "test_added": 35,
+    "test_deleted": 0,
+    "test_net": 35
+  },
+  "model": "gpt-5.6-sol",
+  "ponytail_addon_markers": [
+    "plugins/data/ponytail-ponytail/.ponytail-active"
+  ],
+  "pre_head": "69d1afb19c6de6f046fcc43002e0dca5d9d2e78c",
+  "prompt_sha256": "a9bf73dcf278d7bd1298ccabea21b18b87b9074a1daa861dc77a82d9436ea594",
+  "quality_static": {
+    "bare_except_handlers_in_touched_files": 0,
+    "branch_nodes_in_touched_files": 0,
+    "max_control_nesting_in_touched_files": 1,
+    "mutable_default_arguments_in_touched_files": 0,
+    "parse_errors": [],
+    "production_files": [
+      "app/counter.py"
+    ],
+    "python_functions_in_touched_files": 3,
+    "test_files": [
+      "tests/test_counter.py"
+    ]
+  },
+  "raw_stderr_bytes": 39,
+  "raw_stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721",
+  "raw_stream_bytes": 19891,
+  "raw_stream_sha256": "02126b4f63eb98b9017cd61d16ca2334a6d7ad739d216f009b69decbe58f3675",
+  "reasoning_effort": "medium",
+  "replicate": 2,
+  "schema": 1,
+  "session_id": "4f8d90fa-df5e-5e49-801c-96e3dec2da57",
+  "smoke_exit": 0,
+  "task": "t07_race",
+  "timed_out": false,
+  "wall_seconds": 77.4388380741002
+}
