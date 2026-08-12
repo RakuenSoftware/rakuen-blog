@@ -54,8 +54,9 @@ writing one command line is how a shell is used, and the tool form arrives one
 call per turn because that is what the models produced.
 
 So the gap is real and observed, and its cause is the model rather than the
-specification. That distinction matters for what you can do about it, and it is
-the correction below.
+specification. A protocol limit is a thing you route around. A model behaviour
+is a thing you might prompt for, and asking directly for parallel tool calls is
+the experiment that would settle it. We have not run it.
 
 In a stateless protocol the unit of cost is not the call. It is the turn, and
 every turn drags the whole conversation behind it.
@@ -149,21 +150,3 @@ and the ones it never once batched.
 
 Our layer's largest cost was not the intelligence in it. It was the doorway we
 put in front of it.
-
-## Correction, 2026-08-12
-
-This piece first said the protocol has no `&&` and that a tool call cannot
-compose. That is wrong. A client can emit several tool calls in one assistant
-message and the schema permits it, so nothing in MCP forbids batching.
-
-What we observed is that no model we tested ever did, for any tool, in any cell.
-The measured cost is unchanged and the recommendation is unchanged. The cause is
-not.
-
-It matters because the two readings point somewhere different. A protocol limit
-is a thing you route around. A model behaviour is a thing you might prompt for,
-and the next useful experiment is to ask directly for parallel tool calls and see
-whether the count moves. We have not run it.
-
-The original wording is left above in the headings and the argument so the change
-is legible rather than tidied away.

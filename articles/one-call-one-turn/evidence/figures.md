@@ -1,12 +1,12 @@
 # Figure provenance and reporting record
 
-## Correction, 2026-08-12: MCP does not forbid batching
+## MCP does not forbid batching, and the batching claim is an observation
 
-The published piece said the protocol has no `&&` and that a tool call cannot
-compose. That is wrong. A client can emit several tool calls in one assistant
-message and the schema permits it.
+A draft of this piece said the protocol has no `&&` and that a tool call cannot
+compose. That is wrong and it was fixed before publication. A client can emit
+several tool calls in one assistant message and the schema permits it.
 
-The observation that stands is narrower and is the author's, from reading the
+The claim that shipped is narrower and is the author's, from reading the
 transcripts: no model tested emitted more than one tool call in a message, for
 any tool, in any cell.
 
