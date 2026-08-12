@@ -92,6 +92,40 @@ leaves modified files there for a human to review, branch and merge. Ingestion i
 a manual merge on purpose: passing every gate in this repository means no person
 has read the piece yet.
 
+### Exporting is the first of four steps
+
+Exporting a file is not publishing, and the gap has been mistaken for the finish
+line more than once. The whole path to a live URL:
+
+1. `python3 tools/publish.py --site ../rakuensoftware-web <slug>`
+2. in the site checkout, branch off `main`, commit the file, open a pull request
+3. merge it
+4. **deploy**, which is a separate manual step with no CI behind it:
+
+```sh
+ssh root@192.168.1.253 'pct exec 107 -- /opt/rakuen-web/scripts/deploy.sh'
+```
+
+Step 4 is the one that moves the website. Until it runs, `main` has the article
+and rakuensoftware.com does not. The script fast-forwards the checkout, rebuilds,
+swaps `dist/` atomically, restarts the server and rolls back if the new bundle
+fails to serve. It prints `Live: <bundle> (commit <sha>)`, and that sha is the
+only confirmation worth having.
+
+Check the result rather than trusting the merge:
+
+```sh
+curl -o /dev/null -w '%{http_code}\n' https://rakuensoftware.com/blog/<slug>
+```
+
+The site is a single-page app, so the page title is not in the HTML and grepping
+the response for it proves nothing. To confirm the text really shipped, grep the
+built bundle on the host instead.
+
+Do not branch the site checkout from whatever it happens to have checked out. It
+is often left on a merged feature branch, and committing there puts the article
+on a stale branch beside work that has already landed.
+
 The site filename comes from the article's `slug:` frontmatter field when it has
 one, and from the article's directory name otherwise. That is how an article
 whose title changed keeps its published URL. Changing a live URL is a decision,
