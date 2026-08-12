@@ -30,6 +30,15 @@ across six runs and 33,002 notes. And it is not a property of E4B either: E4B at
 Q4 and Q8 is at 99.9%. Only two runs show it, and they are different quants on
 different corpora.
 
+A third data point arrived on 2026-08-12 from an unrelated run. The 31B QAT half
+of the mid3k pair reasoned on 3,002 of 3,002 notes, on the same corpus where E4B
+QAT reasoned on 2,523 of 3,002. Same notes, same harness, same card, same
+concurrency, 100% against 84%.
+
+That is the cleanest contrast available: the corpus cannot be what makes a model
+skip reasoning, because a different model on exactly those notes skipped none of
+them.
+
 ## What it is not
 
 Checked on the E4B 10k Q6 run, silent rows against reasoned rows:
@@ -185,7 +194,8 @@ article. A result that reverses on its only replication is not a finding.
 ## What stands
 
 1. E4B declines to reason on 13% to 16% of rows in two runs. E2B never does, in
-   six runs.
+   six runs, and 31B QAT never does on the same 3,002 notes where E4B QAT skips
+   479 of them.
 2. It is not length, truncation, malformed output, schema failure or position.
 3. The same notes tend to go silent across runs, at 2.7 times chance.
 4. Within a run, silence is strongly category-dependent, including four
