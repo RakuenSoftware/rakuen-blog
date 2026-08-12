@@ -182,6 +182,27 @@ It does independently explain the unreconcilable gateway row above. That row was
 measured while the tool-routing defect was live, which is why its figures sit
 nowhere near the other three runs.
 
+The cells carry that defect's signature. Every `aimee-gateway` cell records
+exactly one `agent_message`, four out of four, while the other 63 cells in the
+tree span three to nine and no other run produces a one anywhere:
+
+| run | cells | `agent_message` range |
+|---|---:|---|
+| aimee-gateway | 4 | **1 to 1** |
+| baseline | 18 | 3 to 6 |
+| ponytail-addon | 18 | 3 to 5 |
+| ponytail-instructions | 18 | 3 to 6 |
+| aimee | 18 | 5 to 8 |
+
+One model turn beside 14 to 16 command executions is not a cheaper agent loop. It
+is a run that did not proceed normally, and it is uniform across every gateway
+cell rather than varying as a real measurement would.
+
+That is why the gateway row fails to reconcile on all four columns rather than
+only on cache. Its round-trip figure is not a smaller version of the others; the
+quantity does not mean the same thing in a run shaped like this. Any comparison
+that treats the gateway run as a like-for-like condition inherits the defect.
+
 ### What the re-measurement puts in its place
 
 | run | credits, three replicates | mean | against baseline |
