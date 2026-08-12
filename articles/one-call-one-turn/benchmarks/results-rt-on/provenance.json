@@ -1,0 +1,86 @@
+{
+  "aimee": {
+    "client_sha256": "86b99d75f422012b3a35700a80b7ed0e7121a33c50eab08b97fcfe080dd7f8db",
+    "client_version": "aimee pre-merge-safety-1281-g8e3d2b835d",
+    "kb_version": "pre-merge-safety-1278-g6c53ab4f44",
+    "server_version": "pre-merge-safety-1281-g8e3d2b835d",
+    "server_version_source": "client-build"
+  },
+  "aimee_installed_plugin_tree_sha256": "f174e3249465bcb9ea95f5a81111465dc34ccdaa269b931a4a4da6cb12d538ce",
+  "aimee_plugin_version": "pre-merge-safety-1281-g8e3d2b835d",
+  "aimee_project_namespace": "unique recorded suffix per readiness attempt",
+  "approval_mode": "dangerously-bypass-approvals-and-sandbox",
+  "arms": [
+    "aimee"
+  ],
+  "arms_complete": false,
+  "codex_version": "codex-cli 0.146.0",
+  "cost_unit": "ChatGPT Codex credits (estimated from token event usage)",
+  "credit_rate_per_million": {
+    "cached_input": 12.5,
+    "output": 750.0,
+    "uncached_input": 125.0
+  },
+  "fixture_seed_commit": "40af4eebffc6b2fe4b6073cecdf3ad1b744607d2",
+  "fixture_tree_sha256": "f72534a855b8c81761d1f0a13f04a41c560ce62de05fed958f8c703bbc40c7c1",
+  "hook_trust": "dangerously-bypass-hook-trust",
+  "inventories": {
+    "aimee": {
+      "mcp_servers": [
+        {
+          "auth_status": "unsupported",
+          "disabled_reason": null,
+          "enabled": true,
+          "name": "aimee",
+          "startup_timeout_sec": null,
+          "tool_timeout_sec": null,
+          "transport": {
+            "args": [
+              "mcp-serve"
+            ],
+            "command": "/usr/local/bin/aimee",
+            "cwd": null,
+            "env": {
+              "AIMEE_HOME": "/var/lib/docker/volumes/aimee_aimee-server-home/_data"
+            },
+            "env_vars": [],
+            "type": "stdio"
+          }
+        }
+      ],
+      "plugins": {
+        "available": [],
+        "installed": [
+          {
+            "authPolicy": "ON_USE",
+            "enabled": true,
+            "installPolicy": "INSTALLED_BY_DEFAULT",
+            "installed": true,
+            "marketplaceName": "local",
+            "marketplaceSource": {
+              "source": "/root",
+              "sourceType": "local"
+            },
+            "name": "aimee",
+            "pluginId": "aimee@local",
+            "source": {
+              "path": "/root/plugins/aimee",
+              "source": "local"
+            },
+            "version": "pre-merge-safety-1281-g8e3d2b835d"
+          }
+        ]
+      }
+    }
+  },
+  "model": "gpt-5.6-sol",
+  "native_agents_enabled": false,
+  "prepared_at": 1786482449,
+  "raw_transcripts": "/var/lib/aimee-workspaces/ptcodex/raw",
+  "reasoning_effort": "medium",
+  "replicates": 3,
+  "schedule_seed": 20260729,
+  "schema": 1,
+  "tasks": 50,
+  "usd_cost_available": false
+}
