@@ -62,7 +62,7 @@ that folder's README for why the pin is version-specific.
 |---|---|
 | 31B QAT 0.6867 at 3,002 notes | `results/mid3k-rerun-20260811/gemma-4-31B-it.qat.mid3k.score.json` |
 | 31B non-QAT 0.6857 at 3,002 notes | `results/mid3k-rerun-20260811/gemma-4-31B-it.nonqat.mid3k.score.json` |
-| +0.0009, −0.0064 to +0.0085, indistinguishable | recomputed with seed `20260809`, the seed every other interval in the series uses |
+| +0.0009, −0.0064 to +0.0082, indistinguishable | the paired bootstrap the campaign script ran itself, in `results/mid3k-rerun-20260811/mid3k_xtx.log` |
 
 Both halves on one RX 7900 XTX, 3,002 notes, concurrency 1, speculation active on
 every row. `results/mid3k-rerun-20260811/PROVENANCE.md` carries the full

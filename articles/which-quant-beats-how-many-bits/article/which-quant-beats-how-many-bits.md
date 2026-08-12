@@ -58,7 +58,7 @@ produce the repeated direction.
 | E4B | about 0 | not reported | |
 | 12B | +0.0100 | −0.0091 to +0.0289 | 1,001, across machines |
 | 31B | +0.0108 | −0.0013 to +0.0235 | 1,001, across machines |
-| **31B** | **+0.0009** | **−0.0064 to +0.0085** | **3,002, one card** |
+| **31B** | **+0.0009** | **−0.0064 to +0.0082** | **3,002, one card** |
 
 Only E2B supports an accuracy benefit within its reported range. The data do not
 establish a size trend or show why any effect changes with size.
@@ -154,7 +154,7 @@ All ladders share one corpus lineage. The 12B and 26B pairs crossed machines and
 still do.
 
 The 31B pair no longer does. Its registered 3,002-note same-card rerun completed
-on 2026-08-12 and returned +0.0009, range −0.0064 to +0.0085, which is the row
+on 2026-08-12 and returned +0.0009, range −0.0064 to +0.0082, which is the row
 that now stands. The 12B rerun was started twice four seconds apart by
 overlapping launchers, recorded no completion and no failure, and contributes
 nothing.
