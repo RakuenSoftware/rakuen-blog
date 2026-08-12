@@ -241,10 +241,39 @@ zero: `tool_calls` records what the agent invoked, and the agent never invoked
 `delegate` itself. Both are true, and the article's point stands, that an
 instruction to always delegate was shipped into a mode that cannot honour it.
 
-| figure | source |
-|---|---|
-| about 2.3× heavier per call, from nineteen tool schemas and a context envelope | not yet cited |
-| about 2.5× more round trips | see the round-trip discrepancy above. Under `agent_message`, the metric that reproduces baseline and add-on exactly, the plugin ratio is nearer 1.5× than 2.5× |
+### The two multipliers, recomputed
+
+Both published multipliers were uncited. With the round-trip mechanism retracted
+they are the article's surviving explanation, so they were recomputed from the
+committed cells with `benchmarks/per_call_weight.py`, 18 cells per run across all
+tasks.
+
+| | published | recomputed |
+|---|---:|---:|
+| more round trips | about 2.5× | **1.42×** (4.3 to 6.1 mean `agent_message`) |
+| heavier per call | about 2.3× | **2.93×** (24,365 to 71,342 mean tokens per trip) |
+| total input tokens | not published as a ratio | 4.21× (102,709 to 432,853) |
+
+The decomposition checks out: 1.42 × 2.93 = 4.16, against a measured 4.21.
+
+On `t01_cache` alone, the task the article's table uses, the weight ratio is
+3.61× rather than 2.93×.
+
+**Both published multipliers are wrong, in opposite directions.** The article
+overstates the trip count and understates the per-call weight. Corrected, weight
+is the dominant term by a wide margin and trips are a minor one.
+
+That is the same direction as the author's 22:00 retraction, arrived at
+independently: removing `roundtable_review` saved 26% without cutting round
+trips, because the saving was per-call cost. Two different routes to the
+conclusion that the article's causal story points at the wrong term.
+
+One caveat on the metric. `input_tokens` is the sum over trips of the whole
+accumulated context, so tokens per trip is mean context per trip and rises with
+conversation length. It is an upper bound on fixed per-call overhead rather than
+the overhead itself. If the published 2.3× came from measuring the tool schemas
+and envelope directly, it is answering a narrower question, and the article does
+not say which it means.
 
 ## Reporting inventory and disposition
 

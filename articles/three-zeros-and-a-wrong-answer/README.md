@@ -20,6 +20,13 @@ The headline survives. The layer costs about three times baseline, re-measured a
 survive is why. Removing `roundtable_review` saves 26% and does not change the
 round-trip count, so the cost is per-call weight rather than trip count.
 
+Recomputing the two published multipliers from the committed cells reaches the
+same place independently. Trips are 1.42× rather than the published 2.5×, and
+weight is 2.93× rather than the published 2.3×. Both are wrong in opposite
+directions, and corrected, weight dominates. The replacement mechanism is
+therefore measurable from evidence already in this repository, which the retracted
+one was not.
+
 Rewriting the argument around that is an editorial decision, not a filing
 correction, so it is left for the author. `evidence/figures.md` records the
 retraction, the replacement measurement, and what still stands.
