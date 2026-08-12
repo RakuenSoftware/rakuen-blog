@@ -1,0 +1,65 @@
+diff --git a/app/cache.py b/app/cache.py
+index 97da6e5..6bdf783 100644
+--- a/app/cache.py
++++ b/app/cache.py
+@@ -8,17 +8,20 @@ import time
+ 
+ _profile_cache = {}
+ _catalog_cache = {}
++_profile_lock = threading.Lock()
+ _catalog_lock = threading.Lock()
+ 
+ 
+ def cached_profile(uid, loader):
+-    if uid not in _profile_cache:
+-        _profile_cache[uid] = loader(uid)
+-    return _profile_cache[uid]
++    with _profile_lock:
++        if uid not in _profile_cache:
++            _profile_cache[uid] = loader(uid)
++        return _profile_cache[uid]
+ 
+ 
+ def invalidate_profile(uid):
+-    pass
++    with _profile_lock:
++        _profile_cache.pop(uid, None)
+ 
+ 
+ def ttl_get(key, loader, ttl=60, now=time.monotonic):
+@@ -45,5 +48,6 @@ def per_key_get(key, loader):
+ 
+ 
+ def reset():
+-    _profile_cache.clear()
++    with _profile_lock:
++        _profile_cache.clear()
+     _catalog_cache.clear()
+diff --git a/app/profile.py b/app/profile.py
+index 504261c..a12e917 100644
+--- a/app/profile.py
++++ b/app/profile.py
+@@ -1,12 +1,21 @@
+-"""Profile service - hits the DB on every call, no caching."""
++"""Profile service with a small in-process read cache."""
++from app.cache import cached_profile, invalidate_profile
+ from app.db import get_db
+-def get_profile(uid):
++
++
++def _load_profile(uid):
+     db = get_db()
+     db.q(f"SELECT * FROM users WHERE id={uid}")
+     return db.users.get(uid)
+ 
++
++def get_profile(uid):
++    return cached_profile(uid, _load_profile)
++
++
+ def update_profile(uid, data):
+     db = get_db()
+     db.q(f"UPDATE users SET ... WHERE id={uid}")
+     db.users[uid] = {**db.users.get(uid, {}), **data}
++    invalidate_profile(uid)
+     return db.users[uid]

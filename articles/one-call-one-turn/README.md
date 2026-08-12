@@ -23,6 +23,38 @@ its page cache, and that moves cost and timing while leaving token and call
 counts alone. And the decomposition is attributed to a unit, since which term
 dominates depends on what counts as a turn.
 
+## The cells are committed, and they contradict the table
+
+Recovered from CT403 on 2026-08-12 and committed under `benchmarks/`, in three
+directories because the run is three configurations rather than one campaign.
+`benchmarks/recompute_table.py` rebuilds the table and exits non-zero while a
+figure fails.
+
+The credits reproduce to the digit and identify the run beyond doubt: baseline
+mean 5.11, roundtable off 11.29, as shipped 15.16. All nine cells report
+`hidden_ok` true with compile and smoke zero, so the identical-correctness claim
+holds.
+
+The call and token figures do not reproduce, and the decomposition does not hold
+under any unit:
+
+| unit | round trips | per-call weight |
+|---|---:|---:|
+| `agent_message` | 1.42× | **3.22×** |
+| tool calls | **2.56×** | 1.78× |
+| messages plus tool calls | 2.25× | 2.03× |
+| **the article** | **3.30×** | **1.27×** |
+
+The article says round trips dominate and weight is the smaller term. On the
+committed cells the honest statement is that both terms are large and neither
+dominates. That is the sentence the piece turns on, so it cannot be printed as it
+stands.
+
+One more thing the cells show: `11.3 to 15.2` is not replicate spread. It is the
+distance between two configurations that differ by one tool, pooled into a row
+called `ours, over MCP`. Splitting them surfaces the run's strongest result,
+which is that removing `roundtable_review` moved cost by 26%.
+
 ## The one thing standing in the way
 
 **The cost table does not reproduce against the committed measurement of the same
