@@ -1,0 +1,4 @@
+[19:51:25Z] === 3k QAT pair on the xtx
+[19:51:25Z] --- gemma-4-31B-it.qat.mid3k on xtx, nproc=1, MTP, 3002 notes
+[03:36:40Z] OK gemma-4-31B-it.qat.mid3k F1=0.6867 P=0.5939 R=0.8138 wall=465m
+[03:36:40Z] --- gemma-4-31B-it.nonqat.mid3k on xtx, nproc=1, MTP, 3002 notes

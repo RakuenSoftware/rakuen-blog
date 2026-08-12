@@ -37,6 +37,41 @@ one-pair-per-process values, and these two were not.
 No verdict changes and neither interval crosses zero. Correcting them is a
 consistency question rather than a correction, and it is left to the author.
 
+## The 31B pair baseline, recorded before the 3,002-note result exists
+
+Added 2026-08-12 at 04:40, while the same-card rerun's second half was still
+running and no 3,002-note comparison had been computed. Recorded now so the
+before number is fixed while blind to the after.
+
+| | published | recomputed |
+|---|---|---|
+| 31B QAT minus non-QAT at n=1001 | +0.0108, −0.0013 to +0.0235 | +0.0108, **−0.0015 to +0.0231** |
+
+Same 0.0002 to 0.0004 endpoint drift as the two `how-small` rows above, from the
+same cause, and the verdict is unchanged at indistinguishable.
+
+Half-width recomputes to 0.0123. `harness/harness/mid3k_pairs.sh` states 0.0124
+in its registered prediction, so the premise the prediction rests on is sound.
+
+That script's prediction, written before its run started and quoted here without
+alteration:
+
+> the interval narrows with sqrt(n). The 31B pair's half-width was 0.0124 at
+> n=1001; at n=3002 it should fall to about 0.0072, which would put the whole
+> interval above zero IF the point estimate holds. That is the run's registered
+> prediction, written down before it starts so it cannot be adjusted afterwards.
+
+0.0124 divided by the square root of 3 is 0.00716, so the arithmetic holds. The
+prediction is therefore that the 3,002-note pair separates, conditional on the
+point estimate staying near +0.0108.
+
+The 1,001-note pair crossed hardware, CT140 against a rented host, which is the
+reason the same-card rerun was registered at all. The rerun's two halves both ran
+on the RX 7900 XTX.
+
+Nothing here is a result. The QAT half banked at 03:36 with strict F1 0.6867 and
+the non-QAT half was still running when this was written.
+
 ## Not reproducible from committed artifacts
 
 | article | comparison | why |
