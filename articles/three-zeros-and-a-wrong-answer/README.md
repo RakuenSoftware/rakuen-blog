@@ -8,8 +8,8 @@ first, each built on a zero that was never a measurement.
 
 Draft. Not publication-ready, and deliberately not marked as such.
 
-**The article's mechanism was retracted by the author on 2026-08-11 at 22:00, and
-the prose has not been changed to match.** The piece still argues that the
+**The draft's mechanism is wrong. The author established that on 2026-08-11 at
+22:00, and the prose has not been changed to match.** The piece still argues that the
 persona generated round trips, using the gateway run against the plugin run as a
 natural experiment. That comparison does not hold: the Codex MCP run receives no
 aimee persona at all, and the gateway run's lower round-trip count was a
@@ -20,16 +20,16 @@ The headline survives. The layer costs about three times baseline, re-measured a
 survive is why. Removing `roundtable_review` saves 26% and does not change the
 round-trip count, so the cost is per-call weight rather than trip count.
 
-Recomputing the two published multipliers from the committed cells reaches the
-same place independently. Trips are 1.42× rather than the published 2.5×, and
-weight is 2.93× rather than the published 2.3×. Both are wrong in opposite
+Recomputing the two multipliers from the committed cells reaches the
+same place independently. Trips are 1.42× rather than the stated 2.5×, and
+weight is 2.93× rather than the stated 2.3×. Both are wrong in opposite
 directions, and corrected, weight dominates. The replacement mechanism is
-therefore measurable from evidence already in this repository, which the retracted
+therefore measurable from evidence already in this repository, which the wrong
 one was not.
 
 Rewriting the argument around that is an editorial decision, not a filing
 correction, so it is left for the author. `evidence/figures.md` records the
-retraction, the replacement measurement, and what still stands.
+error, the replacement measurement, and what still stands.
 
 The voice pass is done and `tools/voice_gate.py` passes the article.
 
@@ -47,7 +47,7 @@ one are not on this machine. Searched 2026-08-11:
   `aimee-kb-8bc6aa5-superseded`
 - `/tmp/ptcodex/cells/` holds aimee working directories with no `summary.json`,
   so fixtures rather than results, and `/tmp` is volatile
-- the located cells report figures well outside the article's published ranges,
+- the located cells report figures well outside the ranges the draft gives,
   so they are a different campaign rather than the table's source
 
 This does not show the table is wrong. It shows the table is the one claim here
@@ -60,7 +60,7 @@ cell outside `matrix_results` is `r1` only.
 ## What the voice pass changed
 
 Rewritten against Part I and Part III of the voice guide. The finding moved into
-the lead, headings became assertions, the three retracted readings became a
+the lead, headings became assertions, the three corrected readings became a
 table, and roughly 240 words came out of the explaining rather than the evidence.
 Em dashes, the decorative question, the intensifiers and `arm` are gone.
 

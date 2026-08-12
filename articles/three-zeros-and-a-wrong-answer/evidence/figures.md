@@ -9,14 +9,14 @@ benchmark measurement, and that part does.
 kept as distinct classes of evidence rather than collapsed into one. They are
 separated here.
 
-## First-person account: the three retracted readings
+## First-person account: the three corrected readings
 
 The article's spine is a record of the author's own reasoning: what was read,
 what was concluded, and what turned out to be true. No artifact makes "I
 concluded this and I was wrong" more or less true, and the article is the record.
 
 The corrected values are a different matter and are listed below with their
-sources. The retractions themselves are kept in the article rather than
+sources. The corrections themselves are kept in the article rather than
 summarised, because the sequence is the subject.
 
 ## First-party instrumentation: the cache rates
@@ -27,12 +27,12 @@ summarised, because the sequence is the subject.
 | 46.6% overall after it shipped | the same |
 | 80% to 96% on warm mid-session turns | the same |
 | 80.5% in production over the same window | the same |
-| 14.9%, withdrawn | the same, over a window that straddled the deploy |
+| 14.9%, superseded | the same, over a window that straddled the deploy |
 
 The query is
 `SELECT source, SUM(prompt_tokens), SUM(cache_read_tokens) FROM token_audit GROUP BY source`,
 bucketed by `created_at` against deploy times. The bucketing is not optional: the
-withdrawn 14.9% is what the same query returns without it.
+superseded 14.9% is what the same query returns without it.
 
 These are single-sourced to our own instrumentation, which is the point of the
 article rather than a weakness in it. The database was not found on this machine
@@ -69,7 +69,8 @@ The columns come from `summary.json`: `codex.usage.input_tokens`,
 ### Reproduces exactly
 
 Reproduce them with `benchmarks/recompute_cost_table.py`, which reads the
-committed cells and exits non-zero if any published figure fails to reproduce.
+committed cells and exits non-zero if any figure in the draft fails to
+reproduce.
 
 | figure | recomputed from the cells |
 |---|---|
@@ -80,14 +81,14 @@ committed cells and exits non-zero if any published figure fails to reproduce.
 
 ### Does not reproduce
 
-| published | what the cells give |
+| the draft states | what the cells give |
 |---|---|
 | ponytail add-on credits 5.3 to 7.4 | 5.95, 6.83, 7.40. The lower bound 5.3 is not an add-on cell. `ponytail-instructions__r2` is 5.31 |
 | aimee plugin round trips 13 to 22 | `agent_message` gives 6 to 8. No metric tested reproduces 13 to 22: `item.started` 12 to 14, `item.completed` 21 to 22, `tool_calls` 24 to 28 |
 | aimee gateway 136k to 231k, 25% to 70%, 5 to 11 trips, 7.9 to 21.5 | the one `t01_cache` gateway cell gives 77,163 input, **0%** cache, 1 trip, 11.74 credits |
 
 An earlier version of this map listed the plugin cache floor of 89% as a
-discrepancy. That was wrong and is withdrawn. The cells give 89.66% to 91.28%,
+discrepancy. That was wrong and is fixed. The cells give 89.66% to 91.28%,
 and the article floors the lower bound, so 89% to 91% is correct. The error came
 from comparing values already rounded for display rather than the underlying
 ratios, which is the same mistake in miniature that the article is about.
@@ -103,7 +104,7 @@ All four `aimee-gateway` cells record `cached_input_tokens: 0`. They were writte
 between 05:43 and 06:49 on 2026-08-11, before the recording fix deployed at
 17:58. No cell anywhere on this machine was written after that deploy.
 
-So the published gateway cache range of 25% to 70% cannot have come from these
+So the draft's gateway cache range of 25% to 70% cannot have come from these
 cells, because these cells report the unrecorded zero that the article is about.
 It most likely came from the `token_audit` ledger after the fix, which is a
 server-side measurement.
@@ -124,7 +125,7 @@ reproduced on this machine and recorded as reported. It is filed here rather tha
 folded into the prose because it changes the article's ending, which is an
 editorial decision.
 
-Read the withdrawal at the end of this section before using any of it. The method
+Read the correction at the end of this section before using any of it. The method
 this section originally recommended turned out to be a fifth instance of the
 article's subject rather than an answer to it.
 
@@ -152,7 +153,7 @@ economizer caller fails open by design, so `econ_module_reduce` returning non-ze
 means the caller ships the original prompt. A fully broken economizer therefore
 looks exactly like a working one on every signal except the token bill.
 
-### The proof method filed here on 2026-08-11 is withdrawn
+### The proof method filed here on 2026-08-11 is wrong
 
 An earlier version of this section recommended a method and called it a stronger
 closing rule than the article's: send an identical payload with the module
@@ -160,7 +161,7 @@ attached and detached, compare `prompt_tokens`, and read 38,826 against 38,826 a
 proof the module did nothing. A constructed differential, unarguable where an
 absent log is not.
 
-The author withdrew it on 2026-08-12. The request used, a plain completion over
+The author found it wrong on 2026-08-12. The request used, a plain completion over
 the unix socket, **reaches neither economizer seam**, so the identical numbers say
 nothing about the economizer at all.
 
@@ -193,15 +194,15 @@ number must move". It is narrower and harder: **prove the code under test is on
 the request path before trusting any A/B against it**, and prefer an instrument
 that distinguishes "never ran" from "ran and did nothing".
 
-## Retracted by a later measurement, 2026-08-11 22:00
+## Corrected by a later measurement, 2026-08-11 22:00
 
-The article's natural experiment is withdrawn. It argued that the gateway run and
+The article's natural experiment does not hold. It argues that the gateway run and
 the plugin run expose the same tools, that only the plugin installs the persona,
 and that the round-trip gap between them therefore isolates the persona as the
 cause.
 
 The author re-measured at 22:00 on 2026-08-11, all runs on one image
-`sha256:239f6b3e`, `t01_cache`, three replicates, and retracted it:
+`sha256:239f6b3e`, `t01_cache`, three replicates, and it does not hold:
 
 - **The Codex MCP run receives no aimee persona at all.** Grepping the transcript
   for the manager text returns nothing, and the harness sends a plain prompt. So
@@ -256,7 +257,7 @@ overlap: the worst run without it, 11.82, is below the best run with it, 14.13.
 
 **It did not cut round trips.** One cell still made 28 aimee calls. The saving is
 per-call cost, because `roundtable_review` blocks on a delegate and returns a
-large result. That is a different mechanism from the one the article publishes.
+large result. That is a different mechanism from the one the draft gives.
 
 The author's own caveat: this task's patch is correct either way, so a reviewer
 has nothing to catch. It measures what `roundtable_review` costs, not that it is
@@ -300,27 +301,27 @@ instruction to always delegate was shipped into a mode that cannot honour it.
 
 ### The two multipliers, recomputed
 
-Both published multipliers were uncited. With the round-trip mechanism retracted
+Both multipliers in the draft were uncited. With the round-trip mechanism gone
 they are the article's surviving explanation, so they were recomputed from the
 committed cells with `benchmarks/per_call_weight.py`, 18 cells per run across all
 tasks.
 
-| | published | recomputed |
+| | the draft states | recomputed |
 |---|---:|---:|
 | more round trips | about 2.5× | **1.42×** (4.3 to 6.1 mean `agent_message`) |
 | heavier per call | about 2.3× | **2.93×** (24,365 to 71,342 mean tokens per trip) |
-| total input tokens | not published as a ratio | 4.21× (102,709 to 432,853) |
+| total input tokens | not given as a ratio | 4.21× (102,709 to 432,853) |
 
 The decomposition checks out: 1.42 × 2.93 = 4.16, against a measured 4.21.
 
 On `t01_cache` alone, the task the article's table uses, the weight ratio is
 3.61× rather than 2.93×.
 
-**Both published multipliers are wrong, in opposite directions.** The article
+**Both multipliers are wrong, in opposite directions.** The article
 overstates the trip count and understates the per-call weight. Corrected, weight
 is the dominant term by a wide margin and trips are a minor one.
 
-That is the same direction as the author's 22:00 retraction, arrived at
+That is the same direction as the author's 22:00 correction, arrived at
 independently: removing `roundtable_review` saved 26% without cutting round
 trips, because the saving was per-call cost. Two different routes to the
 conclusion that the article's causal story points at the wrong term.
@@ -328,16 +329,16 @@ conclusion that the article's causal story points at the wrong term.
 One caveat on the metric. `input_tokens` is the sum over trips of the whole
 accumulated context, so tokens per trip is mean context per trip and rises with
 conversation length. It is an upper bound on fixed per-call overhead rather than
-the overhead itself. If the published 2.3× came from measuring the tool schemas
+the overhead itself. If the draft's 2.3× came from measuring the tool schemas
 and envelope directly, it is answering a narrower question, and the article does
 not say which it means.
 
 ## Reporting inventory and disposition
 
-- **Three retracted readings:** kept in full. The sequence is the subject and
+- **Three corrected readings:** kept in full. The sequence is the subject and
   must not be compressed.
-- **The 6× and the 14.9%:** withdrawn in the article rather than removed.
-- **Warm-turn cache figure:** the 46.6% overall rate is published beside the 80%
+- **The 6× and the 14.9%:** kept in the draft as corrected rather than deleted.
+- **Warm-turn cache figure:** the 46.6% overall rate is given beside the 80%
   to 96% warm-turn figure, because the warm figure alone overstates the recovery.
 - **The serialisation defect:** kept as a source audit plus a merged fix, and
   labelled as such rather than as a runtime measurement.
