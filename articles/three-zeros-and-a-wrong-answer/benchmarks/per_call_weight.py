@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Is the aimee cost per-call weight rather than trip count?
 
-The article publishes about 2.3x heavier per call and never cites it. With the
+The draft states about 2.3x heavier per call and never cites it. With the
 round-trip mechanism retracted, this is the surviving claim, so compute it from
 the committed cells.
 
@@ -75,7 +75,7 @@ for label in order:
     ratio = f"{pt/base1:.2f}x" if base1 else "-"
     print(f"{label:22s} {len(ms):>5} {pt:>12,.0f} {ratio:>8}")
 
-print("\npublished: about 2.3x heavier per call, from nineteen tool schemas")
+print("\ndraft states: about 2.3x heavier per call, from nineteen tool schemas")
 print("note: input_tokens is the sum over trips of the whole accumulated context,")
 print("so tokens/trip is mean context per trip and rises with conversation length.")
 print("It is an upper bound on fixed per-call overhead, not the overhead itself.")
