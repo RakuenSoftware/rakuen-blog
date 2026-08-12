@@ -126,7 +126,38 @@ is stronger than the earlier sign-agreement check showed.
 `governance` is worse than unreplicated. Its two intervals do not overlap each
 other at all, with the 10k upper bound at −0.2751 and the mid3k lower bound at
 −0.0705. The second run does not merely fail to confirm the first; the two runs
-are incompatible, and that needs an explanation rather than a dismissal.
+are incompatible.
+
+### Why governance disagrees, resolved 2026-08-12
+
+Three explanations were checked with `analysis/governance_contradiction.py`.
+
+**It is not corpus difficulty.** Governance scores 0.7816 pooled in the 10k
+corpus and 0.7491 in the mid3k subset.
+
+**It is not one influential note.** Leaving out the single most influential note
+in the 10k silent group moves the delta from −0.4025 to −0.4123. The effect is
+robust within that run.
+
+**The two runs went silent on different notes.** The runs share 257 governance
+notes. The 10k run is silent on 20 of them and the mid3k run on 20, and only 5
+are shared, a Jaccard of 0.143. Chance alone predicts 1.6 shared, so the overlap
+is above chance and still leaves two mostly disjoint sets.
+
+That is the explanation. The 10k run skipped a set of governance notes it then
+failed, and the QAT run skipped a different set it handled. Within the 10k run
+the failure is stark: 37 of 62 silent governance notes produced no true positive
+at all, against 114 of 794 reasoned ones, and silent notes averaged 0.58 false
+positives against 0.26.
+
+So the effect is real in the run that shows it, and it is not a property of the
+category. It is a property of which notes that run chose to skip, and the choice
+moves with the quantisation. The finding is therefore that the skip decision can
+be badly calibrated, evidenced once, rather than that governance notes need
+reasoning.
+
+That is a narrower claim than either run alone suggests, and it is the one both
+runs support.
 
 ### A degenerate zero in this analysis
 

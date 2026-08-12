@@ -42,9 +42,16 @@ categories hold in both runs with 95% intervals clear of zero: `first_person`
 around +0.36, `novel_pred` between +0.24 and +0.36, `third_person` between −0.08
 and −0.14.
 
-They also sharpen the governance problem. Its two intervals do not overlap each
-other, so the second run does not merely fail to confirm the first, it
-contradicts it. That wants an explanation before either number is published.
+They also sharpened the governance problem, which is now resolved. Its two
+intervals do not overlap each other, and the cause is that the two runs went
+silent on different notes: of 257 shared governance notes, each run skipped 20
+and only 5 are the same. Not corpus difficulty, and not one influential note.
+
+So the governance effect is real in the run that shows it and is not a property
+of the category. It is a property of which notes that run chose to skip, and the
+choice moves with the quantisation. The claim both runs support is that the skip
+decision can be badly calibrated, evidenced once, which is narrower than either
+run alone suggests.
 
 ## Reproducing
 
