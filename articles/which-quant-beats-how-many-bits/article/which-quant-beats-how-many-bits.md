@@ -52,16 +52,30 @@ produce the repeated direction.
 
 ## QAT improved the smallest model's score
 
-| size | QAT minus non-QAT | 95% range |
-|---|---:|---:|
-| E2B | **+0.0389** | **+0.0152 to +0.0635** |
-| E4B | about 0 | not reported |
-| 12B | +0.0100 | −0.0091 to +0.0289 |
-| 31B | +0.0108 | −0.0013 to +0.0235 |
+| size | QAT minus non-QAT | 95% range | notes |
+|---|---:|---:|---|
+| E2B | **+0.0389** | **+0.0152 to +0.0635** | 1,001, one card |
+| E4B | about 0 | not reported | |
+| 12B | +0.0100 | −0.0091 to +0.0289 | 1,001, across machines |
+| 31B | +0.0108 | −0.0013 to +0.0235 | 1,001, across machines |
+| **31B** | **+0.0009** | **−0.0064 to +0.0085** | **3,002, one card** |
 
-Only E2B supports an accuracy benefit within its reported range. The two larger
-differences point in the same direction but do not separate. The data do not
+Only E2B supports an accuracy benefit within its reported range. The data do not
 establish a size trend or show why any effect changes with size.
+
+The last row supersedes the one above it. The 31B pair was rerun on 2026-08-11 at
+3,002 notes with both halves on the same card, and the difference went from
++0.0108 to +0.0009 with the interval closing around zero.
+
+That rerun was registered in advance and its prediction is worth reading against
+the result. It said the half-width should fall from 0.0124 to about 0.0072, which
+would clear zero if the point estimate held. The half-width came in at 0.0073.
+The point estimate did not hold.
+
+Narrowing the interval was never going to help, because the effect it narrowed
+around was mostly the hardware. The 1,001-note pair put a rented host against a
+local one, and the calibration bound between them is about ±0.019, wider than the
++0.0108 it was measuring.
 
 ## The dynamic four-bit build needs a same-card rerun
 
@@ -136,7 +150,15 @@ Check for a QAT build before buying a larger card. Treat the 26B dynamic packing
 a same-card test candidate, not a recommendation. Report parse floors beside the
 headline score.
 
-All ladders share one corpus lineage. The 12B, 31B and 26B pairs also crossed
-machines. Registered 3,002-note same-card reruns for 12B and 31B produced no
-complete prediction files and contribute no result. A second independently built
-corpus and completed same-card pairs are the gates for stronger claims.
+All ladders share one corpus lineage. The 12B and 26B pairs crossed machines and
+still do.
+
+The 31B pair no longer does. Its registered 3,002-note same-card rerun completed
+on 2026-08-12 and returned +0.0009, range −0.0064 to +0.0085, which is the row
+that now stands. The 12B rerun was started twice four seconds apart by
+overlapping launchers, recorded no completion and no failure, and contributes
+nothing.
+
+A second independently built corpus remains the gate for stronger claims, and the
+31B result is what a same-card pair looks like when the hardware term comes out:
+the difference it was measuring goes with it.

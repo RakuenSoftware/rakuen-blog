@@ -55,7 +55,7 @@ that catches that class of bug. A number without it is not evidence.
 | [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | ready | figure map, shared results tree |
 | [synthesis-model-selection](articles/synthesis-model-selection/) | ready | figure map; two paired GPU runs, CPU selection open |
 | [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | draft | 81 cells committed and checkable; three figures do not reproduce |
-| [one-call-one-turn](articles/one-call-one-turn/) | draft | figure map; the cost table does not reproduce against the committed campaign |
+| [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |
 | [the-model-decides-when-to-think](articles/the-model-decides-when-to-think/) | investigation | four rerunnable scripts; no article written yet |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
