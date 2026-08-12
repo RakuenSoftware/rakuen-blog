@@ -37,8 +37,14 @@ these observations. Until that exists the piece can report a pattern and cannot
 claim a mechanism, and the honest version of it is shorter and less interesting
 than the one the first run suggested.
 
-None of the per-category deltas carries an interval yet either. Every category
-except `third_person` splits down to between 20 and 141 notes.
+The intervals now exist, added 2026-08-12, and they strengthen the case. Three
+categories hold in both runs with 95% intervals clear of zero: `first_person`
+around +0.36, `novel_pred` between +0.24 and +0.36, `third_person` between −0.08
+and −0.14.
+
+They also sharpen the governance problem. Its two intervals do not overlap each
+other, so the second run does not merely fail to confirm the first, it
+contradicts it. That wants an explanation before either number is published.
 
 ## Reproducing
 

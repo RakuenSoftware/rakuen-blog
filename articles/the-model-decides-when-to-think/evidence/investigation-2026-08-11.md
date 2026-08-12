@@ -104,6 +104,44 @@ Per category, and against the same split in the independent qat mid3k run:
 
 Delta is F1 on silent notes minus F1 on reasoned notes, within the category.
 
+## Intervals, added 2026-08-12
+
+Every delta above was a point estimate. Bootstrap intervals, 20,000 replicates,
+seed 20260812, resampling each group independently within its category because
+the two groups are different notes rather than a pairing.
+
+| category | 10k Q6 delta | 95% interval | mid3k delta | 95% interval |
+|---|---:|---|---:|---|
+| first_person | +0.3564 | +0.2682 to +0.4302 | +0.3617 | +0.2893 to +0.4380 |
+| novel_pred | +0.2400 | +0.1712 to +0.3079 | +0.3636 | +0.2727 to +0.4595 |
+| third_person | −0.0767 | −0.1178 to −0.0356 | −0.1442 | −0.2241 to −0.0660 |
+| governance | −0.4025 | −0.5243 to −0.2751 | +0.1087 | −0.0705 to +0.2553 |
+| infra | +0.0207 | +0.0099 to +0.0330 | too few silent notes | |
+| multi_fact | +0.2838 | +0.1795 to +0.3577 | too few silent notes | |
+
+Three categories now hold in both runs with intervals clear of zero, and the
+overlap between runs is close: `first_person`, `novel_pred`, `third_person`. That
+is stronger than the earlier sign-agreement check showed.
+
+`governance` is worse than unreplicated. Its two intervals do not overlap each
+other at all, with the 10k upper bound at −0.2751 and the mid3k lower bound at
+−0.0705. The second run does not merely fail to confirm the first; the two runs
+are incompatible, and that needs an explanation rather than a dismissal.
+
+### A degenerate zero in this analysis
+
+`ambiguous`, `transient` and `negation` first came back with a delta of exactly
++0.0000 and a zero-width interval, which read as the strongest result in the
+table.
+
+They carry no gold triples by construction. The scorer reports `f1: None` for
+them and says why in the artifact. The helper here returned 0.0 instead, which
+turned "not applicable" into "no difference".
+
+They are now excluded and labelled. Recorded because it is the same fault this
+series keeps finding: a zero produced by a code path that had nothing to measure,
+sitting in a table beside zeros that mean something.
+
 ## What did not survive
 
 The governance result was the striking one in the first run: skipping reasoning
@@ -123,7 +161,8 @@ article. A result that reverses on its only replication is not a finding.
    categories at exactly zero across 3,938 notes.
 5. Between runs, the category pattern changes, so quantisation conditions it too.
 6. Skipping reasoning is associated with better accuracy on `first_person` and
-   `novel_pred` and worse on `third_person`, in both runs.
+   `novel_pred` and worse on `third_person`, in both runs, with bootstrap
+   intervals clear of zero in all six cases.
 
 ## What this cannot say
 
