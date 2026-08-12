@@ -1,0 +1,57 @@
+{
+  "after": {
+    "mcp_servers": [],
+    "plugins": {
+      "available": [],
+      "installed": [
+        {
+          "authPolicy": "ON_INSTALL",
+          "enabled": true,
+          "installPolicy": "AVAILABLE",
+          "installed": true,
+          "marketplaceName": "ponytail",
+          "marketplaceSource": {
+            "source": "/root/ponytail-upstream",
+            "sourceType": "local"
+          },
+          "name": "ponytail",
+          "pluginId": "ponytail@ponytail",
+          "source": {
+            "ref": "main",
+            "source": "git",
+            "url": "https://github.com/DietrichGebert/ponytail.git"
+          },
+          "version": "4.9.0"
+        }
+      ]
+    }
+  },
+  "before": {
+    "mcp_servers": [],
+    "plugins": {
+      "available": [],
+      "installed": [
+        {
+          "authPolicy": "ON_INSTALL",
+          "enabled": true,
+          "installPolicy": "AVAILABLE",
+          "installed": true,
+          "marketplaceName": "ponytail",
+          "marketplaceSource": {
+            "source": "/root/ponytail-upstream",
+            "sourceType": "local"
+          },
+          "name": "ponytail",
+          "pluginId": "ponytail@ponytail",
+          "source": {
+            "ref": "main",
+            "source": "git",
+            "url": "https://github.com/DietrichGebert/ponytail.git"
+          },
+          "version": "4.9.0"
+        }
+      ]
+    }
+  },
+  "errors": []
+}

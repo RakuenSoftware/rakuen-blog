@@ -1,0 +1,84 @@
+diff --git a/app/counter.py b/app/counter.py
+index f1d0928..bf5fa6b 100644
+--- a/app/counter.py
++++ b/app/counter.py
+@@ -1,10 +1,23 @@
+-"""View counter. Loses increments under concurrency (read-modify-write)."""
++"""Thread-safe in-memory view counter."""
++import threading
++
++
+ _counts = {}
++_lock = threading.Lock()
++
++
+ def increment(key):
+-    current = _counts.get(key, 0)
+-    _counts[key] = current + 1
+-    return _counts[key]
++    with _lock:
++        current = _counts.get(key, 0) + 1
++        _counts[key] = current
++        return current
++
++
+ def get(key):
+-    return _counts.get(key, 0)
++    with _lock:
++        return _counts.get(key, 0)
++
++
+ def reset():
+-    _counts.clear()
++    with _lock:
++        _counts.clear()
+diff --git a/tests/test_counter.py b/tests/test_counter.py
+new file mode 100644
+index 0000000..84d32de
+--- /dev/null
++++ b/tests/test_counter.py
+@@ -0,0 +1,44 @@
++import threading
++import time
++import unittest
++from unittest.mock import patch
++
++from app import counter
++
++
++class CounterTest(unittest.TestCase):
++    def setUp(self):
++        counter.reset()
++
++    def test_concurrent_increments_are_not_lost(self):
++        class SlowReads(dict):
++            def get(self, key, default=None):
++                value = super().get(key, default)
++                time.sleep(0.0001)
++                return value
++
++        workers = 10
++        increments_per_worker = 50
++        start = threading.Barrier(workers)
++
++        def increment_many():
++            start.wait()
++            for _ in range(increments_per_worker):
++                counter.increment("busy-page")
++
++        with patch.object(counter, "_counts", SlowReads()):
++            threads = [
++                threading.Thread(target=increment_many) for _ in range(workers)
++            ]
++            for thread in threads:
++                thread.start()
++            for thread in threads:
++                thread.join()
++
++            self.assertEqual(
++                counter.get("busy-page"), workers * increments_per_worker
++            )
++
++
++if __name__ == "__main__":
++    unittest.main()

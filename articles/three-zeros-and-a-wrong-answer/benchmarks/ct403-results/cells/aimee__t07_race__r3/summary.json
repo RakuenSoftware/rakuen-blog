@@ -1,0 +1,110 @@
+{
+  "arm": "aimee",
+  "arm_env": {},
+  "attempt_id": "6527654c",
+  "cell": "aimee__t07_race__r3",
+  "codex": {
+    "errors": [
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation.",
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation."
+    ],
+    "estimated_credits": 15.70935,
+    "event_types": {
+      "item.completed": 24,
+      "item.started": 16,
+      "thread.started": 1,
+      "turn.completed": 1,
+      "turn.started": 1
+    },
+    "events": 43,
+    "item_types": {
+      "agent_message": 6,
+      "command_execution": 16,
+      "error": 2,
+      "file_change": 4,
+      "mcp_tool_call": 12
+    },
+    "malformed_lines": 0,
+    "thread_id": "019fedb3-553f-7fc0-9523-8789472a090a",
+    "tool_calls": {
+      "command_execution": 16,
+      "file_change": 4,
+      "mcp:aimee:find_symbol": 2,
+      "mcp:aimee:index": 4,
+      "mcp:aimee:preview_blast_radius": 2,
+      "mcp:aimee:roundtable_review": 4
+    },
+    "usage": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 464128,
+      "input_tokens": 505464,
+      "output_tokens": 6321,
+      "reasoning_output_tokens": 1876
+    }
+  },
+  "compile_exit": 0,
+  "contamination_errors": [],
+  "contamination_valid": true,
+  "cost_comparable": true,
+  "exit_code": 0,
+  "gateway_model": "",
+  "gateway_url": "",
+  "hidden_ok": true,
+  "loc": {
+    "added": 63,
+    "deleted": 6,
+    "excluded_agent_state": [],
+    "files": 2,
+    "net": 57,
+    "per_file": [
+      {
+        "added": 19,
+        "deleted": 6,
+        "kind": "production",
+        "path": "app/counter.py"
+      },
+      {
+        "added": 44,
+        "deleted": 0,
+        "kind": "test",
+        "path": "tests/test_counter.py"
+      }
+    ],
+    "production_added": 19,
+    "production_deleted": 6,
+    "production_net": 13,
+    "test_added": 44,
+    "test_deleted": 0,
+    "test_net": 44
+  },
+  "model": "gpt-5.6-sol",
+  "ponytail_addon_markers": [],
+  "pre_head": "69d1afb19c6de6f046fcc43002e0dca5d9d2e78c",
+  "prompt_sha256": "a9bf73dcf278d7bd1298ccabea21b18b87b9074a1daa861dc77a82d9436ea594",
+  "quality_static": {
+    "bare_except_handlers_in_touched_files": 0,
+    "branch_nodes_in_touched_files": 0,
+    "max_control_nesting_in_touched_files": 1,
+    "mutable_default_arguments_in_touched_files": 0,
+    "parse_errors": [],
+    "production_files": [
+      "app/counter.py"
+    ],
+    "python_functions_in_touched_files": 3,
+    "test_files": [
+      "tests/test_counter.py"
+    ]
+  },
+  "raw_stderr_bytes": 39,
+  "raw_stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721",
+  "raw_stream_bytes": 44552,
+  "raw_stream_sha256": "8c68ca703d1cb7376f1f91c651fd5bcd0ab812338ae5b7b016a5f24af8fd7f2d",
+  "reasoning_effort": "medium",
+  "replicate": 3,
+  "schema": 1,
+  "session_id": "5d76c5c5-8cac-5789-9ddc-a32d65f558f8",
+  "smoke_exit": 0,
+  "task": "t07_race",
+  "timed_out": false,
+  "wall_seconds": 171.3890978039708
+}

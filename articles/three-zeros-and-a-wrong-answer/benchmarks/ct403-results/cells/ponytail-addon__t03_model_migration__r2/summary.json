@@ -1,0 +1,107 @@
+{
+  "arm": "ponytail-addon",
+  "arm_env": {},
+  "attempt_id": "ed6b155f",
+  "cell": "ponytail-addon__t03_model_migration__r2",
+  "codex": {
+    "errors": [
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation.",
+      "`--dangerously-bypass-hook-trust` is enabled. Enabled hooks may run without review for this invocation."
+    ],
+    "estimated_credits": 8.33775,
+    "event_types": {
+      "item.completed": 13,
+      "item.started": 6,
+      "thread.started": 1,
+      "turn.completed": 1,
+      "turn.started": 1
+    },
+    "events": 22,
+    "item_types": {
+      "agent_message": 5,
+      "command_execution": 10,
+      "error": 2,
+      "file_change": 2
+    },
+    "malformed_lines": 0,
+    "thread_id": "019fedc3-7d7e-7d00-ae8b-2e57ea47911f",
+    "tool_calls": {
+      "command_execution": 10,
+      "file_change": 2
+    },
+    "usage": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 93440,
+      "input_tokens": 127386,
+      "output_tokens": 3902,
+      "reasoning_output_tokens": 1935
+    }
+  },
+  "compile_exit": 0,
+  "contamination_errors": [],
+  "contamination_valid": true,
+  "cost_comparable": true,
+  "exit_code": 0,
+  "gateway_model": "",
+  "gateway_url": "",
+  "hidden_ok": true,
+  "loc": {
+    "added": 50,
+    "deleted": 5,
+    "excluded_agent_state": [],
+    "files": 2,
+    "net": 45,
+    "per_file": [
+      {
+        "added": 27,
+        "deleted": 5,
+        "kind": "production",
+        "path": "app/models.py"
+      },
+      {
+        "added": 23,
+        "deleted": 0,
+        "kind": "test",
+        "path": "tests/test_models.py"
+      }
+    ],
+    "production_added": 27,
+    "production_deleted": 5,
+    "production_net": 22,
+    "test_added": 23,
+    "test_deleted": 0,
+    "test_net": 23
+  },
+  "model": "gpt-5.6-sol",
+  "ponytail_addon_markers": [
+    "plugins/data/ponytail-ponytail/.ponytail-active"
+  ],
+  "pre_head": "0b09f84c7262c3bee6b51bd4f58cf828cfc637f8",
+  "prompt_sha256": "a9bf73dcf278d7bd1298ccabea21b18b87b9074a1daa861dc77a82d9436ea594",
+  "quality_static": {
+    "bare_except_handlers_in_touched_files": 0,
+    "branch_nodes_in_touched_files": 3,
+    "max_control_nesting_in_touched_files": 2,
+    "mutable_default_arguments_in_touched_files": 0,
+    "parse_errors": [],
+    "production_files": [
+      "app/models.py"
+    ],
+    "python_functions_in_touched_files": 7,
+    "test_files": [
+      "tests/test_models.py"
+    ]
+  },
+  "raw_stderr_bytes": 39,
+  "raw_stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721",
+  "raw_stream_bytes": 21051,
+  "raw_stream_sha256": "5a11f8fa93c0d5cc670cf69b4c065c742ae67ae2cd2876ac9122c2ad66275dd4",
+  "reasoning_effort": "medium",
+  "replicate": 2,
+  "schema": 1,
+  "session_id": "34813595-d0ea-5444-9f42-37567ee60141",
+  "smoke_exit": 0,
+  "task": "t03_model_migration",
+  "timed_out": false,
+  "wall_seconds": 99.97409044008236
+}

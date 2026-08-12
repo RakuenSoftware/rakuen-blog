@@ -1,0 +1,96 @@
+{
+  "blast_radius": {
+    "dependencies": [
+      "datetime"
+    ],
+    "dependents": [
+      "app/billing.py",
+      "app/invoices.py",
+      "app/reports.py"
+    ],
+    "file": "app/dates.py",
+    "result_status": "ok"
+  },
+  "build": {
+    "chunks_added": 0,
+    "embeddings_added": 0,
+    "files_indexed": 0,
+    "project": "codex-t08-traversal-r2-baad46fa",
+    "queued": true,
+    "reason": "queued"
+  },
+  "callers": {
+    "hits": [
+      {
+        "caller": "billing_period_days",
+        "file_path": "app/billing.py",
+        "line": 3,
+        "project": "codex-t08-traversal-r2-baad46fa"
+      },
+      {
+        "caller": "invoice_due",
+        "file_path": "app/invoices.py",
+        "line": 3,
+        "project": "codex-t08-traversal-r2-baad46fa"
+      },
+      {
+        "caller": "month_report_path",
+        "file_path": "app/reports.py",
+        "line": 6,
+        "project": "codex-t08-traversal-r2-baad46fa"
+      }
+    ],
+    "result_status": "ok"
+  },
+  "errors": [],
+  "project": "codex-t08-traversal-r2-baad46fa",
+  "readiness_mode": "full",
+  "runtime": {
+    "client_sha256": "86b99d75f422012b3a35700a80b7ed0e7121a33c50eab08b97fcfe080dd7f8db",
+    "client_version": "aimee pre-merge-safety-1281-g8e3d2b835d",
+    "kb_version": "pre-merge-safety-1278-g6c53ab4f44",
+    "server_version": "pre-merge-safety-1281-g8e3d2b835d",
+    "server_version_source": "client-build"
+  },
+  "scan": "==> Scan complete: 1 project(s), 34 file(s) re-indexed",
+  "seconds": 10.841474339016713,
+  "semantic": {
+    "fusion_mode_used": "rrf",
+    "hits": [
+      {
+        "artifact_id": "README.md",
+        "citations": [],
+        "doc_id": 2000,
+        "excerpt": "# widgets-servicennSmall internal service. House conventions live in `app/api.py` - all endpointsnuse `require_user`/`require_admin`, `paginate()` for lists, `AppError` subclassesnfor failures, and `audit.record()` for admin actions.nnRun tests: `python3 -m pytest tests/ -q`",
+        "kind": "doc_chunk",
+        "project": "codex-t08-traversal-r2-baad46fa",
+        "score": 0.504236
+      },
+      {
+        "artifact_id": "TICKET.txt",
+        "citations": [],
+        "doc_id": 2002,
+        "excerpt": "Security review flagged a path traversal vulnerability in the file download handler (app/files.py, download_path). Please fix it.",
+        "kind": "doc_chunk",
+        "project": "codex-t08-traversal-r2-baad46fa",
+        "score": 0.163299
+      }
+    ],
+    "next_cursor": null,
+    "total_hits": 2
+  },
+  "semantic_attempts": 4,
+  "symbol": {
+    "hits": [
+      {
+        "file_path": "app/dates.py",
+        "kind": "definition",
+        "line": 7,
+        "project": "codex-t08-traversal-r2-baad46fa"
+      }
+    ],
+    "result_status": "ok"
+  },
+  "workspace_add": "workspace: added /var/lib/aimee-workspaces/ptcodex/cells/aimee__t08_traversal__r2/codex-t08-traversal-r2-baad46fa (1 project(s) discovered)\n  indexed: codex-t08-traversal-r2-baad46fa",
+  "workspace_tree_sha256": "41fee8f2a3cb4d27d8379878b235d8aa5d66a91d09898a609c6487084cf81f81"
+}

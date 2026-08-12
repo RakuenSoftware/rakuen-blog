@@ -1,0 +1,14 @@
+{
+  "exit_code": 0,
+  "passed": true,
+  "result": {
+    "t05_csv_ingest": {
+      "err": 0,
+      "fail": 0,
+      "ok": true,
+      "pass": 5,
+      "run": 5
+    }
+  },
+  "stderr": ""
+}

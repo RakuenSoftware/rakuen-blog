@@ -1,0 +1,218 @@
+{
+  "aimee": {
+    "client_sha256": "86b99d75f422012b3a35700a80b7ed0e7121a33c50eab08b97fcfe080dd7f8db",
+    "client_version": "aimee pre-merge-safety-1281-g8e3d2b835d",
+    "kb_version": "pre-merge-safety-1278-g6c53ab4f44",
+    "server_version": "pre-merge-safety-1281-g8e3d2b835d",
+    "server_version_source": "client-build"
+  },
+  "aimee_installed_plugin_tree_sha256": "f174e3249465bcb9ea95f5a81111465dc34ccdaa269b931a4a4da6cb12d538ce",
+  "aimee_pin_history": [
+    {
+      "aimee": {
+        "client_sha256": "d568055ef6b87d3b197c12f6e90b7cd50c7c5649aff47daf3f4e60f2e1db43e4",
+        "client_version": "aimee vtesting-29a72a4",
+        "kb_version": "vtesting-0aea79a",
+        "server_version": "0.3.0"
+      },
+      "aimee_installed_plugin_tree_sha256": "83b63b2a4f1837f7f834eba4d1fa6db08d0a94da83467c150cfb1c05e6a41bb6",
+      "aimee_plugin_version": "vtesting-29a72a4",
+      "cells_recorded": [],
+      "superseded_at": 1786382203
+    },
+    {
+      "aimee": {
+        "client_sha256": "c87e10c97bb493b7d7592ef473abd86dc2bbc8266d90558dbc382e8c339fd91f",
+        "client_version": "aimee vtesting-21b5dea",
+        "kb_version": "pre-merge-safety-1277-gbc5c37c894",
+        "server_version": "vtesting-21b5dea",
+        "server_version_source": "client-build"
+      },
+      "aimee_installed_plugin_tree_sha256": "145588a5411c791111c25843ccadd3d24753a52d97dde0f3d57d1a29f199a4cc",
+      "aimee_plugin_version": "vtesting-21b5dea",
+      "cells_recorded": [],
+      "superseded_at": 1786383164
+    },
+    {
+      "aimee": {
+        "client_sha256": "c87e10c97bb493b7d7592ef473abd86dc2bbc8266d90558dbc382e8c339fd91f",
+        "client_version": "aimee vtesting-21b5dea",
+        "kb_version": "pre-merge-safety-1278-g6c53ab4f44",
+        "server_version": "vtesting-21b5dea",
+        "server_version_source": "client-build"
+      },
+      "aimee_installed_plugin_tree_sha256": "145588a5411c791111c25843ccadd3d24753a52d97dde0f3d57d1a29f199a4cc",
+      "aimee_plugin_version": "vtesting-21b5dea",
+      "cells_recorded": [
+        "aimee-noreview__t01_cache__r1",
+        "aimee-review__t01_cache__r1",
+        "aimee__t01_cache__r1",
+        "aimee__t01_cache__r2",
+        "aimee__t01_cache__r3",
+        "baseline__t01_cache__r1",
+        "baseline__t01_cache__r2",
+        "baseline__t01_cache__r3",
+        "ponytail-addon__t01_cache__r1",
+        "ponytail-addon__t01_cache__r2",
+        "ponytail-addon__t01_cache__r3",
+        "ponytail-instructions__t01_cache__r1",
+        "ponytail-instructions__t01_cache__r2",
+        "ponytail-instructions__t01_cache__r3"
+      ],
+      "superseded_at": 1786389824
+    },
+    {
+      "aimee": {
+        "client_sha256": "f0158491a030a57d241c0d8e8719a88ea2a7462dbc54062c2512ec74c46ddb97",
+        "client_version": "aimee pre-merge-safety-1281-g8e3d2b835d",
+        "kb_version": "pre-merge-safety-1278-g6c53ab4f44",
+        "server_version": "pre-merge-safety-1281-g8e3d2b835d",
+        "server_version_source": "client-build"
+      },
+      "aimee_installed_plugin_tree_sha256": "f174e3249465bcb9ea95f5a81111465dc34ccdaa269b931a4a4da6cb12d538ce",
+      "aimee_plugin_version": "pre-merge-safety-1281-g8e3d2b835d",
+      "cells_recorded": [
+        "aimee-lean__t01_cache__r1",
+        "aimee-lean__t01_cache__r2",
+        "aimee-noreview__t01_cache__r1",
+        "aimee-review__t01_cache__r1",
+        "aimee__t01_cache__r1",
+        "aimee__t01_cache__r2",
+        "baseline__t01_cache__r1",
+        "baseline__t01_cache__r2",
+        "baseline__t01_cache__r3",
+        "ponytail-addon__t01_cache__r1",
+        "ponytail-addon__t01_cache__r2",
+        "ponytail-addon__t01_cache__r3",
+        "ponytail-instructions__t01_cache__r1",
+        "ponytail-instructions__t01_cache__r2",
+        "ponytail-instructions__t01_cache__r3"
+      ],
+      "superseded_at": 1786390718
+    }
+  ],
+  "aimee_plugin_version": "pre-merge-safety-1281-g8e3d2b835d",
+  "aimee_project_namespace": "unique recorded suffix per readiness attempt",
+  "approval_mode": "dangerously-bypass-approvals-and-sandbox",
+  "arms": [
+    "baseline",
+    "ponytail-instructions",
+    "ponytail-addon",
+    "aimee"
+  ],
+  "codex_version": "codex-cli 0.146.0",
+  "cost_unit": "ChatGPT Codex credits (estimated from token event usage)",
+  "credit_rate_per_million": {
+    "cached_input": 12.5,
+    "output": 750.0,
+    "uncached_input": 125.0
+  },
+  "fixture_seed_commit": "40af4eebffc6b2fe4b6073cecdf3ad1b744607d2",
+  "fixture_tree_sha256": "f72534a855b8c81761d1f0a13f04a41c560ce62de05fed958f8c703bbc40c7c1",
+  "hook_trust": "dangerously-bypass-hook-trust",
+  "inventories": {
+    "aimee": {
+      "mcp_servers": [
+        {
+          "auth_status": "unsupported",
+          "disabled_reason": null,
+          "enabled": true,
+          "name": "aimee",
+          "startup_timeout_sec": null,
+          "tool_timeout_sec": null,
+          "transport": {
+            "args": [
+              "mcp-serve"
+            ],
+            "command": "/home/virant/.local/bin/aimee",
+            "cwd": null,
+            "env": null,
+            "env_vars": [],
+            "type": "stdio"
+          }
+        }
+      ],
+      "plugins": {
+        "available": [],
+        "installed": [
+          {
+            "authPolicy": "ON_USE",
+            "enabled": true,
+            "installPolicy": "INSTALLED_BY_DEFAULT",
+            "installed": true,
+            "marketplaceName": "local",
+            "marketplaceSource": {
+              "source": "/home/virant",
+              "sourceType": "local"
+            },
+            "name": "aimee",
+            "pluginId": "aimee@local",
+            "source": {
+              "path": "/home/virant/plugins/aimee",
+              "source": "local"
+            },
+            "version": "vtesting-29a72a4"
+          }
+        ]
+      }
+    },
+    "baseline": {
+      "mcp_servers": [],
+      "plugins": {
+        "available": [],
+        "installed": []
+      }
+    },
+    "ponytail-addon": {
+      "mcp_servers": [],
+      "plugins": {
+        "available": [],
+        "installed": [
+          {
+            "authPolicy": "ON_INSTALL",
+            "enabled": true,
+            "installPolicy": "AVAILABLE",
+            "installed": true,
+            "marketplaceName": "ponytail",
+            "marketplaceSource": {
+              "source": "/home/virant/dev/ponytail-upstream",
+              "sourceType": "local"
+            },
+            "name": "ponytail",
+            "pluginId": "ponytail@ponytail",
+            "source": {
+              "ref": "main",
+              "source": "git",
+              "url": "https://github.com/DietrichGebert/ponytail.git"
+            },
+            "version": "4.8.4"
+          }
+        ]
+      }
+    },
+    "ponytail-instructions": {
+      "mcp_servers": [],
+      "plugins": {
+        "available": [],
+        "installed": []
+      }
+    }
+  },
+  "model": "gpt-5.6-sol",
+  "native_agents_enabled": false,
+  "ponytail_commit": "16f29800fd2681bdf24f3eb4ccffe38be3baec6b",
+  "ponytail_hook_context_sha256": "da4fb09cff2f6726691ce6591cebc38c95597d79da132e49c6fa2665c4e8a3ff",
+  "ponytail_hook_equals_exact_instructions": true,
+  "ponytail_installed_commit": "16f29800fd2681bdf24f3eb4ccffe38be3baec6b",
+  "ponytail_installed_tree_sha256": "31b506a8d5b2fc9a4400051708adfe7ca4274870221d48ab1e8c112cbb15049e",
+  "ponytail_instructions_sha256": "da4fb09cff2f6726691ce6591cebc38c95597d79da132e49c6fa2665c4e8a3ff",
+  "ponytail_version": "4.8.4",
+  "prepared_at": 1785604350,
+  "raw_transcripts": "/tmp/ptcodex/raw",
+  "reasoning_effort": "medium",
+  "replicates": 3,
+  "schedule_seed": 20260729,
+  "schema": 1,
+  "tasks": 50,
+  "usd_cost_available": false
+}

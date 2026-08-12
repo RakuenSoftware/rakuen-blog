@@ -1,0 +1,99 @@
+diff --git a/app/models.py b/app/models.py
+index b33f21b..7f20eae 100644
+--- a/app/models.py
++++ b/app/models.py
+@@ -1,13 +1,48 @@
+-"""Models. `name` is a single field - task 3 splits it."""
++"""Models."""
+ class User:
+-    def __init__(self, uid, name, email):
+-        self.uid, self.name, self.email = uid, name, email
++    def __init__(self, uid, first_name=None, last_name=None, email=None, *, name=None):
++        if name is not None:
++            if first_name is not None or last_name is not None:
++                raise TypeError("use name or first_name/last_name, not both")
++            first_name = name
++        elif email is None:  # Legacy User(uid, name, email) call.
++            email, last_name = last_name, None
++
++        self.uid, self.email = uid, email
++        if last_name is None:
++            self.name = first_name or ""
++        else:
++            self.first_name, self.last_name = first_name or "", last_name
++
++    @property
++    def name(self):
++        return " ".join(part for part in (self.first_name, self.last_name) if part)
++
++    @name.setter
++    def name(self, value):
++        parts = value.split(maxsplit=1)
++        self.first_name = parts[0] if parts else ""
++        self.last_name = parts[1] if len(parts) == 2 else ""
++
+     def to_dict(self):
+-        return {"id": self.uid, "name": self.name, "email": self.email}
++        return {
++            "id": self.uid,
++            "first_name": self.first_name,
++            "last_name": self.last_name,
++            "name": self.name,
++            "email": self.email,
++        }
+ 
+     @classmethod
+     def from_dict(cls, row):
+-        return cls(row["id"], row["name"], row["email"])
++        if row.get("first_name") is not None or row.get("last_name") is not None:
++            return cls(
++                row["id"],
++                row.get("first_name") or "",
++                row.get("last_name") or "",
++                row["email"],
++            )
++        return cls(row["id"], name=row["name"], email=row["email"])
+ 
+ class Item:
+     def __init__(self, iid, owner, title):
+diff --git a/tests/test_models.py b/tests/test_models.py
+new file mode 100644
+index 0000000..a6726c6
+--- /dev/null
++++ b/tests/test_models.py
+@@ -0,0 +1,35 @@
++import unittest
++
++from app.models import User
++
++
++class UserMigrationTest(unittest.TestCase):
++    def test_old_and_new_rows_share_compatible_serialization(self):
++        old = User.from_dict({"id": "u1", "name": "Ada Lovelace", "email": "a@example.com"})
++        new = User.from_dict(
++            {
++                "id": "u1",
++                "first_name": "Ada",
++                "last_name": "Lovelace",
++                "email": "a@example.com",
++            }
++        )
++
++        self.assertEqual(old.to_dict(), new.to_dict())
++        self.assertEqual(old.to_dict()["name"], "Ada Lovelace")
++        self.assertEqual((old.first_name, old.last_name), ("Ada", "Lovelace"))
++
++        old_with_new_columns = User.from_dict(
++            {
++                "id": "u1",
++                "name": "Ada Lovelace",
++                "first_name": None,
++                "last_name": None,
++                "email": "a@example.com",
++            }
++        )
++        self.assertEqual(old_with_new_columns.to_dict(), new.to_dict())
++
++
++if __name__ == "__main__":
++    unittest.main()

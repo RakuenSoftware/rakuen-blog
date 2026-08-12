@@ -1,0 +1,41 @@
+diff --git a/app/cache.py b/app/cache.py
+index 97da6e5..d9425b2 100644
+--- a/app/cache.py
++++ b/app/cache.py
+@@ -18,7 +18,7 @@ def cached_profile(uid, loader):
+ 
+ 
+ def invalidate_profile(uid):
+-    pass
++    _profile_cache.pop(uid, None)
+ 
+ 
+ def ttl_get(key, loader, ttl=60, now=time.monotonic):
+diff --git a/app/profile.py b/app/profile.py
+index 504261c..5f0992d 100644
+--- a/app/profile.py
++++ b/app/profile.py
+@@ -1,12 +1,21 @@
+-"""Profile service - hits the DB on every call, no caching."""
++"""Profile service with an in-process read cache."""
++from app.cache import cached_profile, invalidate_profile
+ from app.db import get_db
+-def get_profile(uid):
++
++
++def _load_profile(uid):
+     db = get_db()
+     db.q(f"SELECT * FROM users WHERE id={uid}")
+     return db.users.get(uid)
+ 
++
++def get_profile(uid):
++    return cached_profile(uid, _load_profile)
++
++
+ def update_profile(uid, data):
+     db = get_db()
+     db.q(f"UPDATE users SET ... WHERE id={uid}")
+     db.users[uid] = {**db.users.get(uid, {}), **data}
++    invalidate_profile(uid)
+     return db.users[uid]

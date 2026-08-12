@@ -1,0 +1,48 @@
+diff --git a/app/ingest.py b/app/ingest.py
+index 36b8a86..84fd608 100644
+--- a/app/ingest.py
++++ b/app/ingest.py
+@@ -1,12 +1,16 @@
+-"""CSV ingest. Naive splitting - breaks on quoted fields."""
++"""CSV ingest."""
++import csv
++from io import StringIO
++
++from app.money import parse_amount
++
++
+ def parse_rows(text):
+-    rows = []
+-    for line in text.strip().splitlines():
+-        rows.append(line.split(","))
+-    return rows
++    return [row for row in csv.reader(StringIO(text, newline="")) if row]
++
+ 
+ def sum_column(text, index):
+     total = 0.0
+     for row in parse_rows(text)[1:]:
+-        total += float(row[index])
++        total += parse_amount(row[index])
+     return total
+diff --git a/tests/test_ingest.py b/tests/test_ingest.py
+new file mode 100644
+index 0000000..5482f4a
+--- /dev/null
++++ b/tests/test_ingest.py
+@@ -0,0 +1,15 @@
++import unittest
++
++from app.ingest import parse_rows, sum_column
++
++
++class IngestTest(unittest.TestCase):
++    def test_real_world_quoted_fields(self):
++        text = 'description,amount\n"Consulting, phase 1","1,234.50"\n"Two\ndays",5.50\n\n'
++
++        self.assertEqual(parse_rows(text)[2], ["Two\ndays", "5.50"])
++        self.assertEqual(sum_column(text, 1), 1240.0)
++
++
++if __name__ == "__main__":
++    unittest.main()

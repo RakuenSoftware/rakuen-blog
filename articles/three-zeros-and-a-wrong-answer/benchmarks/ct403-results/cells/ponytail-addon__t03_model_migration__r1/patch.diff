@@ -1,0 +1,76 @@
+diff --git a/app/models.py b/app/models.py
+index b33f21b..77623b8 100644
+--- a/app/models.py
++++ b/app/models.py
+@@ -1,13 +1,30 @@
+-"""Models. `name` is a single field - task 3 splits it."""
++"""Models."""
+ class User:
+-    def __init__(self, uid, name, email):
+-        self.uid, self.name, self.email = uid, name, email
++    def __init__(self, uid, first_name, last_name=None, email=None):
++        if email is None:  # Legacy User(uid, name, email) callers.
++            first_name, _, inferred_last_name = first_name.partition(" ")
++            email, last_name = last_name, inferred_last_name
++        self.uid, self.first_name, self.last_name, self.email = uid, first_name, last_name, email
++
++    @property
++    def name(self):
++        return " ".join(filter(None, (self.first_name, self.last_name)))
++
+     def to_dict(self):
+-        return {"id": self.uid, "name": self.name, "email": self.email}
++        return {
++            "id": self.uid,
++            "first_name": self.first_name,
++            "last_name": self.last_name,
++            "name": self.name,
++            "email": self.email,
++        }
+ 
+     @classmethod
+     def from_dict(cls, row):
+-        return cls(row["id"], row["name"], row["email"])
++        if "first_name" in row:
++            return cls(row["id"], row["first_name"], row.get("last_name", ""), row["email"])
++        first_name, _, last_name = row["name"].partition(" ")
++        return cls(row["id"], first_name, last_name, row["email"])
+ 
+ class Item:
+     def __init__(self, iid, owner, title):
+diff --git a/tests/test_models.py b/tests/test_models.py
+new file mode 100644
+index 0000000..5e28c17
+--- /dev/null
++++ b/tests/test_models.py
+@@ -0,0 +1,30 @@
++import unittest
++
++from app.models import User
++
++
++class UserMigrationTest(unittest.TestCase):
++    def test_reads_legacy_rows_and_writes_both_name_shapes(self):
++        user = User.from_dict({"id": "u1", "name": "Ada Lovelace", "email": "ada@example.com"})
++
++        self.assertEqual((user.first_name, user.last_name), ("Ada", "Lovelace"))
++        self.assertEqual(
++            user.to_dict(),
++            {
++                "id": "u1",
++                "first_name": "Ada",
++                "last_name": "Lovelace",
++                "name": "Ada Lovelace",
++                "email": "ada@example.com",
++            },
++        )
++        self.assertEqual(User.from_dict(user.to_dict()).name, "Ada Lovelace")
++
++    def test_legacy_constructor_still_works(self):
++        user = User("u1", "Ada Lovelace", "ada@example.com")
++
++        self.assertEqual((user.first_name, user.last_name, user.email), ("Ada", "Lovelace", "ada@example.com"))
++
++
++if __name__ == "__main__":
++    unittest.main()

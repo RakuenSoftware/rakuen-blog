@@ -1,0 +1,14 @@
+{
+  "exit_code": 0,
+  "passed": true,
+  "result": {
+    "t09_root_cause": {
+      "err": 0,
+      "fail": 0,
+      "ok": true,
+      "pass": 6,
+      "run": 6
+    }
+  },
+  "stderr": ""
+}
