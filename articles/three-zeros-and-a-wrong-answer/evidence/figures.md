@@ -9,6 +9,40 @@ benchmark measurement, and that part does.
 kept as distinct classes of evidence rather than collapsed into one. They are
 separated here.
 
+## The first reading is verifiable from the committed cells
+
+Added 2026-08-12. The first reading was filed as a first-person account needing
+no artifact. It turns out the artifact was committed here all along, in
+`benchmarks/ct403-results/cells/*/aimee-readiness.json`.
+
+Across every cell carrying one:
+
+| check | result |
+|---|---|
+| cells with a readiness artifact | **27**, matching the article's "all 27 cells" |
+| `build.files_indexed` | **0 in all 27** |
+| `build.queued` | **true in all 27**, which is why the count is zero |
+| `callers.result_status` | ok in all 27 |
+| `blast_radius.result_status` | ok in all 27 |
+| semantic hits | 2 in every cell, none at zero |
+| scan line | every cell reports `1 project(s), 34 file(s) re-indexed` |
+
+So the project was indexed, 34 files of it, and the probes that matter returned
+real results: named callers with file paths and line numbers, and dependents for
+the blast radius. `files_indexed` reads zero because the build is queued and
+asynchronous, and the field reports what that call saw rather than what the index
+holds.
+
+The article's account of this reading is exact, including the cell count. It can
+be cited to committed artifacts rather than to memory, and `benchmarks/` is where
+the citation lives.
+
+One correction to the article's wording. It calls the real gate a semantic
+round-trip, and `semantic.result_status` is in fact null in all 27 cells. The
+gate that passed is the hits, two per cell, alongside `callers` and
+`blast_radius` returning ok. The claim holds and the field named for it does not
+carry a status.
+
 ## First-person account: the three corrected readings
 
 The article's spine is a record of the author's own reasoning: what was read,
@@ -18,6 +52,12 @@ concluded this and I was wrong" more or less true, and the article is the record
 The corrected values are a different matter and are listed below with their
 sources. The corrections themselves are kept in the article rather than
 summarised, because the sequence is the subject.
+
+That reasoning was too generous to the first reading. What the author read, the
+zero itself, is an artifact rather than a recollection, and it was sitting in
+`benchmarks/` committed here. It is cited in the section above. The same is
+probably true of the second reading, whose `cached_input_tokens: 0` should be
+recoverable from the 22:00 cells once those are committed.
 
 ## First-party instrumentation: the cache rates
 
