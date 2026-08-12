@@ -19,8 +19,9 @@ you do now. Symbol lookup, blast radius, hybrid search, span reads: nineteen
 tools as of 2026-08-12, each described and typed. Then we benchmarked it against
 the same agent with no layer at all, same task, same machine, same hour.
 
-Ours cost 2.2 to 3.0 times more and passed the same hidden tests in every cell.
-Not dearer because it did more work. Dearer because of how the work was shaped.
+Ours cost 2.2 to 3.0 times more and produced a patch that passed the same hidden
+tests in every cell. Not dearer because it did more work. Dearer because of how
+the work was shaped.
 
 ## Nothing we tested ever batched a tool call
 
@@ -48,12 +49,13 @@ payload is identical.
 
 The protocol is not what separates them. A client can emit several tool calls in
 one assistant message, and the schema permits it. In our transcripts no model did
-it once, for any tool, in any cell.
+it once, for any tool, in any cell. The shell form arrives batched because
+writing one command line is how a shell is used, and the tool form arrives one
+call per turn because that is what the models produced.
 
-The shell form arrives batched because writing one command line is how a shell is
-used. The tool form arrives one call per turn because that is what the models
-produced. The gap is real and observed, and its cause is the model rather than
-the specification.
+So the gap is real and observed, and its cause is the model rather than the
+specification. That distinction matters for what you can do about it, and it is
+the correction below.
 
 In a stateless protocol the unit of cost is not the call. It is the turn, and
 every turn drags the whole conversation behind it.
@@ -71,18 +73,23 @@ One task, three replicates per run, every run on one image inside the same hour 
 The 4.3 times gap in input tokens splits in two. Round trips account for 3.3
 times, at 29.0 calls against 8.7. Per-call weight accounts for 1.27 times, at
 13.4k tokens against 10.5k, which is nineteen tool schemas riding every request.
+About 178k of the 389k input tokens in one cell are the conversation sent again,
+a figure derived from the call and token counts and not measured on its own.
 
 That split rests on counting a tool call as a turn. A tool result forces a fresh
-model request, so it bills as one. Count assistant messages instead and the same
-total splits the other way, which is what a second campaign on this task does.
+model request, so it bills as one, which is why calls are the denominator here.
+Count assistant messages instead and the same total splits the other way, which
+is what a second campaign on this task does.
 
 The total is not in dispute and the division is. Under the billing unit, round
 trips dominate, and every one of ours came from a tool call the model chose to
-make alone.
+make alone. Per-call weight is then the smaller term, and it is the one thing
+here the protocol does charge for on its own.
 
-The credits column is the soft one. It came off a host we later found thrashing
-its page cache, which moves cost and timing and leaves token and call counts
-alone. Treat the credits as indicative.
+The credits column is the soft one. It was measured on a host that we later found
+thrashing its page cache, which moves timings and cost and does not move token or
+call counts. The token and call figures carry the argument; treat the credits as
+indicative.
 
 ## We told it to do this
 
@@ -104,39 +111,22 @@ The surface also argues for itself. A tool schema is structural: it sits in the
 request every turn, typed and described and there to be called. A sentence
 recommending a shell command is advisory prose competing against it.
 
-We tried five times to move the behaviour with wording. Four measured nothing,
-because the wording never reached the model: the run takes no persona, the memory
-tool carrying it is optional and was never called, and the client was 380 commits
-stale. Four rounds tuning prose that was never delivered.
-
-The fifth put it in the `initialize` handshake, which a client cannot skip, and
-the behaviour changed at once. Command-line invocations went from zero across
-thirteen cells to seven across three, chained as asked.
-
-**The bill did not move: 15.52 credits against 15.16.** Tool calls went up rather
-than down, 6, 10 and 10 against 6, 6 and 6. The agent added the cheap path on top
-of the expensive one instead of swapping them, so round trips never fell.
-
-At three replicates with overlapping ranges, no cost difference is claimable
-either way. What is claimable is worse: a change that visibly moved the model, in
-the direction we asked, did not reach the bill.
-
-The tools are still in `tools/list`, so the cheap surface competes with a schema
-present on every turn. Removing them for shell-capable clients is the lever we
-have not pulled.
+We tried four times to move the behaviour with wording. It moved on the fourth,
+and only because we stopped asking the model to do the expensive thing.
 
 ## MCP describes a capability well
 
 This is not a case against the protocol. Before it, every integration was
 bespoke. As a way to describe a capability it works, and the schemas earn their
-place with a model that would otherwise guess at the arguments. It is also the
-only option for clients with no shell, which is a real constituency it serves
-well.
+place with a model that would otherwise guess at the arguments.
+
+It is also the only option for clients with no shell. That is a real
+constituency and MCP serves it well.
 
 The mistake is treating a description format as an execution surface for agents
 that have something better. Where an agent has a shell and the capability already
 has a command form, MCP is a more expensive way to run it, and it stays more
-expensive until a model starts batching the calls it is already free to batch.
+expensive until the protocol can put two calls in one turn.
 
 ## Make every capability a command first
 
@@ -144,9 +134,10 @@ expensive until a model starts batching the calls it is already free to batch.
 round trip is not cheap, because in a stateless protocol it costs the whole
 conversation again.
 
-**Never mistake batching for composition.** Plural arguments help for repeats of
-one operation. Real work mixes a search, two reads and a `git status`, and in our
-transcripts only a shell ever got those into one call.
+**Never mistake batching for composition.** We added plural arguments for spans,
+queries and symbols, and they help for repeats of one operation. Real work mixes
+a search, two reads and a `git status`, and in our transcripts only a shell ever
+got those into one call.
 
 **Never put guidance anywhere but the handshake.** It is guaranteed and it is
 first. We hung ours on an optional tool call instead, the agent never made that
@@ -162,10 +153,17 @@ put in front of it.
 ## Correction, 2026-08-12
 
 This piece first said the protocol has no `&&` and that a tool call cannot
-compose. That is wrong, and nothing in MCP forbids batching. What we observed is
-that no model we tested ever did it. The cost and the recommendation are
-unchanged; the cause is not.
+compose. That is wrong. A client can emit several tool calls in one assistant
+message and the schema permits it, so nothing in MCP forbids batching.
 
-It also said the behaviour moved on the fourth wording attempt because we stopped
-asking for the expensive thing. It took five, four of them measuring a path the
-wording never reached, and the fifth moved the model without moving the bill.
+What we observed is that no model we tested ever did, for any tool, in any cell.
+The measured cost is unchanged and the recommendation is unchanged. The cause is
+not.
+
+It matters because the two readings point somewhere different. A protocol limit
+is a thing you route around. A model behaviour is a thing you might prompt for,
+and the next useful experiment is to ask directly for parallel tool calls and see
+whether the count moves. We have not run it.
+
+The original wording is left above in the headings and the argument so the change
+is legible rather than tidied away.

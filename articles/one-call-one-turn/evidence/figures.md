@@ -1,51 +1,5 @@
 # Figure provenance and reporting record
 
-## The fifth wording attempt, 2026-08-12 20:15
-
-CT403, image `ae78c5c0` with thin client `vtesting-273a543`, `t01_cache`, three
-replicates, box healthy at 8.4 GB of a 14.68 GB cap and load 0.68. Not the
-thrashing host the earlier credits came off.
-
-| | prior run, MCP guidance only | this run, handshake guidance |
-|---|---|---|
-| CLI invocations | 0 across 13 cells | **7 across 3 cells**, 2/3/2 |
-| credits | 14.13, 15.04, 16.31, mean 15.16 | 13.52, 15.62, 17.43, mean **15.52** |
-| MCP tool calls | 6, 6, 6 | 6, 10, 10 |
-| shell calls | 16 to 22 | 16 to 22 |
-
-The agent chained exactly as asked, for example
-`bash -lc 'pwd && sed TICKET.txt && sed README.md && aimee index investigate "..."'`,
-one round trip covering two file reads and an index query.
-
-**No cost difference is claimable in either direction.** Three replicates, ranges
-overlap, and the mean moved the wrong way by less than the spread. What the run
-shows is behavioural: the guidance landed and the agent added the cheap path
-alongside the expensive one instead of substituting, so the round-trip count did
-not fall.
-
-### Why the first four attempts measured nothing
-
-Each ran against a path the wording never reached. The run under test takes no
-persona injection. `memory_recall(session_start)`, which carried the guidance,
-is optional and was never called. The thin client on the box was 380 commits
-stale, so it had neither the new handshake nor the new commands.
-
-Wording only became testable once delivery moved to the MCP `initialize`
-handshake, which a client cannot skip. Four rounds were spent tuning prose whose
-delivery was the actual variable, which is the same fault this series keeps
-finding in another costume: a null result from a path that was never exercised.
-
-### What this changes in the article
-
-The piece previously said the behaviour moved on the fourth attempt because we
-stopped asking the model to do the expensive thing. Both halves were wrong. It
-took five, and it moved when delivery moved.
-
-The next lever is structural rather than advisory. The MCP tools are still in
-`tools/list`, so the cheaper surface competes with a schema present on every
-turn. Trimming that surface for shell-capable clients is what would force
-substitution, and it has not been run.
-
 ## Correction, 2026-08-12: MCP does not forbid batching
 
 The published piece said the protocol has no `&&` and that a tool call cannot
