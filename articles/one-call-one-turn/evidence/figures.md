@@ -1,5 +1,30 @@
 # Figure provenance and reporting record
 
+## Correction, 2026-08-12: MCP does not forbid batching
+
+The published piece said the protocol has no `&&` and that a tool call cannot
+compose. That is wrong. A client can emit several tool calls in one assistant
+message and the schema permits it.
+
+The observation that stands is narrower and is the author's, from reading the
+transcripts: no model tested emitted more than one tool call in a message, for
+any tool, in any cell.
+
+**This is not checkable from the committed artifacts.** `summary.json` records
+`item_types` and `tool_calls` as totals, with no ordering and no grouping by
+assistant message, so a cell showing six `mcp_tool_call` items against five
+`agent_message` items is consistent with both batched and unbatched calls. The
+raw event streams would settle it and are not committed; only their `sha256` is,
+in each cell's `raw_stream_sha256`.
+
+Committing those streams, or a per-message tool-call count derived from them, is
+what would move this from an observation to a figure. Until then it is reported
+as observed and marked as single-sourced to the transcripts.
+
+The measured cost does not change. The recommendation does not change. What
+changes is the cause, and therefore the next experiment: ask the model directly
+for parallel tool calls and see whether the count moves. Not yet run.
+
 The argument here is about protocol shape and the evidence for it is one
 benchmark table. The cells behind that table are now committed, and they do not
 support the table's central split.
