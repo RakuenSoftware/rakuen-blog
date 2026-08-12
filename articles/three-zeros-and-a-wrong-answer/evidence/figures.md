@@ -117,12 +117,16 @@ This also confirms the article's own mechanism. `baseline` and `aimee` cells
 record real cache rates because those runs report from OpenAI directly. Only the
 gateway run, the one where our code sits in the reporting path, reads zero.
 
-## Candidate material: a fourth zero, and a better closing rule
+## Candidate material: a fourth zero, and a fifth
 
 Found by the author on CT403 on 2026-08-11, after the draft was written. Not
 reproduced on this machine and recorded as reported. It is filed here rather than
 folded into the prose because it changes the article's ending, which is an
 editorial decision.
+
+Read the withdrawal at the end of this section before using any of it. The method
+this section originally recommended turned out to be a fifth instance of the
+article's subject rather than an answer to it.
 
 The economizer had four independent gates that each silently made it a no-op:
 
@@ -148,14 +152,46 @@ economizer caller fails open by design, so `econ_module_reduce` returning non-ze
 means the caller ships the original prompt. A fully broken economizer therefore
 looks exactly like a working one on every signal except the token bill.
 
-**And it supplies a method the article does not have.** The finding was settled by
-sending an identical payload with the module attached and detached and comparing
-`prompt_tokens`: 38,826 against 38,826, byte for byte. A constructed differential
-is unarguable where an absent log is not.
+### The proof method filed here on 2026-08-11 is withdrawn
 
-That is a stronger closing rule than the one in the draft. Rather than asking when
-a metric started being recorded, build a case where the number must move, and see
-whether it does.
+An earlier version of this section recommended a method and called it a stronger
+closing rule than the article's: send an identical payload with the module
+attached and detached, compare `prompt_tokens`, and read 38,826 against 38,826 as
+proof the module did nothing. A constructed differential, unarguable where an
+absent log is not.
+
+The author withdrew it on 2026-08-12. The request used, a plain completion over
+the unix socket, **reaches neither economizer seam**, so the identical numbers say
+nothing about the economizer at all.
+
+- the delegate seam is in `agent_execute_with_tools_internal`, the tool-using
+  loop. A plain completion is served by `agent_execute`, which contains no
+  `econ_module_reduce` call
+- the gateway seam is in `agent_execute_messages`, also not that path, and it
+  additionally requires an identity. An unauthenticated request is a deliberate
+  pristine passthrough and can never mutate
+- both files log under the component name `agent_runtime`, so the log line does
+  not tell you which one ran
+
+**The four gates are unaffected and still real.** Driving the Go reducer directly
+on that same payload folds it 79%, from 26,264 to 5,486 tokens across 89 of 98
+messages. The reducer works, which is what makes the C-side gates a genuine
+finding.
+
+**The method was itself the article's subject.** A null result from a path that
+was never exercised is indistinguishable from a null result from a broken
+feature. The pair of identical token counts was a zero that measured nothing, and
+it was offered here as the cure for exactly that disease, four times over.
+
+The discriminator that does work is `gateway_mutate_attempted` in
+`GET /v1/economizer/stats`. It increments **before** the module call, so zero
+means the seam was never entered, and a positive count with no reduction means
+the module call failed. It separates the two cases the token comparison collapses.
+
+So the closing rule the article should reach for is not "build a case where the
+number must move". It is narrower and harder: **prove the code under test is on
+the request path before trusting any A/B against it**, and prefer an instrument
+that distinguishes "never ran" from "ran and did nothing".
 
 ## Retracted by a later measurement, 2026-08-11 22:00
 
