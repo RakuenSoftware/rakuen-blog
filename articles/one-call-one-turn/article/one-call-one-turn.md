@@ -9,14 +9,15 @@ excerpt: "We exposed a code-intelligence layer over MCP and it cost about three 
 *Rakuen builds aimee, the layer measured here and the one that comes off worst.
 Figure sources and what has not been reproduced are in the [figure provenance map](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/one-call-one-turn/evidence/figures.md).*
 
-MCP is a fine way to describe a capability and a bad way to spend one. We
-measured our own agent paying about three times what plain Codex paid for the
-same patch, and most of the difference was the protocol rather than the work.
+The Model Context Protocol (MCP) is a fine way to describe a capability and a bad
+way to spend one. We measured our own agent paying about three times what plain
+Codex paid for the same patch, and most of the difference was the protocol rather
+than the work.
 
 We built a code-intelligence layer and exposed it over MCP, because that is what
 you do now. Symbol lookup, blast radius, hybrid search, span reads: nineteen
-tools, described, discoverable, typed. Then we benchmarked it against the same
-agent with no layer at all, same task, same machine, same hour.
+typed and discoverable tools as of 2026-08-12. Then we benchmarked it against the
+same agent with no layer at all, same task, same machine, same hour.
 
 Ours cost 2.2 to 3.0 times more and produced a patch that passed the same hidden
 tests in every cell. Not slower because it did more work. Dearer because of the
@@ -52,23 +53,29 @@ every turn drags the whole conversation behind it.
 
 ## The unit of cost is the turn
 
-One task, three replicates per run, every run on one image inside the same hour.
-Hidden-test results were identical in every cell.
+One task, three replicates per run, every run on one image inside the same hour on
+2026-08-11. Hidden-test results were identical in every cell.
 
 | run | tool and shell calls | input tokens | credits |
 |---|---:|---:|---:|
 | plain Codex | 8.7 | 91k | 5.11 |
 | ours, over MCP | 29.0 | 389k | 11.3 to 15.2 |
 
-The 4.3 times gap in input tokens splits cleanly. Round trips account for 3.3
+The 4.3 times gap in input tokens splits in two. Round trips account for 3.3
 times, at 29.0 calls against 8.7. Per-call weight accounts for 1.27 times, at
 13.4k tokens against 10.5k, which is nineteen tool schemas riding every request.
-Of the 389k input tokens in one cell, about 178k are the conversation being sent
-again.
+About 178k of the 389k input tokens in one cell are the conversation sent again,
+derived from the call and token counts rather than measured directly.
 
-Round trips dominate, and round trips are what an unchainable protocol forces.
-The per-call weight is the smaller term, and it is still a tax the protocol
-charges and a command line does not.
+That split rests on counting a tool call as a turn. A tool result forces a fresh
+model request, so it bills as one, which is why calls are the denominator here.
+Count assistant messages instead and the same total splits the other way, which
+is what a second campaign on this task does.
+
+The total is not in dispute and the division is. Under the billing unit, round
+trips dominate and they are what an unchainable protocol forces. Per-call weight
+is then the smaller term, and it is still a tax the protocol charges and a
+command line does not.
 
 The credits column is the soft one. It was measured on a host that we later found
 thrashing its page cache, which moves timings and cost and does not move token or
