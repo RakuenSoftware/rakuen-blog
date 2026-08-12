@@ -54,12 +54,41 @@ that catches that class of bug. A number without it is not evidence.
 | [the-parallelism-limit-was-never-vram](articles/the-parallelism-limit-was-never-vram/) | ready | figure map, shared results tree |
 | [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | ready | figure map, shared results tree |
 | [synthesis-model-selection](articles/synthesis-model-selection/) | ready | figure map; two paired GPU runs, CPU selection open |
+| [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | draft | 81 cells committed and checkable; three figures do not reproduce |
+| [one-call-one-turn](articles/one-call-one-turn/) | draft | figure map; the cost table does not reproduce against the committed campaign |
+| [the-model-decides-when-to-think](articles/the-model-decides-when-to-think/) | investigation | four rerunnable scripts; no article written yet |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
+`draft` means the article exists and its provenance gaps are written down, but it
+is not a publication candidate and the voice gate does not check it.
+`investigation` means the work exists and the prose deliberately does not, because
+the finding is not stable enough to write around.
 
 ## Publishing
 
-The live site (`rakuensoftware-web`) still builds from its own
-`src/content/blog/`. The published posts here are archived copies; the site has
-not been repointed. Changing that is a separate decision — see
-[MIGRATION.md](MIGRATION.md) for what was moved and what was left alone.
+The live site (`rakuensoftware-web`) builds from its own `src/content/blog/`.
+The site has not been repointed at this repository and that remains a separate
+decision — see [MIGRATION.md](MIGRATION.md) for what was moved and what was left
+alone.
+
+`tools/publish.py` is the bridge across that gap:
+
+```sh
+python3 tools/publish.py                     # report what is ready, change nothing
+python3 tools/publish.py --site ../rakuensoftware-web
+```
+
+It exports an article only if the article's README declares it
+`Publication-ready` and `Not yet published`, `tools/voice_gate.py` passes it,
+`evidence/figures.md` exists, and its frontmatter is complete. Every blocker is
+reported in one run rather than one per invocation.
+
+**It never commits, pushes, merges or deploys.** Writing into a site checkout
+leaves modified files there for a human to review, branch and merge. Ingestion is
+a manual merge on purpose: passing every gate in this repository means no person
+has read the piece yet.
+
+The site filename comes from the article's `slug:` frontmatter field when it has
+one, and from the article's directory name otherwise. That is how an article
+whose title changed keeps its published URL. Changing a live URL is a decision,
+so the script never infers one.
