@@ -75,8 +75,12 @@ alone.
 
 ```sh
 python3 tools/publish.py                     # report what is ready, change nothing
-python3 tools/publish.py --site ../rakuensoftware-web
+python3 tools/publish.py --site ../rakuensoftware-web one-call-one-turn
 ```
+
+Name the articles to export. Writing with no slug named would export every ready
+article at once, which is rarely what shipping one piece means, so that form
+refuses and asks for `--all` if it is really meant.
 
 It exports an article only if the article's README declares it
 `Publication-ready` and `Not yet published`, `tools/voice_gate.py` passes it,
