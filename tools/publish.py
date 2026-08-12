@@ -8,6 +8,11 @@ and it deliberately stops short of publishing.
     python3 tools/publish.py                  # report what is ready, change nothing
     python3 tools/publish.py --out DIR        # write the exported files to DIR
     python3 tools/publish.py --site PATH      # write into a site checkout
+    python3 tools/publish.py --site PATH SLUG # write one named article only
+
+Naming one or more slugs exports only those. Writing with no slug named exports
+every ready article at once, which is rarely what someone shipping a single piece
+means, so that form asks for confirmation before it writes.
 
 Nothing here commits, pushes, merges or deploys. Writing into a site checkout
 leaves modified files in that working tree for a human to review, branch and
@@ -113,6 +118,12 @@ def main() -> int:
     parser.add_argument(
         "--site", type=Path, help="site checkout; writes to its src/content/blog"
     )
+    parser.add_argument(
+        "slugs", nargs="*", help="export only these articles; default is all ready ones"
+    )
+    parser.add_argument(
+        "--all", action="store_true", help="confirm exporting every ready article"
+    )
     args = parser.parse_args()
 
     destination = args.out
@@ -124,6 +135,21 @@ def main() -> int:
 
     candidates = sorted(d for d in ARTICLES.iterdir() if (d / "README.md").is_file())
     declared = [d for d in candidates if declared_ready(d / "README.md")]
+
+    if args.slugs:
+        known = {d.name for d in candidates}
+        unknown = [s for s in args.slugs if s not in known]
+        if unknown:
+            print(f"no such article: {', '.join(unknown)}", file=sys.stderr)
+            return 2
+        not_ready = [s for s in args.slugs if s not in {d.name for d in declared}]
+        if not_ready:
+            print(
+                f"not declared publication-ready: {', '.join(not_ready)}",
+                file=sys.stderr,
+            )
+            return 2
+        declared = [d for d in declared if d.name in set(args.slugs)]
 
     if not declared:
         print("no article declares itself publication-ready and unpublished.")
@@ -145,6 +171,16 @@ def main() -> int:
         print(f"\n{len(exportable)} ready, {len(declared) - len(exportable)} blocked.")
         print("Nothing written. Pass --out DIR or --site PATH to export.")
         return 0
+
+    if not args.slugs and len(exportable) > 1 and not args.all:
+        print(
+            f"\nRefusing to write {len(exportable)} articles at once without being asked.\n"
+            "Shipping one piece is the common case and exporting every ready article\n"
+            "is rarely what that means. Name the slugs, or pass --all deliberately:\n"
+            f"  python3 tools/publish.py --site PATH {exportable[0][1][:-3]}",
+            file=sys.stderr,
+        )
+        return 2
 
     destination.mkdir(parents=True, exist_ok=True)
     for source, name in exportable:
