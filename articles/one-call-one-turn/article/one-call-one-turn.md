@@ -3,7 +3,7 @@ title: "One Call, One Turn"
 date: 2026-08-12
 author: Rakuen Software
 tags: [mcp, agent-tooling, protocols, benchmarks, aimee]
-excerpt: "We exposed a code-intelligence layer over MCP and it cost about three times plain Codex for the same patch. Most of the gap was the protocol rather than the work: a shell command composes and a tool call does not."
+excerpt: "We exposed a code-intelligence layer over MCP and it cost about three times plain Codex for the same patch. Most of the gap was the protocol, not the work. A shell command composes and a tool call does not."
 ---
 
 *Rakuen builds aimee, the layer measured here and the one that comes off worst.
@@ -11,17 +11,17 @@ Figure sources and what has not been reproduced are in the [figure provenance ma
 
 The Model Context Protocol (MCP) is a fine way to describe a capability and a bad
 way to spend one. We measured our own agent paying about three times what plain
-Codex paid for the same patch, and most of the difference was the protocol rather
-than the work.
+Codex paid for the same patch, and most of the difference was the protocol, not
+the work.
 
 We built a code-intelligence layer and exposed it over MCP, because that is what
 you do now. Symbol lookup, blast radius, hybrid search, span reads: nineteen
-typed and discoverable tools as of 2026-08-12. Then we benchmarked it against the
-same agent with no layer at all, same task, same machine, same hour.
+tools as of 2026-08-12, each described and typed. Then we benchmarked it against
+the same agent with no layer at all, same task, same machine, same hour.
 
 Ours cost 2.2 to 3.0 times more and produced a patch that passed the same hidden
-tests in every cell. Not slower because it did more work. Dearer because of the
-shape of the work.
+tests in every cell. Not dearer because it did more work. Dearer because of how
+the work was shaped.
 
 ## The protocol has no &&
 
@@ -65,7 +65,7 @@ The 4.3 times gap in input tokens splits in two. Round trips account for 3.3
 times, at 29.0 calls against 8.7. Per-call weight accounts for 1.27 times, at
 13.4k tokens against 10.5k, which is nineteen tool schemas riding every request.
 About 178k of the 389k input tokens in one cell are the conversation sent again,
-derived from the call and token counts rather than measured directly.
+a figure derived from the call and token counts and not measured on its own.
 
 That split rests on counting a tool call as a turn. A tool result forces a fresh
 model request, so it bills as one, which is why calls are the denominator here.
@@ -87,8 +87,8 @@ indicative.
 Across thirteen benchmark cells our agent invoked our own command-line tool zero
 times. The binary was on `PATH` throughout.
 
-That is instruction-following rather than defiance. The MCP initialize handshake,
-the one message every client reads before any work, told it:
+Not defiance. Instruction-following. The MCP initialize handshake, the one
+message every client reads before any work, told it:
 
 > find_symbol, preview_blast_radius, search_docs and search_memory are listed:
 > use them as your first move on repository questions rather than after a shell
@@ -99,29 +99,30 @@ which surface, and it arrives with more force than anything else we can say,
 because it is guaranteed and it is first.
 
 The surface also argues for itself. A tool schema is structural: it sits in the
-request every turn, typed and described and evidently callable. A sentence
-recommending a shell command is prose competing against that. We tried four times
-to move the behaviour with wording, and it moved on the fourth only when we
-stopped asking the model to do the expensive thing.
+request every turn, typed and described and there to be called. A sentence
+recommending a shell command is advisory prose competing against it.
+
+We tried four times to move the behaviour with wording. It moved on the fourth,
+and only because we stopped asking the model to do the expensive thing.
 
 ## MCP describes a capability well
 
 This is not a case against the protocol. Before it, every integration was
-bespoke. As a way to describe a capability, with typed arguments, discoverable
-and host-agnostic, it works, and the schemas are genuinely useful to a model that
-would otherwise guess.
+bespoke. As a way to describe a capability it works, and the schemas earn their
+place with a model that would otherwise guess at the arguments.
 
 It is also the only option for clients with no shell. That is a real
 constituency and MCP serves it well.
 
 The mistake is treating a description format as an execution surface for agents
-that have something better. For anything with a terminal, MCP is a more expensive
-way to run a command that already exists.
+that have something better. Where an agent has a shell and the capability already
+has a command form, MCP is a more expensive way to run it, and it stays more
+expensive until the protocol can put two calls in one turn.
 
 ## Make every capability a command first
 
-**Never count calls where turns are what bills.** A cheap tool that costs a round
-trip is not cheap, because in a stateless protocol it costs the whole
+**Never count calls when the turn is what bills.** A cheap tool that costs a
+round trip is not cheap, because in a stateless protocol it costs the whole
 conversation again.
 
 **Never mistake batching for composition.** We added plural arguments for spans,
