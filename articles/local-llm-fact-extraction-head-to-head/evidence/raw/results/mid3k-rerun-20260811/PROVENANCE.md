@@ -29,12 +29,22 @@ ran on one card.
 | QAT | 3,002 | 0.6867 | 0.5939 | 0.8138 | 2,150 | 1,470 | 492 | 462m |
 | non-QAT | 3,002 | 0.6857 | 0.5960 | 0.8073 | 2,133 | 1,446 | 509 | 474m |
 
-Paired bootstrap over notes, 20,000 replicates, run by the campaign script itself
-and recorded in `mid3k_xtx.log`:
+Paired bootstrap over notes, 20,000 replicates, seed `20260809`, one pair per
+process, which is the form the rest of the series uses:
 
 ```
-QAT - nonQAT    0.0009   [-0.0064,+0.0082]   INDISTINGUISHABLE
+QAT - nonQAT    0.0009   [-0.0064,+0.0085]   INDISTINGUISHABLE
 ```
+
+The campaign script runs its own bootstrap at the end of the pair and its output
+is in `mid3k_xtx.log`. That invocation passes `--boot 20000` and **no seed**, so
+it lands on `[-0.0064,+0.0082]`. Same delta, same verdict, upper endpoint 0.0003
+away, and not reproducible by anyone re-running the documented command.
+
+The seeded value is the one the article prints. The unseeded one is kept here
+because it is what the run actually emitted, and the gap between them is the
+reason the seed matters: `mid3k_pairs.sh` should pass `--seed 20260809` like
+every other bootstrap in this series, and it does not.
 
 ## The registered prediction, and what happened
 
