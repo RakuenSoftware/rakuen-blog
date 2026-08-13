@@ -49,8 +49,8 @@ head-to-head article's evidence tree:
 
 ## Reproducing
 
-`analysis/` holds the four scripts from the original investigation, which read
-committed artifacts and run no inference:
+`analysis/` holds seven scripts. All read committed artifacts and run no
+inference, so every one of them reruns without a card:
 
 | script | what it establishes |
 |---|---|
@@ -58,9 +58,18 @@ committed artifacts and run no inference:
 | `note_overlap_and_category.py` | cross-run note overlap against chance, and the category breakdown |
 | `accuracy_split.py` | F1 on silent against reasoned notes, using the harness scorer |
 | `replication_check.py` | the same split in both runs, with sign agreement per category |
+| `category_intervals.py` | intervals on the per-category split |
+| `governance_contradiction.py` | why the governance result did not survive replication |
+| `who_obeyed.py` | which half obeyed the first instruction, and where the loss actually sits |
 
-The forced-reasoning pair is rerun with `harness/harness/forced_reasoning_ab.sh`,
-which needs a card. Its analysis is rerun from the banked predictions without one.
+The first six are the original investigation and are kept as the record of what
+was believed before the forced run. `governance_contradiction.py` in particular
+explains a result that is deliberately absent from the article.
+
+Two things need a card, and only to regenerate predictions that are already
+banked: `harness/harness/forced_reasoning_ab.sh` for the pair, and the
+`forcereason2` arm behind `harness/harness/escalation.py`. Both analyses run from
+the committed artifacts without one.
 
 ## What is not claimed
 

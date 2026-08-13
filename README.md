@@ -56,7 +56,7 @@ that catches that class of bug. A number without it is not evidence.
 | [synthesis-model-selection](articles/synthesis-model-selection/) | ready | figure map; two paired GPU runs, CPU selection open |
 | [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | draft | 81 cells committed and checkable; three figures do not reproduce |
 | [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |
-| [we-forced-it-to-think-and-the-score-fell](articles/we-forced-it-to-think-and-the-score-fell/) | ready | figure map, forced-reasoning pair, five rerunnable scripts |
+| [we-forced-it-to-think-and-the-score-fell](articles/we-forced-it-to-think-and-the-score-fell/) | ready | figure map, three prompt arms, seven rerunnable scripts |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
 `draft` means the article exists and its provenance gaps are written down, but it
@@ -85,18 +85,23 @@ carries frontmatter because `tools/voice_gate.py` requires it, and on 2026-08-12
 a deploy put eleven never-published articles on the live site at once, including
 a draft whose own figure map records three figures that do not reproduce.
 
-`tools/publish.py` predates that discovery and writes into the dead
-`src/content/blog/`. Its checks are real and reach nothing, so treat its output
-as a readiness report and not as publication:
+`tools/publish.py` reports readiness and writes nothing. It used to copy files
+into `src/content/blog/`, which the build had already stopped reading.
 
 ```sh
-python3 tools/publish.py                     # report what is ready, change nothing
+python3 tools/publish.py                     # what is ready here
+python3 tools/publish.py --site ../rakuensoftware-web   # that, against what ships
 ```
 
-It reports an article as exportable only if its README declares it
-`Publication-ready` and `Not yet published`, `tools/voice_gate.py` passes it,
-`evidence/figures.md` exists, and its frontmatter is complete. Every blocker is
-reported in one run rather than one per invocation.
+An article is ready only if its README declares it `Publication-ready` and `Not
+yet published`, `tools/voice_gate.py` passes it, `evidence/figures.md` exists,
+and its frontmatter is complete. Every blocker is reported in one run rather
+than one per invocation.
+
+With `--site` it reads `PUBLISHED` out of that checkout and names the difference
+both ways: ready here but not shipping, and shipping but unaccounted for here.
+It reads that file and never writes it, because merging that one line is the
+gate.
 
 ### Publishing is three steps and none of them is publish.py
 
@@ -125,8 +130,9 @@ ssh root@192.168.1.253 'pct exec 107 -- env ALLOW_UNPUBLISH=1 /opt/rakuen-web/sc
 
 **Never confirm a publish with `curl`.** The site is a single-page app and serves
 `index.html` for every path, so a retired article and a live one both return 200.
-Grep the built bundle on the host, which is the only check that distinguishes
-them:
+That is what let eleven retired URLs keep answering as though nothing had
+happened. Grep the built bundle on the host, which is the only check that
+distinguishes them:
 
 ```sh
 ssh root@192.168.1.253 'pct exec 107 -- grep -c "<a phrase from the article>" /opt/rakuen-web/dist/assets/<bundle>.js'
