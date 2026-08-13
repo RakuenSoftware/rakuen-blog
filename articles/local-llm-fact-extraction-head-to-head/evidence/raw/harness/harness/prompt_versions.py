@@ -90,6 +90,36 @@ def v4clause(text=None):
     return s.replace(FINAL_LIVE, FINAL_V4, 1)
 
 
+REASON_LIVE = "Reason first if it helps;"
+REASON_FORCED = ("Reason first on every note, including the ones where the answer "
+                 "looks immediate;")
+
+
+def forcereason(text=None):
+    """COUNTERFACTUAL. Removes the model's discretion over whether to reason.
+
+    The live prompt says "if it helps", so a note answered without reasoning is a
+    choice the model made. E4B at Q6 makes it on about 13% of notes and the same
+    weights at Q4 and Q8 almost never do, which says the build decides rather than
+    the note. What no observation can say is whether those notes were cheap to
+    skip or expensive: the model picks which ones go silent, so "silent notes
+    score well" is equally consistent with reasoning being unnecessary there and
+    with the model skipping the notes it happens to already know.
+
+    Forcing reasoning breaks that tie, because the same note is then answered both
+    ways. Only the conditional clause changes; everything else, including the
+    output-format sentence that suppressed reasoning under v4, is untouched.
+
+    The wording is a confound and the design absorbs it: notes that reasoned under
+    BOTH prompts are the control. If those move as much as the forced-silent ones,
+    the effect is the sentence rather than the reasoning, and the comparison is
+    dead.
+    """
+    s = text if text is not None else live()
+    _require(s, REASON_LIVE, "conditional reasoning clause")
+    return s.replace(REASON_LIVE, REASON_FORCED, 1)
+
+
 def noclause(text=None):
     """THE TEST. Removes the output-format constraint entirely.
 
@@ -139,7 +169,7 @@ def v7(text=None):
 
 
 VERSIONS = {"v5": v5, "v6": v6, "v7": v7, "v4clause": v4clause,
-            "noclause": noclause}
+            "noclause": noclause, "forcereason": forcereason}
 
 
 def render(version):
