@@ -40,6 +40,7 @@ def main():
     ap.add_argument("--live", required=True)
     ap.add_argument("--forced", required=True)
     ap.add_argument("--escalated", required=True)
+    ap.add_argument("--gold", help="full gold; adds the F1 table")
     args = ap.parse_args()
 
     live, forced, esc = rows(args.live), rows(args.forced), rows(args.escalated)
@@ -80,6 +81,34 @@ def main():
     parse_ok = sum(1 for i in subject if esc[i].get("parse_ok"))
     errors = sum(1 for i in subject if esc[i].get("error"))
     print(f"\nescalated arm health: {parse_ok}/{len(subject)} parsed, {errors} error(s)")
+
+    if not args.gold:
+        return
+    import bootstrap_ci as boot
+
+    def f1(tp, fp, fn):
+        p = tp / (tp + fp) if tp + fp else 0.0
+        r = tp / (tp + fn) if tp + fn else 0.0
+        return 2 * p * r / (p + r) if p + r else 0.0
+
+    def scored(pred):
+        """Per-note F1 against the FULL gold.
+
+        Not the 134-note subset: per_note_counts walks the gold and scores an
+        absent prediction as zero, so a subset gold silently turns the two
+        full-corpus arms into 867 zeros and a meaningless mean.
+        """
+        return {i: f1(tp, fp, fn) for i, tp, fp, fn in boot.per_note_counts(args.gold, pred)}
+
+    a, b, c = scored(args.live), scored(args.forced), scored(args.escalated)
+    mean = lambda d, ids: sum(d[i] for i in ids) / len(ids)  # noqa: E731
+    print(f"\nF1 on the {len(subject)} notes the live prompt skipped")
+    print(f"  live          {mean(a, subject):.4f}")
+    print(f"  forcereason   {mean(b, subject):.4f}  ({mean(b, subject) - mean(a, subject):+.4f})")
+    print(f"  forcereason2  {mean(c, subject):.4f}  ({mean(c, subject) - mean(a, subject):+.4f})")
+    print("  The two deltas are NOT comparable: they ran over different")
+    print("  populations, since forcereason left 67 of these silent and")
+    print("  forcereason2 left none.")
 
 
 if __name__ == "__main__":

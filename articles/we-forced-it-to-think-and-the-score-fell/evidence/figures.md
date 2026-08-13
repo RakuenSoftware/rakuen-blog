@@ -118,6 +118,31 @@ the run log, and `harness/harness/escalation.py` which rebuilds the counts.
 
 134 of 134 parsed, zero errors.
 
+### What the firmer wording scored, and why it is not in the article
+
+On those same 134 notes, against the full v5 gold:
+
+| arm | F1 on the 134 | against live |
+|---|---:|---:|
+| live | 0.7537 | |
+| forcereason | 0.6269 | −0.1269 |
+| forcereason2 | 0.6567 | −0.0970 |
+
+The direction survives a wording that reached every note, which is the only thing
+this adds: the cost is not an artifact of the weaker instruction reaching half the
+population.
+
+**The two deltas are not compared.** They ran over different populations —
+forcereason left 67 of these notes silent and forcereason2 left none — so the
+difference between −0.1269 and −0.0970 is not a fact about the wordings. Nothing
+here bootstraps them either.
+
+It also inherits the confound that took the headline claim away. The `user`-object
+notes are in this 134, so part of every delta above is the model leaving a
+labelling convention rather than getting a fact wrong. That is why this sits in
+the record and not in the article: a third mean would re-inflate a claim the
+seventeen notes already deflated.
+
 **This removed a claim from the article.** The draft said that whatever decides
 the skip "sits below the level a sentence reaches", on the evidence that half the
 notes ignored one instruction. A firmer instruction reached every one of them, so
