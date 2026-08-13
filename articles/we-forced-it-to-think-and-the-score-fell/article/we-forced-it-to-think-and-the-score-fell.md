@@ -107,7 +107,18 @@ model was right to skip. We can say that forcing it stopped it matching our
 conventions, that we would have reported the stronger claim if we had stopped at
 the mean, and that the seventeen notes were three minutes of reading away.
 
-One more thing survived, and it has nothing to do with scoring. Exactly half the
-silent notes ignored the instruction: 67 reasoned, 67 did not, under a prompt
-telling them to reason on every note. Whatever decides this sits below the level
-a sentence reaches, which is the same thing the quantization table says.
+One more thing, and it is the part we nearly got wrong twice. Exactly half the
+silent notes ignored the first instruction: 67 reasoned, 67 did not, under a
+prompt telling them to reason on every note. The obvious reading is that whatever
+decides this sits below the level a sentence reaches.
+
+We wrote that down, then tested it, because a firmer sentence would disprove it
+in twenty minutes. A second wording naming a minimum, forbidding the
+obvious-answer exemption and covering the empty case moved **all 67**. Every one
+of the 134 notes reasoned.
+
+So the two levers are not the same lever. The build decides what the model does
+by default, and no wording changes the quantization. The prompt decides whether
+that default holds, and it takes a firmer sentence than the first one we tried.
+A model ignoring an instruction on half its notes was our sentence being weak,
+and we would have published it as the model being unreachable.

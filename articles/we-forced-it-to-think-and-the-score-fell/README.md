@@ -44,7 +44,8 @@ head-to-head article's evidence tree:
 | `results/qat-mid-3k/` | the QAT rate |
 | `harness/harness/forced_reasoning.py` | rebuilds the paired figures |
 | `analysis/who_obeyed.py` | which half obeyed, and where the loss actually sits |
-| `harness/harness/prompt_versions.py` | `forcereason()`, which changes the conditional clause and nothing else |
+| `harness/harness/prompt_versions.py` | `forcereason()` and `forcereason2()`, which change the conditional clause and nothing else |
+| `results/escalation-20260813/` | the firmer wording, on the 134 notes the live prompt skipped |
 
 ## Reproducing
 
@@ -68,3 +69,8 @@ skipping is right on other models or corpora, because the treatment group is 67
 notes on one card. No connection to Q6 winning the E4B width comparison in
 `which-quant-beats-how-many-bits`, which is the same build and may be the same
 effect, and is not measured.
+
+And no claim that the skip is beyond the reach of the prompt. The draft said that
+on one wording half the notes ignored; a firmer wording moved all 134, so the
+sentence was weak rather than the model unreachable. What the prompt does not
+reach is the quantization.

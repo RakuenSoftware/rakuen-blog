@@ -96,8 +96,44 @@ under both prompts are chosen identically and never treated, and they moved
 regression artifact; it does not remove it. A matched design would pair each
 forced note with a silent note of the same live score, and that is not run.
 
+## The escalation, and the claim it removed
+
+`results/escalation-20260813/`: the prediction file, the 134-note gold subset,
+the run log, and `harness/harness/escalation.py` which rebuilds the counts.
+
+- 2026-08-13, 17:21 to 17:26 UTC, same card, model, cache size and concurrency as
+  the pair above; only the prompt differs
+- `prompt_versions.forcereason2()`, which replaces the conditional reasoning
+  clause with one naming a minimum, forbidding the obvious-answer exemption and
+  covering the empty case
+- 134 notes: exactly those the live prompt answered without reasoning, extracted
+  by `harness/harness/silent_subset.py`, which fails if any id is missing from
+  the gold rather than quietly measuring a smaller set
+
+| group | notes | reasoning under forcereason2 |
+|---|---:|---:|
+| moved by the first wording | 67 | 67 |
+| ignored the first wording | 67 | **67** |
+| all notes silent under live | 134 | **134**, 100% |
+
+134 of 134 parsed, zero errors.
+
+**This removed a claim from the article.** The draft said that whatever decides
+the skip "sits below the level a sentence reaches", on the evidence that half the
+notes ignored one instruction. A firmer instruction reached every one of them, so
+the first sentence was weak rather than the model unreachable.
+
+The two levers are therefore separate, which is the corrected statement: the
+build decides the default and no wording changes the quantization, while the
+prompt decides whether that default holds and needs to ask harder than "reason on
+every note".
+
 ## Not claimed
 
+- **That the skip is out of reach of the prompt.** An earlier draft said so, from
+  one wording that half the notes ignored. A firmer wording moved all of them.
+  What is out of reach of the prompt is the quantization, which is a different
+  claim about a different lever.
 - **That the model was right to skip.** An earlier draft of this article said so,
   on the mean alone. Ten of the seventeen damaged notes are the model leaving a
   labelling convention rather than getting a fact wrong, so this corpus cannot
