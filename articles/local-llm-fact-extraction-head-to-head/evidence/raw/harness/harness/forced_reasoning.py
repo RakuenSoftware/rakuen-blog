@@ -99,19 +99,56 @@ def main():
     for name in ("FORCED", "CONTROL", "STUBBORN", "LOST"):
         print(summarize(name, groups[name], a_f1, b_f1))
 
+    def delta(ids):
+        return (sum(b_f1.get(i, 0.0) for i in ids)
+                - sum(a_f1.get(i, 0.0) for i in ids)) / len(ids) if ids else 0.0
+
+    df = delta(groups["FORCED"])
+    dc = delta(groups["CONTROL"])
+    ds = delta(groups["STUBBORN"])
+
     if groups["FORCED"] and groups["CONTROL"]:
-        def delta(ids):
-            return (sum(b_f1.get(i, 0.0) for i in ids)
-                    - sum(a_f1.get(i, 0.0) for i in ids)) / len(ids)
-        df, dc = delta(groups["FORCED"]), delta(groups["CONTROL"])
-        print(f"\nforced delta      {df:+.4f}")
-        print(f"control delta     {dc:+.4f}   (what the sentence is worth alone)")
-        print(f"attributable      {df - dc:+.4f}")
+        print(f"\nforced delta        {df:+.4f}")
+        print(f"wording control     {dc:+.4f}   reasoned under both, so this is "
+              "the sentence alone")
+        print(f"selection control   {ds:+.4f}   silent under both, so this is "
+              "the selection alone")
+        print(f"net of both         {df - dc - ds:+.4f}")
         if abs(dc) >= abs(df):
-            print("\nThe control moved at least as far as the forced group. This "
-                  "comparison\nmeasures the wording, not the reasoning, and "
-                  "nothing here supports a claim\nabout what the skipped notes "
-                  "cost.")
+            print("\nThe wording control moved at least as far as the forced "
+                  "group. This\ncomparison measures the sentence, not the "
+                  "reasoning, and nothing here\nsupports a claim about what the "
+                  "skipped notes cost.")
+        if abs(ds) >= abs(df):
+            print("\nThe selection control moved at least as far as the forced "
+                  "group. Silent\nnotes drift this much between two runs "
+                  "regardless, so the forced result is\nregression to the mean "
+                  "and not an effect.")
+
+    # THE SELECTION PROBLEM, and why STUBBORN is the control that answers it.
+    #
+    # FORCED notes are picked for having gone silent, and silent notes score far
+    # above the corpus mean. Measure any high-scoring selection a second time and
+    # it falls, effect or no effect, so a drop here proves nothing on its own.
+    #
+    # STUBBORN is picked the same way -- silent under the live prompt -- and then
+    # does not get the treatment, because it stayed silent under the forced
+    # prompt too. Whatever it drops is what this selection drops without a cause.
+    # The two groups are not matched on their starting score, so this bounds the
+    # artefact rather than removing it.
+    if groups["FORCED"]:
+        import bootstrap_ci as boot  # noqa: F811  (same module, named for clarity)
+        rng = boot.random.Random(20260809)
+        ids = groups["FORCED"]
+        per_note = [b_f1.get(i, 0.0) - a_f1.get(i, 0.0) for i in ids]
+        reps = []
+        for _ in range(20000):
+            sample = [per_note[rng.randrange(len(per_note))] for _ in per_note]
+            reps.append(sum(sample) / len(sample))
+        reps.sort()
+        lo, hi = reps[int(0.025 * len(reps))], reps[int(0.975 * len(reps))]
+        print(f"\nforced delta 95%    [{lo:+.4f}, {hi:+.4f}]  "
+              f"bootstrap over {len(ids)} notes, 20,000 replicates, seed 20260809")
 
     (d / "forced_reasoning.json").write_text(json.dumps({
         "notes": len(shared),
