@@ -1,0 +1,6 @@
+[17:20:33Z] sizing: starting one server to measure resident VRAM
+[17:21:07Z]   one instance uses  MiB of 24560 MiB
+[17:21:07Z]   -> running 1 processes, cache-ram 1024 MiB each
+[17:21:07Z]   all 1 servers up; VRAM now  MiB
+[17:21:07Z] START gemma-4-E4B-it.Q6.forcereason2 across 1 shards
+[17:26:38Z] DONE gemma-4-E4B-it.Q6.forcereason2 rows=134/134 wall=5m31s procs=1 retries=0
