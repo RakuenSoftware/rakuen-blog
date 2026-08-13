@@ -61,6 +61,26 @@ note asserting none carries `[]`. A missing triple is scored as a model failure,
 so an incomplete gold row silently penalises every model equally and is the most
 expensive kind of error to make here.
 
+### Every argument a gold triple names must be in the note
+
+**Never write a gold argument the sentence does not contain.** v5 does, and the
+cost was measured on 2026-08-13. It phrases a sale as "Aldridge Chemicals signed
+as a customer" and labels the object `user` — an implicit second party the note
+never names. A model answering directly reproduced that convention; the same
+model, asked to reason first, answered `customer`, which is the more literal
+reading of the sentence, and scored zero.
+
+Ten of the seventeen notes damaged in that experiment were this one pattern. The
+score gap it produced looked like a fact about reasoning and was substantially a
+fact about the corpus, which is exactly the confound a second corpus exists to
+remove.
+
+So a note whose fact has two ends names both ends. "Aldridge Chemicals signed as
+a customer of Girder Logistics" is the shape; the version without the second
+party belongs in `ambiguous` with an empty gold, or not at all. A gold argument
+that cannot be recovered from the sentence measures whether the model guessed
+the house style.
+
 ### The relations, and nothing outside them
 
 ```
@@ -106,10 +126,18 @@ and they are handled by the category, not by inventing a relation.
 
 `negation` is the one with a trap in it. A retraction asserts that a fact is
 false, and the harness records the ORIGINAL fact with polarity rather than
-recording nothing, so the gold for "Kestrel Freight is no longer a customer" is
-the `customer_of` triple, not an empty list. A rename is NOT a retraction:
+recording nothing, so "Kestrel Freight is no longer a customer of Girder
+Logistics" carries the `customer_of` triple, not an empty list. Note that both
+ends are named: "no longer a customer", with the other party left implied, is
+the v5 pattern this specification rejects. A rename is NOT a retraction:
 "airflow-install.sh is now called apache-airflow-install.sh" is `also_known_as`
 between the two names, asserted true.
+
+`implicit` is the category that most easily breaks the naming rule, and it does
+not get an exemption. What may be implicit is the RELATION, not an argument.
+"Priya has run the Aurora migration since March" entails `works_for` without the
+word, and both ends are on the page. A note that entails an argument the reader
+must supply belongs in `ambiguous`.
 
 `novel_pred` carries `[]` deliberately. The note asserts something durable that
 no listed relation covers, and the correct behaviour is not defined by this
@@ -136,7 +164,15 @@ Entity names are invented. No real company, person, product or address.
   statement of what the builder did and did not look at
 - `validate.py`, which fails on: an id collision, a relation outside the list, a
   type-signature violation, a `transient` or `ambiguous` row with a non-empty
-  gold, a `negation` row with an empty gold, a note over three sentences
+  gold, a `negation` row with an empty gold, a note over three sentences, and
+  **a gold subject or object whose words do not appear in the note**
+
+That last check is the one worth writing carefully, because it is the rule a
+generator breaks by accident. Compare case-insensitively on words rather than
+exact substrings, so "the retrieval team" in the note satisfies a `retrieval
+team` object, and report the note id, the offending argument and the note text
+together — a validator that says only "argument not found" sends its reader
+hunting for which of 1,001 rows it meant.
 
 Regenerating from the recorded seed must reproduce `gold_w1.jsonl` byte for
 byte. Verify that before shipping, by generating twice into different paths and
