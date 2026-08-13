@@ -56,13 +56,15 @@ that catches that class of bug. A number without it is not evidence.
 | [synthesis-model-selection](articles/synthesis-model-selection/) | ready | figure map; two paired GPU runs, CPU selection open |
 | [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | draft | 81 cells committed and checkable; three figures do not reproduce |
 | [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |
-| [the-model-decides-when-to-think](articles/the-model-decides-when-to-think/) | investigation | four rerunnable scripts; no article written yet |
+| [it-skipped-the-reasoning-and-it-was-right](articles/it-skipped-the-reasoning-and-it-was-right/) | ready | figure map, forced-reasoning pair, four rerunnable scripts |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
 `draft` means the article exists and its provenance gaps are written down, but it
 is not a publication candidate and the voice gate does not check it.
-`investigation` means the work exists and the prose deliberately does not, because
-the finding is not stable enough to write around.
+No article currently sits at `investigation`, which meant the work existed and the
+prose deliberately did not, because the finding was not stable enough to write
+around. The last one held that status for two days and left it by running the
+experiment its own README said would settle the question.
 
 ## Publishing
 
