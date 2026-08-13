@@ -1,8 +1,8 @@
-# It Skipped the Reasoning and It Was Right
+# We Forced It to Think and the Score Fell
 
 gemma-4-E4B at Q6 answers about 13% of notes with no reasoning pass. Forcing it
-to reason on those notes cost 0.21 F1. The skip was the model being right about
-which notes were easy.
+to reason on those notes cost 0.21 F1, and most of that turned out to be a
+labelling convention in our corpus rather than the model getting anything wrong.
 
 ## Status
 
@@ -19,11 +19,14 @@ property of the build: E4B at Q6 does it on 13.3% of notes across three separate
 10,000-note runs, the QAT build on 16.0%, and the same weights at Q4 and Q8 on
 0.1%. E2B never does it at any width.
 
-**It is not a defect.** The investigation could not tell whether silent notes
-scored well because reasoning was unnecessary or because the model was skipping
-notes it already knew, and its README named the run that would separate them. That
-run now exists. Removing the model's discretion moved those notes from 0.8507 to
-0.6418.
+**The benchmark cannot say whether it is a defect.** The investigation could not
+tell whether silent notes scored well because reasoning was unnecessary or
+because the model was skipping notes it already knew, and its README named the
+run that would separate them. That run now exists and moved those notes from
+0.8507 to 0.6418, but 17 notes carry the whole change and 10 of those are the
+model leaving a gold convention rather than making an error. The first draft of
+the article reported the mean and claimed the model was right. Reading the notes
+underneath it took the claim away.
 
 `evidence/investigation-2026-08-11.md` is kept unchanged as the record of what was
 believed before the forced run, including the governance result that did not
@@ -39,7 +42,8 @@ head-to-head article's evidence tree:
 | `results/forced-reasoning-20260813/` | both halves of the forced-reasoning pair, the analysis, the run log |
 | `results/10k-sharded/`, `results/10k-nomtp/` | the three 10,000-note runs behind the 13.3% |
 | `results/qat-mid-3k/` | the QAT rate |
-| `harness/harness/forced_reasoning.py` | rebuilds every number in the article |
+| `harness/harness/forced_reasoning.py` | rebuilds the paired figures |
+| `analysis/who_obeyed.py` | which half obeyed, and where the loss actually sits |
 | `harness/harness/prompt_versions.py` | `forcereason()`, which changes the conditional clause and nothing else |
 
 ## Reproducing

@@ -50,7 +50,36 @@ Both halves: 1,001 rows, 1,001 unique ids matching gold, zero errors, every row
 parsed, none truncated, no draft counters. Each half records one
 `prompt_version`, and the analysis refuses to report on a file that mixes them.
 
-## The two confounds, and how far the controls go
+## Where the loss sits, and the confound the controls do not catch
+
+`analysis/who_obeyed.py` rebuilds this from the same two files.
+
+| figure | value |
+|---|---|
+| notes unchanged | 47 of 67 |
+| notes improved | 3 of 67 |
+| notes that got worse | **17 of 67** |
+| mean change among those 17 | **−1.0000**, every one from a perfect score to zero |
+| of the 17, gold object is the implicit `user` and the forced answer left it | **10** |
+| of the 17, relation changed only / object only / both | 3 / 9 / 5 |
+
+The mean of −0.2090 is 17 total failures and 50 notes that did not move, not a
+small loss spread evenly.
+
+**Ten of those seventeen are a scoring convention rather than an error.** The
+gold object for "Aldridge Chemicals signed as a customer" is `user`, the implicit
+other party, which the sentence does not name. Answering directly the model wrote
+`user`; reasoning, it wrote `customer`. That is the more literal reading of the
+note and the scorer gives it zero.
+
+So under 0.12 of the 0.2090 is the model getting a fact wrong. The article states
+this rather than reporting the mean alone, and the earlier draft of the article
+did not, which is the reason this section exists.
+
+The seven remaining failures are ordinary, the clearest being `works_for` for
+"Ming Lei contributes to linux" where the direct answer gave `contributes_to`.
+
+## The two confounds the controls do catch
 
 **The wording.** The forced prompt is a different prompt, so the change could be
 the sentence rather than the reasoning. The 863 notes that reasoned under both
@@ -69,10 +98,15 @@ forced note with a silent note of the same live score, and that is not run.
 
 ## Not claimed
 
+- **That the model was right to skip.** An earlier draft of this article said so,
+  on the mean alone. Ten of the seventeen damaged notes are the model leaving a
+  labelling convention rather than getting a fact wrong, so this corpus cannot
+  settle whether the skip was correct. It can only say that forcing reasoning
+  stopped the model matching the house style.
 - **A mechanism for why Q6 and QAT skip and Q4 and Q8 do not.** Nothing here
   explains it. The article reports the association and stops.
-- **That skipping is right in general.** One model, one corpus, one card, 67
-  treated notes. The claim is scoped to the run.
+- **Anything general about skipping.** One model, one corpus, one card, 67
+  treated notes, 17 of which carry the whole effect.
 - **That the 67 unmoved notes are unreachable.** They did not move under this
   wording. A stronger instruction is untested.
 - **Any connection to Q6 winning the E4B width comparison** in

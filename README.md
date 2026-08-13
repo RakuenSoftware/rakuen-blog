@@ -56,7 +56,7 @@ that catches that class of bug. A number without it is not evidence.
 | [synthesis-model-selection](articles/synthesis-model-selection/) | ready | figure map; two paired GPU runs, CPU selection open |
 | [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | draft | 81 cells committed and checkable; three figures do not reproduce |
 | [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |
-| [it-skipped-the-reasoning-and-it-was-right](articles/it-skipped-the-reasoning-and-it-was-right/) | ready | figure map, forced-reasoning pair, four rerunnable scripts |
+| [we-forced-it-to-think-and-the-score-fell](articles/we-forced-it-to-think-and-the-score-fell/) | ready | figure map, forced-reasoning pair, five rerunnable scripts |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
 `draft` means the article exists and its provenance gaps are written down, but it
