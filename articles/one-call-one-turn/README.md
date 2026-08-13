@@ -6,8 +6,15 @@ the work.
 
 ## Status
 
-Publication-ready as of 2026-08-12. Not yet published. The voice gate passes it
-and the cells behind its table are committed under `benchmarks/`.
+Published 2026-08-12 at https://rakuensoftware.com/blog/one-call-one-turn. The
+voice gate passes it and the cells behind its table are committed under
+`benchmarks/`.
+
+Two edits landed after it went live. The batching claim was corrected: MCP does
+not forbid several tool calls in one message, and what we observed is that no
+model we tested emitted them. A same-day correction notice was then removed,
+because it was written and applied on the publication date and so announced a
+draft edit as a change to something readers had already seen.
 
 ## The claim this rests on
 
