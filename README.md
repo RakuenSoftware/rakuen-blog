@@ -68,67 +68,70 @@ experiment its own README said would settle the question.
 
 ## Publishing
 
-The live site (`rakuensoftware-web`) builds from its own `src/content/blog/`.
-The site has not been repointed at this repository and that remains a separate
-decision — see [MIGRATION.md](MIGRATION.md) for what was moved and what was left
-alone.
+This repository is the only source of article text. `scripts/sync-articles.mjs`
+in `rakuensoftware-web` clones **this repository's `main`** at build time and
+writes the articles it publishes into a generated, gitignored
+`src/content/posts/`. The site's own `src/content/blog/` is dead and nothing
+reads it.
 
-`tools/publish.py` is the bridge across that gap:
+**What ships is named in `PUBLISHED` in `scripts/sync-articles.mjs`.** Landing an
+article on `main` here does not publish it, and that is the point: adding the
+slug to that list is a one-line diff in the site repository, and merging it is
+the gate.
+
+That gate is new because the previous one did not exist. The sync used to
+publish any article whose markdown carried frontmatter, every article here
+carries frontmatter because `tools/voice_gate.py` requires it, and on 2026-08-12
+a deploy put eleven never-published articles on the live site at once, including
+a draft whose own figure map records three figures that do not reproduce.
+
+`tools/publish.py` predates that discovery and writes into the dead
+`src/content/blog/`. Its checks are real and reach nothing, so treat its output
+as a readiness report and not as publication:
 
 ```sh
 python3 tools/publish.py                     # report what is ready, change nothing
-python3 tools/publish.py --site ../rakuensoftware-web one-call-one-turn
 ```
 
-Name the articles to export. Writing with no slug named would export every ready
-article at once, which is rarely what shipping one piece means, so that form
-refuses and asks for `--all` if it is really meant.
-
-It exports an article only if the article's README declares it
+It reports an article as exportable only if its README declares it
 `Publication-ready` and `Not yet published`, `tools/voice_gate.py` passes it,
 `evidence/figures.md` exists, and its frontmatter is complete. Every blocker is
 reported in one run rather than one per invocation.
 
-**It never commits, pushes, merges or deploys.** Writing into a site checkout
-leaves modified files there for a human to review, branch and merge. Ingestion is
-a manual merge on purpose: passing every gate in this repository means no person
-has read the piece yet.
+### Publishing is three steps and none of them is publish.py
 
-### Exporting is the first of four steps
-
-Exporting a file is not publishing, and the gap has been mistaken for the finish
-line more than once. The whole path to a live URL:
-
-1. `python3 tools/publish.py --site ../rakuensoftware-web <slug>`
-2. in the site checkout, branch off `main`, commit the file, open a pull request
-3. merge it
-4. **deploy**, which is a separate manual step with no CI behind it:
+1. merge the article to `main` here
+2. add the slug to `PUBLISHED` in `rakuensoftware-web/scripts/sync-articles.mjs`
+   and merge that
+3. **deploy**, which is a separate manual step with no CI behind it:
 
 ```sh
 ssh root@192.168.1.253 'pct exec 107 -- /opt/rakuen-web/scripts/deploy.sh'
 ```
 
-Step 4 is the one that moves the website. Until it runs, `main` has the article
-and rakuensoftware.com does not. The script fast-forwards the checkout, rebuilds,
-swaps `dist/` atomically, restarts the server and rolls back if the new bundle
-fails to serve. It prints `Live: <bundle> (commit <sha>)`, and that sha is the
-only confirmation worth having.
+Step 3 is the one that moves the website, and it pulls whatever `main` says at
+the moment it runs. The script fast-forwards the site checkout, rebuilds, swaps
+`dist/` atomically, restarts the server and rolls back if the new bundle fails to
+serve. It prints `Live: <bundle> (commit <sha>)`, and that sha names the site's
+code rather than the article revision, so it confirms a deploy happened and not
+which text went out.
 
-Check the result rather than trusting the merge:
+Removing a slug from `PUBLISHED` retires a live URL, and the next build refuses
+until it is told that was deliberate:
 
 ```sh
-curl -o /dev/null -w '%{http_code}\n' https://rakuensoftware.com/blog/<slug>
+ssh root@192.168.1.253 'pct exec 107 -- env ALLOW_UNPUBLISH=1 /opt/rakuen-web/scripts/deploy.sh'
 ```
 
-The site is a single-page app, so the page title is not in the HTML and grepping
-the response for it proves nothing. To confirm the text really shipped, grep the
-built bundle on the host instead.
+**Never confirm a publish with `curl`.** The site is a single-page app and serves
+`index.html` for every path, so a retired article and a live one both return 200.
+Grep the built bundle on the host, which is the only check that distinguishes
+them:
 
-Do not branch the site checkout from whatever it happens to have checked out. It
-is often left on a merged feature branch, and committing there puts the article
-on a stale branch beside work that has already landed.
+```sh
+ssh root@192.168.1.253 'pct exec 107 -- grep -c "<a phrase from the article>" /opt/rakuen-web/dist/assets/<bundle>.js'
+```
 
-The site filename comes from the article's `slug:` frontmatter field when it has
-one, and from the article's directory name otherwise. That is how an article
-whose title changed keeps its published URL. Changing a live URL is a decision,
-so the script never infers one.
+The published filename, and therefore the URL, is the article's directory name
+here. Renaming a directory changes a live URL and breaks every inbound link, so
+an article whose title changes after publication keeps its old directory.
