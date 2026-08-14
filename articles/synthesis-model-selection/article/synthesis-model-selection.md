@@ -3,40 +3,31 @@ title: "The 12B Synthesis Run Scored Higher and Missed the CPU Question"
 date: 2026-08-09
 author: Rakuen Software
 tags: [local-models, synthesis, benchmarks, aimee]
-excerpt: "A 12B configuration gained 0.071 on the content score and took four times the median latency. Both used graphics hardware, so neither selected the intended CPU model."
+excerpt: "The 12B serving configuration scored 0.071 higher and took 3.96 times the median latency. Both runs used graphics hardware; neither measured the intended CPU tier."
 ---
 
-*Rakuen builds aimee, the system measured here. Every figure and reporting limit
-is listed in the [figure provenance map](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/synthesis-model-selection/evidence/figures.md).*
+*Rakuen builds aimee and ran the benchmark reported here. Every figure and
+reporting limit is listed in the [figure provenance map](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/synthesis-model-selection/evidence/figures.md).*
 
-A 12B synthesis configuration scored 0.3279 against E2B's 0.2567 on 10,000 paired
-cases. The content score averages, across required fields, token-overlap or
-set-overlap harmonic means of precision and recall (F1), as defined by the
-[pinned scorer](https://github.com/RakuenSoftware/aimee/blob/5e1b962491f7fe08a5cf34a9f524aaa4b1157d37/benchmarks/gemma4_baseline/run_synthesis_ab.py#L79-L126).
-The gain was **+0.0712 content F1**, with a 95% paired bootstrap range from
-**+0.0672 to +0.0750**.
+On 10,000 paired cases, the 12B serving configuration scored **+0.0712
+content-score points** above E2B, with a 95% paired bootstrap range from **+0.0672 to
++0.0750**. Its median request took 3.96 times as long. Those are measurements of
+two graphics processing unit (GPU) serving configurations, not effects of model
+size. Neither run measured the central processing unit (CPU) tier the campaign
+was meant to select.
 
-The 12B median request took 42.4 seconds. E2B took 10.7. Both were graphics
-processing unit (GPU) runs with different maximum-throughput serving profiles, so
-the result does not answer the production question that named this campaign:
-which model provides acceptable synthesis on the central processing unit (CPU)
-tier.
+The two content scores were 0.3279 for 12B and 0.2567 for E2B. The score averages
+one value for each required field. Text and list fields use the harmonic mean of
+precision and recall (F1) over token or exact set overlap; scalar fields use
+equality. The [pinned scorer](https://github.com/RakuenSoftware/aimee/blob/5e1b962491f7fe08a5cf34a9f524aaa4b1157d37/benchmarks/gemma4_baseline/run_synthesis_ab.py#L79-L126)
+defines the calculation.
 
 ## The quality gain was concentrated in one task
 
 The frozen suite contains five structured-output tasks drawn from one 10,000-case
 population. Every 12B task score was higher, but the size of the gain varied.
 
-| task | cases | E2B content F1 | 12B content F1 | difference |
-|---|---:|---:|---:|---:|
-| claim | 2,500 | 0.1854 | 0.2117 | +0.0263 |
-| code unit | 2,500 | 0.3835 | 0.4134 | +0.0298 |
-| document summary | 2,000 | 0.4284 | 0.4711 | +0.0428 |
-| entity | 1,500 | 0.0720 | 0.0900 | +0.0180 |
-| synthesis | 1,500 | 0.1203 | 0.4261 | **+0.3058** |
-
-Differences use the unrounded run values rather than subtracting the four-decimal
-display columns.
+<figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="synth-quality" id="synth-quality-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="synth-quality" id="synth-quality-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="synth-quality-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="synth-quality-table">Raw data</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 222" preserveAspectRatio="xMidYMid meet" role="img" aria-label="E2B and 12B content scores for five tasks"><line class="sg-chart__grid" x1="190" x2="190" y1="18" y2="202"/><text class="sg-chart__value" x="190" y="218" text-anchor="middle" opacity=".7">0</text><line class="sg-chart__grid" x1="284" x2="284" y1="18" y2="202"/><text class="sg-chart__value" x="284" y="218" text-anchor="middle" opacity=".7">0.1</text><line class="sg-chart__grid" x1="378" x2="378" y1="18" y2="202"/><text class="sg-chart__value" x="378" y="218" text-anchor="middle" opacity=".7">0.2</text><line class="sg-chart__grid" x1="472" x2="472" y1="18" y2="202"/><text class="sg-chart__value" x="472" y="218" text-anchor="middle" opacity=".7">0.3</text><line class="sg-chart__grid" x1="566" x2="566" y1="18" y2="202"/><text class="sg-chart__value" x="566" y="218" text-anchor="middle" opacity=".7">0.4</text><line class="sg-chart__grid" x1="660" x2="660" y1="18" y2="202"/><text class="sg-chart__value" x="660" y="218" text-anchor="middle" opacity=".7">0.5 F1</text><text class="sg-chart__label" x="178" y="42" text-anchor="end">claim</text><rect class="sg-chart__mark sg-chart__mark--1" x="190" y="28" width="174.3" height="9" rx="4"/><text class="sg-chart__value" x="372.3" y="37">0.1854</text><rect class="sg-chart__mark sg-chart__mark--2" x="190" y="42" width="199.0" height="9" rx="4"/><text class="sg-chart__value" x="397.0" y="51">0.2117</text><text class="sg-chart__label" x="178" y="78" text-anchor="end">code unit</text><rect class="sg-chart__mark sg-chart__mark--1" x="190" y="64" width="360.5" height="9" rx="4"/><text class="sg-chart__value" x="558.5" y="73">0.3835</text><rect class="sg-chart__mark sg-chart__mark--2" x="190" y="78" width="388.6" height="9" rx="4"/><text class="sg-chart__value" x="586.6" y="87">0.4134</text><text class="sg-chart__label" x="178" y="114" text-anchor="end">document summary</text><rect class="sg-chart__mark sg-chart__mark--1" x="190" y="100" width="402.7" height="9" rx="4"/><text class="sg-chart__value" x="600.7" y="109">0.4284</text><rect class="sg-chart__mark sg-chart__mark--2" x="190" y="114" width="442.8" height="9" rx="4"/><text class="sg-chart__value" x="640.8" y="123">0.4711</text><text class="sg-chart__label" x="178" y="150" text-anchor="end">entity</text><rect class="sg-chart__mark sg-chart__mark--1" x="190" y="136" width="67.7" height="9" rx="4"/><text class="sg-chart__value" x="265.7" y="145">0.0720</text><rect class="sg-chart__mark sg-chart__mark--2" x="190" y="150" width="84.6" height="9" rx="4"/><text class="sg-chart__value" x="282.6" y="159">0.0900</text><text class="sg-chart__label" x="178" y="186" text-anchor="end">synthesis</text><rect class="sg-chart__mark sg-chart__mark--1" x="190" y="172" width="113.1" height="9" rx="4"/><text class="sg-chart__value" x="311.1" y="181">0.1203</text><rect class="sg-chart__mark sg-chart__mark--2" x="190" y="186" width="400.5" height="9" rx="4"/><text class="sg-chart__value" x="598.5" y="195">0.4261</text></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>E2B</span><span><i style="background:var(--sg-chart-2)"></i>12B</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">task</th><th style="text-align:right">cases</th><th style="text-align:right">E2B content F1</th><th style="text-align:right">12B content F1</th><th style="text-align:right">difference from unrounded scores</th></tr></thead><tbody><tr><td style="text-align:left">claim</td><td style="text-align:right">2,500</td><td style="text-align:right">0.1854</td><td style="text-align:right">0.2117</td><td style="text-align:right">+0.0263</td></tr><tr><td style="text-align:left">code unit</td><td style="text-align:right">2,500</td><td style="text-align:right">0.3835</td><td style="text-align:right">0.4134</td><td style="text-align:right">+0.0298</td></tr><tr><td style="text-align:left">document summary</td><td style="text-align:right">2,000</td><td style="text-align:right">0.4284</td><td style="text-align:right">0.4711</td><td style="text-align:right">+0.0428</td></tr><tr><td style="text-align:left">entity</td><td style="text-align:right">1,500</td><td style="text-align:right">0.0720</td><td style="text-align:right">0.0900</td><td style="text-align:right">+0.0180</td></tr><tr><td style="text-align:left">synthesis</td><td style="text-align:right">1,500</td><td style="text-align:right">0.1203</td><td style="text-align:right">0.4261</td><td style="text-align:right"><strong>+0.3058</strong></td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">All five task scores share one zero-based scale. Exact case counts and differences calculated before rounding are in Raw data.</figcaption></figure>
 
 The aggregate gain therefore does not describe a uniform model improvement.
 The largest movement came from the task named `synthesis`; the other four gains
@@ -45,51 +36,37 @@ those rows describe the measured suite rather than five population effects.
 
 ## Schema validity improved while required-field recall fell
 
-| measurement | E2B | 12B |
-|---|---:|---:|
-| raw parse rate | 99.79% | 100.00% |
-| schema-valid rate | 97.41% | 99.96% |
-| required-field recall | **99.00%** | 97.57% |
-| truncated rows | 21 | 0 |
+Schema validity rose, but required-field recall moved the other way: E2B remained
+higher at 99.00%, against 12B's 97.57%.
 
-The 12B run almost always returned every schema key, yet some values were empty
-and its required-field recall was lower. The code-unit task carried the
-difference: 12B required-field recall was 90.37%, compared with 98.47% for E2B.
-A syntactically valid object can still omit usable field content, so schema
-validity and field recall must remain separate gates.
+<figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="synth-validity" id="synth-validity-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="synth-validity" id="synth-validity-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="synth-validity-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="synth-validity-table">Raw data</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 176" preserveAspectRatio="xMidYMid meet" role="img" aria-label="E2B and 12B parse, schema-valid and required-field rates on a 90 to 100 percent scale"><line class="sg-chart__grid" x1="190" x2="190" y1="18" y2="136"/><text class="sg-chart__value" x="190" y="154" text-anchor="middle" opacity=".7">90%</text><line class="sg-chart__grid" x1="425" x2="425" y1="18" y2="136"/><text class="sg-chart__value" x="425" y="154" text-anchor="middle" opacity=".7">95%</text><line class="sg-chart__grid" x1="660" x2="660" y1="18" y2="136"/><text class="sg-chart__value" x="660" y="154" text-anchor="middle" opacity=".7">100%</text><text class="sg-chart__label" x="178" y="42" text-anchor="end">raw parse</text><line class="sg-chart__line sg-chart__line--muted" x1="650.1" x2="660" y1="38" y2="38"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="650.1" cy="38" r="5"/><circle class="sg-chart__mark sg-chart__mark--2 sg-chart__ring" cx="660" cy="38" r="5"/><text class="sg-chart__label" x="178" y="82" text-anchor="end">schema valid</text><line class="sg-chart__line sg-chart__line--muted" x1="538.3" x2="658.1" y1="78" y2="78"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="538.3" cy="78" r="5"/><circle class="sg-chart__mark sg-chart__mark--2 sg-chart__ring" cx="658.1" cy="78" r="5"/><text class="sg-chart__label" x="178" y="122" text-anchor="end">required-field recall</text><line class="sg-chart__line sg-chart__line--muted" x1="545.8" x2="613" y1="118" y2="118"/><circle class="sg-chart__mark sg-chart__mark--2 sg-chart__ring" cx="545.8" cy="118" r="5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="613" cy="118" r="5"/></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>E2B</span><span><i style="background:var(--sg-chart-2)"></i>12B</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">measurement</th><th style="text-align:right">E2B</th><th style="text-align:right">12B</th></tr></thead><tbody><tr><td style="text-align:left">raw parse rate</td><td style="text-align:right">99.79%</td><td style="text-align:right">100.00%</td></tr><tr><td style="text-align:left">schema-valid rate</td><td style="text-align:right">97.41%</td><td style="text-align:right">99.96%</td></tr><tr><td style="text-align:left">required-field recall</td><td style="text-align:right"><strong>99.00%</strong></td><td style="text-align:right">97.57%</td></tr><tr><td style="text-align:left">truncated rows</td><td style="text-align:right">21</td><td style="text-align:right">0</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">The chart is zoomed from 90% to 100% and uses dots rather than bars. Truncated-row counts are in Raw data.</figcaption></figure>
+
+The code-unit task carried the recall difference: 90.37%, compared with 98.47%
+for E2B. A schema-valid object can still omit usable content. Schema validity and
+field recall need separate gates.
 
 ## The speed comparison belongs to two serving configurations
 
-| measurement | E2B | 12B |
-|---|---:|---:|
-| median latency | 10.7 s | 42.4 s |
-| 95th-percentile latency | 37.7 s | 91.8 s |
-| decode rate | 8.61 tokens/s | 2.41 tokens/s |
-| cold load | 12.7 s | 40.9 s |
-| slots and workers | 64 | 32 |
-| aggregate context | 131,072 tokens | 65,536 tokens |
-| memory after run | 4.23 gibibytes | 23.77 gibibytes |
+<figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="synth-serving" id="synth-serving-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="synth-serving" id="synth-serving-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="synth-serving-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="synth-serving-table">Raw data</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 232" preserveAspectRatio="xMidYMid meet" role="img" aria-label="E2B and 12B serving configurations across latency, decode rate and memory, each on its own scale"><text class="sg-chart__axis" x="0" y="24">MEDIAN REQUEST, SECONDS</text><text class="sg-chart__label" x="168" y="43" text-anchor="end">E2B</text><rect class="sg-chart__mark sg-chart__mark--1" x="178" y="34.5" width="107" height="9" rx="4"/><text class="sg-chart__value" x="294" y="43">10.7</text><text class="sg-chart__label" x="168" y="60" text-anchor="end">12B</text><rect class="sg-chart__mark sg-chart__mark--2" x="178" y="51.5" width="424" height="9" rx="4"/><text class="sg-chart__value" x="611" y="60">42.4</text><text class="sg-chart__axis" x="0" y="92">DECODE RATE, TOKENS PER SECOND</text><text class="sg-chart__label" x="168" y="111" text-anchor="end">E2B</text><rect class="sg-chart__mark sg-chart__mark--1" x="178" y="102.5" width="404.7" height="9" rx="4"/><text class="sg-chart__value" x="591.7" y="111">8.61</text><text class="sg-chart__label" x="168" y="128" text-anchor="end">12B</text><rect class="sg-chart__mark sg-chart__mark--2" x="178" y="119.5" width="113.3" height="9" rx="4"/><text class="sg-chart__value" x="300.3" y="128">2.41</text><text class="sg-chart__axis" x="0" y="160">MEMORY AFTER RUN, GIBIBYTES</text><text class="sg-chart__label" x="168" y="179" text-anchor="end">E2B</text><rect class="sg-chart__mark sg-chart__mark--1" x="178" y="170.5" width="74" height="9" rx="4"/><text class="sg-chart__value" x="261" y="179">4.23</text><text class="sg-chart__label" x="168" y="196" text-anchor="end">12B</text><rect class="sg-chart__mark sg-chart__mark--2" x="178" y="187.5" width="416" height="9" rx="4"/><text class="sg-chart__value" x="603" y="196">23.77</text></svg></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">measurement</th><th style="text-align:right">E2B</th><th style="text-align:right">12B</th></tr></thead><tbody><tr><td style="text-align:left">median latency</td><td style="text-align:right">10.7 s</td><td style="text-align:right">42.4 s</td></tr><tr><td style="text-align:left">95th-percentile latency</td><td style="text-align:right">37.7 s</td><td style="text-align:right">91.8 s</td></tr><tr><td style="text-align:left">decode rate</td><td style="text-align:right">8.61 tokens/s</td><td style="text-align:right">2.41 tokens/s</td></tr><tr><td style="text-align:left">cold load</td><td style="text-align:right">12.7 s</td><td style="text-align:right">40.9 s</td></tr><tr><td style="text-align:left">slots and workers</td><td style="text-align:right">64</td><td style="text-align:right">32</td></tr><tr><td style="text-align:left">aggregate context</td><td style="text-align:right">131,072 tokens</td><td style="text-align:right">65,536 tokens</td></tr><tr><td style="text-align:left">memory after run</td><td style="text-align:right">4.23 gibibytes</td><td style="text-align:right">23.77 gibibytes</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">Each measure uses its own zero-based scale. Raw data retains tail latency, cold load, slots and context.</figcaption></figure>
 
-The 12B profile used half as many concurrent slots because its weights left less
-room on the 24-gibibyte device. These are deployment configurations tuned to fit,
-not a controlled one-variable latency experiment. The observed median ratio is
-3.96 times; it cannot be assigned to parameter count alone.
+The profiles used different slot and context counts. They measure two deployment
+configurations, not parameter count in isolation. The latency gap cannot be
+assigned to model size alone.
 
-The memory records also rule out the intended local CPU conclusion. They record a
-graphics device, not CPU latency, memory pressure or throughput. A GPU comparison
-cannot decide whether either model meets the CPU service budget.
+The hardware records contain no CPU measurement. A GPU comparison cannot show
+whether either model meets the CPU service budget.
 
 ## Silver labels support selection, not absolute quality
 
-The expected outputs are de-identified silver labels derived from committed
-artifacts and their citations. They are suitable for comparing two runs on the
-same cases. They are not a human-audited gold set, so 0.3279 is not an estimate of
-absolute semantic correctness.
+The expected outputs are de-identified silver labels drawn from committed
+artifacts and source citations. They are suitable for comparing two runs on the
+same cases. They are not a human-audited gold set, so 0.3279 is not an estimate
+of absolute semantic correctness.
 
-The two summaries share the same fixture-manifest hash. Validation recomputed
-10,000 latest rows per model, verified artifact hashes and passed a secret scan.
-The 12B raw file retains 13 superseded attempts; last-row selection prevents those
-retries from changing its denominator.
+The two summaries record the same hash for the frozen fixture. The committed
+validation records cover 10,000 latest rows per model, verify artifact hashes and
+record passing secret scans. The 12B raw file retains 13 superseded attempts;
+last-row selection prevents those retries from changing its denominator.
 
 ## Keep 12B as the quality candidate and rerun the real decision
 
