@@ -1,0 +1,134 @@
+{
+  "artifacts": {
+    "gold_sha256": "fdf68b3ac661002cf158c79a43b0875f5eb6977b184d7290409738813986da14",
+    "pred_sha256": "e9fa384228b23e565cacc3cfe43b6cd489d92de2948f255bc96a125517e97179",
+    "run_log_sha256": "f48ef12b5571d7ed6cb78aa8cb914c1bed6a3de133e2c7240cde5881bcd328c4",
+    "score_sha256": "431090a54a49033a9121e50db7dad9dd303021c12c8599bdbecd1094fc155680",
+    "server_log_sha256": "9945f4e8364c5426cbc669497eb14351ed7026adde87eb0d5153b7f257dd72f1"
+  },
+  "completion_tokens": {
+    "maximum": 7589,
+    "median": 293
+  },
+  "concurrency": 1,
+  "context_limited_ids": [
+    "g000191"
+  ],
+  "context_tokens": 8192,
+  "decode_tokens_per_second": {
+    "maximum": 89.37361470897201,
+    "median": 72.07202842181638,
+    "minimum": 60.631298592885365
+  },
+  "latency_seconds": {
+    "p50": 4.5076,
+    "p95": 18.7377,
+    "p99": 40.2485
+  },
+  "model": "Qwen3.8-27B.Q4_K_M.xtx.mtp-on",
+  "mtp": {
+    "acceptance_rate": 0.5988165074160412,
+    "accepted": 303888,
+    "drafted": 507481
+  },
+  "parse_failures": 1,
+  "population": 1001,
+  "prompt_version": "v8",
+  "reasoning_rows": 1001,
+  "schema_failures": 1,
+  "strict_score": {
+    "by_category": {
+      "ambiguous": {
+        "_note": "no gold triples in this category; see abstention_rate_on_schema",
+        "f1": null,
+        "fn": 0,
+        "fp": 12,
+        "precision": null,
+        "recall": null,
+        "tp": 0
+      },
+      "first_person": {
+        "f1": 0.7037,
+        "fn": 30,
+        "fp": 34,
+        "precision": 0.6909,
+        "recall": 0.717,
+        "tp": 76
+      },
+      "governance": {
+        "f1": 0.7624,
+        "fn": 17,
+        "fp": 26,
+        "precision": 0.7263,
+        "recall": 0.8023,
+        "tp": 69
+      },
+      "implicit": {
+        "f1": 0.4545,
+        "fn": 43,
+        "fp": 29,
+        "precision": 0.5085,
+        "recall": 0.411,
+        "tp": 30
+      },
+      "infra": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 100
+      },
+      "multi_fact": {
+        "f1": 0.7174,
+        "fn": 69,
+        "fp": 124,
+        "precision": 0.664,
+        "recall": 0.7803,
+        "tp": 245
+      },
+      "negation": {
+        "_note": "no gold triples in this category; see abstention_rate_on_schema",
+        "f1": null,
+        "fn": 0,
+        "fp": 101,
+        "precision": null,
+        "recall": null,
+        "tp": 0
+      },
+      "novel_pred": {
+        "f1": 0.8485,
+        "fn": 4,
+        "fp": 6,
+        "precision": 0.8235,
+        "recall": 0.875,
+        "tp": 28
+      },
+      "third_person": {
+        "f1": 0.7692,
+        "fn": 39,
+        "fp": 39,
+        "precision": 0.7692,
+        "recall": 0.7692,
+        "tp": 130
+      },
+      "transient": {
+        "_note": "no gold triples in this category; see abstention_rate_on_schema",
+        "f1": null,
+        "fn": 0,
+        "fp": 0,
+        "precision": null,
+        "recall": null,
+        "tp": 0
+      }
+    },
+    "f1": 0.703,
+    "fn": 202,
+    "fp": 371,
+    "precision": 0.6463,
+    "recall": 0.7705,
+    "tp": 678
+  },
+  "thinking": true,
+  "transport_errors": 0
+}
