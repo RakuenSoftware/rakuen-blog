@@ -34,6 +34,7 @@ prediction file.
 | Qwen3.6-35B-A3B UD-Q4 MoE | 0.7257 | `results/vast/Qwen3.6-35B-A3B.UD-Q4_K_XL.live.score.json` |
 | Qwen3.6-27B dense UD-Q4 | 0.7152 | `results/vast/Qwen3.6-27B.UD-Q4_K_XL.live.score.json` |
 | Muse Glimmer 30B K-Quant-17GB, DFlash off | 0.7100 | `results/muse-glimmer-30b-xtx-20260810/Muse-Glimmer-30B.K-Quant-17GB.xtx.dflash-off.{pred.jsonl,score.json}` |
+| Qwen3.8-27B Q4_K_M, MTP | 0.7030 | `results/qwen38-27b-xtx-20260814/Qwen3.8-27B.Q4_K_M.xtx.mtp-on.{pred.jsonl,score.json,validation.json}` |
 | gemma-4-31B QAT UD-Q4 | 0.6872 | `results/ct140/gemma-4-31B-it.qat-UD-Q4_K_XL.xtx.score.json` |
 | gemma-4-12B QAT UD-Q4 | 0.6854 | `results/vast/gemma-4-12B-it.qat-UD-Q4_K_XL.live.score.json` |
 | gemma-4-26B-A4B QAT UD-Q4 unsloth | 0.6804 | `results/ct140/gemma-4-26B-A4B.qat-unsloth-UDQ4.5080.score.json` |
@@ -87,7 +88,7 @@ are recorded in `raw/quant-clarification-2026-08-09.md`.
 | SmolLM3-3B | Q8 > Q4 | `results/newcomers-1k/SmolLM3-3B.Q{4_K_M,8_0}.pred.jsonl` |
 
 The Smol Q4 comparison-only score is 0.3581 from
-`results/newcomers-1k/SmolLM3-3B.Q4_K_M.score.json`; it is not one of the 32
+`results/newcomers-1k/SmolLM3-3B.Q4_K_M.score.json`; it is not one of the 34
 leaderboard rows.
 
 **Correction, 2026-08-09.** The original default graph ranked observed F1 and
@@ -106,8 +107,14 @@ changed.
 
 All from `harness/harness/bootstrap_ci.py`, paired, resampling notes, fixed seed.
 
+The Qwen3.8 comparisons use 20,000 replicates at seed 380827. Their captured
+command and output are in
+`results/qwen38-27b-xtx-20260814/bootstrap-20000-seed-380827.txt`.
+
 | comparison | delta | interval |
 |---|---|---|
+| Qwen3.6-27B Q4_K_M MTP minus Qwen3.8-27B Q4_K_M MTP | +0.0147 | [−0.0038, +0.0335] |
+| Qwen3.6-35B-A3B UD-Q4 minus Qwen3.8-27B Q4_K_M MTP | +0.0228 | [+0.0042, +0.0417] |
 | 35B-A3B to 27B dense | −0.0106 | [−0.0294, +0.0088] |
 | 27B dense to 31B QAT | −0.0280 | [−0.0456, −0.0106] |
 | 31B QAT to 12B QAT | −0.0017 | [−0.0202, +0.0162] |
@@ -132,6 +139,7 @@ so it is not inserted into the ordering chain and carries no ordering claim.
 | gemma-4-12B non-QAT | 195.8 tok/s | `results/ct140/arms.log` |
 | gemma-4-12B QAT | 142.4 tok/s | `results/vast/gemma-4-12B-it.qat-UD-Q4_K_XL.live.pred.jsonl` |
 | gemma-4-31B non-QAT | 80.5 tok/s | `results/vast/gemma-4-31B-it.UD-Q4_K_XL.live.pred.jsonl` |
+| Qwen3.8-27B Q4_K_M, MTP | 72.1 tok/s | `results/qwen38-27b-xtx-20260814/Qwen3.8-27B.Q4_K_M.xtx.mtp-on.{pred.jsonl,validation.json}` |
 | gemma-4-31B QAT | 67.3 tok/s | `results/ct140/shard_gemma-4-31B-it.qat-UD-Q4_K_XL.xtx.run.log` |
 | Qwen3.6-27B dense | 67.8 tok/s | `results/vast/Qwen3.6-27B.UD-Q4_K_XL.live.pred.jsonl`, median `predicted_per_second` over 1,001 rows |
 | 27B median completion | 1,256 tok | same file |
@@ -147,7 +155,7 @@ low. The article marks the correction where the figure appears.
 
 | figure | value | artifact |
 |---|---|---|
-| arms with no reasoning pass | 10 of 32 | `reasons` column, per-arm score files above |
+| arms with no reasoning pass | 10 of 34 | `reasons` column, per-arm prediction files above; Qwen3.8 reasoned on 1,001 of 1,001 rows |
 | gemma-4-E4B QAT q4_0 partial | 0.85 | `results/qat-vs-ud/gemma-4-E4B-it.qat.pred.jsonl` |
 | gemma-4-E4B UD-Q6 partial | 0.846 | `results/v8-baseline/E4B.UD-Q6_K_XL.mtp.pred.jsonl`, 847 of 1,001 rows |
 | clause removal restored reasoning | 770 of 770 | `MEASUREMENT_LOG.md`, prompt-clause probe |
@@ -165,6 +173,20 @@ reasons on every row. The article no longer claims a cause.
 | subset against native run | −0.0079, 47% of text differing | same |
 | process count worth | about 0.0105 F1 | `ARTICLE_NOTES.md` |
 | LFM2.5-8B-A1B file size | 5.16 GB | `results/lfm25-8b/` run log |
+| Qwen3.8 context-limited rows | 1 of 1,001 | `results/qwen38-27b-xtx-20260814/Qwen3.8-27B.Q4_K_M.xtx.mtp-on.validation.json` |
+
+## Qwen3.8 update
+
+The collection method, runtime, model revisions, persistent `.254` storage
+path, expected result and artifact disposition are recorded in
+`results/qwen38-27b-xtx-20260814/PROVENANCE.md`. The figure-update source is
+`harness/harness/update_qwen38_figures.py`.
+
+This run is a native 1,001-note result. It adds one leaderboard row, one point
+to the F1/restraint plot and one throughput observation. The paired Qwen3.6-27B
+comparison is the closest saved configuration but uses an older `llama.cpp`
+build. The Qwen3.6-35B-A3B comparison also changes quant, backend and hardware.
+The article states both limits where the intervals appear.
 
 ## Not traced to an artifact in this folder
 

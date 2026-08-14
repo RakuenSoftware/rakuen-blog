@@ -1,11 +1,11 @@
 # Local Llm Fact Extraction Head To Head
 
-Twenty-three local models on one 1,001-note fact-extraction corpus, with a paired bootstrap on every ordering claim.
+Twenty-four local models on one 1,001-note fact-extraction corpus, with a paired bootstrap on every ordering claim.
 
 ## Status
 
-Published 2026-08-06. Every figure in the article traces to a raw artifact in the
-series evidence base.
+Published 2026-08-06 and updated 2026-08-14 with Qwen3.8-27B Q4_K_M. Every
+figure in the article traces to a raw artifact in the series evidence base.
 
 ## Evidence
 

@@ -1,0 +1,23 @@
+Command:
+
+python3 evidence/raw/harness/harness/bootstrap_ci.py \
+  --gold evidence/raw/corpus/data/corpora/v5/gold_small.jsonl \
+  --pred Qwen3.8-27B-Q4_K_M-MTP=evidence/raw/results/qwen38-27b-xtx-20260814/Qwen3.8-27B.Q4_K_M.xtx.mtp-on.pred.jsonl \
+  --pred Qwen3.6-27B-Q4_K_M-MTP=evidence/raw/results/qwen36-mtp-xtx/Qwen3.6-27b.Q4_K_M.xtx.mtp-on.pred.jsonl \
+  --pred Qwen3.6-35B-A3B-UD-Q4=evidence/raw/results/vast/Qwen3.6-35B-A3B.UD-Q4_K_XL.live.pred.jsonl \
+  --boot 20000 \
+  --seed 380827
+
+Output:
+
+run                                 F1            95% CI   tp  fp  fn
+Qwen3.8-27B-Q4_K_M-MTP          0.7030  [0.6762,0.7293]  678 371 202
+Qwen3.6-27B-Q4_K_M-MTP          0.7177  [0.6924,0.7416]  699 369 181
+Qwen3.6-35B-A3B-UD-Q4           0.7257  [0.7013,0.7495]  680 314 200
+
+Paired deltas vs Qwen3.8-27B-Q4_K_M-MTP (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+Qwen3.6-27B-Q4_K_M-MTP - Qwen3.8-27B-Q4_K_M-MTP   0.0147  [-0.0038,+0.0335]  INDISTINGUISHABLE
+Qwen3.6-35B-A3B-UD-Q4 - Qwen3.8-27B-Q4_K_M-MTP   0.0228  [+0.0042,+0.0417]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.

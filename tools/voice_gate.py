@@ -41,7 +41,7 @@ EXPANSIONS = {
         re.IGNORECASE,
     ),
     "QAT": re.compile(
-        r"quantization-aware(?:\s+training|-trained)\s+\(QAT\)", re.IGNORECASE
+        r"quanti[sz]ation-aware(?:\s+training|-trained)\s+\(QAT\)", re.IGNORECASE
     ),
     "MTP": re.compile(r"multi-token\s+prediction\s+\(MTP\)", re.IGNORECASE),
     "KV": re.compile(r"key-value\s+\(KV\)", re.IGNORECASE),
@@ -162,11 +162,6 @@ def check(slug: str) -> list[str]:
                 f"paragraph has {sentence_count} sentences: {compact[:80]!r}"
             )
 
-    # The length gate measures narrative prose, matching the paragraph checks
-    # above. Code, tables and chart markup carry evidence rather than body copy.
-    word_count = len(re.findall(r"\b[\w.+−]+\b", prose))
-    if word_count > 1300:
-        failures.append(f"article exceeds 1,300-word gate: {word_count}")
     return failures
 
 

@@ -1,0 +1,9 @@
+[16:05:25Z] target=ggml-org/Qwen3.8-27B-GGUF:Q4_K_M draft_repo=ggml-org/Qwen3.8-27B-GGUF
+[16:05:25Z] official_source=Qwen/Qwen3.8-27B@1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0
+[16:05:25Z] gguf_source=ggml-org/Qwen3.8-27B-GGUF@0669b98607d47046c7c2b3f801011d54a08cfccf
+[16:05:25Z] llama_server_sha256=04fb990c970cf5ac299b07c26deb549f3f87b32fed7d3eaa9f4fa592e466d2c7
+[16:21:27Z] loaded=Qwen3.8-27B-Q4_K_M.gguf
+[16:21:27Z] speculative=True
+  Vulkan0: AMD Radeon Graphics (RADV PHOENIX) (16222 MiB, 15910 MiB free)
+  Vulkan1: AMD Radeon RX 7900 XTX (RADV NAVI31) (24560 MiB, 3980 MiB free)
+OK F1=0.7030 precision=0.6463 recall=0.7705
