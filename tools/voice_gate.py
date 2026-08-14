@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import html
 import re
 import sys
 from pathlib import Path
@@ -70,6 +71,25 @@ def split_frontmatter(text: str) -> tuple[str, str]:
 
 
 def prose_without_code_or_tables(body: str) -> str:
+    def figure_caption(match: re.Match[str]) -> str:
+        caption = re.search(
+            r"<figcaption\b[^>]*>(.*?)</figcaption>",
+            match.group(0),
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        if caption is None:
+            return ""
+        visible = re.sub(r"<[^>]+>", " ", caption.group(1))
+        return html.unescape(visible)
+
+    # Published articles use one self-contained raw-HTML block per figure.
+    # Keep its caption and exclude controls, SVG labels and the raw-data table.
+    body = re.sub(
+        r"<figure\s+class=[\"']sg-figure[\"'][^>]*>.*?</figure>",
+        figure_caption,
+        body,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
     lines: list[str] = []
     fenced = False
     for line in body.splitlines():
@@ -142,7 +162,9 @@ def check(slug: str) -> list[str]:
                 f"paragraph has {sentence_count} sentences: {compact[:80]!r}"
             )
 
-    word_count = len(re.findall(r"\b[\w.+−]+\b", body))
+    # The length gate measures narrative prose, matching the paragraph checks
+    # above. Code, tables and chart markup carry evidence rather than body copy.
+    word_count = len(re.findall(r"\b[\w.+−]+\b", prose))
     if word_count > 1300:
         failures.append(f"article exceeds 1,300-word gate: {word_count}")
     return failures
