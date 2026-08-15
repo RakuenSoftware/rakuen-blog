@@ -1,0 +1,21 @@
+[21:05:47Z] === ontology A/B on the xtx, 1001 notes, gemma-4-E4B-it
+[21:05:47Z] v7 renders 17 relations, live renders 24; the template is byte-identical
+[21:05:47Z] --- gemma-4-E4B-it.ontology-v7 on xtx, nproc=1, no speculation, 1001 notes
+[22:01:01Z] OK gemma-4-E4B-it.ontology-v7 wall=55m
+[22:01:01Z] --- gemma-4-E4B-it.ontology-live on xtx, nproc=1, no speculation, 1001 notes
+[23:00:05Z] OK gemma-4-E4B-it.ontology-live wall=59m
+[23:00:05Z] === novel-predicate rates ===
+corpus rows: v7 1001, v8 1001
+arm                            facts   novel     pct  distinct  seen once
+v7 prompt, 17 relations         1022     215   21.04        58         32
+v7 predictions, 24 rels         1022     157   15.36        53         32
+v8 prompt, 24 relations         1029     134   13.02        53         31
+
+total fall        +8.02 points
+  ontology term   +5.68  (same predictions, larger seed set)
+  prompt term     +2.34  (model reached for the listed name)
+
+most frequent novel predicates
+  v7: owns 30, runs_on 24, acquired 17, contributes_to 16, withdrew_from 10, mentors 9, drives 9, partnered_with 7
+  v8: owns 21, partnered_with 12, contributes_to 10, drives 8, withdrew_from 7, removed_from 5, manages 4, audits 4
+[23:00:05Z] === ontology A/B COMPLETE ===

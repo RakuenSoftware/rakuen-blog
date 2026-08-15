@@ -2228,3 +2228,35 @@ only when some row records a non-null draft count.
 
 **Found** on 2026-08-11 while reconstructing a runnable workspace for the mid3k
 reruns, not by the guard reporting anything new.
+
+## Defect 44: the live prompt offers two of its own canonical relations as things to invent
+
+`MF_SYSTEM_PROMPT_TMPL` sends the 24 canonical relation names, then says:
+
+> If NONE fits, emit a concise snake_case predicate of your own (e.g. drives,
+> founded, mentors) - NEVER a generic catch-all such as "other"/"unknown"/"misc".
+
+`founded` and `mentors` are in `SEED_ONTOLOGY`. They were two of the seven added
+in v8, and the escape-hatch examples were not revisited when they were. So the
+prompt names them in the canonical list and then names them again as the shape of
+a predicate that is **not** in the canonical list, in the same paragraph.
+
+Only `drives` of the three examples is genuinely outside the ontology.
+
+**Effect is unmeasured and the direction is not obvious.** It could raise the
+novel-predicate rate by modelling invention on two words that did not need
+inventing, or lower it by putting two canonical names in front of the model
+twice. Nothing here separates those, and the fragmentation A/B does not either,
+because both arms carry the identical template. What the A/B does establish is
+that the defect cannot explain the v7-to-v8 difference: the sentence is
+byte-identical on both sides.
+
+**Not fixed.** Changing the template changes the rendered prompt, which is a new
+prompt version by the rule in `prompt.py`, and no result in this campaign would
+be comparable across it. The fix belongs with the next version bump, together
+with a check that every escape-hatch example is absent from the seed ontology.
+
+**Found** on 2026-08-12 while deriving the v7 prompt for the fragmentation
+rerun. The derivation asserts that no v8-added relation survives in the v7
+render; it failed, and the two survivors were in the prose rather than the list.
+An assertion written to check one thing reported a different one.
