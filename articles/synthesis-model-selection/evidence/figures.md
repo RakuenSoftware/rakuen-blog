@@ -34,6 +34,20 @@ The figure's chart ranks observed content scores. It does not present those
 point estimates as statistical ranks. Its Numbers tab carries the selection
 measurements that the chart omits.
 
+### Content, latency and memory frontier
+
+| article figure or claim | artifact and field |
+|---|---|
+| content score against median request latency | `analysis-20260815.json`, `models[].content_f1` and `latency_s.p50` |
+| circle area | `models[].vram_after_run_bytes`, converted from bytes to gibibytes before area scaling |
+| measured frontier line | `content_latency_pareto_frontier` |
+| logarithmic horizontal positions | base-10 transform of `latency_s.p50`, bounded from 0.5 to 12 seconds |
+
+The line joins the configurations named by the analysis as the observed
+content-latency Pareto frontier. It is descriptive, not a confidence interval.
+The Numbers tab carries the untransformed median, 95th percentile and memory
+measurements.
+
 ### Paired decisions
 
 | article comparison | `right_minus_left` orientation in artifact | observed difference | 95% paired range |
@@ -52,6 +66,19 @@ Differences and endpoints in the article are rounded from the unrounded JSON
 fields. A range containing zero is described as not statistically separated.
 No equivalence margin or equivalence test was used.
 
+### Task-level point estimates
+
+| article figure or claim | artifact and field |
+|---|---|
+| all 45 task-level content scores | `analysis-20260815.json`, `models[].by_task.<task>.content_f1` |
+| two displayed bars per task | the highest and second-highest observed values in each task column |
+| 31B leads claim and code unit; 12B leads document summary; 26B-A4B leads entity; Qwen3.8 leads synthesis | maxima of those five task columns |
+
+The task chart is descriptive. No task-level paired interval was calculated,
+so the article does not turn these observed leaders into five additional model
+selection claims. The Numbers tab retains all nine configurations rather than
+only the two drawn for each task.
+
 ### Qwen3.8 and Muse mechanisms
 
 | claim | artifact and field |
@@ -63,6 +90,23 @@ No equivalence margin or equivalence test was used.
 | Muse document-summary content score was 0.2026; next-lowest was Qwen3.6-35B-A3B at 0.4167 | `models[].by_task.doc_summary.content_f1` |
 | Muse generated 415,197 completion tokens, 2.94 times E2B's next-highest total of 141,295 | `models[].completion_tokens` and the unrounded ratio |
 | Muse median latency was 10.115 seconds | `models[].latency_s.p50` |
+
+### Output volume and required-field completeness
+
+| article figure or claim | artifact and field |
+|---|---|
+| completion-token bars for all nine configurations | `analysis-20260815.json`, `models[].completion_tokens` |
+| decode rate and median request time in Numbers | `models[].decode_tokens_per_second` and `latency_s.p50` |
+| required-field recall dots for all nine configurations | `models[].required_field_recall` |
+| raw-parse and schema-valid rates in Numbers | `models[].raw_parse_rate` and `schema_valid_rate` |
+
+The completeness chart uses an explicitly labelled 88% to 100% scale. It uses
+dots rather than bars so the truncated scale cannot be read as magnitude from
+zero. The completion-token chart uses a zero baseline.
+
+The six-figure presentation replaces no measurement, finding or recommendation.
+It draws additional views from the same canonical analysis and retains the same
+publication date. This is a presentation completion, not a new benchmark run.
 
 The earlier fact-extraction scores are candidate-selection context, not inputs
 to the synthesis result. They trace through
