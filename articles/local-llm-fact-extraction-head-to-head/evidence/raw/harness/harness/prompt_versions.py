@@ -107,7 +107,39 @@ def noclause(text=None):
     return s.replace(FINAL_LIVE, "", 1).rstrip() + "\n"
 
 
-VERSIONS = {"v5": v5, "v6": v6, "v4clause": v4clause, "noclause": noclause}
+ADDED_V8 = ("customer_of", "subscription_tier", "owns_account", "purchased",
+            "founded", "mentors", "runs_on")
+
+
+def v7(text=None):
+    """v8 minus the seven relations the ontology gained, so 17 names, not 24.
+
+    The template is byte-identical between the two versions. What changed is the
+    canonical relation list interpolated into it, which is why a version scheme
+    tracking only template text would have called these two runs comparable.
+
+    Derived by removing the seven added names from the live list rather than by
+    keeping a copy of the old one, on the same principle as every other version
+    here: if a name is later renamed in rel_types.c this raises instead of
+    quietly rendering a prompt that is neither version.
+    """
+    if text is not None:
+        raise SystemExit("v7 rebuilds the relation list, so it cannot layer on "
+                         "another version's text")
+    prompt.verify_against_source()
+    live_names = prompt.seed_relations()
+    missing = [r for r in ADDED_V8 if r not in live_names]
+    if missing:
+        raise SystemExit("prompt_versions: v8 relations absent from the live "
+                         f"ontology, so v7 cannot be derived: {missing}")
+    kept = [r for r in live_names if r not in ADDED_V8]
+    if len(kept) != 17:
+        raise SystemExit(f"prompt_versions: v7 needs 17 relations, derived {len(kept)}")
+    return prompt.TEMPLATE % ", ".join(kept)
+
+
+VERSIONS = {"v5": v5, "v6": v6, "v7": v7, "v4clause": v4clause,
+            "noclause": noclause}
 
 
 def render(version):

@@ -1,0 +1,128 @@
+{
+ "v7": {
+  "rows": 1001,
+  "facts": 1022,
+  "novel": 215,
+  "pct": 21.04,
+  "distinct": 58,
+  "once": 32,
+  "top": [
+   [
+    "owns",
+    30
+   ],
+   [
+    "runs_on",
+    24
+   ],
+   [
+    "acquired",
+    17
+   ],
+   [
+    "contributes_to",
+    16
+   ],
+   [
+    "withdrew_from",
+    10
+   ],
+   [
+    "mentors",
+    9
+   ],
+   [
+    "drives",
+    9
+   ],
+   [
+    "partnered_with",
+    7
+   ]
+  ]
+ },
+ "v7_rescored_v8": {
+  "rows": 1001,
+  "facts": 1022,
+  "novel": 157,
+  "pct": 15.36,
+  "distinct": 53,
+  "once": 32,
+  "top": [
+   [
+    "owns",
+    30
+   ],
+   [
+    "contributes_to",
+    16
+   ],
+   [
+    "withdrew_from",
+    10
+   ],
+   [
+    "drives",
+    9
+   ],
+   [
+    "partnered_with",
+    7
+   ],
+   [
+    "removed_from",
+    6
+   ],
+   [
+    "operates",
+    6
+   ],
+   [
+    "sponsors",
+    5
+   ]
+  ]
+ },
+ "v8": {
+  "rows": 1001,
+  "facts": 1029,
+  "novel": 134,
+  "pct": 13.02,
+  "distinct": 53,
+  "once": 31,
+  "top": [
+   [
+    "owns",
+    21
+   ],
+   [
+    "partnered_with",
+    12
+   ],
+   [
+    "contributes_to",
+    10
+   ],
+   [
+    "drives",
+    8
+   ],
+   [
+    "withdrew_from",
+    7
+   ],
+   [
+    "removed_from",
+    5
+   ],
+   [
+    "manages",
+    4
+   ],
+   [
+    "audits",
+    4
+   ]
+  ]
+ }
+}

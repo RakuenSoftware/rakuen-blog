@@ -73,6 +73,14 @@ RESERVE_MIB=${RESERVE_MIB:-1800}  # headroom for fragmentation + the draft ctx
 # exactly like NPROC.
 CACHE_RAM_MIB=${CACHE_RAM_MIB:-1024}
 
+# Which prompt the client renders. "live" is the shipped one and the default, so
+# every existing caller is unchanged; anything else is a key in
+# prompt_versions.VERSIONS. It is here rather than hardcoded in the invocation
+# because a prompt-version A/B has to hold the server, the weights, the cache
+# size and the concurrency fixed while only the prompt moves, and this script is
+# what owns all four. run_llamacpp.py records the version on every row.
+PROMPT_VERSION=${PROMPT_VERSION:-live}
+
 case "$CARD" in
   # CT 140's address is asked for, not assumed. It was hardcoded to 192.168.0.5,
   # and when the container was rebuilt it came up on 192.168.0.119; the waiter
@@ -285,7 +293,7 @@ pids=()
 for i in $(seq 0 $((NPROC-1))); do
   p=$((BASE_PORT+i))
   python3 harness/run_llamacpp.py --model "$LABEL" --gold "$SHARD_DIR/shard$i.jsonl" \
-    --thinking --max-tokens 8192 --concurrency 1 \
+    --thinking --max-tokens 8192 --concurrency 1 --prompt-version "$PROMPT_VERSION" \
     --out "$SHARD_DIR/out$i.jsonl" --base-url "http://$EP:$p" >>"$OUT/shard_$LABEL.run.log" 2>&1 &
   pids+=($!)
 done
@@ -390,7 +398,7 @@ with open(out,"w") as fh:
         if json.loads(line)["id"] in want: fh.write(line)
 PY
   python3 harness/run_llamacpp.py --model "$LABEL" --gold "$SHARD_DIR/retry$pass.gold.jsonl" \
-    --thinking --max-tokens 8192 --concurrency 1 \
+    --thinking --max-tokens 8192 --concurrency 1 --prompt-version "$PROMPT_VERSION" \
     --out "$SHARD_DIR/retry$pass.out.jsonl" --base-url "http://$EP:$BASE_PORT" \
     >>"$OUT/shard_$LABEL.run.log" 2>&1
 
