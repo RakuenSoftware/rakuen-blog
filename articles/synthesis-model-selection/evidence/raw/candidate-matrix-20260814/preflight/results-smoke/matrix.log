@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "/mnt/media/synthesis-model-selection-20260814/benchmarks/ab-v2/run_candidate_matrix.py", line 490, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/mnt/media/synthesis-model-selection-20260814/benchmarks/ab-v2/run_candidate_matrix.py", line 460, in main
+    run_candidate(
+    ~~~~~~~~~~~~~^
+        by_label[label],
+        ^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+        request_timeout=args.request_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/mnt/media/synthesis-model-selection-20260814/benchmarks/ab-v2/run_candidate_matrix.py", line 325, in run_candidate
+    cold_load_seconds = wait_for_server(
+        process, f"http://127.0.0.1:{port}/health", server_timeout
+    )
+  File "/mnt/media/synthesis-model-selection-20260814/benchmarks/ab-v2/run_candidate_matrix.py", line 148, in wait_for_server
+    time.sleep(5)
+    ~~~~~~~~~~^^^
+KeyboardInterrupt

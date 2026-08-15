@@ -1,0 +1,27 @@
+OK gemma4_e2b_qat_udq4_mtp: n=10 content_f1=0.463400 p50=0.477s
+OK gemma4_e4b_qat_udq4_mtp: n=10 content_f1=0.472797 p50=0.543s
+OK gemma4_12b_qat_udq4_mtp: n=10 content_f1=0.424712 p50=1.276s
+OK gemma4_26b_a4b_qat_udq4_mtp: n=10 content_f1=0.439487 p50=0.945s
+OK gemma4_31b_qat_udq4_mtp: n=10 content_f1=0.507562 p50=2.579s
+Traceback (most recent call last):
+  File "/mnt/media/synthesis-model-selection-20260814/benchmarks/ab-v2/run_candidate_matrix.py", line 490, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/mnt/media/synthesis-model-selection-20260814/benchmarks/ab-v2/run_candidate_matrix.py", line 460, in main
+    run_candidate(
+    ~~~~~~~~~~~~~^
+        by_label[label],
+        ^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+        request_timeout=args.request_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/mnt/media/synthesis-model-selection-20260814/benchmarks/ab-v2/run_candidate_matrix.py", line 325, in run_candidate
+    cold_load_seconds = wait_for_server(
+        process, f"http://127.0.0.1:{port}/health", server_timeout
+    )
+  File "/mnt/media/synthesis-model-selection-20260814/benchmarks/ab-v2/run_candidate_matrix.py", line 148, in wait_for_server
+    time.sleep(5)
+    ~~~~~~~~~~^^^
+KeyboardInterrupt

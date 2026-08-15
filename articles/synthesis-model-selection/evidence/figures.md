@@ -2,6 +2,80 @@
 
 Paths below are relative to `articles/synthesis-model-selection/`.
 
+## Completed nine-configuration matrix
+
+The canonical result root is
+`evidence/raw/candidate-matrix-20260814/canonical/`. Each named directory holds
+1,000 latest successful rows, its generated summary, the model and load record,
+and the unedited runner and server logs. `RUN_STATE.json` records a completed
+nine-configuration controller run.
+
+The independent result is `canonical/analysis-20260815.json`, SHA-256
+`c825f90f1a4a8d5e6ef4d9e9de2a9cba43c17527025d9fd7a2c71201b615c095`.
+`benchmarks/ab-v2/analyze_candidate_matrix.py` produced it with 10,000 paired
+case resamples, seed 20260815 and NumPy 2.5.0. Before analysis, the script
+requires identical case populations and suite hashes, 1,000 successful latest
+rows per configuration, a completed controller state, the pinned load profile,
+the expected loaded model and the expected MTP state. It records SHA-256 hashes
+for every raw, summary and hardware file.
+
+### Observed synthesis ladder
+
+| article figure or claim | artifact and field |
+|---|---|
+| nine content scores and observed order | `analysis-20260815.json`, `models[].content_f1` and `content_rank` |
+| median and 95th-percentile latency | `models[].latency_s.p50` and `.p95` |
+| required-field recall | `models[].required_field_recall` |
+| post-run GPU memory | `models[].vram_after_run_bytes`, converted from bytes to gibibytes |
+| 12B median is 44% lower than 31B; post-run allocation is 59% lower | ratios calculated from the unrounded fields above |
+| E2B median is 0.554 seconds against 12B's 1.335 seconds | the same unrounded latency fields |
+
+The figure's chart ranks observed content scores. It does not present those
+point estimates as statistical ranks. Its Numbers tab carries the selection
+measurements that the chart omits.
+
+### Paired decisions
+
+| article comparison | `right_minus_left` orientation in artifact | observed difference | 95% paired range |
+|---|---|---:|---:|
+| 31B minus 12B | `gemma4_31b_qat_udq4_mtp` minus `gemma4_12b_qat_udq4_mtp` | +0.0053 | -0.0039 to +0.0147 |
+| 31B minus Qwen3.6-27B | reverse of stored Qwen3.6 minus 31B | +0.0107 | +0.0007 to +0.0207 |
+| 12B minus Qwen3.6-27B | reverse of stored Qwen3.6 minus 12B | +0.0054 | -0.0048 to +0.0155 |
+| 12B minus E2B | stored orientation | +0.0299 | +0.0197 to +0.0401 |
+| Qwen3.6-27B minus Qwen3.8-27B | reverse of stored Qwen3.8 minus Qwen3.6 | +0.0119 | +0.0022 to +0.0216 |
+| 26B-A4B minus E2B | stored orientation | +0.0017 | -0.0094 to +0.0127 |
+| Qwen3.6-35B-A3B minus E2B | stored orientation | +0.0008 | -0.0100 to +0.0114 |
+| E2B minus E4B | reverse of stored E4B minus E2B | +0.0070 | -0.0027 to +0.0166 |
+| E2B minus Muse | reverse of stored Muse minus E2B | +0.0381 | +0.0253 to +0.0510 |
+
+Differences and endpoints in the article are rounded from the unrounded JSON
+fields. A range containing zero is described as not statistically separated.
+No equivalence margin or equivalence test was used.
+
+### Qwen3.8 and Muse mechanisms
+
+| claim | artifact and field |
+|---|---|
+| Qwen3.8 generated 136,535 completion tokens; Qwen3.6-27B generated 122,389 | `models[].completion_tokens` |
+| Qwen3.8 decoded 85.49 tokens per second; Qwen3.6-27B decoded 83.75 | `models[].decode_tokens_per_second` |
+| Qwen3.8 median latency was 2.218 seconds against 2.073 seconds | `models[].latency_s.p50` |
+| Muse parsed and met the schema on 99.9%; required-field recall was 89.46% | `models[].raw_parse_rate`, `.schema_valid_rate` and `.required_field_recall` |
+| Muse document-summary content score was 0.2026; next-lowest was Qwen3.6-35B-A3B at 0.4167 | `models[].by_task.doc_summary.content_f1` |
+| Muse generated 415,197 completion tokens, 2.94 times E2B's next-highest total of 141,295 | `models[].completion_tokens` and the unrounded ratio |
+| Muse median latency was 10.115 seconds | `models[].latency_s.p50` |
+
+The earlier fact-extraction scores are candidate-selection context, not inputs
+to the synthesis result. They trace through
+`articles/local-llm-fact-extraction-head-to-head/evidence/figures.md`. The Muse
+reasoning claim is a vendor model-card statement, read August 14, 2026, and is
+linked inline in the article.
+
+## Earlier unpublished two-run draft
+
+The tables below document inputs used by an earlier unpublished draft. They are
+retained as reporting records and do not support the nine-configuration
+selection.
+
 ## Paired quality measurements
 
 | figure | artifact |
@@ -40,8 +114,6 @@ model-size effect.
   and original response hash while preserving the pre-redaction metrics.
 - **Wider model ladder:** excluded. No complete wider campaign is committed in
   this folder, so it contributes no ranking or recommendation.
-- **CPU selection:** left open. Both committed runs record graphics-device
-  serving and cannot establish CPU affordability.
 - **Absolute quality:** not claimed. The fixture identifies its labels as silver,
   not human-audited gold.
 
