@@ -1,0 +1,137 @@
+gemma4_12b_qat_udq4_mtp: 100/1000
+gemma4_12b_qat_udq4_mtp: 200/1000
+gemma4_12b_qat_udq4_mtp: 300/1000
+gemma4_12b_qat_udq4_mtp: 400/1000
+gemma4_12b_qat_udq4_mtp: 500/1000
+gemma4_12b_qat_udq4_mtp: 600/1000
+gemma4_12b_qat_udq4_mtp: 700/1000
+gemma4_12b_qat_udq4_mtp: 800/1000
+gemma4_12b_qat_udq4_mtp: 900/1000
+gemma4_12b_qat_udq4_mtp: 1000/1000
+{
+  "by_task": {
+    "claim": {
+      "completion_tokens": 21162,
+      "content_f1": 0.21313468052649284,
+      "decode_tokens_per_second": 144.6818260886574,
+      "empty_rate": 0.0,
+      "latency_s": {
+        "p50": 1.1187271559610963,
+        "p95": 1.6787466677837062,
+        "p99": 1.8584202669560912
+      },
+      "n": 233,
+      "prompt_tokens": 93336,
+      "prompt_tokens_per_second": 1030.1479071699173,
+      "raw_parse_rate": 1.0,
+      "requests_retried": 0,
+      "required_field_recall": 1.0,
+      "schema_valid_rate": 1.0,
+      "success_rate": 1.0,
+      "truncated_rate": 0.0
+    },
+    "code_unit": {
+      "completion_tokens": 42098,
+      "content_f1": 0.4527218640750053,
+      "decode_tokens_per_second": 141.7653066693596,
+      "empty_rate": 0.0,
+      "latency_s": {
+        "p50": 1.8968986999243498,
+        "p95": 2.4737494055181743,
+        "p99": 2.626732613765635
+      },
+      "n": 239,
+      "prompt_tokens": 146497,
+      "prompt_tokens_per_second": 1111.2756608191914,
+      "raw_parse_rate": 1.0,
+      "requests_retried": 0,
+      "required_field_recall": 1.0,
+      "schema_valid_rate": 1.0,
+      "success_rate": 1.0,
+      "truncated_rate": 0.0
+    },
+    "doc_summary": {
+      "completion_tokens": 30296,
+      "content_f1": 0.4890636695555298,
+      "decode_tokens_per_second": 142.15065333253875,
+      "empty_rate": 0.0,
+      "latency_s": {
+        "p50": 1.4300135218072683,
+        "p95": 2.3060572386719285,
+        "p99": 2.703815097985789
+      },
+      "n": 209,
+      "prompt_tokens": 72483,
+      "prompt_tokens_per_second": 969.4613845727038,
+      "raw_parse_rate": 1.0,
+      "requests_retried": 0,
+      "required_field_recall": 1.0,
+      "schema_valid_rate": 1.0,
+      "success_rate": 1.0,
+      "truncated_rate": 0.0
+    },
+    "entity": {
+      "completion_tokens": 8520,
+      "content_f1": 0.11906034599721574,
+      "decode_tokens_per_second": 140.50291567461906,
+      "empty_rate": 0.0,
+      "latency_s": {
+        "p50": 0.8569861319847405,
+        "p95": 1.3252781704068184,
+        "p99": 1.4542775158770382
+      },
+      "n": 151,
+      "prompt_tokens": 55214,
+      "prompt_tokens_per_second": 993.2727511431704,
+      "raw_parse_rate": 1.0,
+      "requests_retried": 0,
+      "required_field_recall": 1.0,
+      "schema_valid_rate": 1.0,
+      "success_rate": 1.0,
+      "truncated_rate": 0.0
+    },
+    "synthesis": {
+      "completion_tokens": 20759,
+      "content_f1": 0.48274718962522584,
+      "decode_tokens_per_second": 139.94196941771474,
+      "empty_rate": 0.0,
+      "latency_s": {
+        "p50": 1.2903205080656335,
+        "p95": 2.029544062213972,
+        "p99": 2.4107928158505842
+      },
+      "n": 168,
+      "prompt_tokens": 61968,
+      "prompt_tokens_per_second": 1031.6149151726136,
+      "raw_parse_rate": 1.0,
+      "requests_retried": 0,
+      "required_field_recall": 1.0,
+      "schema_valid_rate": 1.0,
+      "success_rate": 1.0,
+      "truncated_rate": 0.0
+    }
+  },
+  "label": "gemma4_12b_qat_udq4_mtp",
+  "model": "gemma4_12b_qat_udq4_mtp",
+  "overall": {
+    "completion_tokens": 122835,
+    "content_f1": 0.3591548531163224,
+    "decode_tokens_per_second": 141.9521608309581,
+    "empty_rate": 0.0,
+    "latency_s": {
+      "p50": 1.334595961496234,
+      "p95": 2.3006139975390396,
+      "p99": 2.566451778498012
+    },
+    "n": 1000,
+    "prompt_tokens": 429498,
+    "prompt_tokens_per_second": 1040.311016414513,
+    "raw_parse_rate": 1.0,
+    "requests_retried": 0,
+    "required_field_recall": 1.0,
+    "schema_valid_rate": 1.0,
+    "success_rate": 1.0,
+    "truncated_rate": 0.0
+  },
+  "suite_manifest_sha256": "16d2c16add86052ff24be410699ab9452ee1a36252de6dba31ab5391de7ab81c"
+}

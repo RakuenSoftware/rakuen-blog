@@ -1,0 +1,56 @@
+{
+  "after_load": {
+    "gpu_busy_percent": 0,
+    "memavailable_bytes": 24015818752,
+    "swapfree_bytes": 431890432,
+    "swaptotal_bytes": 4294963200,
+    "vram_total_bytes": 25753026560,
+    "vram_used_bytes": 16948084736
+  },
+  "after_run": {
+    "gpu_busy_percent": 89,
+    "memavailable_bytes": 23708069888,
+    "swapfree_bytes": 539123712,
+    "swaptotal_bytes": 4294963200,
+    "vram_total_bytes": 25753026560,
+    "vram_used_bytes": 16959086592
+  },
+  "before_load": {
+    "gpu_busy_percent": 0,
+    "memavailable_bytes": 23033778176,
+    "swapfree_bytes": 2293297152,
+    "swaptotal_bytes": 4294963200,
+    "vram_total_bytes": 25753026560,
+    "vram_used_bytes": 27971584
+  },
+  "candidate": {
+    "chat_template_kwargs": {
+      "reasoning_strength": "low"
+    },
+    "expected_model": "muse-glimmer-30B-kquant-17gb.gguf",
+    "family": "Muse Glimmer",
+    "label": "muse_glimmer_30b_kquant_dflash_off",
+    "speculative": false,
+    "target": "meta-models/Muse-Glimmer-30B-GGUF",
+    "target_file": "muse-glimmer-30B-kquant-17gb.gguf",
+    "target_quantization": "K-Quant 17 GB"
+  },
+  "cold_load_seconds": 85.40090349805541,
+  "hf_home": "/mnt/media/tierbench/hf",
+  "llama_server": "/mnt/media/tierbench/bin/llama-b10356/llama-server",
+  "llama_server_sha256": "04fb990c970cf5ac299b07c26deb549f3f87b32fed7d3eaa9f4fa592e466d2c7",
+  "load_profile": {
+    "context_tokens": 8192,
+    "device": "Vulkan1",
+    "flash_attention": true,
+    "gpu_layers": 99,
+    "logical_batch_tokens": 2048,
+    "output_constraint": "response_format strict json_schema",
+    "parallel_slots": 1,
+    "physical_batch_tokens": 2048,
+    "prompt_cache_mib": 1024,
+    "workers": 1
+  },
+  "model_path": "/mnt/media/tierbench/hf/hub/models--meta-models--Muse-Glimmer-30B-GGUF/snapshots/43c7eadd41352a299ea8e0a36b3157978dd63596/muse-glimmer-30B-kquant-17gb.gguf",
+  "speculative": false
+}

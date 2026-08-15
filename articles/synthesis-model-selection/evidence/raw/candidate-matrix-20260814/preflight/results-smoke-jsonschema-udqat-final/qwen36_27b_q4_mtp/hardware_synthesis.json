@@ -1,0 +1,54 @@
+{
+  "after_load": {
+    "gpu_busy_percent": 0,
+    "memavailable_bytes": 26392526848,
+    "swapfree_bytes": 1741213696,
+    "swaptotal_bytes": 4294963200,
+    "vram_total_bytes": 25753026560,
+    "vram_used_bytes": 21701513216
+  },
+  "after_run": {
+    "gpu_busy_percent": 82,
+    "memavailable_bytes": 24855072768,
+    "swapfree_bytes": 1820143616,
+    "swaptotal_bytes": 4294963200,
+    "vram_total_bytes": 25753026560,
+    "vram_used_bytes": 21714251776
+  },
+  "before_load": {
+    "gpu_busy_percent": 59,
+    "memavailable_bytes": 25417826304,
+    "swapfree_bytes": 2210762752,
+    "swaptotal_bytes": 4294963200,
+    "vram_total_bytes": 25753026560,
+    "vram_used_bytes": 27971584
+  },
+  "candidate": {
+    "draft": "ggml-org/Qwen3.6-27B-GGUF",
+    "expected_model": "Qwen3.6-27B-Q4_K_M",
+    "family": "Qwen 3.6",
+    "hf_home": "/mnt/media/storage/models/hf",
+    "label": "qwen36_27b_q4_mtp",
+    "speculative": true,
+    "target": "ggml-org/Qwen3.6-27B-GGUF:Q4_K_M",
+    "target_quantization": "Q4_K_M"
+  },
+  "cold_load_seconds": 142.41833321703598,
+  "hf_home": "/mnt/media/storage/models/hf",
+  "llama_server": "/mnt/media/tierbench/bin/llama-b10356/llama-server",
+  "llama_server_sha256": "04fb990c970cf5ac299b07c26deb549f3f87b32fed7d3eaa9f4fa592e466d2c7",
+  "load_profile": {
+    "context_tokens": 8192,
+    "device": "Vulkan1",
+    "flash_attention": true,
+    "gpu_layers": 99,
+    "logical_batch_tokens": 2048,
+    "output_constraint": "response_format strict json_schema",
+    "parallel_slots": 1,
+    "physical_batch_tokens": 2048,
+    "prompt_cache_mib": 1024,
+    "workers": 1
+  },
+  "model_path": "/mnt/media/storage/models/hf/hub/models--ggml-org--Qwen3.6-27B-GGUF/snapshots/8a7ee08e8b9bfb857107ecc25a5599d2f38b76f8/Qwen3.6-27B-Q4_K_M.gguf",
+  "speculative": true
+}

@@ -1,0 +1,139 @@
+{
+  "active": "muse_glimmer_30b_kquant_dflash_off",
+  "bundle": {
+    "corpus.jsonl": "5b33a393aeb4f3ddfd774784fc3b705d473052bddabc40765d567f06bbfa94a1",
+    "manifest.json": "16d2c16add86052ff24be410699ab9452ee1a36252de6dba31ab5391de7ab81c",
+    "synthesis.jsonl": "910cb84b7c22fe1064f56c69465b0d91416041c196f0399984b043dbdb6e997c"
+  },
+  "candidate_matrix": [
+    {
+      "draft": "unsloth/gemma-4-E2B-it-qat-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf",
+      "expected_model": "gemma-4-E2B-it-qat-UD-Q4_K_XL",
+      "family": "Gemma 4",
+      "label": "gemma4_e2b_qat_udq4_mtp",
+      "speculative": true,
+      "target": "unsloth/gemma-4-E2B-it-qat-GGUF:UD-Q4_K_XL",
+      "target_quantization": "UD-Q4_K_XL",
+      "target_training": "QAT"
+    },
+    {
+      "draft": "unsloth/gemma-4-E4B-it-qat-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf",
+      "expected_model": "gemma-4-E4B-it-qat-UD-Q4_K_XL",
+      "family": "Gemma 4",
+      "label": "gemma4_e4b_qat_udq4_mtp",
+      "speculative": true,
+      "target": "unsloth/gemma-4-E4B-it-qat-GGUF:UD-Q4_K_XL",
+      "target_quantization": "UD-Q4_K_XL",
+      "target_training": "QAT"
+    },
+    {
+      "draft": "unsloth/gemma-4-12B-it-qat-GGUF:MTP/mtp-gemma-4-12B-it-Q8_0.gguf",
+      "expected_model": "gemma-4-12B-it-qat-UD-Q4_K_XL",
+      "family": "Gemma 4",
+      "label": "gemma4_12b_qat_udq4_mtp",
+      "speculative": true,
+      "target": "unsloth/gemma-4-12B-it-qat-GGUF:UD-Q4_K_XL",
+      "target_quantization": "UD-Q4_K_XL",
+      "target_training": "QAT"
+    },
+    {
+      "draft": "unsloth/gemma-4-26B-A4B-it-qat-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf",
+      "expected_model": "gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
+      "family": "Gemma 4",
+      "label": "gemma4_26b_a4b_qat_udq4_mtp",
+      "speculative": true,
+      "target": "unsloth/gemma-4-26B-A4B-it-qat-GGUF:UD-Q4_K_XL",
+      "target_quantization": "UD-Q4_K_XL",
+      "target_training": "QAT"
+    },
+    {
+      "draft": "unsloth/gemma-4-31B-it-qat-GGUF:MTP/mtp-gemma-4-31B-it-Q8_0.gguf",
+      "expected_model": "gemma-4-31B-it-qat-UD-Q4_K_XL",
+      "family": "Gemma 4",
+      "label": "gemma4_31b_qat_udq4_mtp",
+      "speculative": true,
+      "target": "unsloth/gemma-4-31B-it-qat-GGUF:UD-Q4_K_XL",
+      "target_quantization": "UD-Q4_K_XL",
+      "target_training": "QAT"
+    },
+    {
+      "draft": "ggml-org/Qwen3.6-27B-GGUF",
+      "expected_model": "Qwen3.6-27B-Q4_K_M",
+      "family": "Qwen 3.6",
+      "hf_home": "/mnt/media/storage/models/hf",
+      "label": "qwen36_27b_q4_mtp",
+      "speculative": true,
+      "target": "ggml-org/Qwen3.6-27B-GGUF:Q4_K_M",
+      "target_quantization": "Q4_K_M"
+    },
+    {
+      "draft": "ggml-org/Qwen3.6-35B-A3B-GGUF",
+      "expected_model": "Qwen3.6-35B-A3B-Q4_K_M",
+      "family": "Qwen 3.6",
+      "hf_home": "/mnt/media/storage/models/hf",
+      "label": "qwen36_35b_a3b_q4_mtp",
+      "speculative": true,
+      "target": "ggml-org/Qwen3.6-35B-A3B-GGUF:Q4_K_M",
+      "target_quantization": "Q4_K_M"
+    },
+    {
+      "expected_model": "muse-glimmer-30B-kquant-17gb.gguf",
+      "family": "Muse Glimmer",
+      "label": "muse_glimmer_30b_kquant_dflash_off",
+      "speculative": false,
+      "target": "meta-models/Muse-Glimmer-30B-GGUF",
+      "target_file": "muse-glimmer-30B-kquant-17gb.gguf",
+      "target_quantization": "K-Quant 17 GB"
+    }
+  ],
+  "completed": [
+    "gemma4_e2b_qat_udq4_mtp",
+    "gemma4_e4b_qat_udq4_mtp",
+    "gemma4_12b_qat_udq4_mtp",
+    "gemma4_26b_a4b_qat_udq4_mtp",
+    "gemma4_31b_qat_udq4_mtp",
+    "qwen36_27b_q4_mtp",
+    "qwen36_35b_a3b_q4_mtp"
+  ],
+  "hardware_identity": {
+    "driver": "amdgpu",
+    "drm_device": "card0",
+    "pci_class": "30000",
+    "pci_id": "1002:744C",
+    "pci_slot_name": "0000:6b:00.0"
+  },
+  "host": "smoothnas",
+  "llama_device_listing": "Available devices:\n  Vulkan0: AMD Radeon Graphics (RADV PHOENIX) (16222 MiB, 16139 MiB free)\n  Vulkan1: AMD Radeon RX 7900 XTX (RADV NAVI31) (24560 MiB, 24533 MiB free)",
+  "llama_server": "/mnt/media/tierbench/bin/llama-b10356/llama-server",
+  "llama_server_sha256": "04fb990c970cf5ac299b07c26deb549f3f87b32fed7d3eaa9f4fa592e466d2c7",
+  "load_profile": {
+    "context_tokens": 8192,
+    "device": "Vulkan1",
+    "flash_attention": true,
+    "gpu_layers": 99,
+    "logical_batch_tokens": 2048,
+    "parallel_slots": 1,
+    "physical_batch_tokens": 2048,
+    "prompt_cache_mib": 1024,
+    "workers": 1
+  },
+  "max_cases": 10,
+  "platform": "Linux-7.0.11-smoothkernel-x86_64-with-glibc2.41",
+  "script_sha256": {
+    "controller": "81839e9d7e4bf2a7482e429880d348755fa18d7c470a5d8188b86326cb77bf6e",
+    "fixture_builder": "8e1adb088f91c9765bea91f344143d4d9818a24c3cfb4a4f87e367f9a70e0b1f",
+    "runner": "593ed427f1cdb79af65d55eb251ba41715308ea9b5c135df1a81cb17c5855fd5"
+  },
+  "selected_labels": [
+    "gemma4_e2b_qat_udq4_mtp",
+    "gemma4_e4b_qat_udq4_mtp",
+    "gemma4_12b_qat_udq4_mtp",
+    "gemma4_26b_a4b_qat_udq4_mtp",
+    "gemma4_31b_qat_udq4_mtp",
+    "qwen36_27b_q4_mtp",
+    "qwen36_35b_a3b_q4_mtp",
+    "muse_glimmer_30b_kquant_dflash_off"
+  ],
+  "started_unix": 1786707423,
+  "status": "running"
+}

@@ -1,0 +1,43 @@
+SKIP gemma4_e2b_qat_udq4_mtp: already has 10 latest rows
+SKIP gemma4_e4b_qat_udq4_mtp: already has 10 latest rows
+SKIP gemma4_12b_qat_udq4_mtp: already has 10 latest rows
+SKIP gemma4_26b_a4b_qat_udq4_mtp: already has 10 latest rows
+SKIP gemma4_31b_qat_udq4_mtp: already has 10 latest rows
+OK qwen36_27b_q4_mtp: n=10 content_f1=0.457198 p50=2.800s
+OK qwen36_35b_a3b_q4_mtp: n=10 content_f1=0.354441 p50=1.233s
+Traceback (most recent call last):
+  File "/mnt/media/synthesis-model-selection-20260814/benchmarks/ab-v2/run_candidate_matrix.py", line 547, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/mnt/media/synthesis-model-selection-20260814/benchmarks/ab-v2/run_candidate_matrix.py", line 517, in main
+    run_candidate(
+    ~~~~~~~~~~~~~^
+        by_label[label],
+        ^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+        request_timeout=args.request_timeout,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/mnt/media/synthesis-model-selection-20260814/benchmarks/ab-v2/run_candidate_matrix.py", line 405, in run_candidate
+    completed = subprocess.run(
+        runner,
+    ...<3 lines>...
+        check=False,
+    )
+  File "/usr/lib/python3.13/subprocess.py", line 556, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 1214, in communicate
+    self.wait()
+    ~~~~~~~~~^^
+  File "/usr/lib/python3.13/subprocess.py", line 1280, in wait
+    return self._wait(timeout=timeout)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 2066, in _wait
+    (pid, sts) = self._try_wait(0)
+                 ~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.13/subprocess.py", line 2024, in _try_wait
+    (pid, sts) = os.waitpid(self.pid, wait_flags)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

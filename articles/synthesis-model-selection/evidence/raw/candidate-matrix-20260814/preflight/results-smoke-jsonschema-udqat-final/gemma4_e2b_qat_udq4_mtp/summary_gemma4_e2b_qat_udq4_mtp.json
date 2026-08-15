@@ -1,0 +1,87 @@
+{
+  "by_task": {
+    "claim": {
+      "completion_tokens": 133,
+      "content_f1": 0.22857142857142856,
+      "decode_tokens_per_second": 237.65532473009148,
+      "empty_rate": 0.0,
+      "latency_s": {
+        "p50": 0.39092893846100196,
+        "p95": 0.4077865040919278,
+        "p99": 0.4092849543702323
+      },
+      "n": 2,
+      "prompt_tokens": 742,
+      "prompt_tokens_per_second": 3696.710326376676,
+      "raw_parse_rate": 1.0,
+      "requests_retried": 0,
+      "required_field_recall": 1.0,
+      "schema_valid_rate": 1.0,
+      "success_rate": 1.0,
+      "truncated_rate": 0.0
+    },
+    "code_unit": {
+      "completion_tokens": 655,
+      "content_f1": 0.47115442785645295,
+      "decode_tokens_per_second": 282.0320603712231,
+      "empty_rate": 0.0,
+      "latency_s": {
+        "p50": 0.8867557100020349,
+        "p95": 1.0163872162927874,
+        "p99": 1.0279100168519655
+      },
+      "n": 3,
+      "prompt_tokens": 1873,
+      "prompt_tokens_per_second": 4393.0115231530235,
+      "raw_parse_rate": 1.0,
+      "requests_retried": 0,
+      "required_field_recall": 1.0,
+      "schema_valid_rate": 1.0,
+      "success_rate": 1.0,
+      "truncated_rate": 0.0
+    },
+    "doc_summary": {
+      "completion_tokens": 935,
+      "content_f1": 0.5772924719929329,
+      "decode_tokens_per_second": 296.1361985803832,
+      "empty_rate": 0.0,
+      "latency_s": {
+        "p50": 0.7508536360692233,
+        "p95": 1.050787197961472,
+        "p99": 1.063756205155514
+      },
+      "n": 5,
+      "prompt_tokens": 1589,
+      "prompt_tokens_per_second": 3038.9265646933727,
+      "raw_parse_rate": 1.0,
+      "requests_retried": 0,
+      "required_field_recall": 1.0,
+      "schema_valid_rate": 1.0,
+      "success_rate": 1.0,
+      "truncated_rate": 0.0
+    }
+  },
+  "label": "gemma4_e2b_qat_udq4_mtp",
+  "model": "gemma4_e2b_qat_udq4_mtp",
+  "overall": {
+    "completion_tokens": 1723,
+    "content_f1": 0.475706850067688,
+    "decode_tokens_per_second": 285.29343000525216,
+    "empty_rate": 0.0,
+    "latency_s": {
+      "p50": 0.8038140760618262,
+      "p95": 1.0507049739710055,
+      "p99": 1.0637397603574208
+    },
+    "n": 10,
+    "prompt_tokens": 4204,
+    "prompt_tokens_per_second": 3655.7793314550067,
+    "raw_parse_rate": 1.0,
+    "requests_retried": 0,
+    "required_field_recall": 1.0,
+    "schema_valid_rate": 1.0,
+    "success_rate": 1.0,
+    "truncated_rate": 0.0
+  },
+  "suite_manifest_sha256": "16d2c16add86052ff24be410699ab9452ee1a36252de6dba31ab5391de7ab81c"
+}
