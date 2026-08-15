@@ -1,0 +1,113 @@
+{
+  "active": "gemma4_e2b_qat_q4_mtp",
+  "bundle": {
+    "corpus.jsonl": "5b33a393aeb4f3ddfd774784fc3b705d473052bddabc40765d567f06bbfa94a1",
+    "manifest.json": "16d2c16add86052ff24be410699ab9452ee1a36252de6dba31ab5391de7ab81c",
+    "synthesis.jsonl": "910cb84b7c22fe1064f56c69465b0d91416041c196f0399984b043dbdb6e997c"
+  },
+  "candidate_matrix": [
+    {
+      "draft": "unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf",
+      "expected_model": "gemma-4-E2B-it",
+      "family": "Gemma 4",
+      "label": "gemma4_e2b_qat_q4_mtp",
+      "speculative": true,
+      "target": "google/gemma-4-E2B-it-qat-q4_0-gguf:q4_0",
+      "target_quantization": "Q4_0",
+      "target_training": "QAT"
+    },
+    {
+      "draft": "unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf",
+      "expected_model": "gemma-4-E4B-it",
+      "family": "Gemma 4",
+      "label": "gemma4_e4b_qat_q4_mtp",
+      "speculative": true,
+      "target": "google/gemma-4-E4B-it-qat-q4_0-gguf:q4_0",
+      "target_quantization": "Q4_0",
+      "target_training": "QAT"
+    },
+    {
+      "draft": "unsloth/gemma-4-12B-it-qat-GGUF:MTP/mtp-gemma-4-12B-it-Q8_0.gguf",
+      "expected_model": "gemma-4-12B-it-qat",
+      "family": "Gemma 4",
+      "label": "gemma4_12b_qat_q4_mtp",
+      "speculative": true,
+      "target": "unsloth/gemma-4-12B-it-qat-GGUF:UD-Q4_K_XL",
+      "target_quantization": "UD-Q4_K_XL",
+      "target_training": "QAT"
+    },
+    {
+      "draft": "unsloth/gemma-4-26B-A4B-it-qat-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf",
+      "expected_model": "gemma-4-26B-A4B-it-qat",
+      "family": "Gemma 4",
+      "label": "gemma4_26b_a4b_qat_q4_mtp",
+      "speculative": true,
+      "target": "unsloth/gemma-4-26B-A4B-it-qat-GGUF:UD-Q4_K_XL",
+      "target_quantization": "UD-Q4_K_XL",
+      "target_training": "QAT"
+    },
+    {
+      "draft": "unsloth/gemma-4-31B-it-qat-GGUF:MTP/mtp-gemma-4-31B-it-Q8_0.gguf",
+      "expected_model": "gemma-4-31B-it-qat",
+      "family": "Gemma 4",
+      "label": "gemma4_31b_qat_q4_mtp",
+      "speculative": true,
+      "target": "unsloth/gemma-4-31B-it-qat-GGUF:UD-Q4_K_XL",
+      "target_quantization": "UD-Q4_K_XL",
+      "target_training": "QAT"
+    },
+    {
+      "draft": "ggml-org/Qwen3.6-27B-GGUF",
+      "expected_model": "Qwen3.6-27B",
+      "family": "Qwen 3.6",
+      "label": "qwen36_27b_q4_mtp",
+      "speculative": true,
+      "target": "ggml-org/Qwen3.6-27B-GGUF:Q4_K_M"
+    },
+    {
+      "draft": "ggml-org/Qwen3.6-35B-A3B-GGUF",
+      "expected_model": "Qwen3.6-35B-A3B",
+      "family": "Qwen 3.6",
+      "label": "qwen36_35b_a3b_q4_mtp",
+      "speculative": true,
+      "target": "ggml-org/Qwen3.6-35B-A3B-GGUF:Q4_K_M"
+    },
+    {
+      "expected_model": "muse-glimmer-30B-kquant-17gb.gguf",
+      "family": "Muse Glimmer",
+      "label": "muse_glimmer_30b_kquant_dflash_off",
+      "speculative": false,
+      "target": "meta-models/Muse-Glimmer-30B-GGUF",
+      "target_file": "muse-glimmer-30B-kquant-17gb.gguf"
+    }
+  ],
+  "completed": [],
+  "host": "smoothnas",
+  "llama_server": "/mnt/media/tierbench/bin/llama-b10356/llama-server",
+  "llama_server_sha256": "04fb990c970cf5ac299b07c26deb549f3f87b32fed7d3eaa9f4fa592e466d2c7",
+  "load_profile": {
+    "context_tokens": 8192,
+    "device": "Vulkan1",
+    "flash_attention": true,
+    "gpu_layers": 99,
+    "logical_batch_tokens": 2048,
+    "parallel_slots": 1,
+    "physical_batch_tokens": 2048,
+    "prompt_cache_mib": 1024,
+    "workers": 1
+  },
+  "max_cases": 10,
+  "platform": "Linux-7.0.11-smoothkernel-x86_64-with-glibc2.41",
+  "selected_labels": [
+    "gemma4_e2b_qat_q4_mtp",
+    "gemma4_e4b_qat_q4_mtp",
+    "gemma4_12b_qat_q4_mtp",
+    "gemma4_26b_a4b_qat_q4_mtp",
+    "gemma4_31b_qat_q4_mtp",
+    "qwen36_27b_q4_mtp",
+    "qwen36_35b_a3b_q4_mtp",
+    "muse_glimmer_30b_kquant_dflash_off"
+  ],
+  "started_unix": 1786706083,
+  "status": "running"
+}

@@ -1,0 +1,52 @@
+{
+  "after_load": {
+    "gpu_busy_percent": 0,
+    "memavailable_bytes": 25975279616,
+    "swapfree_bytes": 39727104,
+    "swaptotal_bytes": 4294963200,
+    "vram_total_bytes": 25753026560,
+    "vram_used_bytes": 16047575040
+  },
+  "after_run": {
+    "gpu_busy_percent": 63,
+    "memavailable_bytes": 23166582784,
+    "swapfree_bytes": 970055680,
+    "swaptotal_bytes": 4294963200,
+    "vram_total_bytes": 25753026560,
+    "vram_used_bytes": 16059277312
+  },
+  "before_load": {
+    "gpu_busy_percent": 38,
+    "memavailable_bytes": 18144923648,
+    "swapfree_bytes": 3729207296,
+    "swaptotal_bytes": 4294963200,
+    "vram_total_bytes": 25753026560,
+    "vram_used_bytes": 27971584
+  },
+  "candidate": {
+    "draft": "unsloth/gemma-4-26B-A4B-it-qat-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf",
+    "expected_model": "gemma-4-26B-A4B-it-qat",
+    "family": "Gemma 4",
+    "label": "gemma4_26b_a4b_qat_udq4_mtp",
+    "speculative": true,
+    "target": "unsloth/gemma-4-26B-A4B-it-qat-GGUF:UD-Q4_K_XL",
+    "target_quantization": "UD-Q4_K_XL",
+    "target_training": "QAT"
+  },
+  "cold_load_seconds": 295.68459744297434,
+  "llama_server": "/mnt/media/tierbench/bin/llama-b10356/llama-server",
+  "llama_server_sha256": "04fb990c970cf5ac299b07c26deb549f3f87b32fed7d3eaa9f4fa592e466d2c7",
+  "load_profile": {
+    "context_tokens": 8192,
+    "device": "Vulkan1",
+    "flash_attention": true,
+    "gpu_layers": 99,
+    "logical_batch_tokens": 2048,
+    "parallel_slots": 1,
+    "physical_batch_tokens": 2048,
+    "prompt_cache_mib": 1024,
+    "workers": 1
+  },
+  "model_path": "/mnt/media/tierbench/hf/hub/models--unsloth--gemma-4-26B-A4B-it-qat-GGUF/snapshots/7b92b5b28818151e8669af2e45e88d6086f490dd/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf",
+  "speculative": true
+}

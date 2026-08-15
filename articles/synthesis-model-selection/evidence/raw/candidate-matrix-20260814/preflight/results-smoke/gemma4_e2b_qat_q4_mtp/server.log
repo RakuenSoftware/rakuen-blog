@@ -1,0 +1,11 @@
+
+=== 2026-08-14T11:14:43Z gemma4_e2b_qat_q4_mtp ===
+{"command": ["/mnt/media/tierbench/bin/llama-b10356/llama-server", "-hf", "google/gemma-4-E2B-it-qat-q4_0-gguf:q4_0", "--host", "127.0.0.1", "--port", "8920", "--jinja", "-c", "8192", "-np", "1", "-b", "2048", "-ub", "2048", "--cache-ram", "1024", "--device", "Vulkan1", "--no-webui", "--no-mmproj", "-ngl", "99", "-fa", "on", "-hfd", "unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf"], "load_profile": {"context_tokens": 8192, "device": "Vulkan1", "flash_attention": true, "gpu_layers": 99, "logical_batch_tokens": 2048, "parallel_slots": 1, "physical_batch_tokens": 2048, "prompt_cache_mib": 1024, "workers": 1}}
+0.00.696.047 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.696.456 I srv          init: The UI is disabled
+0.00.696.457 I srv          init: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+0.00.696.555 W srv  llama_server: -----------------
+0.00.696.556 W srv  llama_server: CORS is set to allow all origins ('*') and no API key is set
+0.00.696.556 W srv  llama_server: this can be a security risk (cross-origin attacks)
+0.00.696.556 W srv  llama_server: more info: https://github.com/ggml-org/llama.cpp/pull/25655
+0.00.696.556 W srv  llama_server: -----------------

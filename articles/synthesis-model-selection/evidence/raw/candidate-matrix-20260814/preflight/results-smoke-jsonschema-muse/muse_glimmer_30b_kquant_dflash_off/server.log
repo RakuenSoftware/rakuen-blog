@@ -1,0 +1,58 @@
+
+=== 2026-08-14T11:48:15Z muse_glimmer_30b_kquant_dflash_off ===
+{"command": ["/mnt/media/tierbench/bin/llama-b10356/llama-server", "-hf", "meta-models/Muse-Glimmer-30B-GGUF", "--host", "127.0.0.1", "--port", "8920", "--jinja", "-c", "8192", "-np", "1", "-b", "2048", "-ub", "2048", "--cache-ram", "1024", "--device", "Vulkan1", "--no-webui", "--no-mmproj", "-ngl", "99", "-fa", "on", "-hff", "muse-glimmer-30B-kquant-17gb.gguf"], "load_profile": {"context_tokens": 8192, "device": "Vulkan1", "flash_attention": true, "gpu_layers": 99, "logical_batch_tokens": 2048, "output_constraint": "response_format strict json_schema", "parallel_slots": 1, "physical_batch_tokens": 2048, "prompt_cache_mib": 1024, "workers": 1}}
+0.00.393.734 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.394.189 I srv          init: The UI is disabled
+0.00.394.191 I srv          init: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+0.00.394.288 W srv  llama_server: -----------------
+0.00.394.290 W srv  llama_server: CORS is set to allow all origins ('*') and no API key is set
+0.00.394.290 W srv  llama_server: this can be a security risk (cross-origin attacks)
+0.00.394.290 W srv  llama_server: more info: https://github.com/ggml-org/llama.cpp/pull/25655
+0.00.394.290 W srv  llama_server: -----------------
+0.00.395.740 I srv    load_model: loading model 'meta-models/Muse-Glimmer-30B-GGUF'
+0.01.200.693 W load: setting token '<|message|>' (200023) attribute to USER_DEFINED (16), old attributes: 8
+0.01.200.701 W load: setting token '<|start|>' (200022) attribute to USER_DEFINED (16), old attributes: 8
+0.01.208.508 W load: special_eot_id is not in special_eog_ids - the tokenizer config may be incorrect
+1.52.459.808 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+1.52.465.718 I srv          init: chat template supports preserving reasoning, consider enabling it via --reasoning-preserve
+1.52.465.794 I srv  llama_server: model loaded
+1.52.465.798 I srv  llama_server: listening on http://127.0.0.1:8920
+1.57.291.608 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = -1
+1.57.292.672 I slot launch_slot_: id  0 | task 1 | processing task, is_child = 0
+2.02.240.251 I slot print_timing: id  0 | task 1 | n_decoded =    126, tg =  41.72 t/s, tg_3s =  41.72 t/s
+2.05.258.525 I slot print_timing: id  0 | task 1 | n_decoded =    250, tg =  41.40 t/s, tg_3s =  41.08 t/s
+2.08.273.697 I slot print_timing: id  0 | task 1 | n_decoded =    368, tg =  40.65 t/s, tg_3s =  39.14 t/s
+2.11.381.881 I slot print_timing: id  0 | task 1 | n_decoded =    488, tg =  40.13 t/s, tg_3s =  38.61 t/s
+2.14.402.957 I slot print_timing: id  0 | task 1 | n_decoded =    604, tg =  39.78 t/s, tg_3s =  38.40 t/s
+2.17.415.675 I slot print_timing: id  0 | task 1 | n_decoded =    718, tg =  39.46 t/s, tg_3s =  37.84 t/s
+2.20.436.984 I slot print_timing: id  0 | task 1 | n_decoded =    829, tg =  39.07 t/s, tg_3s =  36.74 t/s
+2.23.443.491 I slot print_timing: id  0 | task 1 | n_decoded =    951, tg =  39.26 t/s, tg_3s =  40.58 t/s
+2.26.466.673 I slot print_timing: id  0 | task 1 | n_decoded =   1076, tg =  39.49 t/s, tg_3s =  41.35 t/s
+2.29.470.329 I slot print_timing: id  0 | task 1 | n_decoded =   1200, tg =  39.67 t/s, tg_3s =  41.28 t/s
+2.32.492.527 I slot print_timing: id  0 | task 1 | n_decoded =   1322, tg =  39.73 t/s, tg_3s =  40.37 t/s
+2.35.493.883 I slot print_timing: id  0 | task 1 | n_decoded =   1445, tg =  39.84 t/s, tg_3s =  40.98 t/s
+2.37.707.555 I slot print_timing: id  0 | task 1 | prompt eval time =    1927.69 ms /   279 tokens (    6.91 ms per token,   144.73 tokens per second)
+2.37.707.559 I slot print_timing: id  0 | task 1 |        eval time =   38487.15 ms /  1536 tokens (   25.06 ms per token,    39.91 tokens per second)
+2.37.707.559 I slot print_timing: id  0 | task 1 |       total time =   40414.85 ms /  1815 tokens
+2.37.707.564 I slot print_timing: id  0 | task 1 |    graphs reused =       1529
+2.37.707.877 I slot      release: id  0 | task 1 | stop processing: n_tokens = 1814, truncated = 0
+2.37.722.133 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.692 (> 0.100 thold), f_keep = 0.080
+2.37.774.119 I slot launch_slot_: id  0 | task 1540 | processing task, is_child = 0
+2.41.373.455 I slot print_timing: id  0 | task 1540 | n_decoded =    125, tg =  41.56 t/s, tg_3s =  41.56 t/s
+2.44.385.418 I slot print_timing: id  0 | task 1540 | n_decoded =    248, tg =  41.20 t/s, tg_3s =  40.84 t/s
+2.47.397.005 I slot print_timing: id  0 | task 1540 | n_decoded =    373, tg =  41.30 t/s, tg_3s =  41.51 t/s
+2.50.402.833 I slot print_timing: id  0 | task 1540 | n_decoded =    498, tg =  41.37 t/s, tg_3s =  41.59 t/s
+2.53.412.930 I slot print_timing: id  0 | task 1540 | n_decoded =    620, tg =  41.20 t/s, tg_3s =  40.53 t/s
+2.56.424.114 I slot print_timing: id  0 | task 1540 | n_decoded =    745, tg =  41.26 t/s, tg_3s =  41.51 t/s
+2.59.427.427 I slot print_timing: id  0 | task 1540 | n_decoded =    868, tg =  41.21 t/s, tg_3s =  40.95 t/s
+3.02.463.999 I slot print_timing: id  0 | task 1540 | n_decoded =    993, tg =  41.21 t/s, tg_3s =  41.16 t/s
+3.05.482.250 I slot print_timing: id  0 | task 1540 | n_decoded =   1117, tg =  41.19 t/s, tg_3s =  41.08 t/s
+3.08.487.164 I slot print_timing: id  0 | task 1540 | n_decoded =   1241, tg =  41.20 t/s, tg_3s =  41.27 t/s
+3.11.504.923 I slot print_timing: id  0 | task 1540 | n_decoded =   1363, tg =  41.13 t/s, tg_3s =  40.43 t/s
+3.14.510.672 I slot print_timing: id  0 | task 1540 | n_decoded =   1486, tg =  41.11 t/s, tg_3s =  40.92 t/s
+3.15.723.170 I slot print_timing: id  0 | task 1540 | prompt eval time =     591.66 ms /   162 tokens (    3.65 ms per token,   273.81 tokens per second)
+3.15.723.175 I slot print_timing: id  0 | task 1540 |        eval time =   37357.37 ms /  1536 tokens (   24.32 ms per token,    41.12 tokens per second)
+3.15.723.175 I slot print_timing: id  0 | task 1540 |       total time =   37949.03 ms /  1698 tokens
+3.15.723.176 I slot print_timing: id  0 | task 1540 |    graphs reused =       3057
+3.15.723.206 I slot      release: id  0 | task 1540 | stop processing: n_tokens = 1746, truncated = 0
+3.15.756.020 I srv    operator(): operator(): cleaning up before exit...
