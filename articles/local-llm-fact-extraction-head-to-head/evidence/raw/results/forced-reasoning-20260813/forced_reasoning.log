@@ -1,0 +1,20 @@
+[07:41:02Z] === forced-reasoning A/B on the xtx, 1001 notes, gemma-4-E4B-it UD-Q6_K_XL
+[07:41:02Z] --- gemma-4-E4B-it.Q6.live on xtx, nproc=1, no speculation, 1001 notes
+[08:36:00Z] OK gemma-4-E4B-it.Q6.live wall=54m
+[08:36:00Z] --- gemma-4-E4B-it.Q6.forcereason on xtx, nproc=1, no speculation, 1001 notes
+[09:33:53Z] OK gemma-4-E4B-it.Q6.forcereason wall=57m
+[09:33:53Z] === paired result ===
+notes 1001
+silent under live         134 (13.4%)
+silent under forced        71 (7.1%)
+
+group      notes   live F1    forced     delta
+FORCED        67    0.8507    0.6418   -0.2090
+CONTROL      863    0.4212    0.4184   -0.0028
+STUBBORN      67    0.6567    0.6119   -0.0448
+LOST           4    0.0000    0.0000   +0.0000
+
+forced delta      -0.2090
+control delta     -0.0028   (what the sentence is worth alone)
+attributable      -0.2062
+[09:33:53Z] === forced-reasoning A/B COMPLETE ===

@@ -1,0 +1,6 @@
+[21:05:52Z] sizing: starting one server to measure resident VRAM
+[21:06:24Z]   one instance uses  MiB of 24560 MiB
+[21:06:24Z]   -> running 1 processes, cache-ram 1024 MiB each
+[21:06:24Z]   all 1 servers up; VRAM now  MiB
+[21:06:24Z] START gemma-4-E4B-it.ontology-v7 across 1 shards
+[22:00:56Z] DONE gemma-4-E4B-it.ontology-v7 rows=1001/1001 wall=54m32s procs=1 retries=0

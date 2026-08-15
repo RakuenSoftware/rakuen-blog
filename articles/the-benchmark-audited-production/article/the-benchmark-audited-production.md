@@ -93,9 +93,20 @@ entries. Seven relations and 15 aliases were added conservatively. Generic or
 distinct verbs such as `owns`, `operates`, `runs` and `contributes_to` were not
 folded merely to reduce the count.
 
-An interrupted 223-note run reduced the novel-predicate rate from 23.5% to 10.0%.
-That result is provisional and survives only in the article notes. The complete
-post-fix fragmentation test has not been run.
+The complete test ran on 2026-08-12 over 1,001 notes, both halves on one card,
+differing only in whether the prompt listed 17 relations or 24. The
+novel-predicate rate fell from **21.0% to 13.0%**, and an interrupted 223-note
+run that reported 23.5% to 10.0% is superseded by it.
+
+That fall divides, and the division is the useful part. Rescoring the same
+predictions against the larger ontology accounts for 5.68 of the 8.02 points.
+The model reaching for a listed name rather than inventing a synonym accounts
+for 2.34. Seven tenths of the gain was definitional, available by editing the
+ontology and rescoring, with no rerun.
+
+Two relations stopped being invented outright: `runs_on` fell from 24 uses to
+zero and `mentors` from 9 to zero. What remains is mostly the generic verbs that
+were deliberately not folded.
 
 ## Audit the benchmark and production in both directions
 
