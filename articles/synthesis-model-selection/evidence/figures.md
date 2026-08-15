@@ -70,14 +70,16 @@ No equivalence margin or equivalence test was used.
 
 | article figure or claim | artifact and field |
 |---|---|
-| all 45 task-level content scores | `analysis-20260815.json`, `models[].by_task.<task>.content_f1` |
-| two displayed bars per task | the highest and second-highest observed values in each task column |
+| five task charts and their 45 displayed scores | `analysis-20260815.json`, `models[].by_task.<task>.content_f1` |
+| nine configurations in each Chart and Numbers view | all nine `models[]` rows, ordered by descending observed score within that task |
+| task-specific horizontal scales | zero to 0.25 for claim, zero to 0.15 for entity, and zero to 0.50 for code unit, document summary and synthesis |
 | 31B leads claim and code unit; 12B leads document summary; 26B-A4B leads entity; Qwen3.8 leads synthesis | maxima of those five task columns |
 
-The task chart is descriptive. No task-level paired interval was calculated,
-so the article does not turn these observed leaders into five additional model
-selection claims. The Numbers tab retains all nine configurations rather than
-only the two drawn for each task.
+The five task charts are descriptive. No task-level paired interval was
+calculated, so the article does not turn these observed leaders into five
+additional model-selection claims. Each chart and its Numbers tab show all nine
+tested configurations. The article tells readers to compare printed values and
+within-task order rather than bar length across charts with different scales.
 
 ### Qwen3.8 and Muse mechanisms
 
@@ -104,7 +106,7 @@ The completeness chart uses an explicitly labelled 88% to 100% scale. It uses
 dots rather than bars so the truncated scale cannot be read as magnitude from
 zero. The completion-token chart uses a zero baseline.
 
-The six-figure presentation replaces no measurement, finding or recommendation.
+The ten-figure presentation replaces no measurement, finding or recommendation.
 It draws additional views from the same canonical analysis and retains the same
 publication date. This is a presentation completion, not a new benchmark run.
 
