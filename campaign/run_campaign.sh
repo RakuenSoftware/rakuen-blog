@@ -24,7 +24,11 @@ say "=== CAMPAIGN START ==="
 say "arms=$ARMS out=$OUT"
 [ -n "$ONLY" ] && say "restricted to: $ONLY"
 
+SYN_OUT=${SYN_OUT:-$ROOT/results-synthesis}
+mkdir -p "$SYN_OUT"
+
 total=0; complete=0; gated=0; invalid=0; failed=0
+synth_complete=0; synth_failed=0; synth_skipped=0
 
 while IFS=$'\t' read -r order label model train width target draft est_gib; do
   case "$order" in ''|'#'*|order) continue ;; esac
@@ -46,18 +50,45 @@ while IFS=$'\t' read -r order label model train width target draft est_gib; do
   # queue moves straight to the next one. Only an arm that broke unexpectedly
   # counts as failed.
   if [ -s "$OUT/$label/SKIPPED_TOO_SLOW" ]; then
-    gated=$((gated + 1)); say "arm $label -> GATED (too slow), moving on"
+    gated=$((gated + 1)); say "arm $label -> extraction GATED (too slow), moving on"
   elif [ -s "$OUT/$label/INVALID_DENSE_SPILL" ]; then
-    invalid=$((invalid + 1)); say "arm $label -> INVALID (dense spill), moving on"
+    invalid=$((invalid + 1)); say "arm $label -> extraction INVALID (dense spill), moving on"
   elif [ "$rc" -eq 0 ] && [ -s "$OUT/$label/score.json" ]; then
-    complete=$((complete + 1)); say "arm $label -> COMPLETE"
+    complete=$((complete + 1)); say "arm $label -> extraction COMPLETE"
   else
-    failed=$((failed + 1)); say "arm $label -> FAILED rc=$rc"
+    failed=$((failed + 1)); say "arm $label -> extraction FAILED rc=$rc"
+  fi
+
+  # --- synthesis half, same weights, same card, immediately after.
+  #
+  # This article reports BOTH tasks per arm; an arm with only its extraction
+  # half is half an arm. It runs even when extraction was gated or invalidated,
+  # because "too slow for 1,001 extraction notes" and "unusable for synthesis"
+  # are different questions and the second is worth answering on its own.
+  #
+  # It is skipped only where there is nothing to serve: a target that could not
+  # be loaded at all.
+  if [ -s "$OUT/$label/FAILED" ] && grep -q "server" "$OUT/$label/FAILED" 2>/dev/null; then
+    say "arm $label -> synthesis SKIPPED (extraction could not serve the model)"
+    synth_skipped=$((synth_skipped + 1))
+  else
+    LABEL="$label" ROOT="$ROOT" bash "$ROOT/run_synthesis_arm.sh" 2>&1 | tee -a "$LOG"
+    src=${PIPESTATUS[0]}
+    if [ "$src" -eq 0 ] && [ -s "$SYN_OUT/$label/summary_$label.json" ]; then
+      synth_complete=$((synth_complete + 1)); say "arm $label -> synthesis COMPLETE"
+    else
+      synth_failed=$((synth_failed + 1)); say "arm $label -> synthesis FAILED rc=$src"
+    fi
   fi
 done < "$ARMS"
 
 say "=== CAMPAIGN END ==="
-say "complete=$complete gated=$gated invalid=$invalid failed=$failed of $total attempted"
+say "extraction: complete=$complete gated=$gated invalid=$invalid failed=$failed of $total attempted"
+say "synthesis:  complete=$synth_complete failed=$synth_failed skipped=$synth_skipped"
+if [ "$synth_complete" -ne "$complete" ]; then
+  say "NOTE extraction and synthesis counts differ; an arm with only one half is"
+  say "     not a two-task result and must not be reported as one"
+fi
 if [ "$gated" -gt 0 ] || [ "$invalid" -gt 0 ]; then
   say "ladders with a gated or invalid rung are INCOMPLETE and must be reported as such:"
   for d in "$OUT"/*/; do
