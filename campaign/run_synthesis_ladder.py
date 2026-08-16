@@ -42,6 +42,7 @@ different `--cache-ram` settings — so it is held fixed across every arm.
 from __future__ import annotations
 
 import csv
+import os
 import sys
 from pathlib import Path
 
@@ -177,6 +178,7 @@ def main() -> int:
     # in every artifact rather than living only in this comment.
     rcm.LOAD_PROFILE["reasoning"] = "off"
     rcm.LOAD_PROFILE["reasoning_format"] = "none"
+    rcm.LOAD_PROFILE["max_tokens"] = int(os.environ.get("SYNTH_MAX_TOKENS", "1536"))
 
     # The stock controller never emits -ctk/-ctv. Without this every arm would
     # serve at the f16 default whatever the manifest said, and the KV sweep

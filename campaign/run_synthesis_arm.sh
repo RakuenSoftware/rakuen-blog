@@ -31,6 +31,13 @@ fi
 BIN=${BIN:-/opt/llama.cpp/build-cuda/bin/llama-server}
 FIXTURE="$BUNDLE/synthesis/fixture"
 MAX_CASES=${MAX_CASES:-1000}
+
+# Output budget per case. The published fixture hardcodes 1536 and every model
+# in its nine-configuration matrix finishes inside that with zero truncation.
+# Raised here because a truncated answer is not a synthesis measurement, and a
+# generous ceiling costs nothing for a model that stops on its own: the cap only
+# binds on runs that were going to be unusable anyway.
+export SYNTH_MAX_TOKENS=${SYNTH_MAX_TOKENS:-4096}
 SYN_PORT=${SYN_PORT:-8920}
 
 LABEL=${LABEL:?set LABEL}

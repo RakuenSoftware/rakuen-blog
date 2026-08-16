@@ -50,6 +50,30 @@ cp "$GOLD" "$STAGE/bundle/gold_small.jsonl" || fail "copy gold"
 # The controller resolves its siblings by __file__, so the ab-v2 scripts must
 # land together in one directory, with the fixture bundle beside them.
 cp "$SYN/ab-v2/"*.py "$STAGE/bundle/synthesis/" || fail "copy synthesis scripts"
+
+# run_synthesis_ab.py hardcodes "max_tokens": 1536 with no CLI override. That is
+# the published fixture's budget and every model in the nine-configuration
+# matrix completes inside it -- zero truncation across all nine. It is not
+# enough for a model that cannot be stopped from reasoning, and it is a single
+# literal standing between this campaign and a whole task's worth of results.
+#
+# Patch the BUNDLE COPY only; the published script in the repository is left
+# untouched. The replacement reads an environment variable and keeps 1536 as the
+# default, so an unset variable reproduces the published behaviour exactly.
+#
+# The verification below matters more than the patch: a sed that silently
+# matches nothing is this campaign's single most common failure shape, and it
+# would leave the budget at 1536 while every log claimed otherwise.
+sed -i 's/"max_tokens": 1536,/"max_tokens": int(os.environ.get("SYNTH_MAX_TOKENS", "1536")),/' \
+  "$STAGE/bundle/synthesis/run_synthesis_ab.py" || fail "max_tokens patch failed"
+grep -q 'SYNTH_MAX_TOKENS' "$STAGE/bundle/synthesis/run_synthesis_ab.py" \
+  || fail "max_tokens patch matched nothing; the literal must have changed"
+grep -q '^import os' "$STAGE/bundle/synthesis/run_synthesis_ab.py" \
+  || sed -i '0,/^import /s//import os\nimport /' "$STAGE/bundle/synthesis/run_synthesis_ab.py"
+grep -q '^import os' "$STAGE/bundle/synthesis/run_synthesis_ab.py" \
+  || fail "could not ensure 'import os' in run_synthesis_ab.py"
+python3 -c "import ast,sys; ast.parse(open(sys.argv[1]).read())" \
+  "$STAGE/bundle/synthesis/run_synthesis_ab.py" || fail "patched runner does not parse"
 mkdir -p "$STAGE/bundle/synthesis/fixture"
 cp "$FIXDIR/corpus.jsonl" "$FIXDIR/synthesis.jsonl" "$FIXDIR/manifest.json" \
    "$STAGE/bundle/synthesis/fixture/" || fail "copy synthesis fixture bundle"
