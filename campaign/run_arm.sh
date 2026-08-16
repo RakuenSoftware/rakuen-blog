@@ -107,8 +107,16 @@ esac
 # value the re-take standardised on. The synthesis load profile pins the same
 # 1024. An arm run at an unbounded default would not be comparable to anything
 # else measured here, even if it completed.
+#
+# KV cache type is per-arm and defaults to f16, which is llama.cpp's default and
+# what every weight-ladder rung uses, so the ladder step stays one-variable. The
+# KV sweep arms vary it deliberately on FIXED bf16 weights, which makes cache
+# precision its own axis rather than a confound inside the width ladder.
+CTK=${CTK:-f16}
+CTV=${CTV:-f16}
 SRV_ARGS=(-hf "$TARGET" --host 127.0.0.1 --port "$PORT" -c "$CTX"
-          -np 1 --cache-ram 1024 --no-webui --no-mmproj -ngl 99)
+          -np 1 --cache-ram 1024 --no-webui --no-mmproj -ngl 99
+          -ctk "$CTK" -ctv "$CTV")
 
 OFFLOAD_MODE=full-gpu
 if [ "$ARCH" = "moe" ]; then
@@ -120,9 +128,13 @@ if [ "$ARCH" = "moe" ]; then
 fi
 
 if [ "$DRAFT" != "-" ]; then
-  SRV_ARGS+=(-hfd "$DRAFT" --draft-max 3 --draft-min 1)
+  # The draft model keeps its own KV cache and defaults to f16 independently.
+  # Left alone, a "q4_0 KV" arm would quietly be running a q4_0 target cache
+  # against an f16 draft cache, which is not the configuration being claimed.
+  SRV_ARGS+=(-hfd "$DRAFT" --draft-max 3 --draft-min 1
+             -ctkd "$CTK" -ctvd "$CTV")
 fi
-say "ARCH=$ARCH OFFLOAD=$OFFLOAD_MODE est=${EST_GIB:-?}GiB budget=${VRAM_BUDGET_GIB}GiB"
+say "ARCH=$ARCH OFFLOAD=$OFFLOAD_MODE est=${EST_GIB:-?}GiB budget=${VRAM_BUDGET_GIB}GiB ctk=$CTK ctv=$CTV"
 
 say "SERVE $TARGET"
 "$BIN" "${SRV_ARGS[@]}" > "$SRVLOG" 2>&1 &
@@ -470,10 +482,11 @@ fi
 python3 - "$META" "$LABEL" "$MODEL" "$TRAIN" "$WIDTH" "$TARGET" "$DRAFT" \
          "$TPS" "$OFFLOAD" "$RSS_KB" "$VRAM_MIB" "$EXTRACT_SECS" \
          "$ARM/score.json" "$ARM/pred.jsonl" "$EXPECT" "$GATE" \
-         "$ARCH" "$OFFLOAD_MODE" "$DENSE_SPILL" "$ARM/throughput.json" <<'PY'
+         "$ARCH" "$OFFLOAD_MODE" "$DENSE_SPILL" "$ARM/throughput.json" "$CTK" "$CTV" <<'PY'
 import json, os, sys
 (p, label, model, train, width, target, draft, tps, offload, rss, vram,
- secs, scorep, predp, expect, gate, arch, mode, dense_spill, thrup) = sys.argv[1:21]
+ secs, scorep, predp, expect, gate, arch, mode, dense_spill, thrup,
+ ctk, ctv) = sys.argv[1:23]
 score = json.load(open(scorep))
 rows = sum(1 for _ in open(predp))
 throughput = None
@@ -495,6 +508,8 @@ json.dump({
     # roughly a thousand real generations from this arm.
     "warmed_tok_per_s": float(tps),
     "throughput": throughput,
+    "cache_type_k": ctk,
+    "cache_type_v": ctv,
     "gate": gate,
     "offload": offload,
     "server_rss_mib": int(rss) // 1024,

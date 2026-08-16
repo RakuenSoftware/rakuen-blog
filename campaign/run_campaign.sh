@@ -30,7 +30,7 @@ mkdir -p "$SYN_OUT"
 total=0; complete=0; gated=0; invalid=0; failed=0
 synth_complete=0; synth_failed=0; synth_skipped=0
 
-while IFS=$'\t' read -r order label model train width target draft est_gib; do
+while IFS=$'\t' read -r order label model train width target draft est_gib ctk ctv; do
   case "$order" in ''|'#'*|order) continue ;; esac
 
   if [ -n "$ONLY" ] && ! printf '%s' ",$ONLY," | grep -q ",$label,"; then
@@ -42,6 +42,7 @@ while IFS=$'\t' read -r order label model train width target draft est_gib; do
 
   LABEL="$label" MODEL="$model" TRAIN="$train" WIDTH="$width" \
   TARGET="$target" DRAFT="$draft" EST_GIB="$est_gib" ROOT="$ROOT" OUT="$OUT" \
+  CTK="${ctk:-f16}" CTV="${ctv:-f16}" \
     bash "$ROOT/run_arm.sh" 2>&1 | tee -a "$LOG"
   # Branch on run_arm.sh's status, NOT the pipeline's -- tee would mask it.
   rc=${PIPESTATUS[0]}

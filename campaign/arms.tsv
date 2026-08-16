@@ -37,38 +37,42 @@
 # 5 exponent bits against 8) with no reason to expect it to favour either
 # direction here. One variable per step matters more than format purity.
 #
-order	label	model	train	width	target	draft	est_gib
-1	lfm25-2.6b.base.q4	lfm25-2.6b	base	q4	LiquidAI/LFM2.5-2.6B-GGUF:Q4_K_M	-	1.6
-2	lfm25-2.6b.base.q6	lfm25-2.6b	base	q6	LiquidAI/LFM2.5-2.6B-GGUF:Q6_K	-	2.1
-3	lfm25-2.6b.base.q8	lfm25-2.6b	base	q8	LiquidAI/LFM2.5-2.6B-GGUF:Q8_0	-	2.8
-4	lfm25-2.6b.base.bf16	lfm25-2.6b	base	bf16	LiquidAI/LFM2.5-2.6B-GGUF:BF16	-	5.2
-5	gemma4-e2b.base.q4	gemma4-e2b	base	q4	unsloth/gemma-4-E2B-it-GGUF:UD-Q4_K_XL	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	2.0
-6	gemma4-e2b.qat.q4	gemma4-e2b	qat	q4	unsloth/gemma-4-E2B-it-qat-GGUF:UD-Q4_K_XL	unsloth/gemma-4-E2B-it-qat-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	2.0
-7	gemma4-e2b.base.q2	gemma4-e2b	base	q2	unsloth/gemma-4-E2B-it-GGUF:UD-Q2_K_XL	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	1.2
-8	gemma4-e2b.qat.q2	gemma4-e2b	qat	q2	unsloth/gemma-4-E2B-it-qat-GGUF:UD-Q2_K_XL	unsloth/gemma-4-E2B-it-qat-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	1.2
-9	gemma4-e2b.base.q6	gemma4-e2b	base	q6	unsloth/gemma-4-E2B-it-GGUF:UD-Q6_K_XL	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	2.7
-10	gemma4-e2b.base.q8	gemma4-e2b	base	q8	unsloth/gemma-4-E2B-it-GGUF:UD-Q8_K_XL	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	3.4
-11	gemma4-e4b.base.q4	gemma4-e4b	base	q4	unsloth/gemma-4-E4B-it-GGUF:UD-Q4_K_XL	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	3.4
-12	gemma4-e4b.qat.q4	gemma4-e4b	qat	q4	unsloth/gemma-4-E4B-it-qat-GGUF:UD-Q4_K_XL	unsloth/gemma-4-E4B-it-qat-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	3.4
-13	gemma4-e4b.base.q2	gemma4-e4b	base	q2	unsloth/gemma-4-E4B-it-GGUF:UD-Q2_K_XL	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	2.0
-14	gemma4-e4b.qat.q2	gemma4-e4b	qat	q2	unsloth/gemma-4-E4B-it-qat-GGUF:UD-Q2_K_XL	unsloth/gemma-4-E4B-it-qat-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	2.0
-15	gemma4-e4b.base.q6	gemma4-e4b	base	q6	unsloth/gemma-4-E4B-it-GGUF:UD-Q6_K_XL	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	4.6
-16	gemma4-e4b.base.q8	gemma4-e4b	base	q8	unsloth/gemma-4-E4B-it-GGUF:UD-Q8_K_XL	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	5.8
-17	lfm25-8b-a1b.base.q4	lfm25-8b-a1b	base	q4	LiquidAI/LFM2.5-8B-A1B-GGUF:Q4_K_M	-	4.7
-18	lfm25-8b-a1b.base.q6	lfm25-8b-a1b	base	q6	LiquidAI/LFM2.5-8B-A1B-GGUF:Q6_K	-	6.5
-19	lfm25-8b-a1b.base.q8	lfm25-8b-a1b	base	q8	LiquidAI/LFM2.5-8B-A1B-GGUF:Q8_0	-	8.5
-20	gemma4-12b.base.q4	gemma4-12b	base	q4	unsloth/gemma-4-12b-it-GGUF:UD-Q4_K_XL	unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf	8.4
-21	gemma4-12b.qat.q4	gemma4-12b	qat	q4	unsloth/gemma-4-12B-it-qat-GGUF:UD-Q4_K_XL	unsloth/gemma-4-12B-it-qat-GGUF:MTP/mtp-gemma-4-12B-it-Q8_0.gguf	6.3
-22	gemma4-12b.base.q2	gemma4-12b	base	q2	unsloth/gemma-4-12b-it-GGUF:UD-Q2_K_XL	unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf	4.9
-23	gemma4-12b.base.q6	gemma4-12b	base	q6	unsloth/gemma-4-12b-it-GGUF:UD-Q6_K_XL	unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf	9.9
-24	gemma4-12b.base.q8	gemma4-12b	base	q8	unsloth/gemma-4-12b-it-GGUF:UD-Q8_K_XL	unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf	12.6
-25	gemma4-26b-a4b.base.q4	gemma4-26b-a4b	base	q4	unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q4_K_XL	unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	15.0
-26	gemma4-26b-a4b.qat.q4	gemma4-26b-a4b	qat	q4	unsloth/gemma-4-26B-A4B-it-qat-GGUF:UD-Q4_K_XL	unsloth/gemma-4-26B-A4B-it-qat-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	13.3
-27	gemma4-26b-a4b.base.q2	gemma4-26b-a4b	base	q2	unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q2_K_XL	unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	8.7
-28	gemma4-26b-a4b.base.q6	gemma4-26b-a4b	base	q6	unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q6_K_XL	unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	21.0
-29	gemma4-26b-a4b.base.q8	gemma4-26b-a4b	base	q8	unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q8_K_XL	unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	26.5
-30	qwen36-35b-a3b.base.q4	qwen36-35b-a3b	base	q4	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	20.5
-31	qwen36-35b-a3b.base.q2	qwen36-35b-a3b	base	q2	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q2_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	12.0
-32	qwen36-35b-a3b.base.q1	qwen36-35b-a3b	base	q1	unsloth/Qwen3.6-35B-A3B-GGUF:UD-IQ1_M	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	8.5
-33	qwen36-35b-a3b.base.q6	qwen36-35b-a3b	base	q6	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q6_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	27.0
-34	qwen36-35b-a3b.base.q8	qwen36-35b-a3b	base	q8	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q8_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	36.0
+order	label	model	train	width	target	draft	est_gib	ctk	ctv
+1	lfm25-2.6b.base.q4	lfm25-2.6b	base	q4	LiquidAI/LFM2.5-2.6B-GGUF:Q4_K_M	-	1.6	f16	f16
+2	lfm25-2.6b.base.q6	lfm25-2.6b	base	q6	LiquidAI/LFM2.5-2.6B-GGUF:Q6_K	-	2.1	f16	f16
+3	lfm25-2.6b.base.q8	lfm25-2.6b	base	q8	LiquidAI/LFM2.5-2.6B-GGUF:Q8_0	-	2.8	f16	f16
+4	lfm25-2.6b.base.bf16	lfm25-2.6b	base	bf16	LiquidAI/LFM2.5-2.6B-GGUF:BF16	-	5.2	f16	f16
+5	lfm25-2.6b.base.bf16.kv-bf16	lfm25-2.6b	base	bf16	LiquidAI/LFM2.5-2.6B-GGUF:BF16	-	5.2	bf16	bf16
+6	lfm25-2.6b.base.bf16.kv-q8q8	lfm25-2.6b	base	bf16	LiquidAI/LFM2.5-2.6B-GGUF:BF16	-	5.2	q8_0	q8_0
+7	lfm25-2.6b.base.bf16.kv-q8q4	lfm25-2.6b	base	bf16	LiquidAI/LFM2.5-2.6B-GGUF:BF16	-	5.2	q8_0	q4_0
+8	lfm25-2.6b.base.bf16.kv-q4q4	lfm25-2.6b	base	bf16	LiquidAI/LFM2.5-2.6B-GGUF:BF16	-	5.2	q4_0	q4_0
+9	gemma4-e2b.base.q4	gemma4-e2b	base	q4	unsloth/gemma-4-E2B-it-GGUF:UD-Q4_K_XL	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	2.0	f16	f16
+10	gemma4-e2b.qat.q4	gemma4-e2b	qat	q4	unsloth/gemma-4-E2B-it-qat-GGUF:UD-Q4_K_XL	unsloth/gemma-4-E2B-it-qat-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	2.0	f16	f16
+11	gemma4-e2b.base.q2	gemma4-e2b	base	q2	unsloth/gemma-4-E2B-it-GGUF:UD-Q2_K_XL	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	1.2	f16	f16
+12	gemma4-e2b.qat.q2	gemma4-e2b	qat	q2	unsloth/gemma-4-E2B-it-qat-GGUF:UD-Q2_K_XL	unsloth/gemma-4-E2B-it-qat-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	1.2	f16	f16
+13	gemma4-e2b.base.q6	gemma4-e2b	base	q6	unsloth/gemma-4-E2B-it-GGUF:UD-Q6_K_XL	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	2.7	f16	f16
+14	gemma4-e2b.base.q8	gemma4-e2b	base	q8	unsloth/gemma-4-E2B-it-GGUF:UD-Q8_K_XL	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	3.4	f16	f16
+15	gemma4-e4b.base.q4	gemma4-e4b	base	q4	unsloth/gemma-4-E4B-it-GGUF:UD-Q4_K_XL	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	3.4	f16	f16
+16	gemma4-e4b.qat.q4	gemma4-e4b	qat	q4	unsloth/gemma-4-E4B-it-qat-GGUF:UD-Q4_K_XL	unsloth/gemma-4-E4B-it-qat-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	3.4	f16	f16
+17	gemma4-e4b.base.q2	gemma4-e4b	base	q2	unsloth/gemma-4-E4B-it-GGUF:UD-Q2_K_XL	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	2.0	f16	f16
+18	gemma4-e4b.qat.q2	gemma4-e4b	qat	q2	unsloth/gemma-4-E4B-it-qat-GGUF:UD-Q2_K_XL	unsloth/gemma-4-E4B-it-qat-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	2.0	f16	f16
+19	gemma4-e4b.base.q6	gemma4-e4b	base	q6	unsloth/gemma-4-E4B-it-GGUF:UD-Q6_K_XL	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	4.6	f16	f16
+20	gemma4-e4b.base.q8	gemma4-e4b	base	q8	unsloth/gemma-4-E4B-it-GGUF:UD-Q8_K_XL	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	5.8	f16	f16
+21	lfm25-8b-a1b.base.q4	lfm25-8b-a1b	base	q4	LiquidAI/LFM2.5-8B-A1B-GGUF:Q4_K_M	-	4.7	f16	f16
+22	lfm25-8b-a1b.base.q6	lfm25-8b-a1b	base	q6	LiquidAI/LFM2.5-8B-A1B-GGUF:Q6_K	-	6.5	f16	f16
+23	lfm25-8b-a1b.base.q8	lfm25-8b-a1b	base	q8	LiquidAI/LFM2.5-8B-A1B-GGUF:Q8_0	-	8.5	f16	f16
+24	gemma4-12b.base.q4	gemma4-12b	base	q4	unsloth/gemma-4-12b-it-GGUF:UD-Q4_K_XL	unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf	8.4	f16	f16
+25	gemma4-12b.qat.q4	gemma4-12b	qat	q4	unsloth/gemma-4-12B-it-qat-GGUF:UD-Q4_K_XL	unsloth/gemma-4-12B-it-qat-GGUF:MTP/mtp-gemma-4-12B-it-Q8_0.gguf	6.3	f16	f16
+26	gemma4-12b.base.q2	gemma4-12b	base	q2	unsloth/gemma-4-12b-it-GGUF:UD-Q2_K_XL	unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf	4.9	f16	f16
+27	gemma4-12b.base.q6	gemma4-12b	base	q6	unsloth/gemma-4-12b-it-GGUF:UD-Q6_K_XL	unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf	9.9	f16	f16
+28	gemma4-12b.base.q8	gemma4-12b	base	q8	unsloth/gemma-4-12b-it-GGUF:UD-Q8_K_XL	unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf	12.6	f16	f16
+29	gemma4-26b-a4b.base.q4	gemma4-26b-a4b	base	q4	unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q4_K_XL	unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	15.0	f16	f16
+30	gemma4-26b-a4b.qat.q4	gemma4-26b-a4b	qat	q4	unsloth/gemma-4-26B-A4B-it-qat-GGUF:UD-Q4_K_XL	unsloth/gemma-4-26B-A4B-it-qat-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	13.3	f16	f16
+31	gemma4-26b-a4b.base.q2	gemma4-26b-a4b	base	q2	unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q2_K_XL	unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	8.7	f16	f16
+32	gemma4-26b-a4b.base.q6	gemma4-26b-a4b	base	q6	unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q6_K_XL	unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	21.0	f16	f16
+33	gemma4-26b-a4b.base.q8	gemma4-26b-a4b	base	q8	unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q8_K_XL	unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	26.5	f16	f16
+34	qwen36-35b-a3b.base.q4	qwen36-35b-a3b	base	q4	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	20.5	f16	f16
+35	qwen36-35b-a3b.base.q2	qwen36-35b-a3b	base	q2	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q2_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	12.0	f16	f16
+36	qwen36-35b-a3b.base.q1	qwen36-35b-a3b	base	q1	unsloth/Qwen3.6-35B-A3B-GGUF:UD-IQ1_M	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	8.5	f16	f16
+37	qwen36-35b-a3b.base.q6	qwen36-35b-a3b	base	q6	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q6_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	27.0	f16	f16
+38	qwen36-35b-a3b.base.q8	qwen36-35b-a3b	base	q8	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q8_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	36.0	f16	f16
