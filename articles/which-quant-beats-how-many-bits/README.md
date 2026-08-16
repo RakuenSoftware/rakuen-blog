@@ -7,6 +7,26 @@ Only one bit-width step separated; QAT's clearest benefit was fitting a 26B mode
 Publication-ready as of 2026-08-09. Not yet published. Every figure in the article
 is accounted for in the local provenance map.
 
+**A campaign extending this article is in progress from 2026-08-16 and the
+article body does not yet reflect it.** It runs 38 arms across seven models on
+one RTX 5080, each scored on both the 1,001-note extraction corpus and the
+1,000-case synthesis fixture, and it supplies what the published version lacks:
+ladders on mixture-of-expert models and above 12B, a second task, Q2 and Q1
+rungs, QAT arms beside their non-QAT rungs at the same width, a KV-cache
+precision sweep, and same-card throughput for every rung.
+
+- `evidence/moe-ladder-plan-2026-08-16.md` — the plan, registered before any arm
+  ran, including the availability findings that changed the design three times
+  and the reason the campaign is not parallelised across hosts.
+- `evidence/moe-ladder-measurement-log-2026-08-16.md` — the defect log. Nine
+  faults so far, every one of which produced output indistinguishable from
+  success; two campaigns discarded; the results standing so far with their
+  paired intervals.
+
+The first completed ladder already bears on a claim this article withdrew: it
+measures LFM2.5-2.6B getting **worse** with more bits, Q8 minus Q4 of −0.0327
+with a 95% range of [−0.0592, −0.0063], which clears zero.
+
 ## Evidence
 
 Raw artifacts for the whole series live under
