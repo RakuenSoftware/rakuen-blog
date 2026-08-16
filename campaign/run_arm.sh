@@ -441,16 +441,44 @@ if [ ! -s "$ARM/score.noalias.json" ]; then
   say "WARN relation-agnostic score missing"
 fi
 
+# ------------------------------------------------- throughput, from the run
+# Speed is a reported result of this article, not a diagnostic, so it is
+# measured over the whole arm rather than from the single warmed probe. The
+# extraction run yields one generation timing per note -- ~1000 samples -- and
+# they are tight enough (under 2% spread on the first arm) that the median is a
+# far stronger figure than one 400-token probe.
+#
+# The exclusion matters: llama.cpp logs "prompt eval time" for PREFILL and
+# "eval time" for GENERATION, and the former runs ~45x faster. A grep for
+# "eval time" catches both and silently reports a mean of ~8000 tok/s for a
+# model generating at 370. Prefill is captured separately, not discarded.
+if ! python3 "$ROOT/throughput.py" "$SRVLOG" "$ARM/throughput.json"; then
+  say "WARN throughput summary failed"
+fi
+
+if [ -s "$ARM/throughput.json" ]; then
+  GEN_MED=$(python3 -c "
+import json
+t = json.load(open('$ARM/throughput.json')).get('generation_tok_per_s') or {}
+print(t.get('median', 'na'), 'over', t.get('n', 0), 'samples')" 2>/dev/null)
+  say "THROUGHPUT generation median $GEN_MED"
+else
+  say "WARN throughput summary not produced"
+fi
+
 # ------------------------------------------------------------------- record
 python3 - "$META" "$LABEL" "$MODEL" "$TRAIN" "$WIDTH" "$TARGET" "$DRAFT" \
          "$TPS" "$OFFLOAD" "$RSS_KB" "$VRAM_MIB" "$EXTRACT_SECS" \
          "$ARM/score.json" "$ARM/pred.jsonl" "$EXPECT" "$GATE" \
-         "$ARCH" "$OFFLOAD_MODE" "$DENSE_SPILL" <<'PY'
-import json, sys
+         "$ARCH" "$OFFLOAD_MODE" "$DENSE_SPILL" "$ARM/throughput.json" <<'PY'
+import json, os, sys
 (p, label, model, train, width, target, draft, tps, offload, rss, vram,
- secs, scorep, predp, expect, gate, arch, mode, dense_spill) = sys.argv[1:20]
+ secs, scorep, predp, expect, gate, arch, mode, dense_spill, thrup) = sys.argv[1:21]
 score = json.load(open(scorep))
 rows = sum(1 for _ in open(predp))
+throughput = None
+if os.path.exists(thrup):
+    throughput = json.load(open(thrup))
 json.dump({
     "label": label, "model": model, "training": train, "width": width,
     "target": target, "draft": draft if draft != "-" else None,
@@ -462,7 +490,11 @@ json.dump({
     # MoE arms running experts on CPU are not spills in this sense and are
     # never flagged here; that is the intended way to serve them.
     "dense_layer_spill": dense_spill == "1",
+    # Single 400-token probe, used only by the slow-arm gate. For a reported
+    # speed figure use throughput.generation_tok_per_s, which is the median of
+    # roughly a thousand real generations from this arm.
     "warmed_tok_per_s": float(tps),
+    "throughput": throughput,
     "gate": gate,
     "offload": offload,
     "server_rss_mib": int(rss) // 1024,

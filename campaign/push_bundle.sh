@@ -54,7 +54,7 @@ mkdir -p "$STAGE/bundle/synthesis/fixture"
 cp "$FIXDIR/corpus.jsonl" "$FIXDIR/synthesis.jsonl" "$FIXDIR/manifest.json" \
    "$STAGE/bundle/synthesis/fixture/" || fail "copy synthesis fixture bundle"
 
-for f in arms.tsv run_arm.sh run_campaign.sh run_synthesis_ladder.py; do
+for f in arms.tsv run_arm.sh run_campaign.sh run_synthesis_ladder.py throughput.py; do
   cp "$REPO/campaign/$f" "$STAGE/" || fail "copy $f"
 done
 
@@ -79,10 +79,30 @@ GOLD_LINES=$(wc -l < "$STAGE/bundle/gold_small.jsonl")
 ( cd "$STAGE" && find . -type f -not -name MANIFEST.sha256 | sed 's#^\./##' | sort \
     | xargs sha256sum > MANIFEST.sha256 ) || fail "could not build manifest"
 
+# Staged extract then atomic rename, so this is safe to run WHILE the campaign
+# is running.
+#
+# bash reads a script incrementally as it executes, by file offset. Overwriting
+# run_arm.sh in place under a live arm leaves the running shell reading from a
+# shifted offset, executing fragments of the new file as though they were the
+# old one. `mv` uses rename(2): the running instance keeps its original inode
+# open and unchanged, while the directory entry points at the new file, so only
+# the NEXT arm picks up the change.
+#
+# tar --unlink-first is not the answer here: it tries to unlink directories too
+# and fails with "Cannot unlink: Directory not empty" on any re-push.
 ( cd "$STAGE" && tar czf - . ) | ssh -o ConnectTimeout=30 "$HOST" \
-  "pct exec $CT -- bash -lc 'mkdir -p $DEST && tar xzf - -C $DEST'"
+  "pct exec $CT -- bash -lc 'rm -rf $DEST/.incoming && mkdir -p $DEST/.incoming && tar xzf - -C $DEST/.incoming'"
 rc=$?
-[ "$rc" -eq 0 ] || fail "transfer exited $rc"
+[ "$rc" -eq 0 ] || fail "staged transfer exited $rc"
+
+ssh -n -o ConnectTimeout=60 "$HOST" "pct exec $CT -- bash -lc '
+cd $DEST/.incoming || exit 1
+find . -type d -exec mkdir -p $DEST/{} \; || exit 1
+find . -type f -exec mv -f {} $DEST/{} \; || exit 1
+cd $DEST && rm -rf .incoming'"
+rc=$?
+[ "$rc" -eq 0 ] || fail "atomic install exited $rc"
 
 VERIFY=$(ssh -n -o ConnectTimeout=60 "$HOST" \
   "pct exec $CT -- bash -lc 'cd $DEST && sha256sum -c --quiet MANIFEST.sha256 2>&1; echo RC=\$?'")
