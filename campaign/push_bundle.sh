@@ -61,21 +61,37 @@ done
 GOLD_LINES=$(wc -l < "$STAGE/bundle/gold_small.jsonl")
 [ "$GOLD_LINES" -eq 1001 ] || fail "gold set is $GOLD_LINES lines, expected 1001"
 
-# --- ship. Checksums are compared after transfer; a truncated bundle that
-#     "looks fine" is exactly the class of failure this campaign cannot afford.
+# --- verify PER FILE, not by hashing a file listing.
+#
+# The previous version hashed the output of `find | sha256sum | sed | sort`
+# on both ends and compared the two digests. That compared path *formatting* as
+# much as content: the local list yielded "arms.tsv" while the remote list,
+# after its sed passed through ssh -> pct exec -> bash -lc quoting, kept the
+# "./" prefix. Identical files, different digest, and a warning that meant
+# nothing. A guard that cries wolf gets ignored, which is worse than no guard.
+#
+# A manifest of relative paths shipped with the bundle and checked by
+# `sha256sum -c` on the far side compares content and nothing else, and names
+# the offending file when it disagrees.
+# The manifest must exclude itself: listing it means hashing a file that is
+# still being written, which then fails its own check on the far side and
+# reports a corrupt bundle when nothing is wrong.
+( cd "$STAGE" && find . -type f -not -name MANIFEST.sha256 | sed 's#^\./##' | sort \
+    | xargs sha256sum > MANIFEST.sha256 ) || fail "could not build manifest"
+
 ( cd "$STAGE" && tar czf - . ) | ssh -o ConnectTimeout=30 "$HOST" \
   "pct exec $CT -- bash -lc 'mkdir -p $DEST && tar xzf - -C $DEST'"
 rc=$?
 [ "$rc" -eq 0 ] || fail "transfer exited $rc"
 
-LOCAL_SUM=$(find "$STAGE" -type f -exec sha256sum {} \; | sed "s#$STAGE/##" | sort -k2 | sha256sum | cut -d' ' -f1)
-REMOTE_SUM=$(ssh -n -o ConnectTimeout=30 "$HOST" \
-  "pct exec $CT -- bash -lc 'cd $DEST && find . -type f -not -path ./results/\* -not -path ./state/\* -exec sha256sum {} \; | sed \"s#^\./##\" | sort -k2 | sha256sum | cut -d\" \" -f1'")
+VERIFY=$(ssh -n -o ConnectTimeout=60 "$HOST" \
+  "pct exec $CT -- bash -lc 'cd $DEST && sha256sum -c --quiet MANIFEST.sha256 2>&1; echo RC=\$?'")
+VRC=$(printf '%s' "$VERIFY" | grep -oE 'RC=[0-9]+' | tail -1 | cut -d= -f2)
 
-echo "local  bundle sha: $LOCAL_SUM"
-echo "remote bundle sha: $REMOTE_SUM"
-if [ "$LOCAL_SUM" != "$REMOTE_SUM" ]; then
-  echo "PUSHWARN: bundle checksums differ; inspect $DEST on CT $CT before running" >&2
+if [ "${VRC:-1}" -ne 0 ]; then
+  echo "PUSHFAIL: bundle verification failed on CT $CT" >&2
+  printf '%s\n' "$VERIFY" >&2
   exit 2
 fi
-echo "PUSHOK bundle verified at $DEST on CT $CT"
+FILES=$(wc -l < "$STAGE/MANIFEST.sha256")
+echo "PUSHOK $FILES files verified byte-for-byte at $DEST on CT $CT"

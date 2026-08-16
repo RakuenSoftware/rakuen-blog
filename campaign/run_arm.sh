@@ -87,8 +87,14 @@ case "$MODEL" in
   *) ARCH=dense ;;
 esac
 
+# -np 1 is explicit and load-bearing. Left to its default this build starts four
+# slots with a unified KV cache, which is a shared-state difference between arms
+# and exactly the shape this harness already has two investigations into
+# (investigate_np32_nondeterminism.sh, check_parallel_determinism.py). The
+# synthesis load profile pins one slot for the same reason; the extraction side
+# now matches it.
 SRV_ARGS=(-hf "$TARGET" --host 127.0.0.1 --port "$PORT" -c "$CTX"
-          --no-webui --no-mmproj -ngl 99)
+          -np 1 --no-webui --no-mmproj -ngl 99)
 
 OFFLOAD_MODE=full-gpu
 if [ "$ARCH" = "moe" ]; then
@@ -145,9 +151,46 @@ nvidia-smi --query-gpu=index,name,pci.bus_id,memory.total,memory.used \
   grep -iE "offload|layers|tensor|buffer size|CUDA[0-9]" "$SRVLOG" | tail -40
 } >> "$ARM/device.txt" 2>&1
 
-# Layers on GPU vs total, straight out of the loader.
-OFFLOAD=$(grep -oiE "offloaded [0-9]+/[0-9]+ layers" "$SRVLOG" | tail -1)
-[ -n "$OFFLOAD" ] || OFFLOAD="unrecorded"
+# Residency is measured, not parsed. This build emits no "offloaded N/M layers"
+# line at any verbosity, so the original grep matched nothing and reported
+# "unrecorded" -- which silently disabled the dense-spill check entirely, since
+# that check only ran when the string was present. A grep that matches nothing
+# looking like a clean result is the exact failure this harness keeps repeating.
+#
+# The replacement is a physical invariant rather than a log format: weights
+# resident on the card must occupy at least their own file size in VRAM. If the
+# server is using less VRAM than the model file is large, some of that model is
+# demonstrably not on the card. This cannot silently pass by failing to match.
+# Measured BEFORE the residency check that consumes them. Resident memory of
+# the server process is also the number that decides whether the next arm up
+# the ladder can run at all.
+RSS_KB=$(ps -o rss= -p "$SRV" 2>/dev/null | tr -d ' ')
+[ -n "$RSS_KB" ] || RSS_KB=0
+VRAM_MIB=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | head -1)
+[ -n "$VRAM_MIB" ] || VRAM_MIB=0
+
+MODEL_PATH=$(curl -s --max-time 10 "http://127.0.0.1:$PORT/props" \
+  | python3 -c 'import sys,json; print(json.load(sys.stdin).get("model_path",""))' 2>/dev/null)
+MODEL_FTYPE=$(curl -s --max-time 10 "http://127.0.0.1:$PORT/props" \
+  | python3 -c 'import sys,json; print(json.load(sys.stdin).get("model_ftype",""))' 2>/dev/null)
+
+FILE_MIB=0
+if [ -n "$MODEL_PATH" ] && [ -f "$MODEL_PATH" ]; then
+  FILE_MIB=$(( $(stat -Lc %s "$MODEL_PATH") / 1048576 ))
+fi
+{
+  echo "--- served model ---"
+  echo "model_path=$MODEL_PATH"
+  echo "model_ftype=$MODEL_FTYPE"
+  echo "model_file_mib=$FILE_MIB"
+  echo "gpu_mem_used_mib=$VRAM_MIB"
+} >> "$ARM/device.txt"
+
+if [ "$FILE_MIB" -gt 0 ]; then
+  OFFLOAD="vram ${VRAM_MIB}MiB vs weights ${FILE_MIB}MiB"
+else
+  OFFLOAD="unmeasured (model_path not resolvable)"
+fi
 
 # A DENSE model that did not get every layer INVALIDATES the arm, and the arm
 # stops here. There is no expert sparsity to absorb it: every token traverses
@@ -158,25 +201,32 @@ OFFLOAD=$(grep -oiE "offloaded [0-9]+/[0-9]+ layers" "$SRVLOG" | tail -1)
 # MoE arms are exempt by design. Experts on CPU is the intended way to serve
 # them and does not change what is being measured.
 DENSE_SPILL=0
-if [ "$ARCH" = "dense" ] && [ "$OFFLOAD" != "unrecorded" ]; then
-  ON=$(printf '%s' "$OFFLOAD" | grep -oE "[0-9]+/" | tr -d '/')
-  OF=$(printf '%s' "$OFFLOAD" | grep -oE "/[0-9]+" | tr -d '/')
-  if [ -n "$ON" ] && [ -n "$OF" ] && [ "$ON" -lt "$OF" ]; then
+if [ "$ARCH" = "dense" ]; then
+  if [ "$FILE_MIB" -eq 0 ]; then
+    # Refuse to guess. An unmeasurable dense arm is not silently accepted,
+    # because accepting it is how a spilled arm would reach the article.
+    say "FAIL cannot measure residency: model_path unresolved"
+    printf 'residency unmeasurable; model_path=%s\n' "$MODEL_PATH" > "$ARM/FAILED"
+    exit 1
+  fi
+  if [ "$VRAM_MIB" -lt "$FILE_MIB" ]; then
     DENSE_SPILL=1
-    say "INVALID_DENSE_SPILL only $ON of $OF layers on the card"
+    say "INVALID_DENSE_SPILL vram ${VRAM_MIB}MiB < weights ${FILE_MIB}MiB"
     python3 - "$ARM/INVALID_DENSE_SPILL" "$LABEL" "$MODEL" "$WIDTH" "$TARGET" \
-             "$DRAFT" "$ON" "$OF" "$OFFLOAD" "$VRAM_MIB" "$RSS_KB" <<'PY'
+             "$DRAFT" "$VRAM_MIB" "$FILE_MIB" "$RSS_KB" "$MODEL_PATH" <<'PY'
 import json, sys
-(p, label, model, width, target, draft, on, of, offload, vram, rss) = sys.argv[1:12]
+(p, label, model, width, target, draft, vram, filemib, rss, path) = sys.argv[1:11]
 json.dump({
     "label": label, "model": model, "width": width, "target": target,
     "draft": draft if draft != "-" else None,
     "architecture": "dense",
     "outcome": "INVALID_DENSE_SPILL",
-    "layers_on_gpu": int(on), "layers_total": int(of),
-    "offload": offload,
     "gpu_mem_used_mib": int(vram),
+    "model_file_mib": int(filemib),
     "server_rss_mib": int(rss) // 1024,
+    "model_path": path,
+    "evidence": "GPU memory in use is smaller than the model file, so some "
+                "weights are necessarily not resident on the card.",
     "note": "Not run. A dense model missing layers from the card is not the "
             "same experiment as its fully resident siblings, so no score is "
             "produced and none should be inferred. This is a capacity result "
@@ -188,13 +238,7 @@ PY
   fi
 fi
 
-# Resident memory of the server process: the number that decides whether the
-# next arm up the ladder can run at all.
-RSS_KB=$(ps -o rss= -p "$SRV" 2>/dev/null | tr -d ' ')
-[ -n "$RSS_KB" ] || RSS_KB=0
-VRAM_MIB=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | head -1)
-
-say "DEVICE offload=$OFFLOAD rss=$((RSS_KB / 1024))MiB vram=${VRAM_MIB}MiB"
+say "DEVICE $OFFLOAD rss=$((RSS_KB / 1024))MiB vram=${VRAM_MIB}MiB ftype=$MODEL_FTYPE"
 
 # --------------------------------------------------------- warmed throughput
 # Warmed and long enough to average. The first moe-tune probe was discarded for
