@@ -73,9 +73,17 @@ while IFS=$'\t' read -r order label model train width target draft est_gib ctk c
     say "arm $label -> synthesis SKIPPED (extraction could not serve the model)"
     synth_skipped=$((synth_skipped + 1))
   else
-    LABEL="$label" ROOT="$ROOT" bash "$ROOT/run_synthesis_arm.sh" 2>&1 | tee -a "$LOG"
+    # Cache type decides the synthesis results root, so the campaign has to
+    # look in the same place run_synthesis_arm.sh writes to.
+    if [ "${ctk:-f16}" = "f16" ] && [ "${ctv:-f16}" = "f16" ]; then
+      arm_syn_out="$SYN_OUT"
+    else
+      arm_syn_out="$ROOT/results-synthesis-ctk${ctk}-ctv${ctv}"
+    fi
+    LABEL="$label" ROOT="$ROOT" CTK="${ctk:-f16}" CTV="${ctv:-f16}" \
+      bash "$ROOT/run_synthesis_arm.sh" 2>&1 | tee -a "$LOG"
     src=${PIPESTATUS[0]}
-    if [ "$src" -eq 0 ] && [ -s "$SYN_OUT/$label/summary_$label.json" ]; then
+    if [ "$src" -eq 0 ] && [ -s "$arm_syn_out/$label/summary_$label.json" ]; then
       synth_complete=$((synth_complete + 1)); say "arm $label -> synthesis COMPLETE"
     else
       synth_failed=$((synth_failed + 1)); say "arm $label -> synthesis FAILED rc=$src"

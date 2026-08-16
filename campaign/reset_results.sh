@@ -21,6 +21,25 @@ case "$DEST" in
   *) echo "reset refused: DEST=$DEST is not the campaign root" >&2; exit 1 ;;
 esac
 
+# reset_results.sh --synth-failed
+#   Clear only the SYNTH_FAILED markers, keeping every completed result.
+#
+# A synthesis arm that failed stays failed so a resumed campaign does not retry
+# a genuinely broken configuration forever. That is right for a real failure and
+# wrong when the failure was in the harness -- as it was on 2026-08-16, when the
+# arms.tsv schema gained two columns and the wrapper still asserted eight
+# fields, so every synthesis arm died in under a second for a reason that had
+# nothing to do with the model.
+if [ "${1:-}" = "--synth-failed" ]; then
+  echo "clearing SYNTH_FAILED markers under $DEST on CT $CT (results kept)"
+  ssh -n -o ConnectTimeout=30 "$HOST" \
+    "pct exec $CT -- bash -lc 'find $DEST -name SYNTH_FAILED -print -delete'"
+  rc=$?
+  [ "$rc" -eq 0 ] || { echo "RESETFAIL: find exited $rc" >&2; exit 1; }
+  echo "RESETOK"
+  exit 0
+fi
+
 echo "resetting results under $DEST on CT $CT (bundle and weight cache untouched)"
 ssh -n -o ConnectTimeout=30 "$HOST" \
   "pct exec $CT -- rm -rf $DEST/results $DEST/state $DEST/campaign.log $DEST/smoke.out"

@@ -16,7 +16,18 @@ set -u
 
 ROOT=${ROOT:-/opt/campaign}
 BUNDLE="$ROOT/bundle"
-SYN_OUT=${SYN_OUT:-$ROOT/results-synthesis}
+
+# One results root per KV cache configuration. The controller validates that
+# every arm in a root shares one load profile, and cache type is part of that
+# profile, so the KV-sweep arms cannot live beside the f16 arms. Separating the
+# roots keeps that check intact instead of weakening it to accommodate us.
+CTK=${CTK:-f16}
+CTV=${CTV:-f16}
+if [ "$CTK" = "f16" ] && [ "$CTV" = "f16" ]; then
+  SYN_OUT=${SYN_OUT:-$ROOT/results-synthesis}
+else
+  SYN_OUT=${SYN_OUT:-$ROOT/results-synthesis-ctk${CTK}-ctv${CTV}}
+fi
 BIN=${BIN:-/opt/llama.cpp/build-cuda/bin/llama-server}
 FIXTURE="$BUNDLE/synthesis/fixture"
 MAX_CASES=${MAX_CASES:-1000}

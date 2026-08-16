@@ -79,9 +79,9 @@ def load_arms() -> list[dict[str, object]]:
             row = line.rstrip("\n").split("\t")
             if row[0] == "order":
                 continue
-            if len(row) != 8:
-                raise RuntimeError(f"arms.tsv: expected 8 fields, got {len(row)}: {row!r}")
-            _order, label, model, train, width, target, draft, _est = row
+            if len(row) != 10:
+                raise RuntimeError(f"arms.tsv: expected 10 fields, got {len(row)}: {row!r}")
+            _order, label, model, train, width, target, draft, _est, ctk, ctv = row
             candidates.append(
                 {
                     "label": label,
@@ -92,6 +92,8 @@ def load_arms() -> list[dict[str, object]]:
                     "draft": draft if draft != "-" else None,
                     "expected_model": expected_model_name(target),
                     "speculative": draft != "-",
+                    "cache_type_k": ctk,
+                    "cache_type_v": ctv,
                 }
             )
     if not candidates:
@@ -129,17 +131,74 @@ def validate_ladder(candidates: list[dict[str, object]]) -> None:
             )
 
 
+def selected_labels() -> set[str]:
+    """Whatever --labels names, read from argv before the controller parses it."""
+    labels = ""
+    for i, arg in enumerate(sys.argv):
+        if arg == "--labels" and i + 1 < len(sys.argv):
+            labels = sys.argv[i + 1]
+        elif arg.startswith("--labels="):
+            labels = arg.split("=", 1)[1]
+    return {part.strip() for part in labels.split(",") if part.strip()}
+
+
 def main() -> int:
     candidates = load_arms()
     validate_ladder(candidates)
 
+    wanted = selected_labels()
+    selected = [c for c in candidates if not wanted or str(c["label"]) in wanted]
+    if not selected:
+        raise RuntimeError(f"--labels matched no arm in arms.tsv: {sorted(wanted)}")
+
+    # One load profile per results root. The controller compares each arm's
+    # recorded load profile against LOAD_PROFILE and raises on any difference,
+    # which is correct and worth keeping -- but KV cache type is part of the
+    # serving configuration, so arms with different cache types genuinely cannot
+    # share a root. Fail here with a clear reason rather than deep inside a run.
+    kv = {(c["cache_type_k"], c["cache_type_v"]) for c in selected}
+    if len(kv) > 1:
+        raise RuntimeError(
+            f"selected arms span multiple KV cache types {sorted(kv)}; the "
+            "controller requires one load profile per results root, so these "
+            "must be run into separate roots"
+        )
+    ctk, ctv = next(iter(kv))
+
     rcm.CANDIDATES = tuple(candidates)
     rcm.validate_candidate_matrix = lambda: validate_ladder(list(rcm.CANDIDATES))
     rcm.LOAD_PROFILE["device"] = "CUDA0"
+    # In the profile so the cache type is provable from the artifacts rather
+    # than inferred from a label, and so the controller's own equality check
+    # catches drift between arms.
+    rcm.LOAD_PROFILE["cache_type_k"] = ctk
+    rcm.LOAD_PROFILE["cache_type_v"] = ctv
+
+    # The stock controller never emits -ctk/-ctv. Without this every arm would
+    # serve at the f16 default whatever the manifest said, and the KV sweep
+    # would have produced five identical configurations under five different
+    # labels -- five runs that agree perfectly and mean nothing.
+    stock_command = rcm.candidate_command
+
+    def command_with_cache(candidate, llama_server, port):
+        command = stock_command(candidate, llama_server, port)
+        command += ["-ctk", str(candidate["cache_type_k"]),
+                    "-ctv", str(candidate["cache_type_v"])]
+        if candidate.get("draft"):
+            # The draft model's cache defaults to f16 independently of the
+            # target's, so it has to be set too or the arm is not the
+            # configuration its label claims.
+            command += ["-ctkd", str(candidate["cache_type_k"]),
+                        "-ctvd", str(candidate["cache_type_v"])]
+        return command
+
+    rcm.candidate_command = command_with_cache
 
     print(
-        f"ladder: {len(candidates)} arms, device={rcm.LOAD_PROFILE['device']}, "
-        f"cache_ram={rcm.LOAD_PROFILE['prompt_cache_mib']}MiB",
+        f"ladder: {len(candidates)} arms, {len(selected)} selected, "
+        f"device={rcm.LOAD_PROFILE['device']}, "
+        f"cache_ram={rcm.LOAD_PROFILE['prompt_cache_mib']}MiB, "
+        f"ctk={ctk} ctv={ctv}",
         flush=True,
     )
     return rcm.main()
