@@ -196,6 +196,7 @@ KV f16, no speculation (LFM2.5 publishes no draft), 1,001 notes of corpus v5
 | LFM2.5-2.6B Q4_K_M | 0.5952 | [0.5648, 0.6242] | 372.28 | 1001/1001 |
 | LFM2.5-2.6B Q6_K | 0.5714 | [0.5411, 0.6015] | 302.50 | 1001/1001 |
 | LFM2.5-2.6B Q8_0 | 0.5625 | [0.5323, 0.5922] | 252.15 | 1001/1001 |
+| LFM2.5-2.6B BF16 | 0.5825 | [0.5529, 0.6117] | 150.28 | 1001/1001 |
 
 Paired, seed `20260809`, 20,000 replicates, **one comparison per process** — the
 scorer draws individual and paired intervals from a single random stream, so a
@@ -206,26 +207,55 @@ third `--pred` moves a paired endpoint even at the same seed.
 | Q6 − Q4 | −0.0238 | [−0.0513, +0.0041] | indistinguishable |
 | **Q8 − Q4** | **−0.0327** | **[−0.0592, −0.0063]** | **significant** |
 | Q8 − Q6 | −0.0089 | [−0.0331, +0.0152] | indistinguishable |
+| BF16 − Q4 | −0.0127 | [−0.0393, +0.0137] | indistinguishable |
+| BF16 − Q8 | +0.0200 | [−0.0029, +0.0432] | indistinguishable |
 
-Eight bits is worse than four on this model, and 32% slower. The endpoints
-separate; the adjacent steps do not.
+**One of five comparisons separates.** The defensible reading is that accuracy
+is flat across bit width on this model within what 1,001 notes can resolve,
+while throughput falls by a factor of 2.5.
 
-False positives rise monotonically with width (404, 440, 477) while true
-positives stay flat (544, 528, 531). The extra bits bought more extractions and
-the extras were wrong — over-extraction, not degraded comprehension. That is a
-testable prediction for the remaining ladders, not an established mechanism.
+Two cautions against making more of the Q8 result than it carries. With five
+comparisons drawn from four overlapping runs, one range clearing zero is close
+to what chance alone produces; no multiple-comparison correction is applied here,
+and none is applied elsewhere in this series either. And if added bits genuinely
+degraded this model, BF16 would be its worst arm — instead it is second best and
+statistically tied with Q4.
 
-**This bears on a withdrawn claim.** The published article states: *"An earlier
-claim that LFM2.5 worsened with more bits is withdrawn because its range crosses
-zero."* That row was Q4 − Q8 = +0.0104, range [−0.0153, +0.0363]. This campaign
-measures the same direction three times larger with a range that clears zero. It
-is an independent measurement, not a re-analysis — different card, different
-serving configuration, no speculation, cache-ram pinned — so it does not
-retroactively validate the old row. It is new evidence that the withdrawn
-direction was probably right.
+### A mechanism proposed and then falsified, within one arm
+
+Before BF16 ran, this log recorded a prediction: false positives rose
+monotonically with width (404, 440, 477) while true positives stayed flat
+(544, 528, 531), suggesting the extra bits bought more extractions and the
+extras were wrong.
+
+BF16 falsified it. The counts across the full ladder are:
+
+| arm | tp | fp | fn |
+|---|---:|---:|---:|
+| Q4_K_M | 544 | 404 | 336 |
+| Q6_K | 528 | 440 | 352 |
+| Q8_0 | 531 | 477 | 349 |
+| BF16 | 547 | 451 | 333 |
+
+Neither series is monotonic once the top rung is included. The over-extraction
+story is withdrawn. It is kept in this log rather than deleted because it was
+stated as a prediction for the remaining ladders, and the record of a
+prediction that failed is worth more than its quiet removal.
+
+**This bears on a withdrawn claim, but weakly.** The published article states:
+*"An earlier claim that LFM2.5 worsened with more bits is withdrawn because its
+range crosses zero."* That row was Q4 − Q8 = +0.0104, range [−0.0153, +0.0363].
+This campaign measures the same direction three times larger, at Q8 − Q4 =
+−0.0327, with a range that clears zero — but the BF16 rung then comes back up
+and ties with Q4, which is not what "worsens with more bits" predicts. The
+withdrawn claim should stay withdrawn.
+
+Throughput is the result that is not ambiguous here: 372.28, 302.50, 252.15 and
+150.28 tok/s across Q4, Q6, Q8 and BF16, monotonic, on identical hardware, from
+about a thousand generation samples per arm with under 2% spread.
 
 One model, and the smallest in the set. The article's existing Gemma ladders peak
-at Q6, which is the opposite shape.
+at Q6, which is a third shape again.
 
 ## Synthesis
 
