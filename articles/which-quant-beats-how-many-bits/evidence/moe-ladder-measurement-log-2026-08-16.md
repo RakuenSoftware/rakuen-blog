@@ -17,6 +17,7 @@ individually rather than summarised — the pattern is the finding.
 |---|---|
 | First campaign, 2026-08-16 09:12Z, LFM2.5-2.6B Q4 | served with four slots and an unbounded prompt cache; superseded |
 | Second campaign, 09:59Z, LFM2.5-2.6B Q4 | unbounded prompt cache; froze at 247/1001, see defect 3 |
+| All synthesis before 2026-08-16 21:00Z (Q4, BF16) | served with reasoning enabled; see defect 10. Retained at `results-synthesis-DISCARDED-reasoning-on-20260816` |
 
 No score was published from either. The third campaign, from 10:49Z, is the one
 whose results stand.
@@ -172,6 +173,55 @@ markers were cleared with `reset_results.sh --synth-failed` and the arms retried
 It is logged because a reader comparing arm counts will otherwise find two
 unexplained failures in the record.
 
+### 10. Synthesis measured reasoning behaviour, not synthesis
+
+**Symptom.** LFM2.5-2.6B recorded 51-59% `truncated_rate`, a `raw_parse_rate`
+of 0.41-0.49 and a `content_f1` of 0.14-0.17. Read naively: this model is bad at
+synthesis.
+
+**What the artifacts actually said.** Inspecting a "truncated" row:
+
+    finish_reason: length
+    usage: {"completion_tokens": 1536, "prompt_tokens": 553}
+    response: ''
+    parse_error: Expecting value: line 1 column 1 (char 0)
+
+The model spent its entire 1,536-token budget and returned an **empty string**.
+Not a cut-off answer -- no answer at all.
+
+**Cause.** The runner requests `{"enable_thinking": false}` as a chat-template
+kwarg. Every model in the published nine-configuration matrix honours it, and
+every one truncates on **zero** of 1,000 cases with a parse rate of 1.000.
+LFM2.5 does not honour it. It reasons regardless; llama.cpp, serving with
+`--jinja`, routes reasoning into a channel separate from `message.content`; the
+budget is exhausted before reasoning ends; `content` is never populated. The
+server said so at load time and it was not read:
+
+    chat template supports preserving reasoning, consider enabling it via
+    --reasoning-preserve
+
+**What it would have corrupted.** An entire task's worth of results, in a way
+that looks like a finding. "LFM2.5-2.6B scores 0.14 on synthesis against the
+published matrix's 0.29-0.36" is a publishable-looking sentence and it would
+have been false: the number measures a model that was never told to stop
+thinking, on a harness that discards thinking. It would also have contaminated
+every cross-task claim, which is the point of the campaign.
+
+Extraction was unaffected, and the asymmetry is the clue that should have been
+noticed sooner: `run_llamacpp.py` uses the completion endpoint, where no
+reasoning separation happens, and parsed 1001/1001 on every arm.
+
+**Fix.** Reasoning is now forced off at the server with `--reasoning off`, which
+applies the same intent as the template kwarg from a layer the model cannot
+ignore, plus `--reasoning-format none` as a backstop so that any thoughts a
+template still emits land in `message.content` and are scored rather than
+discarded -- the behaviour Muse Glimmer already had in the published matrix.
+Both are recorded in `LOAD_PROFILE`, so the divergence from the published
+profile is visible in every artifact.
+
+**Consequence.** The two completed synthesis arms are discarded and will be
+re-run. No synthesis result stands as of this entry.
+
 ### 9. Smaller faults, fixed without consequence
 
 - `bootstrap_ci.py --pred` takes `LABEL=PATH`; a bare path lands entirely in the
@@ -259,6 +309,12 @@ at Q6, which is a third shape again.
 
 ## Synthesis
 
-One arm complete: LFM2.5-2.6B Q4, 3,693 s, 1,000 cases, through the controller's
-case-population, model-identity, artifact-hash and load-profile validators. The
-remaining arms are queued.
+**No synthesis result stands.** Two arms completed mechanically -- LFM2.5-2.6B
+Q4 in 3,693 s and BF16 in 8,714 s, both 1,000 cases, both through the
+controller's case-population, model-identity, artifact-hash and load-profile
+validators -- and both are discarded under defect 10, because they measured a
+model reasoning into a discarded channel rather than performing the task.
+
+That the controller's validators all passed is worth recording: they check that
+the run was *configured and executed* as declared, which it was. Nothing in that
+suite can tell you the declared configuration was the wrong one.

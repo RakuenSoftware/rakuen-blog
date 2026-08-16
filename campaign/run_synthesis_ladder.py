@@ -173,6 +173,10 @@ def main() -> int:
     # catches drift between arms.
     rcm.LOAD_PROFILE["cache_type_k"] = ctk
     rcm.LOAD_PROFILE["cache_type_v"] = ctv
+    # Recorded so the divergence from the published matrix's profile is visible
+    # in every artifact rather than living only in this comment.
+    rcm.LOAD_PROFILE["reasoning"] = "off"
+    rcm.LOAD_PROFILE["reasoning_format"] = "none"
 
     # The stock controller never emits -ctk/-ctv. Without this every arm would
     # serve at the f16 default whatever the manifest said, and the KV sweep
@@ -184,6 +188,24 @@ def main() -> int:
         command = stock_command(candidate, llama_server, port)
         command += ["-ctk", str(candidate["cache_type_k"]),
                     "-ctv", str(candidate["cache_type_v"])]
+        # Reasoning is forced off at the SERVER, not merely requested through the
+        # chat template.
+        #
+        # The runner asks for {"enable_thinking": false} as a template kwarg. Every
+        # model in the published nine-configuration matrix honours it and truncates
+        # on zero of 1,000 cases. LFM2.5 does not: it reasons anyway, llama.cpp
+        # routes the reasoning into a separate channel from `content`, the model
+        # spends all 1,536 tokens thinking, and the harness records
+        # finish_reason=length with content='' -- an EMPTY string, not a cut-off
+        # answer. That reads as 51-59% "truncation" and a content_f1 of 0.14, none
+        # of which measures synthesis quality.
+        #
+        # --reasoning off applies the same intent the template kwarg expresses,
+        # from a layer the model cannot ignore. --reasoning-format none is the
+        # backstop: if a template still emits thoughts, they stay in
+        # message.content and are scored rather than silently discarded, which is
+        # how Muse Glimmer behaved in the published matrix.
+        command += ["--reasoning", "off", "--reasoning-format", "none"]
         if candidate.get("draft"):
             # The draft model's cache defaults to f16 independently of the
             # target's, so it has to be set too or the arm is not the
