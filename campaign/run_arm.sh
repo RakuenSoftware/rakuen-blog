@@ -47,9 +47,14 @@ if [ -s "$ARM/score.json" ] && [ -s "$ARM/pred.jsonl" ] &&
   say "SKIP already complete"
   exit 0
 fi
-# A previously skipped arm stays skipped unless its record is removed by hand.
+# A previously recorded non-result stays recorded unless removed by hand, so a
+# resumed campaign does not re-attempt an arm this card has already refused.
 if [ -s "$ARM/SKIPPED_TOO_SLOW" ]; then
   say "SKIP previously gated as too slow"
+  exit 0
+fi
+if [ -s "$ARM/INVALID_DENSE_SPILL" ]; then
+  say "SKIP previously invalidated by dense spill"
   exit 0
 fi
 
@@ -57,12 +62,47 @@ pkill -f "$BIN" 2>/dev/null
 sleep 3
 
 # ---------------------------------------------------------------- serve
+#
+# Offload strategy differs by architecture, and getting this wrong is the
+# difference between an arm that runs fine and an arm that crawls.
+#
+# MoE: if the weights exceed the card, keep attention and the dense path on the
+# GPU and push the expert FFNs to system RAM with -cmoe. A token routes to a
+# couple of experts out of many, so the CPU-side work per token is a small
+# fraction of the model. This is cheap and expected; it is NOT a reason to gate
+# an arm, and MoE spill is not treated as a hazard anywhere below.
+#
+# Dense: there is no such escape hatch. -ngl short of every layer puts WHOLE
+# layers on the CPU, and every token traverses every layer, so a dense spill is
+# a genuine cliff. Dense arms therefore demand full residency, and an arm that
+# cannot get it is recorded as DENSE_SPILL rather than quietly run slow.
+#
+# The card reports 15880 MiB usable / 15611 free, not the 16303 nvidia-smi
+# advertises, so the budget below is set against the smaller number.
 export HF_HOME=${HF_HOME:-/opt/hf}
+VRAM_BUDGET_GIB=${VRAM_BUDGET_GIB:-13.5}   # leaves room for KV cache and draft
+
+case "$MODEL" in
+  *-a[0-9]b|*-a[0-9][0-9]b) ARCH=moe ;;
+  *) ARCH=dense ;;
+esac
+
 SRV_ARGS=(-hf "$TARGET" --host 127.0.0.1 --port "$PORT" -c "$CTX"
           --no-webui --no-mmproj -ngl 99)
+
+OFFLOAD_MODE=full-gpu
+if [ "$ARCH" = "moe" ]; then
+  FITS=$(python3 -c "print(1 if float('${EST_GIB:-0}') <= float('$VRAM_BUDGET_GIB') else 0)")
+  if [ "$FITS" != "1" ]; then
+    SRV_ARGS+=(-cmoe)
+    OFFLOAD_MODE=moe-experts-on-cpu
+  fi
+fi
+
 if [ "$DRAFT" != "-" ]; then
   SRV_ARGS+=(-hfd "$DRAFT" --draft-max 3 --draft-min 1)
 fi
+say "ARCH=$ARCH OFFLOAD=$OFFLOAD_MODE est=${EST_GIB:-?}GiB budget=${VRAM_BUDGET_GIB}GiB"
 
 say "SERVE $TARGET"
 "$BIN" "${SRV_ARGS[@]}" > "$SRVLOG" 2>&1 &
@@ -108,6 +148,45 @@ nvidia-smi --query-gpu=index,name,pci.bus_id,memory.total,memory.used \
 # Layers on GPU vs total, straight out of the loader.
 OFFLOAD=$(grep -oiE "offloaded [0-9]+/[0-9]+ layers" "$SRVLOG" | tail -1)
 [ -n "$OFFLOAD" ] || OFFLOAD="unrecorded"
+
+# A DENSE model that did not get every layer INVALIDATES the arm, and the arm
+# stops here. There is no expert sparsity to absorb it: every token traverses
+# every layer, so a partially resident dense model is not the same experiment
+# as its fully resident siblings, and its number is not a bit-width result. It
+# would be a measurement of this card's capacity wearing a quantization label.
+#
+# MoE arms are exempt by design. Experts on CPU is the intended way to serve
+# them and does not change what is being measured.
+DENSE_SPILL=0
+if [ "$ARCH" = "dense" ] && [ "$OFFLOAD" != "unrecorded" ]; then
+  ON=$(printf '%s' "$OFFLOAD" | grep -oE "[0-9]+/" | tr -d '/')
+  OF=$(printf '%s' "$OFFLOAD" | grep -oE "/[0-9]+" | tr -d '/')
+  if [ -n "$ON" ] && [ -n "$OF" ] && [ "$ON" -lt "$OF" ]; then
+    DENSE_SPILL=1
+    say "INVALID_DENSE_SPILL only $ON of $OF layers on the card"
+    python3 - "$ARM/INVALID_DENSE_SPILL" "$LABEL" "$MODEL" "$WIDTH" "$TARGET" \
+             "$DRAFT" "$ON" "$OF" "$OFFLOAD" "$VRAM_MIB" "$RSS_KB" <<'PY'
+import json, sys
+(p, label, model, width, target, draft, on, of, offload, vram, rss) = sys.argv[1:12]
+json.dump({
+    "label": label, "model": model, "width": width, "target": target,
+    "draft": draft if draft != "-" else None,
+    "architecture": "dense",
+    "outcome": "INVALID_DENSE_SPILL",
+    "layers_on_gpu": int(on), "layers_total": int(of),
+    "offload": offload,
+    "gpu_mem_used_mib": int(vram),
+    "server_rss_mib": int(rss) // 1024,
+    "note": "Not run. A dense model missing layers from the card is not the "
+            "same experiment as its fully resident siblings, so no score is "
+            "produced and none should be inferred. This is a capacity result "
+            "about a 15880 MiB card, not a result about this bit width. The "
+            "ladder is reported as reaching only as far as its resident rungs.",
+}, open(p, "w"), indent=2)
+PY
+    exit 0
+  fi
+fi
 
 # Resident memory of the server process: the number that decides whether the
 # next arm up the ladder can run at all.
@@ -161,19 +240,26 @@ elif [ -s "$BASEFILE" ]; then
   GATE="ratio ${RATIO}x vs Q4 baseline ${BASE} tok/s"
   if [ "$TOO_SLOW" = "1" ]; then
     say "SKIPPED_TOO_SLOW $GATE"
-    python3 - "$ARM/SKIPPED_TOO_SLOW" "$LABEL" "$MODEL" "$WIDTH" "$TPS" "$BASE" "$RATIO" "$OFFLOAD" "$RSS_KB" <<'PY'
+    python3 - "$ARM/SKIPPED_TOO_SLOW" "$LABEL" "$MODEL" "$WIDTH" "$TPS" "$BASE" "$RATIO" "$OFFLOAD" "$RSS_KB" "$ARCH" "$OFFLOAD_MODE" "$DENSE_SPILL" <<'PY'
 import json, sys
-p, label, model, width, tps, base, ratio, offload, rss = sys.argv[1:10]
+(p, label, model, width, tps, base, ratio, offload, rss,
+ arch, mode, dense_spill) = sys.argv[1:13]
 json.dump({
     "label": label, "model": model, "width": width,
     "outcome": "SKIPPED_TOO_SLOW",
+    "architecture": arch,
+    "offload_mode": mode,
+    "dense_layer_spill": dense_spill == "1",
     "measured_tok_per_s": float(tps),
     "q4_baseline_tok_per_s": float(base),
     "slowdown_vs_q4": float(ratio),
     "offload": offload,
     "server_rss_mib": int(rss) // 1024,
     "note": "Gated before the extraction run. No score exists for this arm and "
-            "its ladder is incomplete. This is a recorded outcome, not a failure.",
+            "its ladder is incomplete. This is a recorded outcome, not a failure. "
+            "If dense_layer_spill is true the cause is layer offload on a dense "
+            "model, which is a hardware-capacity result about this card, not a "
+            "statement about the quantization.",
 }, open(p, "w"), indent=2)
 PY
     exit 0
@@ -233,10 +319,11 @@ fi
 # ------------------------------------------------------------------- record
 python3 - "$META" "$LABEL" "$MODEL" "$TRAIN" "$WIDTH" "$TARGET" "$DRAFT" \
          "$TPS" "$OFFLOAD" "$RSS_KB" "$VRAM_MIB" "$EXTRACT_SECS" \
-         "$ARM/score.json" "$ARM/pred.jsonl" "$EXPECT" "$GATE" <<'PY'
+         "$ARM/score.json" "$ARM/pred.jsonl" "$EXPECT" "$GATE" \
+         "$ARCH" "$OFFLOAD_MODE" "$DENSE_SPILL" <<'PY'
 import json, sys
 (p, label, model, train, width, target, draft, tps, offload, rss, vram,
- secs, scorep, predp, expect, gate) = sys.argv[1:17]
+ secs, scorep, predp, expect, gate, arch, mode, dense_spill) = sys.argv[1:20]
 score = json.load(open(scorep))
 rows = sum(1 for _ in open(predp))
 json.dump({
@@ -244,6 +331,12 @@ json.dump({
     "target": target, "draft": draft if draft != "-" else None,
     "speculation": draft != "-",
     "outcome": "COMPLETE",
+    "architecture": arch,
+    "offload_mode": mode,
+    # True only for a DENSE model that did not get every layer on the card.
+    # MoE arms running experts on CPU are not spills in this sense and are
+    # never flagged here; that is the intended way to serve them.
+    "dense_layer_spill": dense_spill == "1",
     "warmed_tok_per_s": float(tps),
     "gate": gate,
     "offload": offload,
