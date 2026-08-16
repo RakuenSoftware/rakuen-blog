@@ -184,6 +184,38 @@ phase is Qwen3.6-35B-A3B at Q8, about 36 GiB, which leaves comfortable headroom.
 The BF16 phase is where that stops being true, which is one of the reasons it is
 deferred.
 
+## One host, serially, and the campaign is not parallelised
+
+Renting additional 5080 hosts to run arms concurrently was considered on
+2026-08-16 and declined. The campaign runs on one card, one arm at a time, and
+takes as long as that takes.
+
+The reason is that this series already measured the cost of not doing so. The
+article's 1,001-note 31B pair put a rented host against a local one and carries
+a cross-machine calibration bound of about **±0.019** — wider than the +0.0108 it
+was trying to measure. The 3,002-note same-card rerun then collapsed that
+difference to +0.0009. The finding was mostly the hardware.
+
+That bound is the same size as the effects this campaign is measuring. The first
+completed pair here, LFM2.5-2.6B Q6 minus Q4, is −0.0238 with a 95% range of
+[−0.0513, +0.0041]. A cross-host term of ±0.019 sitting inside that is not a
+detail, it is most of the signal.
+
+"Another 5080" does not solve it. The series measured the *same model* running
+between 84.4 and 131.9 tokens per second across five rented hosts: the GPU being
+nominally identical does not make CPU, memory bandwidth and PCIe identical, and
+this task is not purely GPU-bound.
+
+Throughput is a reported result of this article, which makes the constraint
+stricter still. A speed table pooling hosts would be measuring the landlord.
+Running whole ladders per host would preserve within-model accuracy while still
+contaminating every cross-model speed comparison, so even the careful version of
+parallelising costs a result the article intends to report.
+
+The campaign is therefore slow on purpose. Every arm — both tasks — runs on one
+RTX 5080 in LXC 140, one at a time, sharing one llama.cpp build, one context
+length, one cache-ram setting and one prompt cache bound.
+
 ## Why BF16 is deferred rather than dropped
 
 BF16 is wanted for six of the seven models. It is held back because its
