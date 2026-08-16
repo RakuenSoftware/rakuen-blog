@@ -93,8 +93,22 @@ esac
 # (investigate_np32_nondeterminism.sh, check_parallel_determinism.py). The
 # synthesis load profile pins one slot for the same reason; the extraction side
 # now matches it.
+# --cache-ram 1024 is NOT a tuning knob here, it is a correctness requirement.
+#
+# Left unset, the first live arm's prompt cache grew until the server held
+# 9.3 GB RSS for a 1.6 GiB model, logged hundreds of "making room for prompt
+# cache entry" evictions, and then deadlocked in futex_do_wait during shutdown
+# while the client sat on the socket. The arm froze at 247/1001 and the
+# campaign could not advance.
+#
+# Independently of the crash, this value is RESULTS-AFFECTING in this series:
+# the 10,000-note ladder had to be quarantined and re-taken because two model
+# families had been run at different --cache-ram settings, and 1024 is the
+# value the re-take standardised on. The synthesis load profile pins the same
+# 1024. An arm run at an unbounded default would not be comparable to anything
+# else measured here, even if it completed.
 SRV_ARGS=(-hf "$TARGET" --host 127.0.0.1 --port "$PORT" -c "$CTX"
-          -np 1 --no-webui --no-mmproj -ngl 99)
+          -np 1 --cache-ram 1024 --no-webui --no-mmproj -ngl 99)
 
 OFFLOAD_MODE=full-gpu
 if [ "$ARCH" = "moe" ]; then
@@ -135,7 +149,21 @@ if [ "$ready" != 1 ]; then
 fi
 say "READY"
 
-cleanup() { kill "$SRV" 2>/dev/null; sleep 2; pkill -f "$BIN" 2>/dev/null; }
+# Kill THIS arm's server by pid, escalating if it will not go. The previous
+# version ended with `pkill -f "$BIN"`, which matches any llama-server on the
+# box regardless of which arm owns it -- a cross-kill waiting to happen the
+# moment two things run at once.
+cleanup() {
+  kill "$SRV" 2>/dev/null
+  for _ in $(seq 1 10); do
+    kill -0 "$SRV" 2>/dev/null || return 0
+    sleep 1
+  done
+  # A server that ignores SIGTERM for ten seconds is the deadlock case: it can
+  # hold VRAM indefinitely and block the next arm, so do not wait politely.
+  kill -9 "$SRV" 2>/dev/null
+  sleep 2
+}
 trap cleanup EXIT
 
 # ------------------------------------------------- provenance, not assumption
@@ -319,7 +347,60 @@ EXTRACT_START=$(date -u +%s)
 python3 "$BUNDLE/raw/harness/harness/run_llamacpp.py" \
   --model "$LABEL" --gold "$GOLD" --out "$ARM/pred.jsonl" \
   --thinking --max-tokens "$CTX" --concurrency 1 \
-  --base-url "http://127.0.0.1:$PORT" >> "$ARM/extract.log" 2>&1
+  --base-url "http://127.0.0.1:$PORT" >> "$ARM/extract.log" 2>&1 &
+EXTRACT_PID=$!
+
+# Watchdog. The client's own timeout is an hour, and it spends that hour
+# waiting politely on a socket whose server has died -- which is how one dead
+# arm froze the whole 33-arm queue with nothing in any log to say so. Two
+# independent liveness signals, because the freeze presented as "slow":
+#
+#   1. the server answers /health
+#   2. the prediction file is still growing
+#
+# Either one failing for its grace period kills the arm and lets the queue move
+# on. A stalled arm must cost minutes, not an hour, and must never cost the
+# whole campaign.
+STALL_LIMIT=${STALL_LIMIT:-1200}      # 20 min with no new row
+LAST_ROWS=0
+LAST_PROGRESS=$(date -u +%s)
+DIED=""
+
+while kill -0 "$EXTRACT_PID" 2>/dev/null; do
+  sleep 30
+
+  if ! curl -sf --max-time 10 "http://127.0.0.1:$PORT/health" > /dev/null 2>&1; then
+    sleep 20   # one retry: do not kill an arm over a single slow health check
+    if ! curl -sf --max-time 10 "http://127.0.0.1:$PORT/health" > /dev/null 2>&1; then
+      DIED="server stopped answering /health"
+      break
+    fi
+  fi
+
+  NOW_ROWS=$(wc -l < "$ARM/pred.jsonl" 2>/dev/null || echo 0)
+  if [ "$NOW_ROWS" -gt "$LAST_ROWS" ]; then
+    LAST_ROWS=$NOW_ROWS
+    LAST_PROGRESS=$(date -u +%s)
+  elif [ $(( $(date -u +%s) - LAST_PROGRESS )) -ge "$STALL_LIMIT" ]; then
+    DIED="no new prediction row in ${STALL_LIMIT}s (stuck at $NOW_ROWS/$EXPECT)"
+    break
+  fi
+done
+
+if [ -n "$DIED" ]; then
+  kill "$EXTRACT_PID" 2>/dev/null
+  sleep 3
+  kill -9 "$EXTRACT_PID" 2>/dev/null
+  EXTRACT_SECS=$(( $(date -u +%s) - EXTRACT_START ))
+  GOT_ROWS=$(wc -l < "$ARM/pred.jsonl" 2>/dev/null || echo 0)
+  say "SERVER_DIED $DIED after ${EXTRACT_SECS}s at $GOT_ROWS/$EXPECT rows"
+  printf 'server died during extraction: %s\nrows=%s/%s seconds=%s\n' \
+    "$DIED" "$GOT_ROWS" "$EXPECT" "$EXTRACT_SECS" > "$ARM/FAILED"
+  tail -30 "$SRVLOG" >> "$ARM/FAILED"
+  exit 1
+fi
+
+wait "$EXTRACT_PID"
 EXTRACT_RC=$?
 EXTRACT_SECS=$(( $(date -u +%s) - EXTRACT_START ))
 
