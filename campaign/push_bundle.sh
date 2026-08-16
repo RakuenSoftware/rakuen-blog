@@ -28,8 +28,17 @@ fail() { echo "PUSHFAIL: $*" >&2; exit 1; }
 [ -f "$H2H/src/kb/kb_memory_facts.c" ] || fail "pinned prompt missing: $H2H/src/kb/kb_memory_facts.c"
 GOLD="$H2H/raw/corpus/data/corpora/v5/gold_small.jsonl"
 [ -f "$GOLD" ] || fail "gold set missing: $GOLD"
-FIXTURE="$SYN/fixtures/ab-v1/synthesis.jsonl"
-[ -f "$FIXTURE" ] || fail "synthesis fixture missing: $FIXTURE"
+# The synthesis controller requires the WHOLE bundle directory, not just the
+# fixture: main() refuses to start unless corpus.jsonl, synthesis.jsonl and
+# manifest.json are all present, and it hashes run_synthesis_ab.py and
+# build_254_fixtures.py as siblings of the controller.
+FIXDIR="$SYN/fixtures/ab-v1"
+for f in corpus.jsonl synthesis.jsonl manifest.json; do
+  [ -f "$FIXDIR/$f" ] || fail "synthesis bundle missing: $FIXDIR/$f"
+done
+for f in run_candidate_matrix.py analyze_candidate_matrix.py run_synthesis_ab.py build_254_fixtures.py; do
+  [ -f "$SYN/ab-v2/$f" ] || fail "synthesis script missing: $SYN/ab-v2/$f"
+done
 
 # --- stage
 mkdir -p "$STAGE/bundle/raw/harness" "$STAGE/bundle/src/kb" "$STAGE/bundle/synthesis"
@@ -37,13 +46,17 @@ cp -r "$H2H/raw/harness/harness" "$STAGE/bundle/raw/harness/harness" || fail "co
 cp "$H2H/src/rel_types.c" "$STAGE/bundle/src/rel_types.c" || fail "copy rel_types.c"
 cp "$H2H/src/kb/kb_memory_facts.c" "$STAGE/bundle/src/kb/" || fail "copy kb_memory_facts.c"
 cp "$GOLD" "$STAGE/bundle/gold_small.jsonl" || fail "copy gold"
-cp "$FIXTURE" "$STAGE/bundle/synthesis/synthesis.jsonl" || fail "copy fixture"
-cp "$SYN/ab-v2/run_candidate_matrix.py" "$STAGE/bundle/synthesis/" || fail "copy synthesis controller"
-cp "$SYN/ab-v2/analyze_candidate_matrix.py" "$STAGE/bundle/synthesis/" || fail "copy synthesis analyzer"
 
-cp "$REPO/campaign/arms.tsv" "$STAGE/" || fail "copy arms.tsv"
-cp "$REPO/campaign/run_arm.sh" "$STAGE/" || fail "copy run_arm.sh"
-cp "$REPO/campaign/run_campaign.sh" "$STAGE/" || fail "copy run_campaign.sh"
+# The controller resolves its siblings by __file__, so the ab-v2 scripts must
+# land together in one directory, with the fixture bundle beside them.
+cp "$SYN/ab-v2/"*.py "$STAGE/bundle/synthesis/" || fail "copy synthesis scripts"
+mkdir -p "$STAGE/bundle/synthesis/fixture"
+cp "$FIXDIR/corpus.jsonl" "$FIXDIR/synthesis.jsonl" "$FIXDIR/manifest.json" \
+   "$STAGE/bundle/synthesis/fixture/" || fail "copy synthesis fixture bundle"
+
+for f in arms.tsv run_arm.sh run_campaign.sh run_synthesis_ladder.py; do
+  cp "$REPO/campaign/$f" "$STAGE/" || fail "copy $f"
+done
 
 GOLD_LINES=$(wc -l < "$STAGE/bundle/gold_small.jsonl")
 [ "$GOLD_LINES" -eq 1001 ] || fail "gold set is $GOLD_LINES lines, expected 1001"
