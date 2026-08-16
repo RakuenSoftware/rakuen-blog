@@ -473,6 +473,17 @@ json.dump({
 }, open(p, "w"), indent=2)
 PY
 
-F1=$(python3 -c "import json;print(json.load(open('$ARM/score.json')).get('f1'))" 2>/dev/null)
-say "COMPLETE f1=$F1 ${EXTRACT_SECS}s ${TPS}tok/s"
+# score.py nests its verdicts under strict / lenient / relation_agnostic; there
+# is no top-level "f1", so the original lookup printed "f1=None" on a perfectly
+# good arm. Cosmetic only -- arm.json embeds the whole score object -- but a
+# summary line that says None on success is the same class of mistake as a
+# green suite that never ran, and it is what a human scans first across 33 arms.
+F1=$(python3 -c "
+import json
+s = json.load(open('$ARM/score.json'))
+print('strict=%s lenient=%s relagnostic=%s' % (
+    s.get('strict', {}).get('f1'),
+    s.get('lenient', {}).get('f1'),
+    s.get('relation_agnostic', {}).get('f1')))" 2>/dev/null)
+say "COMPLETE $F1 ${EXTRACT_SECS}s ${TPS}tok/s"
 exit 0
