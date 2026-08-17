@@ -58,8 +58,30 @@ if [ -s "$ARM/INVALID_DENSE_SPILL" ]; then
   exit 0
 fi
 
+# Wait for the card to be genuinely clear before starting, not merely for a
+# signal to have been sent.
+#
+# A stale server from a previous run held 2,640 MiB while gemma4-e2b.base.q4
+# loaded and ran. CUDA context teardown outlives process exit, so `pkill` then
+# `sleep 3` is not enough: that arm recorded 4,727 MiB of VRAM for a model using
+# 2,072 MiB, and its throughput was measured while sharing the card. Both
+# numbers were wrong and the VRAM one was wrong by 2.6x.
 pkill -f "$BIN" 2>/dev/null
-sleep 3
+for _ in $(seq 1 60); do
+  if ! pgrep -f "$BIN" > /dev/null 2>&1; then
+    # No process left; now wait for the driver to actually release the memory.
+    FREE_MIB=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | head -1)
+    [ "${FREE_MIB:-99999}" -lt 500 ] && break
+  fi
+  sleep 2
+done
+RESIDUAL=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | head -1)
+if [ "${RESIDUAL:-99999}" -ge 500 ]; then
+  say "FAIL card not clear before start: ${RESIDUAL}MiB still allocated"
+  printf 'card not clear before start: %sMiB still allocated\n' "$RESIDUAL" > "$ARM/FAILED"
+  nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv,noheader >> "$ARM/FAILED" 2>&1
+  exit 1
+fi
 
 # ---------------------------------------------------------------- serve
 #
@@ -256,6 +278,18 @@ RSS_KB=$(ps -o rss= -p "$SRV" 2>/dev/null | tr -d ' ')
 VRAM_MIB=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | head -1)
 [ -n "$VRAM_MIB" ] || VRAM_MIB=0
 
+# Exactly one process may hold the card while this arm is measured. Anything
+# else means the VRAM figure is a sum over strangers and the throughput was
+# measured under contention -- which is how one arm reported 4,727 MiB for a
+# 2,072 MiB model and a throughput number that cannot be compared to its peers.
+APPS=$(nvidia-smi --query-compute-apps=pid --format=csv,noheader | grep -c .)
+if [ "${APPS:-0}" -ne 1 ]; then
+  say "FAIL $APPS processes hold the GPU; measurement would be contaminated"
+  printf 'expected exactly 1 GPU compute app during the arm, found %s\n' "$APPS" > "$ARM/FAILED"
+  nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv,noheader >> "$ARM/FAILED" 2>&1
+  exit 1
+fi
+
 MODEL_PATH=$(curl -s --max-time 10 "http://127.0.0.1:$PORT/props" \
   | python3 -c 'import sys,json; print(json.load(sys.stdin).get("model_path",""))' 2>/dev/null)
 MODEL_FTYPE=$(curl -s --max-time 10 "http://127.0.0.1:$PORT/props" \
@@ -296,9 +330,24 @@ if [ "$ARCH" = "dense" ]; then
     printf 'residency unmeasurable; model_path=%s\n' "$MODEL_PATH" > "$ARM/FAILED"
     exit 1
   fi
-  if [ "$VRAM_MIB" -lt "$FILE_MIB" ]; then
+  # VRAM below file size is NOT sufficient evidence of a spill.
+  #
+  # The gemma-4 E-series keeps its per-layer embeddings on the CPU by design --
+  # they are lookup tables, not compute -- so E2B Q4 loads ~2.0 GiB to the card
+  # from a 3.0 GiB file with 2.5 GiB resident in host RAM, entirely correctly.
+  # The published article's own size chart lists E2B at 2.01 GiB, which is that
+  # resident figure rather than the file. The first version of this check called
+  # that a spill and invalidated a 2 GiB model on a 16 GiB card.
+  #
+  # A CAPACITY spill can only occur when the card is full. If the server is
+  # using a small fraction of available VRAM, nothing was evicted for want of
+  # room, whatever the file size says. So both conditions must hold: less VRAM
+  # than weights, AND the card at its ceiling.
+  CARD_TOTAL_MIB=${CARD_TOTAL_MIB:-15880}
+  NEAR_CEILING=$(python3 -c "print(1 if float('$VRAM_MIB') >= 0.90 * float('$CARD_TOTAL_MIB') else 0)")
+  if [ "$VRAM_MIB" -lt "$FILE_MIB" ] && [ "$NEAR_CEILING" = "1" ]; then
     DENSE_SPILL=1
-    say "INVALID_DENSE_SPILL vram ${VRAM_MIB}MiB < weights ${FILE_MIB}MiB"
+    say "INVALID_DENSE_SPILL vram ${VRAM_MIB}MiB < weights ${FILE_MIB}MiB at card ceiling ${CARD_TOTAL_MIB}MiB"
     python3 - "$ARM/INVALID_DENSE_SPILL" "$LABEL" "$MODEL" "$WIDTH" "$TARGET" \
              "$DRAFT" "$VRAM_MIB" "$FILE_MIB" "$RSS_KB" "$MODEL_PATH" <<'PY'
 import json, sys
@@ -312,8 +361,12 @@ json.dump({
     "model_file_mib": int(filemib),
     "server_rss_mib": int(rss) // 1024,
     "model_path": path,
-    "evidence": "GPU memory in use is smaller than the model file, so some "
-                "weights are necessarily not resident on the card.",
+    "evidence": "GPU memory in use is smaller than the model file AND the card "
+                "is at its ceiling, so weights were evicted for want of room. "
+                "The ceiling condition matters: some architectures keep tensors "
+                "on the CPU by design (the gemma-4 E-series holds per-layer "
+                "embeddings there), and VRAM below file size alone does not "
+                "distinguish that from a capacity spill.",
     "note": "Not run. A dense model missing layers from the card is not the "
             "same experiment as its fully resident siblings, so no score is "
             "produced and none should be inferred. This is a capacity result "

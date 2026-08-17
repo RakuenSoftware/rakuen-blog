@@ -72,6 +72,12 @@ while IFS=$'\t' read -r order label model train width target draft est_gib ctk c
   if [ -s "$OUT/$label/FAILED" ] && grep -q "server" "$OUT/$label/FAILED" 2>/dev/null; then
     say "arm $label -> synthesis SKIPPED (extraction could not serve the model)"
     synth_skipped=$((synth_skipped + 1))
+  elif [ -s "$OUT/$label/INVALID_DENSE_SPILL" ]; then
+    # A dense spill means the model was mis-served, not that extraction was
+    # merely slow. Synthesis on the same mis-served model is invalid for the
+    # same reason, and costs ~90 minutes to produce something unusable.
+    say "arm $label -> synthesis SKIPPED (dense spill invalidates this serving)"
+    synth_skipped=$((synth_skipped + 1))
   else
     # Cache type decides the synthesis results root, so the campaign has to
     # look in the same place run_synthesis_arm.sh writes to.
