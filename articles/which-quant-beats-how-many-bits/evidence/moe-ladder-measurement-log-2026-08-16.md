@@ -332,10 +332,15 @@ BF16 falsified it. The counts across the full ladder are:
 | Q8_0 | 531 | 477 | 349 |
 | BF16 | 547 | 451 | 333 |
 
-Neither series is monotonic once the top rung is included. The over-extraction
-story is withdrawn. It is kept in this log rather than deleted because it was
-stated as a prediction for the remaining ladders, and the record of a
-prediction that failed is worth more than its quiet removal.
+Neither series is monotonic once the top rung is included, so the
+over-extraction story is dead. It is kept in this log rather than deleted
+because it was stated as a prediction for the remaining ladders, and the record
+of a prediction that failed is worth more than its quiet removal.
+
+Nothing here was retracted, because nothing here was published. A hypothesis
+that a later arm killed is the method working. This log records what was
+believed and when so the reasoning can be audited, not because any of it
+reached a reader.
 
 **This bears on a withdrawn claim, but weakly.** The published article states:
 *"An earlier claim that LFM2.5 worsened with more bits is withdrawn because its
