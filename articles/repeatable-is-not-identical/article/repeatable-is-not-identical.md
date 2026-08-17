@@ -9,44 +9,34 @@ excerpt: "Speculative decoding and isolated processes repeated exactly. Shared s
 *Rakuen builds aimee, the system measured here. Reproduction artifacts and
 single-source probes are listed in the [figure provenance map](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/repeatable-is-not-identical/evidence/figures.md).*
 
-Speculative decoding changed 26 of 100 completions and still repeated itself
-exactly. Thirty-two shared slots were faster and failed to repeat. One and three
-isolated processes each repeated exactly while remaining 0.0105 apart on the
-harmonic mean of precision and recall (F1).
+One and three isolated processes each repeated exactly while remaining 0.0105
+apart on the harmonic mean of precision and recall (F1). The same 1,001 notes
+changed on nearly half their rows when they were run inside a larger corpus. Two
+graphics cards running the same configuration agreed on well under two thirds of
+their completions.
 
 The model was not the reproducibility unit. The serving configuration was.
 
 ## Self-reproduction separated useful speed from noise
 
-Multi-token prediction (MTP) is the speculative method used in two configurations
-below.
-
-| configuration | speed | matches sequential | repeats itself |
-|---|---:|---:|---:|
-| sequential | 1.00× | reference | yes, four confirmations |
-| speculative decoding | 1.83× | 74 of 100 | **100 of 100 on two models** |
-| 32 slots | 4.54× | 804 of 1,001 | no |
-| 32 slots with multi-token prediction (MTP) | 4.34× | 64 of 100 | **75 of 100 facts** |
-| 3 isolated processes with MTP | unmatched hardware | unmeasured | **1,001 of 1,001** |
-
 A benchmark need not reproduce a different configuration. It must reproduce
 itself and use the same configuration for every compared run.
 
-The 32-slot MTP setup failed that test. Two executions matched on 63 of 100 raw
-completions and 75 of 100 extracted fact sets. Wall time also moved from 71 to 61
-seconds. The 804-of-1,001 sequential comparison in the table is single-sourced in
-the reporting ledger because its derived file was not retained.
-
-The measurements show scheduling-sensitive output; they do not identify the
-internal numerical mechanism.
-
-Isolated processes held. A single-sourced ledger probe matched two processes on 60
-of 60 notes. Three executions of a three-process run matched byte for byte on all
-1,001 notes in all three pairwise comparisons and scored 0.6138 each time. Two
-prediction pairs are banked; the third execution is single-sourced in the article
-notes.
+Isolated processes held that line. A single-sourced ledger probe matched two
+processes on 60 of 60 notes. Three executions of a three-process run matched byte
+for byte on all 1,001 notes in all three pairwise comparisons and scored 0.6138
+each time. Two prediction pairs are banked; the third execution is single-sourced
+in the article notes.
 
 One process also repeated 1,001 of 1,001 at 0.6033.
+
+Shared slots fail that line and speculative decoding passes it. Both results are
+measured in
+[Local LLMs: Speculative Decoding](https://rakuensoftware.com/blog/speculative-decoding-was-free),
+which reports thirty-two slots running at 4.54 times sequential throughput while
+agreeing with themselves on 75 of 100 notes, against 100 of 100 for multi-token
+prediction (MTP). This article takes that comparison as given, and uses it to
+choose the configuration every measurement here runs in.
 
 ## Two stable process counts stayed 0.0105 apart
 
@@ -70,10 +60,11 @@ server, it reproduced 14 of 20, with the same six notes changing each time. That
 probe is single-sourced in the reporting ledger and does not isolate which live
 state caused the changes.
 
-Speculative verification changed the target batch shape and 26 of 100
-completions, consistently. Cache on versus cache off matched 792 of 1,001.
-Turning the cache off took 38 minutes rather than 41 on this workload, so its
-expected cost did not appear in the measurement.
+Cache on against cache off matched 792 of 1,001. Turning the cache off took 38
+minutes rather than 41 on this workload, so its expected cost did not appear in
+the measurement. Speculative verification also changes the target batch shape and
+moves text consistently, which the speculative decoding article measures rather
+than this one.
 
 Each change moved text without moving F1 outside its paired range. Output identity
 and score stability answer different questions.
@@ -101,10 +92,16 @@ carries across requests, so the article does not assign a mechanism.
 
 ## The concurrency result lacked its control
 
-Thirty-two slots were 4.54 times faster and changed extracted facts on 197 of
-1,001 notes relative to the reference. Moving from one to 32 slots also changed
-cache reuse, and the warm-server probe had already shown six changes in 20 notes.
-The 197 is an upper bound on the concurrency effect, not a measurement of it.
+At the 4.54 times throughput reported in the speculative decoding article,
+thirty-two slots changed extracted facts on 197 of 1,001 notes relative to the
+sequential reference. Moving from one to 32 slots also changed cache reuse, and
+the warm-server probe had already shown six changes in 20 notes. The 197 is an
+upper bound on the concurrency effect, not a measurement of it.
+
+That is a different comparison from the run-to-run agreement in the published
+piece. Both are needed: one says the configuration disagrees with itself, and
+this one says the gap against sequential cannot be attributed to concurrency
+alone.
 
 ## Hardware changed text within the measured score range
 
