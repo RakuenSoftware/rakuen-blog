@@ -131,10 +131,57 @@ if [ "$DRAFT" != "-" ]; then
   # The draft model keeps its own KV cache and defaults to f16 independently.
   # Left alone, a "q4_0 KV" arm would quietly be running a q4_0 target cache
   # against an f16 draft cache, which is not the configuration being claimed.
-  SRV_ARGS+=(-hfd "$DRAFT" --draft-max 3 --draft-min 1
+  # --draft-max / --draft-min were REMOVED in this llama.cpp build; it exits
+  # immediately with "the argument has been removed. use --spec-draft-n-max".
+  # The replacements are --spec-draft-n-max / --spec-draft-n-min.
+  #
+  # This cost twelve arms. Every LFM2.5 arm ran clean because that family ships
+  # no draft model, so the first arm to pass -hfd was the thirteenth of the
+  # campaign, and the flag error was never exercised until then. Draft flags are
+  # only reachable on speculating arms, so "the LFM ladder works" said nothing
+  # about them.
+  SRV_ARGS+=(-hfd "$DRAFT" --spec-draft-n-max 3 --spec-draft-n-min 1
              -ctkd "$CTK" -ctvd "$CTV")
 fi
 say "ARCH=$ARCH OFFLOAD=$OFFLOAD_MODE est=${EST_GIB:-?}GiB budget=${VRAM_BUDGET_GIB}GiB ctk=$CTK ctv=$CTV"
+
+# Preflight every flag against the binary's own help BEFORE spending a model
+# load on it.
+#
+# llama.cpp keeps removed arguments in --help with the text "the argument has
+# been removed", so the set of dead flags is machine-readable. --draft-max and
+# --draft-min were removed in this build and the server exits instantly when
+# given them, which cost twelve arms before anyone looked at a FAILED file.
+#
+# This costs one --help invocation per arm and turns a class of silent
+# campaign-wide failure into a named error on the first arm that would hit it.
+HELP=$("$BIN" --help 2>&1)
+DEAD=""
+for arg in "${SRV_ARGS[@]}"; do
+  case "$arg" in
+    -*) ;;
+    *) continue ;;
+  esac
+  # A removed flag's help line NAMES ITS REPLACEMENT on the same line:
+  #
+  #   --draft, --draft-max N   the argument has been removed. use --spec-draft-n-max or
+  #
+  # so matching the whole line flags the replacement as removed too, which is
+  # exactly what the first version of this check did -- it rejected
+  # --spec-draft-n-max, the correct flag. Cut the description away and match
+  # only the flag column that precedes it.
+  if printf '%s' "$HELP" | grep -F "the argument has been removed" \
+       | sed 's/the argument has been removed.*//' \
+       | grep -qE "(^|[ ,])${arg}([ ,]|$)"; then
+    DEAD="$DEAD $arg"
+  fi
+done
+if [ -n "$DEAD" ]; then
+  say "FAIL removed server flags:$DEAD"
+  printf 'server flags removed in this llama.cpp build:%s\n' "$DEAD" > "$ARM/FAILED"
+  printf 'run "%s --help" and use the replacement named there.\n' "$BIN" >> "$ARM/FAILED"
+  exit 1
+fi
 
 say "SERVE $TARGET"
 "$BIN" "${SRV_ARGS[@]}" > "$SRVLOG" 2>&1 &

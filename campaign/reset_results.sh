@@ -30,6 +30,19 @@ esac
 # arms.tsv schema gained two columns and the wrapper still asserted eight
 # fields, so every synthesis arm died in under a second for a reason that had
 # nothing to do with the model.
+# reset_results.sh --failed
+#   Clear extraction FAILED markers so those arms retry, keeping every completed
+#   result. For a harness fault rather than a model that cannot be served.
+if [ "${1:-}" = "--failed" ]; then
+  echo "clearing extraction FAILED markers under $DEST on CT $CT (results kept)"
+  ssh -n -o ConnectTimeout=30 "$HOST" \
+    "pct exec $CT -- bash -lc 'find $DEST/results -name FAILED -print -delete'"
+  rc=$?
+  [ "$rc" -eq 0 ] || { echo "RESETFAIL: find exited $rc" >&2; exit 1; }
+  echo "RESETOK"
+  exit 0
+fi
+
 if [ "${1:-}" = "--synth-failed" ]; then
   echo "clearing SYNTH_FAILED markers under $DEST on CT $CT (results kept)"
   ssh -n -o ConnectTimeout=30 "$HOST" \
