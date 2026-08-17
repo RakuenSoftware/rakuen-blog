@@ -78,7 +78,7 @@ mkdir -p "$STAGE/bundle/synthesis/fixture"
 cp "$FIXDIR/corpus.jsonl" "$FIXDIR/synthesis.jsonl" "$FIXDIR/manifest.json" \
    "$STAGE/bundle/synthesis/fixture/" || fail "copy synthesis fixture bundle"
 
-for f in arms.tsv run_arm.sh run_campaign.sh run_synthesis_ladder.py run_synthesis_arm.sh throughput.py pair_ci.sh; do
+for f in arms.tsv run_arm.sh run_campaign.sh run_synthesis_ladder.py run_synthesis_arm.sh throughput.py pair_ci.sh probe_reasoning_flags.sh; do
   cp "$REPO/campaign/$f" "$STAGE/" || fail "copy $f"
 done
 

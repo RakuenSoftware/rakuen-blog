@@ -18,6 +18,7 @@ individually rather than summarised — the pattern is the finding.
 | First campaign, 2026-08-16 09:12Z, LFM2.5-2.6B Q4 | served with four slots and an unbounded prompt cache; superseded |
 | Second campaign, 09:59Z, LFM2.5-2.6B Q4 | unbounded prompt cache; froze at 247/1001, see defect 3 |
 | All synthesis before 2026-08-16 21:00Z (Q4, BF16) | served with reasoning enabled; see defect 10. Retained at `results-synthesis-DISCARDED-reasoning-on-20260816` |
+| All synthesis 2026-08-16 21:00Z to 2026-08-17 08:20Z (6 arms) | `--reasoning-format none` broke grammar compilation; see defect 11. Retained at `results-synthesis*-DISCARDED-grammar-20260817` |
 
 No score was published from either. The third campaign, from 10:49Z, is the one
 whose results stand.
@@ -222,6 +223,50 @@ profile is visible in every artifact.
 **Consequence.** The two completed synthesis arms are discarded and will be
 re-run. No synthesis result stands as of this entry.
 
+### 11. The fix for defect 10 broke structured output entirely
+
+**Symptom.** Six synthesis arms completed with `truncated_rate` 0.000 — the
+truncation problem looked solved — and `empty_rate` **1.000**, `raw_parse_rate`
+0.000, `content_f1` **0.0000**. Read naively: the models produce nothing at all.
+
+**What the artifacts actually said.** A raw row carried `ok: false`,
+`attempts: 3`, `finish_reason: null`, `usage: null`, `response: null`. The
+requests never succeeded; there was no model output to be empty. The server log:
+
+    E common_sampler_init: error initializing grammar sampler for grammar:
+    E srv send_error: task id = 1, error: Failed to initialize samplers
+    E srv process_sing: failed to launch slot with task, id_task = 1
+
+The grammar string is empty — nothing follows `grammar:`.
+
+**Cause.** Defect 10's fix added two flags. `--reasoning off` addresses the
+actual problem. `--reasoning-format none` was added as a backstop and is
+incompatible with this harness: every request is constrained by
+`response_format: {type: json_schema, strict: true}`, and with that flag set the
+schema-to-grammar compilation yields an empty grammar and sampler init throws.
+Every request fails, three retries each.
+
+**Isolated rather than guessed.** `probe_reasoning_flags.sh` serves the smallest
+model in the campaign on a spare port and issues one schema-constrained request
+per configuration:
+
+| configuration | result |
+|---|---|
+| baseline | `OK content='{ "colour": "blue" }'` |
+| `--reasoning off` | `OK content='{ "colour": "blue" }'` |
+| `--reasoning-format none` | `SERVER_ERROR 400 Failed to initialize samplers` |
+| both | `SERVER_ERROR 400 Failed to initialize samplers` |
+
+**What it would have corrupted.** The same task as defect 10, in the opposite
+direction and more obviously — a content_f1 of exactly 0.0 across every arm is
+implausible enough to invite scrutiny. The more dangerous property is that
+`truncated_rate` fell to 0.000, so the metric being watched to confirm defect
+10's fix showed exactly the improvement expected while the run was entirely
+broken.
+
+**Fix.** `--reasoning-format none` removed; `--reasoning off` retained and
+verified to return content under strict `json_schema`. Six arms discarded.
+
 ### 9. Smaller faults, fixed without consequence
 
 - `bootstrap_ci.py --pred` takes `LABEL=PATH`; a bare path lands entirely in the
@@ -309,7 +354,8 @@ at Q6, which is a third shape again.
 
 ## Synthesis
 
-**No synthesis result stands.** Two arms completed mechanically -- LFM2.5-2.6B
+**No synthesis result stands.** Eight arms have now completed mechanically and
+all eight are discarded: two under defect 10 and six under defect 11. Two arms completed mechanically -- LFM2.5-2.6B
 Q4 in 3,693 s and BF16 in 8,714 s, both 1,000 cases, both through the
 controller's case-population, model-identity, artifact-hash and load-profile
 validators -- and both are discarded under defect 10, because they measured a

@@ -177,7 +177,6 @@ def main() -> int:
     # Recorded so the divergence from the published matrix's profile is visible
     # in every artifact rather than living only in this comment.
     rcm.LOAD_PROFILE["reasoning"] = "off"
-    rcm.LOAD_PROFILE["reasoning_format"] = "none"
     rcm.LOAD_PROFILE["max_tokens"] = int(os.environ.get("SYNTH_MAX_TOKENS", "1536"))
 
     # The stock controller never emits -ctk/-ctv. Without this every arm would
@@ -203,11 +202,22 @@ def main() -> int:
         # of which measures synthesis quality.
         #
         # --reasoning off applies the same intent the template kwarg expresses,
-        # from a layer the model cannot ignore. --reasoning-format none is the
-        # backstop: if a template still emits thoughts, they stay in
-        # message.content and are scored rather than silently discarded, which is
-        # how Muse Glimmer behaved in the published matrix.
-        command += ["--reasoning", "off", "--reasoning-format", "none"]
+        # from a layer the model cannot ignore.
+        #
+        # --reasoning-format none was added alongside it as a backstop and is NOT
+        # used, because it breaks structured output. This harness constrains every
+        # response with response_format json_schema strict, and with that flag set
+        # llama.cpp fails sampler initialisation on an empty grammar:
+        #
+        #   E common_sampler_init: error initializing grammar sampler for grammar:
+        #   E srv send_error: error: Failed to initialize samplers
+        #
+        # Every request then fails, three retries each, and the run completes with
+        # empty_rate 1.000 and content_f1 0.0 -- which reads as a catastrophically
+        # bad model rather than a broken server flag. Isolated with
+        # probe_reasoning_flags.sh: baseline and --reasoning off both compile the
+        # grammar; --reasoning-format none alone and combined both fail.
+        command += ["--reasoning", "off"]
         if candidate.get("draft"):
             # The draft model's cache defaults to f16 independently of the
             # target's, so it has to be set too or the arm is not the
