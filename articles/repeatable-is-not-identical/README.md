@@ -1,6 +1,7 @@
 # Repeatability Belonged to the Configuration, Not the Model
 
-Isolated processes and speculation repeated exactly; shared slots did not.
+Isolated processes repeated exactly, and sequence position, process count and
+hardware each changed the text without changing the score.
 
 ## Status
 

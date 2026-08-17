@@ -7,9 +7,7 @@ Paths below are relative to the shared series evidence base at
 
 | figure | artifact |
 |---|---|
-| speculative runs reproduce 100/100 | `results/v8-baseline/mtp_selfconsistent.log` |
-| 32-slot speculative runs, 63/100 raw and 75/100 facts | `results/v8-baseline/mtp_np32.log` |
-| 32 slots against sequential, 804/1,001 | `MEASUREMENT_LOG.md`, concurrency test; raw comparison file was not preserved |
+| 32 slots against sequential, 804/1,001 identical, so 197 changed | `MEASUREMENT_LOG.md`, concurrency test; raw comparison file was not preserved |
 | two isolated processes, 60/60 | `MEASUREMENT_LOG.md`, process-isolation test |
 | three-process run reproduces 1,001/1,001 three ways | `results/noise-floor/shard3_run1.pred.jsonl`; `shard3_run2.pred.jsonl`; third run recorded in `ARTICLE_NOTES.md` |
 | one-process run reproduces 1,001/1,001 | `results/noise-floor/single_run1.pred.jsonl`; `single_run2.pred.jsonl` |
@@ -24,7 +22,16 @@ Paths below are relative to the shared series evidence base at
 
 ## Reporting inventory and disposition
 
-- **Concurrency, process and speculative tests:** kept as distinct configurations.
+- **Process-isolation tests:** kept as distinct configurations, and they carry the
+  article's own result.
+- **Speculative self-reproduction and shared-slot run-to-run agreement:** cited,
+  not reprinted. Both are measured in `speculative-decoding-was-free`, which was
+  published after this article was drafted and reports them across eleven pairs.
+  Their artifacts remain at `results/v8-baseline/mtp_selfconsistent.log` and
+  `results/v8-baseline/mtp_np32.log`.
+- **The 197-note concurrency gap:** kept, and distinct from the published
+  run-to-run figure. It compares 32 slots against the sequential reference and is
+  reported as an upper bound, because slot count and cache reuse moved together.
 - **Warm-server and cache tests:** kept. Cache-off cost and accuracy are measured,
   not inferred.
 - **Predecessor hypothesis:** refuted and preserved in the article.

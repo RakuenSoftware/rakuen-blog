@@ -48,14 +48,11 @@ The corpus had tiers of 1,001, 3,002 and 10,000 notes, each nested inside the
 next. The same 1,001 notes scored 0.6406 when run alone and 0.6327 inside the
 3,002-note execution. Only 529 of 1,001 completions were byte-identical.
 
-The preceding note did not explain the churn: failures were 44.8% with the same
-predecessor and 48.3% with a different one. Disabling the prompt cache also
-failed, reducing identity from 52.8% to 49.9%. With the cache disabled, a seeded
-shuffle produced 52.3% identity.
-
-Sequence position is the supported variable. The experiment does not establish
-which server state carries it. The score change remained inside its paired range,
-so no ranking moved. Shared notes now retain the same positions across tiers.
+Two candidate explanations failed their controls, and a seeded shuffle supported
+sequence position instead. Those controls, and the cache-disabled pairs behind
+them, are reported in `repeatable-is-not-identical`. The score change remained
+inside its paired range, so no ranking moved. Shared notes now retain the same
+positions across tiers.
 
 ## The ontology omitted 19% of its own gold facts
 
@@ -67,9 +64,11 @@ Models had to invent predicate names and were then graded against the gold set's
 inventions. Across two 1,000-note runs, 22% to 24% of extracted facts used
 non-seed predicates. They spanned 89 names, including 54 singletons.
 
-An expanded ontology reduced the novel-predicate rate from 23.5% to 10.0% in an
-interrupted 223-note run. That figure is provisional, survives only in the
-article notes and does not establish the completed post-change rate.
+An expanded ontology later reduced the novel-predicate rate from **21.0% to
+13.0%**, and most of that fall was definitional rather than behavioural. That
+measurement, its split, and the superseded 223-note figures it replaces are
+reported in `the-benchmark-audited-production`. The defect this article records
+is the coverage gap that made the rerun necessary.
 
 ## One template rewarded the wrong relation
 

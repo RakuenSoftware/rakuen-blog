@@ -6,7 +6,24 @@ first, each built on a zero that was never a measurement.
 
 ## Status
 
-Draft. Not publication-ready, and deliberately not marked as such.
+Retired. Not publication-ready, and no longer a candidate.
+
+Its headline is already published. `one-call-one-turn` reports the same result,
+that the layer costs about three times plain Codex for the same patch, and rests
+it on the protocol argument rather than on this draft's mechanism, which is
+wrong. Nothing here supersedes that article.
+
+The one finding that was not duplicated, that a measured zero and an unwritten
+field are indistinguishable, has moved to `the-harness-measured-itself`, which
+carries it as one of three kinds of zero. That article takes only the parts this
+one can still evidence: the zero in the committed cells, the serialisation defect
+found by source audit, and the merged fix. It does not carry the cache-rate series
+or the cost table, for the reason recorded below.
+
+This folder is kept rather than deleted because `benchmarks/ct403-results/` is a
+committed artifact that the harness article now cites, and because the reporting
+record below is the clearest surviving account of what went wrong. The sections
+that follow describe the article as it stood and are left unchanged.
 
 **The draft's mechanism is wrong. The author established that on 2026-08-11 at
 22:00, and the prose has not been changed to match.** The piece still argues that the
