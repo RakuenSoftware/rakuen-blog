@@ -44,23 +44,26 @@ that catches that class of bug. A number without it is not evidence.
 | [we-measured-our-reranker-and-deleted-it](articles/we-measured-our-reranker-and-deleted-it/) | yes | 9 documents, 5 artifact sets |
 | [local-llm-fact-extraction-head-to-head](articles/local-llm-fact-extraction-head-to-head/) | yes | 32 runs, figure map, full results tree |
 | [speculative-decoding-was-free](articles/speculative-decoding-was-free/) | yes | figure map, shared results tree |
-| [eight-ways-a-run-scores-fine-and-is-broken](articles/eight-ways-a-run-scores-fine-and-is-broken/) | ready | figure map, shared results tree |
-| [how-small-can-a-fact-extractor-be](articles/how-small-can-a-fact-extractor-be/) | ready | figure map, shared results tree |
-| [my-benchmark-lied-to-me](articles/my-benchmark-lied-to-me/) | ready | figure map, shared results tree |
+| [the-harness-measured-itself](articles/the-harness-measured-itself/) | ready | figure map, shared results tree |
 | [one-sentence-turned-the-reasoning-off](articles/one-sentence-turned-the-reasoning-off/) | ready | figure map, shared results tree |
 | [repeatable-is-not-identical](articles/repeatable-is-not-identical/) | ready | figure map, shared results tree |
 | [the-benchmark-audited-production](articles/the-benchmark-audited-production/) | ready | figure map, shared results tree |
 | [the-corpus-is-the-experiment](articles/the-corpus-is-the-experiment/) | ready | figure map, shared results tree |
 | [the-parallelism-limit-was-never-vram](articles/the-parallelism-limit-was-never-vram/) | ready | figure map, shared results tree |
-| [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | ready | figure map, shared results tree |
-| [synthesis-model-selection](articles/synthesis-model-selection/) | review | nine-model paired GPU matrix complete; Qwen3.8 UD-Q4 follow-up pending |
-| [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | draft | 81 cells committed and checkable; three figures do not reproduce |
+| [synthesis-model-selection](articles/synthesis-model-selection/) | yes | nine-model paired GPU matrix, Qwen3.8 follow-up complete |
+| [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | held | gated and provenance-complete; two of five steps separated, pairs still cross machines |
+| [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | retired | headline published as `one-call-one-turn`; surviving finding moved to `the-harness-measured-itself` |
 | [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |
 | [the-model-decides-when-to-think](articles/the-model-decides-when-to-think/) | investigation | four rerunnable scripts; no article written yet |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
 `draft` means the article exists and its provenance gaps are written down, but it
 is not a publication candidate and the voice gate does not check it.
+`held` means the article passes every gate and is still not a candidate, because
+the measurement behind it is too thin to publish as guidance. A gate can check
+provenance; it cannot decide that enough has been measured.
+`retired` means the article is superseded and will not ship. Its folder stays when
+another article cites its artifacts.
 `investigation` means the work exists and the prose deliberately does not, because
 the finding is not stable enough to write around.
 

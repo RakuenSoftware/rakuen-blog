@@ -4,8 +4,23 @@ Only one bit-width step separated; QAT's clearest benefit was fitting a 26B mode
 
 ## Status
 
-Publication-ready as of 2026-08-09. Not yet published. Every figure in the article
-is accounted for in the local provenance map.
+Held for further testing. Not a publication candidate, and deliberately not
+marked as one, so the voice gate and `tools/publish.py` no longer offer it.
+
+The article was gated and provenance-complete on 2026-08-09, and nothing here is
+known to be wrong. It is held because the conclusions rest on too little
+measurement to publish as guidance. Two of five bit-width comparisons separated,
+the 12B and 26B pairs still cross machines, the 26B dynamic-packing result needs
+a same-card rerun, and the 12B repair bound behind the parse floors was never
+computed. Every ladder also shares one corpus lineage, so a stable effect can
+still be a stable artifact of that corpus.
+
+The 31B pair shows what the remaining work looks like: its same-card 3,002-note
+rerun moved the difference from +0.0108 to +0.0009 and closed the interval around
+zero, because most of what the earlier pair measured was the hardware.
+
+The parse-floor bound that this article was to carry for the series has moved to
+`the-harness-measured-itself`, so holding this one back does not strand it.
 
 ## Evidence
 

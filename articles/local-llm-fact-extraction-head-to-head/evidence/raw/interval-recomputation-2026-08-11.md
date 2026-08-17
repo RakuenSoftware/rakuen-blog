@@ -77,7 +77,11 @@ the non-QAT half was still running when this was written.
 | article | comparison | why |
 |---|---|---|
 | one-sentence-turned-the-reasoning-off | thinking restored against v4, +0.0103, −0.0201 to +0.0404 | `results/v5-large/E4B.v5-955.pred.jsonl` is not committed |
-| my-benchmark-lied-to-me | the same interval, cited for the withdrawn +0.084 constant | the same missing file |
+
+That interval is also the one cited for the withdrawn +0.084 constant. It was
+previously carried by `my-benchmark-lied-to-me` as well; that article was merged
+into `the-harness-measured-itself`, which does not reprint the
+constant.
 
 `results/v5-large/` holds `E4B.v4-same955.pred.jsonl` and both score files, and a
 second copy of the v4 predictions under `audit/`. The v5 side exists only as
