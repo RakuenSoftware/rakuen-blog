@@ -357,6 +357,92 @@ about a thousand generation samples per arm with under 2% spread.
 One model, and the smallest in the set. The article's existing Gemma ladders peak
 at Q6, which is a third shape again.
 
+## Results standing as of 2026-08-18
+
+Twenty-two extraction arms and eighteen synthesis arms complete. All on one RTX
+5080, `-np 1`, `--cache-ram 1024`, KV f16, MTP on where a draft exists, 1,001
+notes of corpus v5 against the pinned ontology. Paired intervals at seed
+`20260809`, 20,000 replicates, one comparison per process.
+
+Four comparisons separate. Three were not anticipated by the published article.
+
+### QAT collapses at two bits, on both models
+
+| pair | delta | 95% CI | verdict |
+|---|---:|---|---|
+| E2B: QAT Q2 minus non-QAT Q2 | **-0.3511** | [-0.3830, -0.3187] | significant |
+| E4B: QAT Q2 minus non-QAT Q2 | **-0.2982** | [-0.3317, -0.2638] | significant |
+
+These are the largest effects in the campaign by an order of magnitude — the
+whole LFM2.5-2.6B ladder spans 0.033 — and they replicate across two models in
+the same direction.
+
+The same pairs at four bits are level: E4B QAT Q4 0.6217 against non-QAT Q4
+0.6183. So the finding is not "QAT helps less at low width", it is that the QAT
+artefact is **actively worse** below four bits, by an amount that makes the model
+unusable: E2B QAT Q2 scores 0.1889 against 0.5399 for the plain Q2 build.
+
+It costs speed as well. E2B QAT Q2 generates at 126.3 tok/s against 459.4 for
+non-QAT Q2; E4B 178.0 against 330.3. Slower *and* far worse, so no trade is
+being made.
+
+A plausible reading is that these artefacts are built to be served at the width
+their training targeted, and that quantising one past that point leaves the
+range the training compensated for. This campaign does not test that mechanism;
+the tables above are the measurement, not the explanation.
+
+### The LFM family splits by architecture, not by publisher
+
+The dense LFM2.5-2.6B declines across its ladder — 0.5952, 0.5714, 0.5625 at Q4,
+Q6, Q8 — with only Q8 minus Q4 separating, at -0.0327.
+
+The mixture-of-experts LFM2.5-8B-A1B does the opposite, monotonically:
+
+| pair | delta | 95% CI | verdict |
+|---|---:|---|---|
+| 8B-A1B: Q8 minus Q4 | **+0.0378** | [+0.0080, +0.0675] | significant |
+
+0.5091, 0.5341, 0.5470 at Q4, Q6, Q8. Same publisher, same quant family, same
+card, opposite direction. Whatever drives the 2.6B result, it is not a property
+of LFM2.5 as a family.
+
+### gemma-4 E4B peaks at six bits, reproducing the published finding
+
+| pair | delta | 95% CI | verdict |
+|---|---:|---|---|
+| E4B: Q6 minus Q8 | **+0.0235** | [+0.0068, +0.0403] | significant |
+
+0.6183, 0.6393, 0.6158 at Q4, Q6, Q8. The published article reports E4B
+Q6-over-Q8 at +0.0245 [+0.0091, +0.0405], measured on different hardware, a
+different serving configuration and a different campaign. This measures +0.0235
+[+0.0068, +0.0403]. An independent reproduction of an existing result, which is
+worth more than a new one.
+
+### Synthesis prefers more bits; extraction does not
+
+Across every model with both halves scored, synthesis content F1 rises with
+width while extraction does not follow it:
+
+| model | Q2 | Q4 | Q6 | Q8 |
+|---|---:|---:|---:|---:|
+| E2B synthesis | 0.2861 | 0.3284 | 0.3325 | 0.3350 |
+| E4B synthesis | 0.3009 | 0.3222 | 0.3226 | 0.3246 |
+| 8B-A1B synthesis | — | 0.2803 | 0.2815 | 0.2843 |
+| LFM2.5-2.6B synthesis | — | 0.2960 | 0.3047 | 0.3047 |
+
+Four models, monotonic or flat in every case, never inverted. Extraction over
+the same arms inverts twice.
+
+These synthesis figures carry **no paired intervals yet**. The synthesis harness
+ships `paired_content_bootstrap.py` and it is not wired into this campaign, so
+what is shown is a consistent direction across four models rather than a set of
+separated comparisons. Closing that gap is the next task.
+
+The practical shape: **on this evidence the task decides the answer.** A "use
+Q4" recommendation drawn from extraction would cost synthesis quality on every
+model measured, and a "use Q8" recommendation drawn from synthesis would cost
+extraction accuracy on two of four.
+
 ## Synthesis
 
 **No synthesis result stands.** Eight arms have now completed mechanically and
