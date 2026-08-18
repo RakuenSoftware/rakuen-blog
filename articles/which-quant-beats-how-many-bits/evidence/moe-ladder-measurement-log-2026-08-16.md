@@ -386,6 +386,9 @@ It costs speed as well. E2B QAT Q2 generates at 126.3 tok/s against 459.4 for
 non-QAT Q2; E4B 178.0 against 330.3. Slower *and* far worse, so no trade is
 being made.
 
+The two models fail in opposite ways, which is set out below under "The QAT Q2
+collapse takes two different shapes".
+
 A plausible reading is that these artefacts are built to be served at the width
 their training targeted, and that quantising one past that point leaves the
 range the training compensated for. This campaign does not test that mechanism;
@@ -417,6 +420,56 @@ Q6-over-Q8 at +0.0245 [+0.0091, +0.0405], measured on different hardware, a
 different serving configuration and a different campaign. This measures +0.0235
 [+0.0068, +0.0403]. An independent reproduction of an existing result, which is
 worth more than a new one.
+
+### The QAT Q2 collapse takes two different shapes
+
+The two models that publish a QAT Q2 build both collapse, and they collapse in
+opposite directions:
+
+| arm | median completion tokens | strict F1 |
+|---|---:|---:|
+| E2B non-QAT Q2 | 520 | 0.5399 |
+| **E2B QAT Q2** | **65** | **0.1889** |
+| E4B non-QAT Q2 | 297 | 0.5858 |
+| **E4B QAT Q2** | **611** | **0.2876** |
+
+E2B stops producing output — 65 tokens a note, an eighth of its non-QAT twin.
+E4B produces twice as much as its twin. One goes quiet, the other will not stop,
+and both lose roughly a third of an F1 point.
+
+That argues the failure is instability rather than a single degradation
+mechanism. A model degraded uniformly would be expected to fail the same way
+twice.
+
+### Output length does not track bit width
+
+Recorded because the intuitive story — fewer bits, worse discipline, longer
+rambling output — is not what the arms show:
+
+| model | Q2 | Q4 | Q6 | Q8 |
+|---|---:|---:|---:|---:|
+| E2B median tokens | 520 | 464 | 506 | 503 |
+| E4B median tokens | 297 | 369 | 324 | 351 |
+| LFM2.5-2.6B | — | 1037 | 1028 | 1000 |
+| LFM2.5-8B-A1B | — | 675 | 725 | 709 |
+
+E2B's Q2 is longer than its Q4; E4B's Q2 is *shorter*. Across both LFM ladders
+length is flat within a few percent while accuracy moves in opposite directions
+between the dense and MoE models. Whatever bit width does to these models, it is
+not mediated by how much they write.
+
+### The slow-arm gate has a blind spot
+
+The gate measures **tokens per second** against the model's own Q4 arm.
+`gemma4-12b.base.q2` probed at 183.9 tok/s against a 179.7 baseline — a ratio of
+0.98, comfortably inside the 10x threshold — then ran at roughly half the rows
+per minute of the Q4 arm, because it spent those tokens on longer generations
+rather than on more notes.
+
+Nothing was lost: the arm is slow, not stalled, and 5.7 hours against 2.7 is
+tolerable. It is recorded because a model that generates at full speed and never
+stops is invisible to a throughput gate, and the remaining arms run with experts
+offloaded to system RAM, where the same behaviour would cost far more.
 
 ### Synthesis prefers more bits; extraction does not
 
