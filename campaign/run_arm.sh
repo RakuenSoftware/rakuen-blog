@@ -42,6 +42,19 @@ say() { echo "[$(date -u +%H:%M:%SZ)] $LABEL: $*"; }
 
 # Idempotence: a finished arm is one with a score file AND a full prediction set.
 EXPECT=$(wc -l < "$GOLD")
+
+# A FAILED marker from a SUPERSEDED attempt must not outlive the attempt.
+#
+# gemma4-e2b.base.q4 failed once because the previous arm's server still held
+# the card, then succeeded on the next pass -- and kept the stale marker. That
+# matters beyond tidiness: run_campaign.sh skips synthesis for any arm whose
+# FAILED text mentions a server, so a completed arm would have been left with no
+# synthesis half, permanently, with nothing in the log to explain it.
+if [ -s "$ARM/FAILED" ] && [ -s "$ARM/score.json" ] && [ -s "$ARM/pred.jsonl" ] &&
+   [ "$(wc -l < "$ARM/pred.jsonl")" -ge "$EXPECT" ]; then
+  rm -f "$ARM/FAILED"
+  say "cleared a stale FAILED marker: this arm has a complete scored result"
+fi
 if [ -s "$ARM/score.json" ] && [ -s "$ARM/pred.jsonl" ] &&
    [ "$(wc -l < "$ARM/pred.jsonl")" -ge "$EXPECT" ]; then
   say "SKIP already complete"
