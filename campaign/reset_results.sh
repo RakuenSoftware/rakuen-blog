@@ -43,6 +43,20 @@ if [ "${1:-}" = "--failed" ]; then
   exit 0
 fi
 
+# reset_results.sh --synth-arm <label>
+#   Discard ONE arm's synthesis so it re-runs, keeping its extraction. For
+#   an arm whose synthesis completed mechanically but did not work.
+if [ "${1:-}" = "--synth-arm" ]; then
+  LBL=${2:?usage: reset_results.sh --synth-arm <label>}
+  echo "discarding synthesis for $LBL on CT $CT (extraction kept)"
+  ssh -n -o ConnectTimeout=30 "$HOST" \
+    "pct exec $CT -- rm -rf $DEST/results-synthesis/$LBL $DEST/results-synthesis/$LBL.log"
+  rc=$?
+  [ "$rc" -eq 0 ] || { echo "RESETFAIL: rm exited $rc" >&2; exit 1; }
+  echo "RESETOK"
+  exit 0
+fi
+
 if [ "${1:-}" = "--synth-failed" ]; then
   echo "clearing SYNTH_FAILED markers under $DEST on CT $CT (results kept)"
   ssh -n -o ConnectTimeout=30 "$HOST" \

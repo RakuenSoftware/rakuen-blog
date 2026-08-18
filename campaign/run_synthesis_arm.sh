@@ -111,6 +111,31 @@ if [ ! -s "$ARM/summary_$LABEL.json" ]; then
   exit 1
 fi
 
+# A summary existing is not a summary being usable.
+#
+# gemma4-12b.base.q4 was killed 33 seconds in by an external SIGTERM. The runner
+# wrote failure rows for the remaining 967 cases, so the arm produced a
+# well-formed summary over exactly 1,000 rows with success_rate 0.033 and a
+# content F1 of 0.0114 -- indistinguishable from "this model is catastrophically
+# bad at synthesis" to every check that existed at the time, all of which passed.
+#
+# An audit of the other nineteen arms found them all at success_rate 1.0, so the
+# threshold below is not masking a broader problem; it names the one shape that
+# has actually occurred.
+MIN_SUCCESS=${MIN_SUCCESS:-0.90}
+SR=$(python3 -c "
+import json
+d = json.load(open('$ARM/summary_$LABEL.json'))
+ov = d.get('overall', d)
+print(ov.get('success_rate', 0))" 2>/dev/null)
+OKRATE=$(python3 -c "print(1 if float('${SR:-0}') >= float('$MIN_SUCCESS') else 0)" 2>/dev/null)
+if [ "$OKRATE" != "1" ]; then
+  say "FAIL success_rate ${SR} below ${MIN_SUCCESS}; the run completed but did not work"
+  printf 'success_rate %s below %s after %ss\n' "$SR" "$MIN_SUCCESS" "$SECS" > "$ARM/SYNTH_FAILED"
+  printf 'a summary over the full case count is not evidence the cases succeeded.\n' >> "$ARM/SYNTH_FAILED"
+  exit 1
+fi
+
 ROWS=$(wc -l < "$ARM/raw_$LABEL.jsonl" 2>/dev/null || echo 0)
-say "COMPLETE ${SECS}s rows=$ROWS"
+say "COMPLETE ${SECS}s rows=$ROWS success=$SR"
 exit 0
