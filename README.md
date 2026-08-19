@@ -52,7 +52,7 @@ that catches that class of bug. A number without it is not evidence.
 | [the-benchmark-audited-production](articles/the-benchmark-audited-production/) | ready | figure map, shared results tree |
 | [the-corpus-is-the-experiment](articles/the-corpus-is-the-experiment/) | ready | figure map, shared results tree |
 | [the-parallelism-limit-was-never-vram](articles/the-parallelism-limit-was-never-vram/) | ready | figure map, shared results tree |
-| [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | ready | figure map, shared results tree |
+| [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | superseded, do not publish | v1 is incomplete against the 2026-08-16 campaign; v2 draft in progress |
 | [synthesis-model-selection](articles/synthesis-model-selection/) | review | nine-model paired GPU matrix complete; Qwen3.8 UD-Q4 follow-up pending |
 | [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | draft | 81 cells committed and checkable; three figures do not reproduce |
 | [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |

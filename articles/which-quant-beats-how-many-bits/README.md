@@ -4,8 +4,35 @@ Only one bit-width step separated; QAT's clearest benefit was fitting a 26B mode
 
 ## Status
 
-Publication-ready as of 2026-08-09. Not yet published. Every figure in the article
-is accounted for in the local provenance map.
+**DO NOT PUBLISH v1.** Superseded in place by an unfinished campaign, which is a
+worse state than either finished or untouched.
+
+`article/which-quant-beats-how-many-bits.md` was marked publication-ready on
+2026-08-09 and never published. That status was accurate against the evidence
+that existed then and is not accurate now. The campaign begun 2026-08-16 has
+measured things v1 asserts:
+
+- v1 **withdraws** the claim that LFM2.5 worsens with more bits, "because its
+  range crosses zero". The campaign measures Q8 minus Q4 at −0.0327
+  [−0.0592, −0.0063], which clears zero.
+- v1's QAT section rests on gemma-4 E2B alone. Four models now have matched
+  QAT and non-QAT arms, and the two-bit QAT collapse — the largest effect
+  measured anywhere in this work, −0.3511 and −0.2982 — is a rung v1 never ran.
+- v1 has **no two-bit data**, and two bits is where the cliff actually is:
+  −0.357 on gemma-4 12B, against −0.033 on E4B.
+- v1's own figure map already listed the 12B same-card rerun and a second
+  corpus as open.
+
+So v1 is not wrong so much as **incomplete in ways that change its emphasis**.
+Publishing it now would put a piece into the world that the next revision
+immediately contradicts, and the contradiction would be ours rather than a
+reader's.
+
+The successor is `article/which-quant-beats-how-many-bits.v2-draft.md`, which is
+itself incomplete: seven arms are outstanding and its synthesis figures carry no
+paired intervals. Neither file is publishable today. v1 is retained unmodified
+because it is the reference the v2 draft reproduces findings against, not
+because it is ready.
 
 **A campaign extending this article is in progress from 2026-08-16 and the
 article body does not yet reflect it.** It runs 38 arms across seven models on
@@ -18,10 +45,10 @@ precision sweep, and same-card throughput for every rung.
 - `evidence/moe-ladder-plan-2026-08-16.md` — the plan, registered before any arm
   ran, including the availability findings that changed the design three times
   and the reason the campaign is not parallelised across hosts.
-- `article/which-quant-beats-how-many-bits.v2-draft.md` — the revision in
-  progress, carrying the campaign's findings. Marked `draft: true` and kept
-  beside the v1 article rather than replacing it, so the publication-ready
-  version stays coherent until the campaign completes.
+- `article/which-quant-beats-how-many-bits.v2-draft.md` — the successor,
+  carrying the campaign's findings. Marked `draft: true`. Kept beside v1 rather
+  than overwriting it so the earlier claims stay readable for comparison, since
+  the revision reproduces two of them independently.
 - `evidence/moe-ladder-measurement-log-2026-08-16.md` — the defect log. Nine
   faults so far, every one of which produced output indistinguishable from
   success; two campaigns discarded; the results standing so far with their
