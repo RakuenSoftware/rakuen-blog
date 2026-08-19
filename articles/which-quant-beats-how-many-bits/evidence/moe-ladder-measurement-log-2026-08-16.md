@@ -471,6 +471,83 @@ tolerable. It is recorded because a model that generates at full speed and never
 stops is invisible to a throughput gate, and the remaining arms run with experts
 offloaded to system RAM, where the same behaviour would cost far more.
 
+### At 26B, QAT is the difference between fitting the card and not
+
+| gemma-4 26B-A4B Q4 | file | VRAM | host RSS | expert offload | generation | wall clock |
+|---|---:|---:|---:|---|---:|---:|
+| non-QAT | 16,222 MiB | 14,166 | 5,791 | first 8 layers on CPU | 109.9 tok/s | 3 h 46 m |
+| **QAT** | **13,588 MiB** | 14,746 | **1,233** | **none** | **359.6 tok/s** | **1 h 17 m** |
+
+Accuracy is a wash:
+
+| pair | delta | 95% CI | verdict |
+|---|---:|---|---|
+| 26B-A4B: QAT Q4 − non-QAT Q4 | −0.0048 | [−0.0235, +0.0139] | indistinguishable |
+
+The non-QAT artefact is 16,222 MiB against roughly 15,600 MiB usable — about
+600 MiB too large — so its experts must partly compute on the CPU. The QAT
+artefact is 2.6 GiB smaller and fits whole. Same accuracy, **3.3x the
+throughput**, purely because one crosses a capacity threshold and the other does
+not.
+
+This independently reproduces the published article's central QAT claim, that
+"QAT's clearest benefit was fitting a 26B model on a 16-gibibyte card", and puts
+a number on the consequence the original could not: on this card it is not a
+marginal fit advantage, it is 3.3x.
+
+Note the probe overstated it. The warmed 400-token probe read 427.7 tok/s where
+the full arm settled at 359.6 over 1,003 samples. Probe figures throughout this
+campaign are a gate input, not a reported result; the medians are the result.
+
+### Two-bit quantisation destroys output discipline on the larger dense model
+
+| gemma-4 12B | median tokens per note | rows per minute | generation |
+|---|---:|---:|---:|
+| Q4 | 958 | 7.07 | 213.1 tok/s |
+| Q6 | 976 | 6.29 | 183.8 tok/s |
+| Q8 | 933 | 5.85 | 157.6 tok/s |
+| **Q2** | **7,609** | **2.76** | **233.2 tok/s** |
+
+Q2 generates *fastest* of the four and finishes *slowest*, taking 6 hours where
+Q4 took 2.4. It emits roughly **eight times as many tokens per note** as any
+other rung on its own ladder.
+
+This settles a question left open earlier in this log. The effect is strongly
+model-dependent and does not follow bit width in any simple way:
+
+| model | Q2 median | Q4 median | ratio |
+|---|---:|---:|---:|
+| E2B | 520 | 464 | 1.12x |
+| E4B | 297 | 369 | **0.80x** — shorter |
+| 12B | 7,609 | 958 | **7.94x** |
+
+E4B writes *less* at two bits; 12B writes eight times more. An earlier entry in
+this log generalised from a single live log line that "Q2 rambles" and was
+corrected to "output length does not track bit width". Both corrections stand:
+length does not track width, and the 12B Q2 case is an extreme that belongs to
+that model rather than to the rung.
+
+### The two ways an arm gets slow are unrelated
+
+The campaign now has clean examples of both, and they need separating because
+they look identical from the outside — an arm that takes far longer than its
+siblings:
+
+- **Verbosity.** `gemma4-12b.base.q2` ran at the highest generation rate on its
+  ladder and took the longest, because it spent those tokens on 7,609-token
+  answers rather than on more notes.
+- **Capacity.** `gemma4-26b-a4b.base.q4` ran at 109.9 tok/s against its QAT
+  twin's 359.6 because 8 layers' experts computed on the CPU. Its output length
+  was normal, 851 tokens against the twin's 825.
+
+The slow-arm gate measures tokens per second, so it sees the second and is blind
+to the first. `gemma4-12b.base.q2` probed at a 0.98 ratio against its own Q4
+baseline and then took two and a half times as long.
+
+Neither cost a result — both arms completed — but a gate that cannot see the
+verbosity case would not stop a genuinely runaway arm, and the low rungs are
+where that behaviour appears.
+
 ### Synthesis prefers more bits; extraction does not
 
 Across every model with both halves scored, synthesis content F1 rises with

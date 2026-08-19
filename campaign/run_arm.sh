@@ -157,8 +157,37 @@ OFFLOAD_MODE=full-gpu
 if [ "$ARCH" = "moe" ]; then
   FITS=$(python3 -c "print(1 if float('${EST_GIB:-0}') <= float('$VRAM_BUDGET_GIB') else 0)")
   if [ "$FITS" != "1" ]; then
-    SRV_ARGS+=(-cmoe)
-    OFFLOAD_MODE=moe-experts-on-cpu
+    # OFFLOAD THE MINIMUM, NOT EVERYTHING.
+    #
+    # -cmoe moves every expert tensor to system RAM. That is the right answer
+    # only when the model is far too large for the card. gemma-4-26B-A4B at
+    # UD-Q4_K_XL is 16,222 MiB against roughly 15,600 MiB usable -- 600 MiB over
+    # -- and -cmoe answered it by shipping some 12 GiB to host RAM, serving from
+    # 4,094 MiB of a 16 GiB card, at 40.97 tok/s. The DENSE 12B ran at 179.69.
+    # Ten gigabytes of card sat idle to avoid a 600 MiB overflow.
+    #
+    # -ncmoe N offloads only the first N layers' experts. The smallest workable
+    # N is measured once per (model, width, cache) and cached, because the probe
+    # costs a few model loads and the arm it informs runs for hours.
+    NCMOE_KEY="$STATE/$MODEL.$WIDTH.$TRAIN.$CTK$CTV.ncmoe"
+    if [ -s "$NCMOE_KEY" ]; then
+      NCMOE=$(cat "$NCMOE_KEY")
+      say "NCMOE $NCMOE (cached)"
+    else
+      say "NCMOE tuning: finding the smallest expert offload that fits"
+      NCMOE=$(TARGET="$TARGET" DRAFT="$([ "$DRAFT" != "-" ] && echo "$DRAFT")" \
+              CTX="$CTX" CTK="$CTK" CTV="$CTV" BIN="$BIN" \
+              bash "$ROOT/tune_ncmoe.sh")
+      if [ -z "$NCMOE" ]; then
+        say "FAIL could not find any expert offload that fits this card"
+        printf 'no -ncmoe value allowed this model to load within the VRAM ceiling\n' > "$ARM/FAILED"
+        exit 1
+      fi
+      printf '%s\n' "$NCMOE" > "$NCMOE_KEY"
+      say "NCMOE $NCMOE (measured)"
+    fi
+    SRV_ARGS+=(-ncmoe "$NCMOE")
+    OFFLOAD_MODE="moe-experts-on-cpu-first-${NCMOE}-layers"
   fi
 fi
 
