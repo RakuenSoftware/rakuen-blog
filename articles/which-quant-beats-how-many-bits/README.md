@@ -18,6 +18,10 @@ precision sweep, and same-card throughput for every rung.
 - `evidence/moe-ladder-plan-2026-08-16.md` — the plan, registered before any arm
   ran, including the availability findings that changed the design three times
   and the reason the campaign is not parallelised across hosts.
+- `article/which-quant-beats-how-many-bits.v2-draft.md` — the revision in
+  progress, carrying the campaign's findings. Marked `draft: true` and kept
+  beside the v1 article rather than replacing it, so the publication-ready
+  version stays coherent until the campaign completes.
 - `evidence/moe-ladder-measurement-log-2026-08-16.md` — the defect log. Nine
   faults so far, every one of which produced output indistinguishable from
   success; two campaigns discarded; the results standing so far with their
