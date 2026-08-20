@@ -90,62 +90,48 @@ of it.
 ## Code was not added to this memory. The memory was added to the code
 
 The order things were built in explains the design better than the design
-explains itself.
+explains itself. This did not start as a memory system that later grew a code
+index. It started as code intelligence, tree-sitter extractors pulling symbols,
+calls, imports and git co-change into a graph, and the memory layer was built on
+top to make that better. The classes, the ontology and the distillation all
+exist because a system reading code needed somewhere to keep what it worked out.
 
-This did not start as a memory system that later grew a code index. It started
-as code intelligence: tree-sitter extractors pulling symbols, references,
-calls, imports and git co-change out of a repository into a graph. The memory
-layer was built on top of that, to make the code intelligence better.
-Everything above, the classes and the ontology and the distillation, exists
-because a system that reads code needed somewhere to keep what it worked out.
+So code lives in the same edge table under prefixed keys: a file, a symbol, an
+import, an export, a route, a project. One namespace, one traversal. The
+relation weights are where it shows, with `defines` pulling hardest at 1.00 and
+`calls` at 0.55, sitting in the same list as `co_edited` at 0.60 and
+`co_discussed` at 0.45.
 
-Code is not a guest in this graph. Code lives in the same edge table
-under prefixed keys: a file, a symbol, an import, an export, a route, a
-project. One namespace, one traversal.
+A static analyser produces the first group. Only history produces the second,
+and to this walk they are the same kind of edge.
 
-The relation weights are where it shows. `defines` pulls hardest at 1.00, then
-`contains` at 0.85, `depends_on` at 0.75, `calls` at 0.55. Sitting in the same
-list are `co_edited` at 0.60 and `co_discussed` at 0.45.
+Which is why a question asked in prose reaches code. Ask why a pool wedges under
+load, hit the conversations that mention it, cross into the symbols, and come
+back with the retry function. It runs the other way too: start from a symbol and
+get the thread where somebody decided the policy it implements. A code index has
+never heard the conversation, a conversation store cannot reach the call graph,
+and the interesting answer is almost always one hop across that boundary.
 
-A static analyser produces the first group. Only history produces the second.
-Files that change together and topics discussed together are facts about a
-codebase that no parser will ever derive, and to this walk they are the same
-kind of edge as a function call.
+One guard keeps it from becoming mush. A query that does not look like a code
+question is refused entry to code subgraphs, checked per node as the walk
+proceeds. Ask about your spouse and no call graph appears.
 
-So a question asked in prose reaches code. Ask why a pool wedges under load,
-hit the conversations that mention it, seed the walk with the entities in them,
-cross into the symbols, and come back with the retry function. It runs the
-other way just as well: start from a symbol and the walk returns the thread
-where somebody decided the policy that function implements.
-
-That is the thing neither half can do alone. A code index has never heard the
-conversation. A conversation store cannot reach the call graph. The interesting
-answer is almost always one hop across that boundary, and the boundary is where
-every other system keeps a wall.
-
-One guard keeps this from becoming mush. A query that does not look like a code
-question is refused entry to code subgraphs entirely, checked per node as the
-walk proceeds. Ask about your spouse and no call graph appears.
-
-The graph does not stop at the checkout boundary either, and that is where the
-same discipline shows up in a second form. Symbols are keyed by project, so a
-client calling `LiStartConnection` and the library repository defining it are
-two unrelated nodes. The reference deployment carries forty repositories with
-that seam running between every pair.
+The graph does not stop at the checkout boundary either. Symbols are keyed by
+project, so a client calling `LiStartConnection` and the library defining it are
+two unrelated nodes, and the reference deployment carries forty repositories
+with that seam between every pair.
 
 Resolving it by name is the obvious move and the wrong one, because names
 collide, vendored copies duplicate them, and a planted export in a repository
 you did not write is an attack rather than an accident. So no booleans. Every
 cross-repo edge carries a confidence tier and the evidence that earned it.
 
-The top tier wants corroboration rooted in a repository you marked trusted,
-either an import resolving to the definer or the symbol appearing in its
-exports while the caller uses it three times across three distinct files. That
-second threshold is the corroboration rule from further down this piece,
-pointed at code. A single call site stays out of the default output, and
-several plausible definers, an import resolving to several files, or a vendored
-copy colliding with its original all go to a review queue rather than being
-guessed.
+The top tier wants corroboration rooted in a repository you marked trusted:
+an import resolving to the definer, or the symbol in its exports while the
+caller uses it three times across three distinct files. That second threshold is
+the corroboration rule from further down this piece, pointed at code. A single
+call site, several plausible definers, or a vendored copy colliding with its
+original all go to a review queue rather than being guessed.
 
 Trust caps what a repository can vouch for. An untrusted definer can never lend
 top-tier export corroboration, because its export list is not something it can
@@ -178,26 +164,21 @@ those threads hold: not what was decided, which the code already shows, but
 why, which it never does. That reasoning is the least durable thing an
 organisation produces, stated once by somebody who has since moved teams.
 
-Whatever goes in is mined for the entities it mentions, and each mention is
-resolved against the canonical entities already known, searching up the scope
-lattice from project to workspace to global. A narrow mention lands on the
-broad entity that exists instead of forking a duplicate beside it. Near matches
-resolve, unrelated ones commit as new entities, and the uncertain band between
-goes to a judge.
+Whatever goes in is mined for the entities it mentions, each resolved against
+the canonical entities already known by searching up the scope lattice from
+project to workspace to global. A narrow mention lands on the broad entity that
+exists instead of forking a duplicate beside it, and the uncertain band between
+a near match and a new entity goes to a judge.
 
-Those are the same entities the code units resolve onto, and a curator pass
-writes the links. The file that does it states the consequence in its own
-header: doc to entity to code unit becomes a graph traversal, and there is an
-endpoint for exactly that question.
+Those are the same entities the code units resolve onto. A curator pass writes
+the links, and the file that does it states the consequence in its own header:
+doc to entity to code unit becomes a graph traversal, with an endpoint for
+exactly that question.
 
-So a clause in a signed agreement and the function that enforces it are two
-hops apart. Which retention period the contract obliges you to, and which
-scheduled job deletes the rows, is one question with one answer citing a page
-on one side and a line number on the other.
-
-This is a deliberate traversal and not a leak. Ordinary recall keeps code out
-of a question that does not look like a code question, checked token by token,
-so asking about a holiday policy does not drag in a call graph.
+So a clause in a signed agreement and the function that enforces it are two hops
+apart. Which retention period the contract obliges you to, and which scheduled
+job deletes the rows, is one question with one answer citing a page on one side
+and a line number on the other.
 
 Which changes who can ask. A compliance officer, a lawyer, or an engineer three
 days into the job does not need a symbol name, or the repository holding it, or
@@ -205,10 +186,6 @@ the idea that a repository is the thing to look in. Today that question becomes
 a message to an engineer who reads for twenty minutes and replies in prose
 nobody can check, which is two people doing a worse version of a job the store
 can do with both citations attached.
-
-They get it inside their permissions. Scope is an authorisation band in the
-ranking rather than a filter applied afterwards, so widening who can ask is not
-the same decision as widening what they can see.
 
 ## Two clocks, and neither one overwrites
 
@@ -270,9 +247,10 @@ alone.
 
 The two axes are independent, which is what makes this cohere. A tier says how
 much the system trusts a memory. A scope says who it belongs to. Personal
-context and organisational knowledge sit in one substrate, ranked by one query,
-separated by an authorisation boundary that is a first-class part of the
-ranking.
+context and organisational knowledge sit in one substrate, ranked by one query.
+
+Because that boundary lives inside the ranking, widening who is allowed to ask a
+question is not the same decision as widening what any of them can see.
 
 ## A team's memory, distilled out of work nobody filed
 
