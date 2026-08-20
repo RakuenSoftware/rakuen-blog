@@ -177,9 +177,14 @@ ranking.
 
 ## Three corroborations, and something local becomes shared
 
-The store distils. Things that recur across independent work climb out of the
-scope they were learned in and become available to everyone on the deployment,
-and the same threshold governs it in three different places.
+The design goal is that the memory gets better the more it is used. Not larger.
+Better, in the sense that what it holds becomes more refined and more of it is
+worth reading, because use is the only thing that separates a durable fact from
+a passing one.
+
+The store distils to do that. Things that recur across independent work climb
+out of the scope they were learned in and become available to everyone on the
+deployment, and the same threshold governs it in three different places.
 
 A durable fact that has turned up in three separate sessions is synthesised into
 a pattern, on a query that counts distinct sessions and skips anything already
