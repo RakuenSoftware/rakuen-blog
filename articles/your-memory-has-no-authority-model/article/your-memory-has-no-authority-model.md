@@ -77,6 +77,27 @@ in, and scope sorts hard on what the caller is allowed to see. The fusion is not
 a blend of two result lists. It is one candidate set that several kinds of
 evidence built together.
 
+Fourteen weighted signals invites an obvious question, which is who picked the
+weights. Nobody did. A background worker turns accumulated feature rows and
+recorded retrieval outcomes into a fitted model
+([`kb_ranker_fit.h`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_ranker_fit.h),
+run from
+[`kb_service_workers.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_service_workers.c#L119-L130)),
+keyed to the same retrieval events the demotion scorer reads. The ranking learns
+from which candidates turned out to be useful.
+
+And a fitted model does not get to install itself. It lands as a proposal and a
+benchmark gate has to promote it
+([`kb_ranker.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_ranker.c#L155-L180)).
+The same rule the facts live under, applied to the thing that ranks them.
+
+Changes to this machinery are measured before they ship. A shadow mode records
+per-query rank and score deltas between fused and unfused ranking, compactly
+enough to run over real traffic without keeping the payloads
+([`shadow_delta.h`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/shadow_delta.h)).
+That is an evaluation harness and not a production path, which is the honest
+description of it.
+
 ## Code was not added to this memory. The memory was added to the code
 
 The order things were built in explains the design better than the design
@@ -392,6 +413,27 @@ having talked is evidence.
 The system counts distinct sources because that is the difference, and it is
 the whole reason the count means anything.
 
+## Some memory is armed rather than stored
+
+Everything so far answers a question when one is asked. One part of the store
+does the opposite.
+
+A prospective memory is a reminder with a trigger, an action, an anchor and a
+recurrence
+([`schema.sql`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/schema.sql#L185)).
+It sits armed, and context assembly checks the current turn against the armed
+set before the turn is answered
+([`memory_context.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/modules/memory/memory_context.c#L892)).
+An anchor can be an entity or a file, so a reminder can be attached to the thing
+it concerns instead of to a date.
+
+The difference from recall is who initiates. Nobody has to remember that there
+was something to remember, which is the failure mode a note-to-self has and
+cannot fix. The store raises it when you touch the subject.
+
+Everything else in this piece is about not losing what you know. This is the one
+part that is about not missing the moment when knowing it mattered.
+
 ## Which is why the write path has to be strict
 
 That flywheel is also the threat model, and it is the reason for everything
@@ -474,6 +516,17 @@ The guard runs in both directions. An inferred correction cannot retract
 something you stated, on any relation at all. In a fused graph that guard is
 doing more than protecting one answer, because retracting an edge removes a path
 and quietly changes what the walk can reach.
+
+All of which is a promise until something records it. Mutations land in a
+hash-chained, append-only audit store, the same record shape the server keeps,
+with write-once enforced underneath
+([`kb_audit_worm.h`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/kb_audit_worm.h)).
+A chain is checkable in a way a policy is not: you can ask whether the history
+you are being shown is the history that happened.
+
+That distinction is worth more than it first looks. Every system in the
+comparison can tell you what it currently holds. The question this answers is
+whether anything was quietly changed on the way to holding it.
 
 ## The model cannot invent its way around the rules
 

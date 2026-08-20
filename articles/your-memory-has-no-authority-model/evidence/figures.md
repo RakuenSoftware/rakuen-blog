@@ -25,6 +25,23 @@ unrelated modifications in files not cited here.
 | one score with fourteen named parts | `src/modules/memory/memory_core_search_b.c:248-340` |
 | lane floors for summaries and facts, session-window expansion, hard scope buckets | `src/modules/memory/memory_core_search_c.c:920-945` |
 
+### Ranking, evaluation and audit
+
+| claim in the article | source |
+|---|---|
+| the score weights are fitted from feature rows and recorded retrieval outcomes | `src/kb/kb_ranker_fit.h` |
+| fitting runs from a background worker | `src/kb/kb_service_workers.c:119-130` |
+| a fitted model lands as proposed and a benchmark gate must promote it | `src/kb/kb_ranker.c:155-180` |
+| shadow mode records per-query rank and score deltas for fused against unfused, and is an evaluation harness rather than a production path | `src/db2/shadow_delta.h` |
+| mutations land in a hash-chained append-only audit store with write-once enforced | `src/db2/kb_audit_worm.h` |
+
+### Prospective memory
+
+| claim in the article | source |
+|---|---|
+| a reminder carries trigger, action, anchor entity, anchor file, recurrence, state and validity | `src/db2/schema.sql:185` |
+| context assembly matches the current turn against the armed set | `src/modules/memory/memory_context.c:892` |
+
 ### The code graph
 
 | claim in the article | source |
