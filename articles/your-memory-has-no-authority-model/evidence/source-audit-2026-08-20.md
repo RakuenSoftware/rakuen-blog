@@ -37,9 +37,8 @@ covers `letta-ai/letta-code`, which the README names as the current source. The
 
 ## Column definitions
 
-The article's table has five judged columns. Each is a yes/no question with a
-stated test, so a reader can disagree with the verdict by applying the same
-test.
+The article's table has six judged columns. Each is a question with a stated
+test, so a reader can disagree with a verdict by applying the same test.
 
 - **Typed write gate.** Does a candidate relation get checked against declared
   subject/object type constraints, with a failing candidate refused a row? A
@@ -51,6 +50,10 @@ test.
   separately from "when did the system believe it"?
 - **Model may remove a fact.** Can a tool call or pipeline step the model
   controls make the prior content unreadable?
+- **Fragment points at its source.** Can the unit retrieval returns be used to
+  reach the whole source it came from? Retaining the source somewhere in the
+  system is not sufficient; the question is whether the retrieved thing carries
+  a path back.
 - **Commit.** The pinned tree the answer was read from.
 
 ## Per-system findings
@@ -186,6 +189,38 @@ Zettelkasten links (`agentic_memory/memory_system.py`). No ontology, authority
 or temporal layer. The README states the paper-reproduction code lives in a
 different repository. Last commit 2025-12-12. The article names it and states
 that it is not being held to a production bar.
+
+## Source retention and fragment provenance
+
+Added 2026-08-20 as a judged column. The test: can the unit retrieval returns be
+used to reach the whole source it came from?
+
+- **`aimee`** — the fragment carries source path, whole-file content hash,
+  heading path and line span, and is doubly linked to its neighbours in reading
+  order (`src/db2/schema.sql:136`, `src/db2/kb_payload.c:1708-1716`).
+- **Graphiti** — `EpisodicNode.content` holds raw episode data
+  (`graphiti_core/nodes.py:319-321`). Episodes are themselves the ingest unit;
+  there is no document object above them to return to.
+- **cognee** — `DocumentChunk.is_part_of` names its `Document`
+  (`cognee/modules/chunking/models/DocumentChunk.py:10-25`), and `Document`
+  carries `raw_data_location`, a path, rather than the text
+  (`cognee/modules/data/processing/document_types/Document.py:6-14`). The chain
+  is complete only while that location resolves.
+- **mem0** — `save_messages` writes role and content to a `messages` table
+  (`mem0/memory/storage.py:134-141, 257-269`). No `message_id` or equivalent
+  appears on a memory, so nothing leads from a retrieved memory to its source
+  turn.
+- **Letta Code** — MemFS tracks blocks in git, so prior versions are
+  recoverable through git rather than through the store.
+- **LangMem** — namespace and key over a store value; no document or fragment
+  model found.
+- **Memobase** — `GeneralBlob` retains raw input and `BufferZone` references a
+  `blob_id` (`models/database.py:286-297, 346-362`). Profile slots, which are
+  the retrieval unit, carry no blob reference.
+
+**The claim this column supports is narrow.** It is not that the field discards
+source text; three of the six retain it. It is that the retrieval unit usually
+cannot reach it.
 
 ## Limits of this audit
 

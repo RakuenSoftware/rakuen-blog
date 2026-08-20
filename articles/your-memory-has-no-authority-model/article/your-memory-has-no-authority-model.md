@@ -602,15 +602,15 @@ Every row below was read from the project's own source at the commit named, on
 20 August 2026. Where a project's design differs from what a summary line can
 carry, the paragraphs after the table say so.
 
-| system | commit | one fused graph | typed write gate | authority classes | valid time | model may remove a fact |
-| --- | --- | --- | --- | --- | --- | --- |
-| `aimee` | `50c5d88d` | yes, with code | yes, kind-validated | A / B / C, enforced | yes, plus code generations | no, superseded |
-| Graphiti (Zep) | `c4069327` | graph only | no | none | yes | expired, retained |
-| cognee | `fd5045f6` | graph plus vector | optional, enrichment only | none | edge `updated_at` | tagged, retained |
-| mem0 OSS | `3599aa75` | no, graph removed | no | none | no | not in v3, ADD-only |
-| Letta Code | `d1dc6880` | no | no | none | no | yes, block rewrite |
-| LangMem | `29cbe41e` | no | no | none | no | yes, hard delete |
-| Memobase | `358c16bb` | no | slot schema | none | no | yes, slot rewrite |
+| system | commit | one fused graph | fragment points at its source | typed write gate | authority classes | valid time | model may remove a fact |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `aimee` | `50c5d88d` | yes, with code | hash, span, heading, neighbours | yes, kind-validated | A / B / C, enforced | yes, plus code generations | no, superseded |
+| Graphiti (Zep) | `c4069327` | graph only | raw episode kept, no document above it | no | none | yes | expired, retained |
+| cognee | `fd5045f6` | graph plus vector | chunk names a document, document names a path | optional, enrichment only | none | edge `updated_at` | tagged, retained |
+| mem0 OSS | `3599aa75` | no, graph removed | messages kept, memories do not reference them | no | none | no | not in v3, ADD-only |
+| Letta Code | `d1dc6880` | no | git history of the block | no | none | no | yes, block rewrite |
+| LangMem | `29cbe41e` | no | no document model | no | none | no | yes, hard delete |
+| Memobase | `358c16bb` | no | blobs kept, slots do not reference them | slot schema | none | no | yes, slot rewrite |
 
 Graphiti is the closest architecture and the fairest comparison. It is
 bitemporal: `valid_at`, `invalid_at` and `expired_at` all sit on `EntityEdge`,
@@ -702,6 +702,23 @@ the slot's memo text
 ([`merge_profile.py:34-46`](https://github.com/memodb-io/memobase/blob/358c16bbc6d687937d79bc2f984a11c3be8da901/src/server/api/memobase_server/prompts/merge_profile.py#L34-L46)).
 A slot holds one attribute of one profile, and the prior text does not survive
 the rewrite.
+
+On the source column, the field does better than the criticism usually aimed at
+it, and worse than that sounds. Retention is common: Graphiti keeps the raw
+episode on the node, mem0 writes every message to a table, and Letta has every
+version of every block in git.
+
+What is uncommon is a path from the thing you retrieved back to the whole it
+came from. mem0's memories carry no reference to the messages that produced
+them, so the raw text is retained beside the store and not reachable from it.
+Memobase keeps the blob and its profile slots do not name it. cognee is the
+closest: a chunk names its document, and the document names a filesystem
+location instead of holding the text, so the store depends on that path still
+resolving.
+
+The cheap part is keeping the bytes and nearly everyone does it. The part that
+takes deciding is making the fragment carry enough to reconstitute its context,
+and then making retrieval able to walk it.
 
 I also read A-MEM (`ceffb860`), which organises memories as Zettelkasten-style
 linked notes with LLM-generated links and carries no temporal, authority or
