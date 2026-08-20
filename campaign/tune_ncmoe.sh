@@ -27,7 +27,12 @@ DRAFT=${DRAFT:-}
 # Leave room for the KV cache to grow during a real run. A configuration that
 # only just fits at load will fail later once context accumulates.
 VRAM_CEILING=${VRAM_CEILING:-14200}
-READY_TRIES=${READY_TRIES:-90}
+# 20 minutes per probe. The first version allowed 90 tries at 4s -- six minutes
+# -- which is ample for a 5 GiB model and nowhere near enough for a 36 GiB one
+# loading cold. All five of the campaign's largest arms failed on that timeout
+# and were recorded as "cannot fit this card", which is both wrong and the most
+# expensive possible wrong answer: it discards the arm instead of retrying it.
+READY_TRIES=${READY_TRIES:-300}
 export HF_HOME=${HF_HOME:-/opt/hf}
 
 log() { echo "[tune] $*" >&2; }
@@ -52,12 +57,17 @@ try_n() {
 
   "$BIN" "${args[@]}" > "/tmp/tune-n$n.log" 2>&1 &
   local srv=$!
+  # Distinguish "the server exited" from "we ran out of patience". Conflating
+  # them is what turned a slow load into a permanent verdict of unfittable.
   local ok=1
+  local died=0
   for _ in $(seq 1 "$READY_TRIES"); do
     if curl -sf --max-time 5 "http://127.0.0.1:$PORT/health" > /dev/null 2>&1; then
       ok=0; break
     fi
-    kill -0 $srv 2>/dev/null || break
+    if ! kill -0 $srv 2>/dev/null; then
+      died=1; break
+    fi
     sleep 4
   done
 
@@ -69,7 +79,12 @@ try_n() {
   kill $srv 2>/dev/null; sleep 2; kill -9 $srv 2>/dev/null; sleep 3
 
   if [ "$ok" != 0 ]; then
-    log "n=$n did not load"
+    if [ "$died" = 1 ]; then
+      log "n=$n exited during load (genuinely does not fit)"
+    else
+      log "n=$n TIMED OUT after $((READY_TRIES * 4))s -- not evidence it does not fit"
+      TIMED_OUT=1
+    fi
     return 1
   fi
   if [ "${used:-99999}" -gt "$VRAM_CEILING" ]; then
@@ -87,10 +102,16 @@ LO=0
 HI=${HI:-64}
 BEST=""
 
+TIMED_OUT=0
 if try_n "$HI"; then
   BEST=$HI
 else
-  log "even n=$HI failed; this model cannot be served on this card"
+  if [ "$TIMED_OUT" = 1 ]; then
+    log "n=$HI TIMED OUT rather than failing to fit; raise READY_TRIES and retry"
+    log "this is a harness limit, not a property of the model"
+    exit 2
+  fi
+  log "even n=$HI exited during load; this model cannot be served on this card"
   exit 1
 fi
 
