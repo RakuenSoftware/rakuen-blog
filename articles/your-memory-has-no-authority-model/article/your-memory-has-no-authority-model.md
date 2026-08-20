@@ -542,14 +542,25 @@ would rather say that than ship a threshold I guessed.
 
 ## Who this is not for
 
-If you want a memory system you can add to an agent this afternoon with a pip
-install and an API key, this is the wrong one. `aimee`'s memory subsystem is
-34,000 lines of C, it wants PostgreSQL with pgvector, and it is built by one
-person. mem0 and LangMem will have you storing memories in ten minutes and this
-will not.
+The real split here is not difficulty. It is whether you want a library or a
+system.
 
-If your agent's memory holds preferences that are cheap to be wrong about, the
-authority model is overhead you are paying for nothing. Wrong preference, mild
+mem0 and LangMem are libraries. You import them, pass an API key, and they run
+inside your process. If that is the shape you want, take one of those, because
+`aimee` is not that and never will be.
+
+It is a server you run: clone, `docker compose up`, and click through a
+seven-step wizard that provisions the store and picks the embedder. That is less
+work than standing up Graphiti, which asks you to bring your own Neo4j,
+FalkorDB or Neptune cluster first. It is still a different commitment from a
+`pip install`.
+
+Which points at the other disqualifier. There is no hosted tier. Mem0, Zep and
+Letta will all operate this for you and `aimee` will not, so if you do not want
+to run a database, the answer here is no and the answer there is yes.
+
+And if your agent's memory holds preferences that are cheap to be wrong about,
+none of the machinery above is worth its cost to you. Wrong preference, mild
 annoyance, next turn corrects it.
 
 The argument starts to bind when a remembered fact drives an action, and it

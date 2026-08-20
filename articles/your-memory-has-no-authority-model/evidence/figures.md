@@ -95,6 +95,9 @@ unrelated modifications in files not cited here.
 | memory subsystem is 34,000 lines of C | `wc -l` over `src/modules/memory/*.c`, `src/db2/memory_*.c`, `src/db2/{typed_facts,rel_types_store,ontology_evolution,demotion}.c`, `src/db2/fact_*.c`, `src/db2/entity_*.c`, `src/rel_types.c`: 34,115 lines, rounded down |
 | thirty-one memory test files | `ls src/tests/ \| grep -icE '^test_(memory\|fact\|entity\|ontology\|rel_types\|curiosity\|demotion\|directive\|kb_curator\|extract)'` |
 | AGPL-3.0 | `LICENSE`, `NOTICE` |
+| clone, `docker compose up`, browser wizard | `docs/QUICKSTART.md:5-14, 80-102` |
+| seven wizard steps, one optional and two local-only | `frontend/src/setup/wizardSteps.ts:39-55` |
+| Graphiti requires an external graph database | `graphiti` README:169-184, `c4069327` |
 | PostgreSQL with pgvector | `docs/STORAGE_TIERS.md` |
 | teaching a domain up front from its documentation is human-approvable | `docs/proposals/done/typed-fact-knowledge-layer.md` §2 |
 
