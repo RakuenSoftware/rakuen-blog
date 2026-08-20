@@ -38,10 +38,10 @@ throw at the read.
 not separate stores that get stapled together at the end. They are one substrate
 that a single query ranks.
 
-And that substrate distils. What three separate sessions corroborate stops
-belonging to the session it came from and becomes something the deployment
-knows, so a team's store compounds on work nobody filed. Everything strict about
-the write path exists because of those two facts together.
+And that substrate distils under collective use. What several people reach
+independently rises out of the scope it was learned in, what fails the people it
+reached sinks, and a team's store compounds on work nobody filed. Everything
+strict about the write path exists because of those two facts together.
 
 Something to be up front about: `aimee` is opinionated. `aimee` is highly
 opinionated. Take this for what it's worth.
@@ -175,43 +175,45 @@ context and organisational knowledge sit in one substrate, ranked by one query,
 separated by an authorisation boundary that is a first-class part of the
 ranking.
 
-## Three corroborations, and something local becomes shared
+## A team's memory, distilled out of work nobody filed
 
-The design goal is that the memory gets better the more it is used. Not larger.
-Better, in the sense that what it holds becomes more refined and more of it is
-worth reading, because use is the only thing that separates a durable fact from
-a passing one.
+The design goal is that a team's memory gets better the more the team uses it.
+Not larger. Better, in the sense that what it holds becomes more refined and
+more of it is worth reading, because a store built this way has one thing no
+individual has: several people arriving at the same conclusion separately.
 
-The store distils to do that. Things that recur across independent work climb
-out of the scope they were learned in and become available to everyone on the
-deployment, and the same threshold governs it in three different places.
+One store serves a person, a team or a company, and it distils. Something one
+engineer's work established climbs out of the scope it was learned in once
+enough independent work agrees with it. Nobody files it and nobody curates it.
 
-A durable fact that has turned up in three separate sessions is synthesised into
-a pattern, on a query that counts distinct sessions and skips anything already
-condensed
+The same threshold governs that in three places. A durable fact that has turned
+up in three separate sessions is synthesised into a pattern, on a query counting
+distinct sessions
 ([`memory_promotion.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/memory_promotion.c#L386-L410)).
 An entity corroborated by three distinct sources is promoted out of local scope,
-on a query that explicitly considers only the not-yet-global ones
+on a query that considers only the not-yet-global ones
 ([`kb_curator_promote.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_curator_promote.c#L85-L95)).
-A novel relation seen three times becomes part of the vocabulary. Three
-independent corroborations is what the system treats as the difference between
-somebody's experience and a thing that is known.
+A novel relation seen three times joins the vocabulary.
 
-The word doing the work in each is *distinct*. Not the same fact asserted three
-times in one conversation, which is one person being emphatic. Three separate
-sessions, three separate source artifacts, three sightings in work nobody
-staged together.
+The word doing the work in each is *distinct*, and it is what turns counting
+into evidence. The same thing asserted three times in one conversation is one
+person being emphatic. The same thing reached three times in work nobody staged
+together is three independent parties agreeing, and at team scale that is not a
+proxy for quality. It is what quality means.
 
-On a shared deployment those are different people. One store serves a person, a
-team or a company, and what one engineer's work established stops being theirs
-once enough independent work agrees with it. Nobody files it, nobody curates it,
-and nobody has to know it happened for it to be there next time somebody asks.
+None of this is visible while it happens, and that is the point. An engineer
+does their work. Months later somebody who has never spoken to them asks a
+question, and the answer carries what that work established, because enough
+other work independently agreed with it in between.
 
-The loop closes on the other side too. Demotion runs on verdicts attributed
-across everyone's recalls, so a shared memory that keeps proving wrong in
-practice sinks on the evidence of the people it failed. The store gets better
-because it is used, and it gets better fastest where it is used by the most
-people.
+The loop closes on the other side. Demotion runs on verdicts attributed across
+everyone's recalls, so a shared memory that keeps proving wrong in practice
+sinks on the evidence of the people it failed.
+
+Which makes collective use the selection pressure, in both directions. What
+several people reach independently rises. What fails the people it reached
+sinks. Neither needs a curator, and neither can be gamed by one enthusiastic
+participant, because one participant is not several.
 
 ## Which is why the write path has to be strict
 
@@ -393,8 +395,16 @@ confidence, author id, or retrieval frequency.
 
 [`demotion.h`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/demotion.h#L104-L112).
 That exclusion list is the whole idea. A memory pulled up constantly and wrong
-every time sinks, because being popular is not evidence. A memory wearing a
-respectable provenance tag earns nothing for it.
+every time sinks, and a memory wearing a respectable provenance tag earns
+nothing for it.
+
+Note which frequency is being refused, because the system counts the other one
+carefully. How many independent sources asserted a thing is corroboration, and
+it promotes. How often a row got surfaced is popularity, and it counts for
+nothing.
+
+Being retrieved is something that happens to a memory. Being arrived at
+separately is something several people did.
 
 Under a floor of recorded outcomes the scorer declines to judge at all and says
 so
