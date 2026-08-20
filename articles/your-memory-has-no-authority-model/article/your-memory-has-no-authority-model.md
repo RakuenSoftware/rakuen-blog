@@ -43,6 +43,9 @@ Everything below describes `aimee`'s typed-fact layer, which is where identity
 and world facts live. Free-text prose memory, which carries episodic and code
 recall, has different write semantics and is out of scope here.
 
+Something to be up front about: `aimee` is opinionated. `aimee` is highly
+opinionated. Take this for what it's worth.
+
 ## A model's guess never outranks what you told it
 
 Every fact in the store is born into one of three classes, and the class is
