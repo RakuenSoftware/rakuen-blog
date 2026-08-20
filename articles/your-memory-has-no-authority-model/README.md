@@ -36,9 +36,13 @@ edges only, and typed facts reach a turn through `db2_fact_recall_in_query` as
 an injected text block.
 
 That exclusion is being removed in a separate `aimee` session, on the author's
-instruction to write the article against the fixed behaviour. **Before this
-article ships, every `aimee` citation must be repointed at the merge commit
-carrying that change, and the fusion claims re-verified against it.** Publishing
+instruction to write the article against the fixed behaviour. The change spans
+several commits and will land as a pull request.
+
+**Before this article ships, every `aimee` citation must be repointed at that
+PR's merge commit, and every claim re-verified against it.** Not only the fusion
+claims: the line numbers throughout are pinned to `50c5d88d`, and a change
+touching 25 read sites in `entity_edges.c` will move some of them. Publishing
 against `50c5d88d` would put the article in direct conflict with the source it
 cites, which is the failure the repository's provenance rule exists to prevent.
 
