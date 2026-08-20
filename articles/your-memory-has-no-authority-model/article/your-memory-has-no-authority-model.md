@@ -44,10 +44,8 @@ opinionated. Take this for what it's worth.
 
 ## One recall, one score
 
-A query starts the way you would expect. Lexical matching and dense vectors
-produce a set of candidate memories.
-
-Then it stops being ordinary. The top twelve candidates are asked which
+Lexical matching and dense vectors produce a set of candidate memories, and
+then it stops being ordinary. The top twelve candidates are asked which
 canonical entities they mention, and those become up to forty-eight seeds for a
 walk across the graph. The walk runs two hops by default, weighted by how
 useful each edge has proven, and it collects memories attached to every node it
@@ -253,10 +251,6 @@ counting distinct sessions. An entity corroborated by three distinct sources is
 promoted out of local scope, on a query that considers only the not-yet-global
 ones. A novel relation seen three times joins the vocabulary.
 
-The word doing the work in each is *distinct*: distinct sessions, distinct
-source artifacts, sightings in work nobody staged together. At team scale that
-is not a proxy for quality. It is what quality means.
-
 None of this is visible while it happens, and that is the point. An engineer
 does their work. Months later somebody who has never spoken to them asks a
 question, and the answer carries what that work established, because enough
@@ -266,9 +260,8 @@ The loop closes on the other side. Demotion runs on verdicts attributed across
 everyone's recalls, so a shared memory that keeps proving wrong in practice
 sinks on the evidence of the people it failed.
 
-Which makes collective use the selection pressure, in both directions. What
-several people reach independently rises. What fails the people it reached
-sinks. Neither needs a curator.
+Which makes collective use the selection pressure in both directions, and
+neither direction needs a curator.
 
 There is nothing novel in the principle underneath that, and it is stronger for
 being old. Independent convergence is what replication means in science, what a
@@ -323,11 +316,11 @@ Say something yourself, using a relation the system already understands, and
 the fact is Class A. It carries full confidence, it wins every conflict about
 the same subject and relation, and it never expires. Let the background
 extractor infer something from a note you wrote, and the best it can earn is
-Class B. Everything else is Class C, which is to say speculation, and
-speculation is on a clock.
+Class B. Everything else is Class C, which is to say speculation.
 
 The rule that assigns the class is eleven lines long and has no way to reach
-Class A from a model. The extractor's calls pass their authority as a constant, so there is no argument a prompt could win.
+Class A from a model. The extractor's calls pass their authority as a constant,
+so there is no argument a prompt could win.
 
 The model is asked how confident it is, and the answer is used once, as a
 floor: below six-tenths the triple is dropped. Above the floor the number buys
@@ -337,15 +330,12 @@ exactly where a hedging one does.
 The awkward branch is the first one. A relation nobody has established yet is
 speculation even when you asserted it personally, because what is unproven
 there is the vocabulary and your authority cannot cure that. It costs you
-something real. It is still the right trade, because an unproven word that
-enters the graph starts moving results immediately.
+something real, and it is still the right trade.
 
 Reinforcement moves a fact along that scale and never off the end of it. A
-model inference confirmed enough times stops expiring and stays Class B.
-Repetition buys durability. It does not buy authority.
-
-Speculation that never gets confirmed runs out its clock, and even then the row
-is only stamped as no longer believed.
+model inference confirmed enough times stops expiring and stays Class B, and
+speculation that is never confirmed runs out its clock and is stamped as no
+longer believed. Repetition buys durability. It does not buy authority.
 
 ## Correcting a fact leaves the old one where it is
 
@@ -411,18 +401,15 @@ after the fact it came from actually committed, so a failed write cannot
 inflate a candidate's standing. And a relationship already rejected keeps that
 verdict, so it cannot creep back onto the shortlist by being proposed again.
 
-Recur across enough separate sources and the maintenance pass promotes the
-relationship on its own, with nobody asked. Three sightings is the default and
-promotion is on out of the box.
+Recur across enough separate sources and the maintenance pass promotes it, on
+the threshold the distillation runs on, with nobody asked. One family of words
+is barred from ever making it: a model falling back on a catch-all is refused
+however often it does so, because a durable relationship called `misc` can never
+be reconciled to a real one later.
 
-One family of words is barred from ever making it. A model that falls back on a
-catch-all is refused promotion however often it does so, because a durable
-relationship called `misc` can never be reconciled to a real one later.
-
-A word earns permanence by turning up again in work nobody staged, and no one
-signs off on it. The one path that does want a human is teaching a whole domain
-up front from its documentation, which changes the shape of the vocabulary
-before any evidence has accumulated to justify it.
+The one path that does want a human is teaching a whole domain up front from its
+documentation, which changes the shape of the vocabulary before any evidence has
+accumulated to justify it.
 
 ## Two spellings of a name are one thing, and a bad guess is reversible
 
