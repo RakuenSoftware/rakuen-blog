@@ -174,13 +174,38 @@ the graph saying how confident it is and why.
 Code intelligence is where this started. It is not where it stopped, and the
 generalisation is the part that pays.
 
-Push a PDF at it. A signed contract, a payroll policy, a compliance standard.
-Structured ingestion keeps what plain text extraction throws away: page
-coordinates, reading order, tables as cells, OCR for the scanned ones, and the
-identity and confidence of whatever extractor produced each span
+Push a document at it. A signed contract, a payroll policy, a compliance
+standard, a decision record, a spreadsheet somebody has been maintaining since
+2019. Ingestion routes by format and falls through to taking the bytes as they
+are, so the common case is that a file goes in and becomes retrievable
+([`kb_ingest_normalize.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_ingest_normalize.c#L20-L47)).
+
+Some formats want a reader before they are worth anything. Office documents and
+HTML go through a converter, and PDFs, which are the awkward case, get a whole
+extraction layer of their own. That layer keeps what plain text extraction
+throws away: page coordinates, reading order, tables as cells, OCR for scanned
+pages, and the identity and confidence of whatever extractor produced each span
 ([`STRUCTURED_PDF.md`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/docs/STRUCTURED_PDF.md)).
-A citation is a document hash, a page and a bounding box, so an answer can point
-at the paragraph it came from rather than paraphrasing it.
+
+Those layers are separate dependencies and each one degrades on its own terms.
+Without a table recogniser the page text is still there and no table structure
+is claimed. Without a renderer there are no image assets and the text remains.
+The system loses a capability and does not pretend to have it.
+
+Where the readers do run, a citation is a document hash, a page and a bounding
+box, so an answer can point at the paragraph it came from rather than
+paraphrasing it.
+
+A conversation is a document too. Export the channel where an incident was
+worked through, or the thread where a design was argued out, and it ingests like
+anything else. That is worth doing because of what those threads contain: not
+what was decided, which the code already shows, but why, which it never does.
+
+The reasoning behind a choice is the least durable thing an organisation
+produces. It is stated once, in a channel, by someone who has since moved teams,
+and it survives in the heads of whoever happened to be reading that day. Put it
+in the store and it resolves onto the same entities as the code it was about,
+which means the argument arrives with the function it produced.
 
 That document is then mined for the entities it mentions. Each mention is
 embedded and resolved against the canonical entities already known, and the

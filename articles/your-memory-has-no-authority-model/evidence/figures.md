@@ -42,6 +42,9 @@ unrelated modifications in files not cited here.
 
 | claim in the article | source |
 |---|---|
+| ingestion routes by format and falls through to passthrough | `src/kb/kb_ingest_normalize.c:20-47` |
+| office formats and HTML go through a converter; PDFs get their own extraction layer | same, plus `docs/STRUCTURED_PDF.md` |
+| PDF layers are separate dependencies that degrade individually without claiming the lost capability | `docs/STRUCTURED_PDF.md` degradation table |
 | structured PDF ingestion keeps page coordinates, reading order, tables as cells, OCR, extractor identity and confidence | `docs/STRUCTURED_PDF.md` layers and evidence model |
 | a citation is a document hash, a page and a bounding box | same, evidence model |
 | re-ingesting changed bytes creates a new version and does not move old coordinates | same |
