@@ -50,6 +50,8 @@ unrelated modifications in files not cited here.
 | the uncertain band is adjudicated by a judge rather than merged | same |
 | doc to entity to code unit is a graph traversal | `src/kb/kb_curator_link_artifacts.c:5-9` |
 | an endpoint answers that question | `src/kb/http/kb_http.c:997-998`, `POST /v1/implements` |
+| ordinary recall refuses code subgraphs for a query with no code-shaped token, checked per token | `src/modules/memory/memory_graph_fusion.c:119-153` |
+| scope is an authorisation band inside the ranking, not a filter applied afterwards | `src/db2/memory_scope_query.c:40-59`, `docs/retrieval-stack.md` |
 
 ### Cross-repo resolution
 

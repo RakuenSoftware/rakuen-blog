@@ -215,6 +215,28 @@ An organisation's documents are not a different kind of input here. They are
 more of the same input, and the entity registry is what puts a payroll policy
 and a scheduler on the same node.
 
+Note that this is a deliberate traversal and not a leak. Ordinary recall keeps
+code out of a question that does not look like a code question, checked token by
+token, so asking about a holiday policy does not drag in a call graph. The
+bridge from a document to the code is there when somebody asks for it and quiet
+when nobody does.
+
+Which changes who can ask. A compliance officer, a lawyer, a finance lead or an
+engineer three days into the job does not have to know a symbol name, or which
+repository holds it, or that a repository is the thing to look in. They ask in
+the vocabulary of the document they already understand, and the answer comes
+back citing a page on one side and a line on the other.
+
+The work that displaces is the errand. Today that question becomes a message to
+an engineer, who reads code for twenty minutes and replies in prose that nobody
+can check. Both people are doing a worse version of a job the store can do,
+which is to know where the contract and the cron job touch, and to say so with
+both citations attached.
+
+And they get it inside their permissions. Scope is an authorisation band in the
+ranking rather than a filter applied afterwards, so widening who can ask a
+question is not the same decision as widening what any of them can see.
+
 ## Two clocks, and neither one overwrites
 
 A graph that ranks everything has to be honest about time, and there are two
