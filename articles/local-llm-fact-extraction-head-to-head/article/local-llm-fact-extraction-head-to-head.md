@@ -3,100 +3,120 @@ title: "Local LLMs: Fact Extraction Head to Head"
 date: 2026-08-06
 author: Rakuen Software
 tags: [benchmarks, local-models, fact-extraction, quantisation, aimee]
-excerpt: "Thirty-four saved scores are observations, not ranks. Qwen3.8-27B at Q4_K_M scored 0.7030 and tied the comparable Qwen3.6-27B run with multi-token prediction (MTP)."
+excerpt: "Thirty-four saved runs on one 1,001-note corpus. The ladder from 2B to 35B is worth +0.0851 end to end, and seven of the eight steps inside it cannot be ordered at all."
 ---
 
-*Published 2026-08-06. Rakuen builds aimee, the system measured here. Every figure
-traces to the
+*Published 2026-08-06, last measured 2026-08-14, last corrected 2026-08-20.
+Rakuen builds aimee, the system measured here, and the prompt under test is the
+one aimee ships. Every figure traces to the
 [evidence repository](https://github.com/RakuenSoftware/rakuen-blog/tree/main/articles/local-llm-fact-extraction-head-to-head),
 with a per-figure provenance map in
 [evidence/figures.md](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/local-llm-fact-extraction-head-to-head/evidence/figures.md).*
 
-*Correction, 2026-08-09. The first graph originally sorted runs by their observed
-scores. That placed Q4 above Q6 or Q8 where the paired tests called them ties. The
-default graph now shows what the paired tests support, while Numbers retains the
-exact scores.*
-
-*For matched same-model comparisons, two Gemma Q4 rows now come from the same
-campaign as Q6 and Q8: E4B changed from 0.6166 to 0.6189, and E2B from 0.6017 to
-0.6114. This audit also refreshed stale abstention and spurious-triple columns
-from the score files named in the evidence map. Paired intervals were reproduced
-one comparison per invocation; no verdict changed.*
-
-*Update, 2026-08-14. A native 1,001-note Qwen3.8-27B Q4_K_M run has been added.
-It scored 0.7030 and tied Qwen3.6-27B under the same Q4_K_M and multi-token
-prediction (MTP) labels. One response reached the 8,192-token context limit and
-failed to parse; the other 1,000 parsed.*
-
-Every run uses the same 1,001 notes, prompt and scorer. Hardware and process
-configuration vary and are named below. The table records what each saved run
-scored. It does not turn every difference after the decimal point into a win.
-
-I built this to pick a local model for a fact extractor. I started with what fits
-on a 16 GB card. The best of them got 0.6406 out of a possible 1.0, and I assumed
-that ceiling was my notes. Then I rented bigger GPUs.
+I built this to pick a local model for a fact extractor, and started with what
+fits on a 16 GB card. The best model I had then scored 0.6406 out of a possible
+1.0. I read that ceiling as a property of my notes and rented bigger GPUs to
+prove it.
 
 The ceiling moved to 0.7257. Almost none of the movement came from size.
 
-## One note in, zero or more triples out
+Thirty-four saved runs sit in the table below. It records what each one scored.
+It does not turn every difference after the decimal point into a win.
 
-The model reads a single remembered note and returns subject-relation-object
-triples as JSON. The prompt is the one my production system already sends, read
-out of `kb_memory_facts.c` rather than written for the benchmark, so a result here
-is a statement about the system I run.
+*Correction, 2026-08-09. The first graph originally sorted runs by observed
+score, which placed Q4 above Q6 or Q8 where the paired tests called them ties.
+The default view now shows what the paired tests support, and Numbers retains the
+exact scores. Two Gemma Q4 rows moved to the campaign that produced their own Q6
+and Q8 rows, E4B from 0.6166 to 0.6189 and E2B from 0.6017 to 0.6114, and stale
+abstention and spurious columns were refreshed from the score files. No verdict
+changed.*
+
+*Update, 2026-08-14. A native 1,001-note Qwen3.8-27B Q4_K_M run scored 0.7030 and
+was added as a row.*
+
+*Correction, 2026-08-20. granite-4.1-3b was printed as twenty-first on score with
+twenty runs above it. Adding the Qwen3.8 row the week before had made it
+twenty-second, with twenty-one above it, and its finding of the fewest invented
+triples in the field is unchanged. Two comparisons this data cannot support were
+withdrawn in the same pass, and both are marked where they stood.*
+
+## The task: 322 of the 1,001 notes are worth no facts at all
+
+The model reads one remembered note and returns subject-relation-object triples
+as JSON. The prompt is the one my production system already sends, read out of
+`kb_memory_facts.c` rather than written for the benchmark. That flatters the
+result and I am keeping it, because a score here is a statement about the system
+I actually run, which was the only question I had.
 
     Vera Duarte joined the retrieval team last quarter.
     {"subject": "Vera Duarte", "relation": "member_of", "object": "retrieval team"}
 
-Notes are one or two sentences, median 53 characters. The relation comes from 24
+Notes run one or two sentences, median 53 characters. The relation comes from 24
 canonical predicates, or the model coins a snake_case one when none fits. It has
-to keep durable state and drop everything transient, so `Hoping to get Fairweather
-Chemicals over the line this quarter` is worth no facts at all: 322 of the 1,001
-notes are that kind, and getting them right means returning an empty list.
+to keep durable state and drop everything transient, so `Hoping to get
+Fairweather Chemicals over the line this quarter` is worth no facts at all. 322
+of the 1,001 notes are that kind, and getting them right means returning an empty
+list.
 
 A retraction is not an absence either. `Kestrel Freight is no longer a customer`
 wants the original fact back with `negated` set.
 
-Scoring is strict: subject, relation and object all have to match a known-good
+Scoring is strict. Subject, relation and object all have to match a known-good
 triple, and there are 880 of those across the 1,001 notes, spread over ten note
 categories including negation, multi-fact, implicit and deliberately ambiguous.
 
-Two things can go wrong. The model misses facts that are there, which costs
-recall, and it produces facts that are not, which costs precision. The harmonic
-mean of precision and recall (F1) compresses both into one number between 0 and 1.
-A score of 1.0 means the model found everything and invented nothing.
+Two things go wrong. The model misses facts that are there, which costs recall,
+and it produces facts that are not, which costs precision. The harmonic mean of
+precision and recall (F1) compresses both into one number between 0 and 1. A
+score of 1.0 means the model found everything and invented nothing.
 
-## Q4 did not beat Q6 or Q8
+## The bench: one corpus and one prompt, five cards, two recorded builds
+
+Every run uses the same 1,001 notes, the same prompt and the same scorer.
+Hardware and process configuration vary and are named at each figure. Large
+models ran wherever they fit: a local RTX 5080, a local RX 7900 XTX, and rented
+RTX 3090s and 5090s. The rented machines were hourly instances we did not keep,
+so nothing measured on them can be re-run against the same silicon.
+
+Two runs record their runtime build. Qwen3.8-27B and Muse Glimmer 30B both ran on
+`llama.cpp` b10356 on the RX 7900 XTX under Vulkan. The earlier campaigns did not
+capture a build string per run, so their runtime version is not recoverable from
+the artifacts, and every comparison that crosses campaigns carries that gap.
+
+## Quantisation: Q4 did not beat Q6 or Q8, and the sort order said it did
 
 The numbers are real. The ordering was stronger than the test. A higher saved
-score counts as a win only when a paired range excludes zero.
+score counts as a win only where a paired range excludes zero.
 
-In the graph, `=` means the test could not tell the quants apart. `>` means it
-could. In the Numbers view, quantisation-aware training (QAT) is labelled; the
-remaining suffixes are the quant builds tested.
+In the graph, `=` means the test could not separate the quants and `>` means it
+could. In the Numbers view, quantisation-aware training (QAT) is labelled, and
+the remaining suffixes are the quant builds tested.
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-0" id="fig-0-chart" checked><input class="sg-figure__radio sg-figure__radio--ranked" type="radio" name="fig-0" id="fig-0-ranked"><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-0" id="fig-0-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-0-chart">Result</label><label class="sg-figure__tab sg-figure__tab--ranked" for="fig-0-ranked">All runs</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-0-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 300" preserveAspectRatio="xMidYMid meet" role="img" aria-label="What paired same-model quant tests support"><text class="sg-chart__axis" x="0" y="20">WHAT THE PAIRED TEST SUPPORTS</text><text class="sg-chart__label" x="190" y="48" text-anchor="end">gemma-4-E2B</text><text class="sg-chart__value" x="214" y="48">Q4 = Q6 = Q8</text><text class="sg-chart__axis" x="650" y="48" text-anchor="end" opacity=".65">TIE</text><text class="sg-chart__label" x="190" y="82" text-anchor="end">gemma-4-E4B</text><text class="sg-chart__value" x="214" y="82">Q4 ties both; Q6 > Q8</text><text class="sg-chart__axis" x="650" y="82" text-anchor="end">Q6 BEATS Q8</text><text class="sg-chart__label" x="190" y="116" text-anchor="end">LFM2.5-2.6B</text><text class="sg-chart__value" x="214" y="116">Q4 = Q6 = Q8</text><text class="sg-chart__axis" x="650" y="116" text-anchor="end" opacity=".65">TIE</text><text class="sg-chart__label" x="190" y="150" text-anchor="end">LFM2.5-VL-1.6B</text><text class="sg-chart__value" x="214" y="150">Q6 = Q8</text><text class="sg-chart__axis" x="650" y="150" text-anchor="end" opacity=".65">TIE</text><text class="sg-chart__label" x="190" y="184" text-anchor="end">LFM2.5-1.2B</text><text class="sg-chart__value" x="214" y="184">Q6 = Q8</text><text class="sg-chart__axis" x="650" y="184" text-anchor="end" opacity=".65">TIE</text><text class="sg-chart__label" x="190" y="218" text-anchor="end">LFM2.5-230M</text><text class="sg-chart__value" x="214" y="218">Q6 = Q8</text><text class="sg-chart__axis" x="650" y="218" text-anchor="end" opacity=".65">TIE</text><text class="sg-chart__label" x="190" y="252" text-anchor="end">SmolLM3-3B</text><text class="sg-chart__value" x="214" y="252">Q8 > Q4</text><text class="sg-chart__axis" x="650" y="252" text-anchor="end">Q8 BEATS Q4</text></svg></div><div class="sg-figure__pane sg-figure__pane--ranked"><svg class="sg-chart" viewBox="0 0 760 568" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Ranked values, one row per run"><line class="sg-chart__grid" x1="342.5" x2="342.5" y1="16" y2="538"/><text class="sg-chart__value" x="342.5" y="554" text-anchor="middle" opacity=".7">0.2</text><line class="sg-chart__grid" x1="461.0" x2="461.0" y1="16" y2="538"/><text class="sg-chart__value" x="461.0" y="554" text-anchor="middle" opacity=".7">0.39</text><line class="sg-chart__grid" x1="579.5" x2="579.5" y1="16" y2="538"/><text class="sg-chart__value" x="579.5" y="554" text-anchor="middle" opacity=".7">0.58</text><text class="sg-chart__label" x="214" y="35.0" text-anchor="end" font-size="11">Qwen3.6-35B-A3B UD-Q4, MoE</text><line class="sg-chart__line sg-chart__line--1" x1="224.0" x2="665.0" y1="31.5" y2="31.5"/><circle class="sg-chart__mark sg-chart__mark--1" cx="665.0" cy="31.5" r="3.6"/><text class="sg-chart__value" x="673.0" y="35.0">0.7257</text><text class="sg-chart__label" x="214" y="50.0" text-anchor="end" font-size="11">Qwen3.6-27B dense UD-Q4</text><line class="sg-chart__line sg-chart__line--1" x1="224.0" x2="658.6" y1="46.5" y2="46.5"/><circle class="sg-chart__mark sg-chart__mark--1" cx="658.6" cy="46.5" r="3.6"/><text class="sg-chart__value" x="666.6" y="50.0">0.7152</text><text class="sg-chart__label" x="214" y="65.0" text-anchor="end" font-size="11">Muse Glimmer 30B K-Quant-17GB, DFlash off</text><line class="sg-chart__line sg-chart__line--1" x1="224.0" x2="655.5" y1="61.5" y2="61.5"/><circle class="sg-chart__mark sg-chart__mark--1" cx="655.5" cy="61.5" r="3.6"/><text class="sg-chart__value" x="663.5" y="65.0">0.7100</text><text class="sg-chart__label" x="214" y="80.0" text-anchor="end" font-size="11">Qwen3.8-27B Q4_K_M, MTP</text><line class="sg-chart__line sg-chart__line--1" x1="224.0" x2="651.2" y1="76.5" y2="76.5"/><circle class="sg-chart__mark sg-chart__mark--1" cx="651.2" cy="76.5" r="3.6"/><text class="sg-chart__value" x="659.2" y="80.0">0.7030</text><text class="sg-chart__label" x="214" y="95.0" text-anchor="end" font-size="11">gemma-4-31B QAT UD-Q4</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="641.6" y1="91.5" y2="91.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="641.6" cy="91.5" r="3.6"/><text class="sg-chart__value" x="649.6" y="95.0">0.6872</text><text class="sg-chart__label" x="214" y="110.0" text-anchor="end" font-size="11">gemma-4-12B QAT UD-Q4</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="640.5" y1="106.5" y2="106.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="640.5" cy="106.5" r="3.6"/><text class="sg-chart__value" x="648.5" y="110.0">0.6854</text><text class="sg-chart__label" x="214" y="125.0" text-anchor="end" font-size="11">gemma-4-26B-A4B QAT UD-Q4, unsloth</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="637.5" y1="121.5" y2="121.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="637.5" cy="121.5" r="3.6"/><text class="sg-chart__value" x="645.5" y="125.0">0.6804</text><text class="sg-chart__label" x="214" y="140.0" text-anchor="end" font-size="11">gemma-4-31B UD-Q4</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="635.0" y1="136.5" y2="136.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="635.0" cy="136.5" r="3.6"/><text class="sg-chart__value" x="643.0" y="140.0">0.6763</text><text class="sg-chart__label" x="214" y="155.0" text-anchor="end" font-size="11">gemma-4-12B UD-Q4</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="634.4" y1="151.5" y2="151.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="634.4" cy="151.5" r="3.6"/><text class="sg-chart__value" x="642.4" y="155.0">0.6754</text><text class="sg-chart__label" x="214" y="170.0" text-anchor="end" font-size="11">gemma-4-26B-A4B QAT q4_0, google</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="623.6" y1="166.5" y2="166.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="623.6" cy="166.5" r="3.6"/><text class="sg-chart__value" x="631.6" y="170.0">0.6575</text><text class="sg-chart__label" x="214" y="185.0" text-anchor="end" font-size="11">gemma-4-E2B QAT q4_0</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="613.3" y1="181.5" y2="181.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="613.3" cy="181.5" r="3.6"/><text class="sg-chart__value" x="621.3" y="185.0">0.6406</text><text class="sg-chart__label" x="214" y="200.0" text-anchor="end" font-size="11">gemma-4-E4B UD-Q6</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="609.2" y1="196.5" y2="196.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="609.2" cy="196.5" r="3.6"/><text class="sg-chart__value" x="617.2" y="200.0">0.6339</text><text class="sg-chart__label" x="214" y="215.0" text-anchor="end" font-size="11">gemma-4-E2B UD-Q8</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="602.4" y1="211.5" y2="211.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="602.4" cy="211.5" r="3.6"/><text class="sg-chart__value" x="610.4" y="215.0">0.6226</text><text class="sg-chart__label" x="214" y="230.0" text-anchor="end" font-size="11">gemma-4-E4B QAT q4_0</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="600.4" y1="226.5" y2="226.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="600.4" cy="226.5" r="3.6"/><text class="sg-chart__value" x="608.4" y="230.0">0.6194</text><text class="sg-chart__label" x="214" y="245.0" text-anchor="end" font-size="11">gemma-4-E4B UD-Q4</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="600.1" y1="241.5" y2="241.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="600.1" cy="241.5" r="3.6"/><text class="sg-chart__value" x="608.1" y="245.0">0.6189</text><text class="sg-chart__label" x="214" y="260.0" text-anchor="end" font-size="11">gemma-4-E2B UD-Q6</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="599.5" y1="256.5" y2="256.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="599.5" cy="256.5" r="3.6"/><text class="sg-chart__value" x="607.5" y="260.0">0.6179</text><text class="sg-chart__label" x="214" y="275.0" text-anchor="end" font-size="11">gemma-4-E2B UD-Q4</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="595.5" y1="271.5" y2="271.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="595.5" cy="271.5" r="3.6"/><text class="sg-chart__value" x="603.5" y="275.0">0.6114</text><text class="sg-chart__label" x="214" y="290.0" text-anchor="end" font-size="11">gemma-4-E4B UD-Q8</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="594.3" y1="286.5" y2="286.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="594.3" cy="286.5" r="3.6"/><text class="sg-chart__value" x="602.3" y="290.0">0.6094</text><text class="sg-chart__label" x="214" y="305.0" text-anchor="end" font-size="11">LFM2.5-2.6B Q4_K_M</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="579.7" y1="301.5" y2="301.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="579.7" cy="301.5" r="3.6"/><text class="sg-chart__value" x="587.7" y="305.0">0.5854</text><text class="sg-chart__label" x="214" y="320.0" text-anchor="end" font-size="11">LFM2.5-2.6B Q6_K</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="576.2" y1="316.5" y2="316.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="576.2" cy="316.5" r="3.6"/><text class="sg-chart__value" x="584.2" y="320.0">0.5795</text><text class="sg-chart__label" x="214" y="335.0" text-anchor="end" font-size="11">LFM2.5-2.6B Q8_0</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="573.4" y1="331.5" y2="331.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="573.4" cy="331.5" r="3.6"/><text class="sg-chart__value" x="581.4" y="335.0">0.5750</text><text class="sg-chart__label" x="214" y="350.0" text-anchor="end" font-size="11">granite-4.1-3b UD-Q4</text><line class="sg-chart__line sg-chart__line--2" x1="224.0" x2="554.1" y1="346.5" y2="346.5"/><circle class="sg-chart__mark sg-chart__mark--2" cx="554.1" cy="346.5" r="3.6"/><text class="sg-chart__value" x="562.1" y="350.0">0.5432</text><text class="sg-chart__label" x="214" y="365.0" text-anchor="end" font-size="11">gemma-3n-E4B UD-Q4</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="548.0" y1="361.5" y2="361.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="548.0" cy="361.5" r="3.6"/><text class="sg-chart__value" x="556.0" y="365.0">0.5331</text><text class="sg-chart__label" x="214" y="380.0" text-anchor="end" font-size="11">LFM2.5-8B-A1B Q4_K_M</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="539.9" y1="376.5" y2="376.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="539.9" cy="376.5" r="3.6"/><text class="sg-chart__value" x="547.9" y="380.0">0.5198</text><text class="sg-chart__label" x="214" y="395.0" text-anchor="end" font-size="11">Qwen3-1.7B UD-Q4</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="504.6" y1="391.5" y2="391.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="504.6" cy="391.5" r="3.6"/><text class="sg-chart__value" x="512.6" y="395.0">0.4618</text><text class="sg-chart__label" x="214" y="410.0" text-anchor="end" font-size="11">SmolLM3-3B Q8_0</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="463.0" y1="406.5" y2="406.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="463.0" cy="406.5" r="3.6"/><text class="sg-chart__value" x="471.0" y="410.0">0.3933</text><text class="sg-chart__label" x="214" y="425.0" text-anchor="end" font-size="11">granite-4.0-1b UD-Q4</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="461.7" y1="421.5" y2="421.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="461.7" cy="421.5" r="3.6"/><text class="sg-chart__value" x="469.7" y="425.0">0.3911</text><text class="sg-chart__label" x="214" y="440.0" text-anchor="end" font-size="11">LFM2.5-VL-1.6B Q6_K</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="390.7" y1="436.5" y2="436.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="390.7" cy="436.5" r="3.6"/><text class="sg-chart__value" x="398.7" y="440.0">0.2744</text><text class="sg-chart__label" x="214" y="455.0" text-anchor="end" font-size="11">LFM2.5-VL-1.6B Q8_0</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="389.6" y1="451.5" y2="451.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="389.6" cy="451.5" r="3.6"/><text class="sg-chart__value" x="397.6" y="455.0">0.2725</text><text class="sg-chart__label" x="214" y="470.0" text-anchor="end" font-size="11">LFM2.5-1.2B Q6_K</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="331.6" y1="466.5" y2="466.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="331.6" cy="466.5" r="3.6"/><text class="sg-chart__value" x="339.6" y="470.0">0.1771</text><text class="sg-chart__label" x="214" y="485.0" text-anchor="end" font-size="11">LFM2.5-1.2B Q8_0</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="325.5" y1="481.5" y2="481.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="325.5" cy="481.5" r="3.6"/><text class="sg-chart__value" x="333.5" y="485.0">0.1671</text><text class="sg-chart__label" x="214" y="500.0" text-anchor="end" font-size="11">MiniCPM5-1B Q8_0</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="324.4" y1="496.5" y2="496.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="324.4" cy="496.5" r="3.6"/><text class="sg-chart__value" x="332.4" y="500.0">0.1652</text><text class="sg-chart__label" x="214" y="515.0" text-anchor="end" font-size="11">LFM2.5-230M Q6_K</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="306.8" y1="511.5" y2="511.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="306.8" cy="511.5" r="3.6"/><text class="sg-chart__value" x="314.8" y="515.0">0.1363</text><text class="sg-chart__label" x="214" y="530.0" text-anchor="end" font-size="11">LFM2.5-230M Q8_0</text><line class="sg-chart__line sg-chart__line--muted" x1="224.0" x2="303.5" y1="526.5" y2="526.5"/><circle class="sg-chart__mark sg-chart__mark--muted" cx="303.5" cy="526.5" r="3.6"/><text class="sg-chart__value" x="311.5" y="530.0">0.1309</text></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>top of the field</span><span><i style="background:var(--sg-chart-2)"></i>lowest invention</span><span><i style="background:var(--sg-chart-muted)"></i>other runs</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">model</th><th style="text-align:left">quant</th><th style="text-align:right">observed F1</th><th style="text-align:right">prec</th><th style="text-align:right">rec</th><th style="text-align:right">parse</th><th style="text-align:right">abstain</th><th style="text-align:right">spurious</th><th style="text-align:right">reasons</th></tr></thead><tbody><tr><td style="text-align:left">Qwen3.6-35B-A3B</td><td style="text-align:left">UD-Q4, MoE</td><td style="text-align:right"><strong>0.7257</strong></td><td style="text-align:right">0.6841</td><td style="text-align:right">0.7727</td><td style="text-align:right">1.00</td><td style="text-align:right">0.693</td><td style="text-align:right">101</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">Qwen3.6-27B dense</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.7152</td><td style="text-align:right">0.6550</td><td style="text-align:right">0.7875</td><td style="text-align:right">1.00</td><td style="text-align:right">0.547</td><td style="text-align:right">148</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">Muse Glimmer 30B</td><td style="text-align:left">K-Quant-17GB, DFlash off</td><td style="text-align:right">0.7100</td><td style="text-align:right">0.6835</td><td style="text-align:right">0.7386</td><td style="text-align:right">1.00</td><td style="text-align:right">0.714</td><td style="text-align:right">93</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">Qwen3.8-27B</td><td style="text-align:left">Q4_K_M, MTP</td><td style="text-align:right">0.7030</td><td style="text-align:right">0.6463</td><td style="text-align:right">0.7705</td><td style="text-align:right">1.00</td><td style="text-align:right">0.655</td><td style="text-align:right">113</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">gemma-4-31B</td><td style="text-align:left">QAT UD-Q4</td><td style="text-align:right">0.6872</td><td style="text-align:right">0.6022</td><td style="text-align:right"><strong>0.8000</strong></td><td style="text-align:right">1.00</td><td style="text-align:right">0.481</td><td style="text-align:right">172</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">gemma-4-12B</td><td style="text-align:left">QAT UD-Q4</td><td style="text-align:right">0.6854</td><td style="text-align:right">0.6437</td><td style="text-align:right">0.7330</td><td style="text-align:right">0.92</td><td style="text-align:right">0.711</td><td style="text-align:right">94</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">gemma-4-26B-A4B</td><td style="text-align:left">QAT UD-Q4, unsloth</td><td style="text-align:right">0.6804</td><td style="text-align:right">0.6501</td><td style="text-align:right">0.7136</td><td style="text-align:right">0.96</td><td style="text-align:right">0.686</td><td style="text-align:right">104</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">gemma-4-31B</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.6763</td><td style="text-align:right">0.5882</td><td style="text-align:right">0.7955</td><td style="text-align:right">1.00</td><td style="text-align:right">0.506</td><td style="text-align:right">164</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">gemma-4-12B</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.6754</td><td style="text-align:right">0.6271</td><td style="text-align:right">0.7318</td><td style="text-align:right">0.90</td><td style="text-align:right">0.618</td><td style="text-align:right">127</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">gemma-4-26B-A4B</td><td style="text-align:left">QAT q4_0, google</td><td style="text-align:right">0.6575</td><td style="text-align:right">0.6398</td><td style="text-align:right">0.6761</td><td style="text-align:right">0.94</td><td style="text-align:right">0.686</td><td style="text-align:right">105</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">gemma-4-E2B</td><td style="text-align:left">QAT q4_0</td><td style="text-align:right">0.6406</td><td style="text-align:right">0.6294</td><td style="text-align:right">0.6523</td><td style="text-align:right">0.99</td><td style="text-align:right">0.675</td><td style="text-align:right">105</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">gemma-4-E4B</td><td style="text-align:left">UD-Q6</td><td style="text-align:right">0.6339</td><td style="text-align:right">0.5976</td><td style="text-align:right">0.6750</td><td style="text-align:right">1.00</td><td style="text-align:right">0.578</td><td style="text-align:right">139</td><td style="text-align:right">0.85</td></tr><tr><td style="text-align:left">gemma-4-E2B</td><td style="text-align:left">UD-Q8</td><td style="text-align:right">0.6226</td><td style="text-align:right">0.6094</td><td style="text-align:right">0.6364</td><td style="text-align:right">1.00</td><td style="text-align:right">0.683</td><td style="text-align:right">105</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">gemma-4-E4B</td><td style="text-align:left">QAT q4_0</td><td style="text-align:right">0.6194</td><td style="text-align:right">0.5878</td><td style="text-align:right">0.6545</td><td style="text-align:right">1.00</td><td style="text-align:right">0.599</td><td style="text-align:right">131</td><td style="text-align:right">0.85</td></tr><tr><td style="text-align:left">gemma-4-E4B</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.6189</td><td style="text-align:right">0.5765</td><td style="text-align:right">0.6682</td><td style="text-align:right">1.00</td><td style="text-align:right">0.556</td><td style="text-align:right">146</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">gemma-4-E2B</td><td style="text-align:left">UD-Q6</td><td style="text-align:right">0.6179</td><td style="text-align:right">0.6077</td><td style="text-align:right">0.6284</td><td style="text-align:right">1.00</td><td style="text-align:right">0.661</td><td style="text-align:right">112</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">gemma-4-E2B</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.6114</td><td style="text-align:right">0.5993</td><td style="text-align:right">0.6239</td><td style="text-align:right">1.00</td><td style="text-align:right">0.689</td><td style="text-align:right">101</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">gemma-4-E4B</td><td style="text-align:left">UD-Q8</td><td style="text-align:right">0.6094</td><td style="text-align:right">0.5744</td><td style="text-align:right">0.6489</td><td style="text-align:right">1.00</td><td style="text-align:right">0.578</td><td style="text-align:right">139</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">LFM2.5-2.6B</td><td style="text-align:left">Q4_K_M</td><td style="text-align:right">0.5854</td><td style="text-align:right">0.5664</td><td style="text-align:right">0.6057</td><td style="text-align:right">1.00</td><td style="text-align:right">0.668</td><td style="text-align:right">110</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">LFM2.5-2.6B</td><td style="text-align:left">Q6_K</td><td style="text-align:right">0.5795</td><td style="text-align:right">0.5526</td><td style="text-align:right">0.6091</td><td style="text-align:right">1.00</td><td style="text-align:right">0.612</td><td style="text-align:right">125</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">LFM2.5-2.6B</td><td style="text-align:left">Q8_0</td><td style="text-align:right">0.5750</td><td style="text-align:right">0.5454</td><td style="text-align:right">0.6080</td><td style="text-align:right">1.00</td><td style="text-align:right">0.593</td><td style="text-align:right">135</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">granite-4.1-3b</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.5432</td><td style="text-align:right">0.5501</td><td style="text-align:right">0.5364</td><td style="text-align:right">1.00</td><td style="text-align:right"><strong>0.792</strong></td><td style="text-align:right"><strong>69</strong></td><td style="text-align:right">0.00</td></tr><tr><td style="text-align:left">gemma-3n-E4B</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.5331</td><td style="text-align:right">0.4918</td><td style="text-align:right">0.5818</td><td style="text-align:right">1.00</td><td style="text-align:right">0.321</td><td style="text-align:right">220</td><td style="text-align:right">0.00</td></tr><tr><td style="text-align:left">LFM2.5-8B-A1B</td><td style="text-align:left">Q4_K_M</td><td style="text-align:right">0.5198</td><td style="text-align:right">0.5707</td><td style="text-align:right">0.4773</td><td style="text-align:right">0.98</td><td style="text-align:right">0.732</td><td style="text-align:right">88</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">Qwen3-1.7B</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.4618</td><td style="text-align:right">0.4503</td><td style="text-align:right">0.4739</td><td style="text-align:right">0.99</td><td style="text-align:right">0.515</td><td style="text-align:right">157</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">SmolLM3-3B</td><td style="text-align:left">Q8_0</td><td style="text-align:right">0.3933</td><td style="text-align:right">0.3767</td><td style="text-align:right">0.4114</td><td style="text-align:right">0.99</td><td style="text-align:right">0.297</td><td style="text-align:right">225</td><td style="text-align:right">0.00</td></tr><tr><td style="text-align:left">granite-4.0-1b</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.3911</td><td style="text-align:right">0.3836</td><td style="text-align:right">0.3989</td><td style="text-align:right">0.95</td><td style="text-align:right">0.289</td><td style="text-align:right">230</td><td style="text-align:right">0.00</td></tr><tr><td style="text-align:left">LFM2.5-VL-1.6B</td><td style="text-align:left">Q6_K</td><td style="text-align:right">0.2744</td><td style="text-align:right">0.2569</td><td style="text-align:right">0.2943</td><td style="text-align:right">1.00</td><td style="text-align:right">0.183</td><td style="text-align:right">275</td><td style="text-align:right">0.00</td></tr><tr><td style="text-align:left">LFM2.5-VL-1.6B</td><td style="text-align:left">Q8_0</td><td style="text-align:right">0.2725</td><td style="text-align:right">0.2537</td><td style="text-align:right">0.2943</td><td style="text-align:right">1.00</td><td style="text-align:right">0.171</td><td style="text-align:right">279</td><td style="text-align:right">0.00</td></tr><tr><td style="text-align:left">LFM2.5-1.2B</td><td style="text-align:left">Q6_K</td><td style="text-align:right">0.1771</td><td style="text-align:right">0.2320</td><td style="text-align:right">0.1432</td><td style="text-align:right"><strong>0.59</strong></td><td style="text-align:right">0.510</td><td style="text-align:right">87</td><td style="text-align:right">0.00</td></tr><tr><td style="text-align:left">LFM2.5-1.2B</td><td style="text-align:left">Q8_0</td><td style="text-align:right">0.1671</td><td style="text-align:right">0.2078</td><td style="text-align:right">0.1398</td><td style="text-align:right"><strong>0.73</strong></td><td style="text-align:right">0.635</td><td style="text-align:right">91</td><td style="text-align:right">0.00</td></tr><tr><td style="text-align:left">MiniCPM5-1B</td><td style="text-align:left">Q8_0</td><td style="text-align:right">0.1652</td><td style="text-align:right">0.2630</td><td style="text-align:right">0.1205</td><td style="text-align:right"><strong>0.87</strong></td><td style="text-align:right">0.763</td><td style="text-align:right">82</td><td style="text-align:right">1.00</td></tr><tr><td style="text-align:left">LFM2.5-230M</td><td style="text-align:left">Q6_K</td><td style="text-align:right">0.1363</td><td style="text-align:right">0.1330</td><td style="text-align:right">0.1398</td><td style="text-align:right">1.00</td><td style="text-align:right">0.158</td><td style="text-align:right">271</td><td style="text-align:right">0.00</td></tr><tr><td style="text-align:left">LFM2.5-230M</td><td style="text-align:left">Q8_0</td><td style="text-align:right">0.1309</td><td style="text-align:right">0.1289</td><td style="text-align:right">0.1330</td><td style="text-align:right">1.00</td><td style="text-align:right">0.180</td><td style="text-align:right">264</td><td style="text-align:right">0.00</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">Result shows what the paired same-model tests support. All runs restores the original head-to-head chart of every observed score. Numbers keeps the full metric table.</figcaption></figure>
 
-Muse Glimmer 30B's complete DFlash-off run scored **0.7100**: 0.6835
-precision, 0.7386 recall and 93 invented triples on factless notes. It used
-Meta's 17GB K-Quant target on the RX 7900 XTX. This is one saved observation,
-not a paired cross-model verdict.
+Muse Glimmer 30B scored **0.7100** with its speculative decoding path (DFlash)
+switched off: 0.6835 precision, 0.7386 recall, and 93 invented triples on the
+factless notes. It ran on the RX 7900 XTX against a 17GB K-Quant target. That is
+one saved observation with no paired cross-model interval behind it.
 
-Qwen3.8-27B at Q4_K_M scored **0.7030**: 0.6463 precision, 0.7705 recall and
-113 invented triples on factless notes. Against Qwen3.6-27B under the same
-Q4_K_M and MTP labels, Qwen3.6 was +0.0147 F1 ahead,
-with a paired 95% range from −0.0038 to +0.0335. That is a tie. The runs used
-the same RX 7900 XTX and corpus, but different `llama.cpp` builds, so the range
-does not isolate the model generation.
+Qwen3.8-27B at Q4_K_M scored **0.7030**: 0.6463 precision, 0.7705 recall, and 113
+invented triples on the factless notes. It ran on the RX 7900 XTX with multi-token
+prediction (MTP) accepting 59.9% of proposed tokens. One of the 1,001 responses
+reached the 8,192-token context limit and failed to parse.
 
-The published Qwen3.6-35B-A3B leader was +0.0228 ahead, with a paired range
-from +0.0042 to +0.0417. That comparison also changes the quant, backend and
-hardware. It establishes the two saved outputs under their recorded
-configurations, not a Qwen3.6-versus-Qwen3.8 family verdict.
+The matched comparison is a separate Qwen3.6-27B run at the same quant and the
+same MTP setting on the same card, which scored 0.7177 rather than the 0.7152
+UD-Q4 run on the leaderboard. Qwen3.6 came out **+0.0147** ahead, paired 95% range
+−0.0038 to +0.0335. That is a tie. The two used different `llama.cpp` builds, so
+the range does not isolate the model generation.
+
+The Qwen3.6-35B-A3B leader was **+0.0228** ahead, paired range +0.0042 to +0.0417.
+That comparison also changes the quant, the backend and the hardware. It
+separates two saved configurations, not two model generations.
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-qwen38" id="fig-qwen38-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-qwen38" id="fig-qwen38-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-qwen38-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-qwen38-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 150" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Qwen3.6 F1 differences against Qwen3.8 with paired 95% intervals"><line class="sg-chart__rule" x1="291.7" x2="291.7" y1="18" y2="118"/><text class="sg-chart__axis" x="291.7" y="14" text-anchor="middle">NO DIFFERENCE</text><line class="sg-chart__grid" x1="435.0" x2="435.0" y1="18" y2="118"/><text class="sg-chart__value" x="435.0" y="138" text-anchor="middle" opacity=".7">+0.02</text><line class="sg-chart__grid" x1="578.3" x2="578.3" y1="18" y2="118"/><text class="sg-chart__value" x="578.3" y="138" text-anchor="middle" opacity=".7">+0.04</text><text class="sg-chart__label" x="198" y="49" text-anchor="end">Qwen3.6-27B Q4_K_M</text><line class="sg-chart__line sg-chart__line--muted" x1="264.4" x2="531.7" y1="45" y2="45"/><line class="sg-chart__line sg-chart__line--muted" x1="264.4" x2="264.4" y1="40.5" y2="49.5"/><line class="sg-chart__line sg-chart__line--muted" x1="531.7" x2="531.7" y1="40.5" y2="49.5"/><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="397.0" cy="45" r="4.5"/><text class="sg-chart__value" x="660" y="49" opacity=".7">+0.0147</text><text class="sg-chart__label" x="198" y="99" text-anchor="end">Qwen3.6-35B-A3B UD-Q4</text><line class="sg-chart__line sg-chart__line--1" x1="321.8" x2="590.5" y1="95" y2="95"/><line class="sg-chart__line sg-chart__line--1" x1="321.8" x2="321.8" y1="90.5" y2="99.5"/><line class="sg-chart__line sg-chart__line--1" x1="590.5" x2="590.5" y1="90.5" y2="99.5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="455.1" cy="95" r="4.5"/><text class="sg-chart__value" x="660" y="99">+0.0228</text></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>range excludes zero</span><span><i style="background:var(--sg-chart-muted)"></i>range contains zero</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">Qwen3.6 run minus Qwen3.8</th><th style="text-align:right">F1 difference</th><th style="text-align:left">paired 95% range</th><th style="text-align:left">result</th></tr></thead><tbody><tr><td style="text-align:left">27B Q4_K_M, MTP</td><td style="text-align:right">+0.0147</td><td style="text-align:left">[−0.0038, +0.0335]</td><td style="text-align:left">tie</td></tr><tr><td style="text-align:left">35B-A3B UD-Q4</td><td style="text-align:right">+0.0228</td><td style="text-align:left">[+0.0042, +0.0417]</td><td style="text-align:left"><strong>separable configurations</strong></td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">Paired resampling over the same 1,001 notes. The 27B comparison is the closest saved configuration. The 35B comparison also changes quant, backend and hardware, so its separated interval does not isolate model generation.</figcaption></figure>
 
-The exact comparisons behind that plain-language result:
+The exact same-model comparisons behind the graph:
 
 | same model | observed difference | paired 95% range | result |
 |---|---:|---:|---|
@@ -106,136 +126,142 @@ The exact comparisons behind that plain-language result:
 | LFM2.5-2.6B, Q4 minus Q8 | +0.0104 | −0.0153 to +0.0363 | tie |
 | SmolLM3-3B, Q8 minus Q4 | +0.0351 | +0.0156 to +0.0543 | Q8 wins |
 
-The deltas use unrounded scores. The comparison-only Smol Q4 run scored 0.3581.
-It is not one of the 34 leaderboard rows; its score and prediction artifacts are
-mapped in the evidence note.
+The deltas use unrounded scores. The comparison-only Smol Q4 run scored 0.3581,
+is not one of the 34 leaderboard rows, and is mapped in the evidence note with
+its prediction artifacts.
 
-LFM2.5 shows why the score can look backwards. Q8 found two more true facts
-than Q4 and emitted 38 more false ones. Its recall rose and its precision fell.
-The lower F1 is a different operating point, not evidence that four-bit weights
+LFM2.5 shows why a score can look backwards. Q8 found two more true facts than Q4
+and emitted 38 more false ones, so its recall rose and its precision fell. The
+lower score is a different operating point, not evidence that four-bit weights
 preserved the model better.
 
-`abstain` is how often a model correctly returns nothing on those 322 factless
+`abstain` is how often a model correctly returns nothing on the 322 factless
 notes. `spurious` counts the triples it invents on them instead. `reasons` is the
 fraction of rows carrying a reasoning pass.
 
-## The top is a tie, and six of the steps below it are not real
+## The ranking: the top is a tie, and six steps below it are not separable
 
-The Numbers view is sorted by observed F1 so a score can be found. That sort is
-not a verdict. For each ordering claim below I resampled the 1,001 notes 20,000
-times and scored both models on the same draw. Where that range contains zero,
-I call the result a tie.
+The Numbers view is sorted by observed score so a row can be found. That sort is
+not a verdict. For each ordering claim below we resampled the 1,001 notes 20,000
+times and scored both runs on the same draw. Where the range contains zero, we
+call the result a tie.
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-1" id="fig-1-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-1" id="fig-1-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-1-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-1-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Paired differences with 95% intervals"><line class="sg-chart__grid" x1="288.4" x2="288.4" y1="26" y2="282.0"/><text class="sg-chart__value" x="288.4" y="300.0" text-anchor="middle" opacity=".7">−0.04</text><line class="sg-chart__rule" x1="512.2" x2="512.2" y1="26" y2="282.0"/><text class="sg-chart__value" x="512.2" y="300.0" text-anchor="middle" opacity=".7">0</text><text class="sg-chart__axis" x="512.2" y="18" text-anchor="middle">NO DIFFERENCE</text><text class="sg-chart__label" x="176" y="59.0" text-anchor="end">35B-A3B → 27B dense</text><line class="sg-chart__line sg-chart__line--muted" x1="347.7" x2="561.4" y1="55.0" y2="55.0"/><line class="sg-chart__line sg-chart__line--muted" x1="347.7" x2="347.7" y1="50.5" y2="59.5"/><line class="sg-chart__line sg-chart__line--muted" x1="561.4" x2="561.4" y1="50.5" y2="59.5"/><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="452.9" cy="55.0" r="4.5"/><text class="sg-chart__value" x="692" y="59.0" opacity=".7">−0.0106</text><text class="sg-chart__label" x="176" y="89.0" text-anchor="end">27B dense → 31B QAT</text><line class="sg-chart__line sg-chart__line--1" x1="257.1" x2="452.9" y1="85.0" y2="85.0"/><line class="sg-chart__line sg-chart__line--1" x1="257.1" x2="257.1" y1="80.5" y2="89.5"/><line class="sg-chart__line sg-chart__line--1" x1="452.9" x2="452.9" y1="80.5" y2="89.5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="355.6" cy="85.0" r="4.5"/><text class="sg-chart__value" x="692" y="89.0">−0.0280</text><text class="sg-chart__label" x="176" y="119.0" text-anchor="end">31B QAT → 12B QAT</text><line class="sg-chart__line sg-chart__line--muted" x1="399.2" x2="602.8" y1="115.0" y2="115.0"/><line class="sg-chart__line sg-chart__line--muted" x1="399.2" x2="399.2" y1="110.5" y2="119.5"/><line class="sg-chart__line sg-chart__line--muted" x1="602.8" x2="602.8" y1="110.5" y2="119.5"/><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="502.7" cy="115.0" r="4.5"/><text class="sg-chart__value" x="692" y="119.0" opacity=".7">−0.0017</text><text class="sg-chart__label" x="176" y="149.0" text-anchor="end">12B QAT → 26B unsloth</text><line class="sg-chart__line sg-chart__line--muted" x1="369.0" x2="598.3" y1="145.0" y2="145.0"/><line class="sg-chart__line sg-chart__line--muted" x1="369.0" x2="369.0" y1="140.5" y2="149.5"/><line class="sg-chart__line sg-chart__line--muted" x1="598.3" x2="598.3" y1="140.5" y2="149.5"/><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="483.7" cy="145.0" r="4.5"/><text class="sg-chart__value" x="692" y="149.0" opacity=".7">−0.0051</text><text class="sg-chart__label" x="176" y="179.0" text-anchor="end">26B unsloth → 31B non-QAT</text><line class="sg-chart__line sg-chart__line--muted" x1="367.9" x2="610.6" y1="175.0" y2="175.0"/><line class="sg-chart__line sg-chart__line--muted" x1="367.9" x2="367.9" y1="170.5" y2="179.5"/><line class="sg-chart__line sg-chart__line--muted" x1="610.6" x2="610.6" y1="170.5" y2="179.5"/><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="489.3" cy="175.0" r="4.5"/><text class="sg-chart__value" x="692" y="179.0" opacity=".7">−0.0041</text><text class="sg-chart__label" x="176" y="209.0" text-anchor="end">31B non-QAT → 12B non-QAT</text><line class="sg-chart__line sg-chart__line--muted" x1="402.0" x2="612.9" y1="205.0" y2="205.0"/><line class="sg-chart__line sg-chart__line--muted" x1="402.0" x2="402.0" y1="200.5" y2="209.5"/><line class="sg-chart__line sg-chart__line--muted" x1="612.9" x2="612.9" y1="200.5" y2="209.5"/><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="507.2" cy="205.0" r="4.5"/><text class="sg-chart__value" x="692" y="209.0" opacity=".7">−0.0009</text><text class="sg-chart__label" x="176" y="239.0" text-anchor="end">12B non-QAT → 26B google</text><line class="sg-chart__line sg-chart__line--muted" x1="269.4" x2="551.9" y1="235.0" y2="235.0"/><line class="sg-chart__line sg-chart__line--muted" x1="269.4" x2="269.4" y1="230.5" y2="239.5"/><line class="sg-chart__line sg-chart__line--muted" x1="551.9" x2="551.9" y1="230.5" y2="239.5"/><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="412.1" cy="235.0" r="4.5"/><text class="sg-chart__value" x="692" y="239.0" opacity=".7">−0.0179</text><text class="sg-chart__label" x="176" y="269.0" text-anchor="end">26B google → E2B QAT</text><line class="sg-chart__line sg-chart__line--muted" x1="285.1" x2="551.3" y1="265.0" y2="265.0"/><line class="sg-chart__line sg-chart__line--muted" x1="285.1" x2="285.1" y1="260.5" y2="269.5"/><line class="sg-chart__line sg-chart__line--muted" x1="551.3" x2="551.3" y1="260.5" y2="269.5"/><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="418.2" cy="265.0" r="4.5"/><text class="sg-chart__value" x="692" y="269.0" opacity=".7">−0.0168</text></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>range excludes zero</span><span><i style="background:var(--sg-chart-muted)"></i>range contains zero</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">step</th><th style="text-align:right">delta</th><th style="text-align:left">95% CI</th><th style="text-align:left"></th></tr></thead><tbody><tr><td style="text-align:left">35B-A3B → 27B dense</td><td style="text-align:right">−0.0106</td><td style="text-align:left">[−0.0294, +0.0088]</td><td style="text-align:left">tie</td></tr><tr><td style="text-align:left">27B dense → 31B QAT</td><td style="text-align:right">−0.0280</td><td style="text-align:left">[−0.0456, −0.0106]</td><td style="text-align:left"><strong>separable</strong></td></tr><tr><td style="text-align:left">31B QAT → 12B QAT</td><td style="text-align:right">−0.0017</td><td style="text-align:left">[−0.0202, +0.0162]</td><td style="text-align:left">tie</td></tr><tr><td style="text-align:left">12B QAT → 26B unsloth</td><td style="text-align:right">−0.0051</td><td style="text-align:left">[−0.0256, +0.0154]</td><td style="text-align:left">tie</td></tr><tr><td style="text-align:left">26B unsloth → 31B non-QAT</td><td style="text-align:right">−0.0041</td><td style="text-align:left">[−0.0258, +0.0176]</td><td style="text-align:left">tie</td></tr><tr><td style="text-align:left">31B non-QAT → 12B non-QAT</td><td style="text-align:right">−0.0009</td><td style="text-align:left">[−0.0197, +0.0180]</td><td style="text-align:left">tie</td></tr><tr><td style="text-align:left">12B non-QAT → 26B google</td><td style="text-align:right">−0.0179</td><td style="text-align:left">[−0.0434, +0.0071]</td><td style="text-align:left">tie</td></tr><tr><td style="text-align:left">26B google → E2B QAT</td><td style="text-align:right">−0.0168</td><td style="text-align:left">[−0.0406, +0.0070]</td><td style="text-align:left">tie</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">Difference in F1 between each neighbouring pair, with the range the true gap sits inside. A range crossing zero means the ranking could be either way round.</figcaption></figure>
 
 Six consecutive steps, 2B to 31B, and this data cannot order any neighbouring
-pair. The break is one rung higher than the ranking suggests: the two Qwen3.6
-models sit above it, and they cannot be ordered against each other either.
+pair. The break sits one rung higher than the ranking suggests. The two Qwen3.6
+runs are above it, and they cannot be ordered against each other either.
 
-Glimmer and Qwen3.8 fall between the dense Qwen3.6 and 31B by observed F1.
-Glimmer has no paired cross-model interval. Qwen3.8 ties the comparable
-Qwen3.6-27B Q4_K_M run, subject to the runtime-version limit above.
+Glimmer and Qwen3.8 fall between the dense Qwen3.6 and the 31B on observed score.
+Glimmer has no paired cross-model interval. Qwen3.8 ties the matched Qwen3.6-27B
+run, subject to the build difference above.
 
-That second fact cost me the claim I had written first. I had the 35B down as the
-only separably best model in the field, on a table where the 27B had no F1 yet.
-It has one now, and the two are a tie.
+That second fact cost me the claim I wrote first. I had the 35B down as the only
+separably best run in the field, on a table where the 27B had no score yet. It
+has one now, and the two are a tie.
 
-I nearly published the rest as "2B through 31B is one flat band". Then I tested
-the ends against each other.
+I nearly published the rest as one flat band from 2B to 31B. Then we tested the
+ends against each other.
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-2" id="fig-2-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-2" id="fig-2-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-2-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-2-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 140" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Paired differences with 95% intervals"><line class="sg-chart__grid" x1="321.8" x2="321.8" y1="26" y2="102.0"/><text class="sg-chart__value" x="321.8" y="120.0" text-anchor="middle" opacity=".7">+0.04</text><line class="sg-chart__grid" x1="497.6" x2="497.6" y1="26" y2="102.0"/><text class="sg-chart__value" x="497.6" y="120.0" text-anchor="middle" opacity=".7">+0.08</text><line class="sg-chart__grid" x1="673.4" x2="673.4" y1="26" y2="102.0"/><text class="sg-chart__value" x="673.4" y="120.0" text-anchor="middle" opacity=".7">+0.12</text><text class="sg-chart__label" x="176" y="59.0" text-anchor="end">E2B QAT → 31B QAT</text><line class="sg-chart__line sg-chart__line--1" x1="242.7" x2="459.0" y1="55.0" y2="55.0"/><line class="sg-chart__line sg-chart__line--1" x1="242.7" x2="242.7" y1="50.5" y2="59.5"/><line class="sg-chart__line sg-chart__line--1" x1="459.0" x2="459.0" y1="50.5" y2="59.5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="350.4" cy="55.0" r="4.5"/><text class="sg-chart__value" x="692" y="59.0">+0.0465</text><text class="sg-chart__label" x="176" y="89.0" text-anchor="end">E2B QAT → 35B-A3B</text><line class="sg-chart__line sg-chart__line--1" x1="413.7" x2="627.3" y1="85.0" y2="85.0"/><line class="sg-chart__line sg-chart__line--1" x1="413.7" x2="413.7" y1="80.5" y2="89.5"/><line class="sg-chart__line sg-chart__line--1" x1="627.3" x2="627.3" y1="80.5" y2="89.5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="520.0" cy="85.0" r="4.5"/><text class="sg-chart__value" x="692" y="89.0">+0.0851</text></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>range excludes zero</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">span</th><th style="text-align:right">delta</th><th style="text-align:left">95% CI</th><th style="text-align:left"></th></tr></thead><tbody><tr><td style="text-align:left">E2B QAT → 31B QAT</td><td style="text-align:right"><strong>+0.0465</strong></td><td style="text-align:left">[+0.0220, +0.0712]</td><td style="text-align:left">significant</td></tr><tr><td style="text-align:left">E2B QAT → 35B-A3B</td><td style="text-align:right"><strong>+0.0851</strong></td><td style="text-align:left">[+0.0609, +0.1095]</td><td style="text-align:left">significant</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">The same stretch measured end to end rather than rung by rung.</figcaption></figure>
 
 Every step is noise. The sum is not. Six intervals of about ±0.020 stacked end to
-end leave plenty of room to hide a real 0.047.
+end leave room to hide a real 0.0465.
 
-**Read the size ladder end to end.** Rung by rung, it says size does nothing.
-That is the most expensive mistake available in this kind of benchmark, and it is
-the default way people run them.
+**Read the size ladder end to end.** Rung by rung it says size does nothing, which
+is the most expensive mistake available in this kind of benchmark and the default
+way people run them.
 
-## What size actually bought
+## Size: +0.0465 across fifteen times the parameters, and one separable step above it
 
-Fifteen times the parameters: **+0.0465**. Changing architecture at the top:
-**+0.0280** more, from a model with roughly 3B active parameters.
+From gemma-4-E2B at QAT q4_0 to gemma-4-31B at QAT UD-Q4 is **+0.0465**, range
++0.0220 to +0.0712. Carrying on to Qwen3.6-35B-A3B is **+0.0851** from the same
+starting point, range +0.0609 to +0.1095. Exactly one neighbouring step in the
+ladder separates on its own: the dense Qwen3.6-27B over the 31B QAT build,
+**+0.0280**, range +0.0106 to +0.0456.
 
-Qwen3.6-35B-A3B is a mixture of experts (MoE): 35B sitting in memory, about 3B
-of it doing work on any given token.
-It beat a dense 31B by more than the dense 31B beat a 2B, reading roughly a tenth
-as much memory to do it.
+Qwen3.6-35B-A3B is a mixture of experts (MoE), with 35B of weights resident and
+about 3B of them doing work on any given token. It ties the dense 27B on accuracy
+at **−0.0106**, range −0.0294 to +0.0088, and reaches that score at 3.5 times the
+throughput.
 
-The sharper version of that is inside one family. The 35B and the dense 27B are
-the same lineage at the same quant on the same card class, and on accuracy they
-are a tie: −0.0106, CI [−0.0294, +0.0088]. The MoE reaches that score at 3.5 times
-the throughput.
-
-Sparsity did not buy points here. It bought the same points for a tenth of the
-memory read per token, which is the better deal and the harder one to see from a
+Sparsity bought no points here. It bought the same points for a fraction of the
+weights read per token, which is the better deal and the harder one to see from a
 leaderboard.
 
-Throughput follows the same line:
+*Withdrawn 2026-08-20. This section previously said the 35B beat a dense 31B by
+more than the dense 31B beat a 2B, and gave per-token weight traffic as 16.4 GiB
+against roughly 1.5 GiB. The first compares two runs with no paired interval
+between them, and on observed scores it is false against the QAT 31B. The second
+reused the 35B's measured memory footprint as a dense 27B figure. Neither was
+load-bearing for the finding.*
+
+Throughput follows the same line.
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-3" id="fig-3-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-3" id="fig-3-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-3-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-3-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 332" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Magnitude per run"><line class="sg-chart__grid" x1="336.6" x2="336.6" y1="16" y2="300"/><text class="sg-chart__value" x="336.6" y="316" text-anchor="middle" opacity=".7">102</text><line class="sg-chart__grid" x1="463.2" x2="463.2" y1="16" y2="300"/><text class="sg-chart__value" x="463.2" y="316" text-anchor="middle" opacity=".7">204</text><line class="sg-chart__grid" x1="589.8" x2="589.8" y1="16" y2="300"/><text class="sg-chart__value" x="589.8" y="316" text-anchor="middle" opacity=".7">306</text><text class="sg-chart__label" x="198" y="45.0" text-anchor="end">gemma-4-26B-A4B QAT</text><rect class="sg-chart__mark sg-chart__mark--1" x="210.0" y="36.5" width="401.0" height="9" rx="4"/><text class="sg-chart__value" x="620.0" y="45.0">323.1</text><text class="sg-chart__value" x="686" y="45.0" opacity=".7">RTX 5080</text><text class="sg-chart__label" x="198" y="79.0" text-anchor="end">Qwen3.6-35B-A3B</text><rect class="sg-chart__mark sg-chart__mark--muted" x="210.0" y="70.5" width="290.4" height="9" rx="4"/><text class="sg-chart__value" x="509.4" y="79.0">234.0</text><text class="sg-chart__value" x="686" y="79.0" opacity=".7">RTX 5090</text><text class="sg-chart__label" x="198" y="113.0" text-anchor="end">gemma-4-12B non-QAT</text><rect class="sg-chart__mark sg-chart__mark--muted" x="210.0" y="104.5" width="243.0" height="9" rx="4"/><text class="sg-chart__value" x="462.0" y="113.0">195.8</text><text class="sg-chart__value" x="686" y="113.0" opacity=".7">RTX 5080</text><text class="sg-chart__label" x="198" y="147.0" text-anchor="end">gemma-4-12B QAT</text><rect class="sg-chart__mark sg-chart__mark--muted" x="210.0" y="138.5" width="176.7" height="9" rx="4"/><text class="sg-chart__value" x="395.7" y="147.0">142.4</text><text class="sg-chart__value" x="686" y="147.0" opacity=".7">RTX 3090</text><text class="sg-chart__label" x="198" y="181.0" text-anchor="end">gemma-4-31B non-QAT</text><rect class="sg-chart__mark sg-chart__mark--muted" x="210.0" y="172.5" width="99.9" height="9" rx="4"/><text class="sg-chart__value" x="318.9" y="181.0">80.5</text><text class="sg-chart__value" x="686" y="181.0" opacity=".7">RTX 5090</text><text class="sg-chart__label" x="198" y="215.0" text-anchor="end">Qwen3.8-27B Q4_K_M, MTP</text><rect class="sg-chart__mark sg-chart__mark--muted" x="210.0" y="206.5" width="89.5" height="9" rx="4"/><text class="sg-chart__value" x="308.5" y="215.0">72.1</text><text class="sg-chart__value" x="686" y="215.0" opacity=".7">RX 7900 XTX</text><text class="sg-chart__label" x="198" y="249.0" text-anchor="end">Qwen3.6-27B dense</text><rect class="sg-chart__mark sg-chart__mark--muted" x="210.0" y="240.5" width="84.1" height="9" rx="4"/><text class="sg-chart__value" x="303.1" y="249.0">67.8</text><text class="sg-chart__value" x="686" y="249.0" opacity=".7">RTX 5090</text><text class="sg-chart__label" x="198" y="283.0" text-anchor="end">gemma-4-31B QAT</text><rect class="sg-chart__mark sg-chart__mark--muted" x="210.0" y="274.5" width="83.5" height="9" rx="4"/><text class="sg-chart__value" x="302.5" y="283.0">67.3</text><text class="sg-chart__value" x="686" y="283.0" opacity=".7">RX 7900 XTX</text><text class="sg-chart__axis" x="421.0" y="326" text-anchor="middle">TOKENS PER SECOND</text></svg></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">model</th><th style="text-align:right">tok/s</th><th style="text-align:left">GPU</th></tr></thead><tbody><tr><td style="text-align:left">gemma-4-26B-A4B QAT</td><td style="text-align:right"><strong>323.1</strong></td><td style="text-align:left">RTX 5080</td></tr><tr><td style="text-align:left">Qwen3.6-35B-A3B</td><td style="text-align:right">234.0</td><td style="text-align:left">RTX 5090</td></tr><tr><td style="text-align:left">gemma-4-12B non-QAT</td><td style="text-align:right">195.8</td><td style="text-align:left">RTX 5080</td></tr><tr><td style="text-align:left">gemma-4-12B QAT</td><td style="text-align:right">142.4</td><td style="text-align:left">RTX 3090</td></tr><tr><td style="text-align:left">gemma-4-31B non-QAT</td><td style="text-align:right">80.5</td><td style="text-align:left">RTX 5090</td></tr><tr><td style="text-align:left">Qwen3.8-27B Q4_K_M, MTP</td><td style="text-align:right">72.1</td><td style="text-align:left">RX 7900 XTX</td></tr><tr><td style="text-align:left">Qwen3.6-27B dense</td><td style="text-align:right">67.8</td><td style="text-align:left">RTX 5090</td></tr><tr><td style="text-align:left">gemma-4-31B QAT</td><td style="text-align:right">67.3</td><td style="text-align:left">RX 7900 XTX</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">Sustained throughput per run, on the card each one used.</figcaption></figure>
 
-The 35B is **3.5 times faster than the 27B from its own family**, and the two write
-almost the same amount: median 1,100 completion tokens against 1,256. So the gap is
-per-token cost. A dense 27B at Q4 reads about 16.4 GiB of weights per token against
-roughly 1.5 GiB for a 3B-active MoE.
+The 35B runs at **234.0 tok/s against 67.8** for the dense 27B from its own
+family, both on rented RTX 5090s, and the two write almost the same amount:
+median 1,100 completion tokens against 1,256. The gap is per-token cost, not
+answer length.
 
-Qwen3.8 decoded at a median **72.1 tokens per second** on the RX 7900 XTX, with
-MTP accepting 59.9% of proposed tokens. Its median completion was 293 tokens and
-median latency was 4.51 seconds. Those figures describe this run; the shorter
-answers make an end-to-end speed comparison with Qwen3.6 misleading.
+Qwen3.8 decoded at a median **72.1 tokens per second** on the RX 7900 XTX, with a
+median completion of 293 tokens and a median latency of 4.51 seconds. Those
+figures describe this run on this card. The shorter answers make an end-to-end
+speed comparison against Qwen3.6 misleading.
 
-The 35B also ran with no speculative decoding and still beat a dense 12B running
-a draft head at 82% acceptance. I had both Qwen runs labelled "native multi-token
-prediction (MTP)" in my own notes for several hours. `/props` says
-`speculative: null` and no row in either file carries a `draft_n` counter. I
-assumed a fast model must be speculating, and the assumption outlived three status
-reports.
+The 35B ran with no speculative decoding at all and still beat a dense 12B running
+a draft head at 82% acceptance. I had both Qwen3.6 runs labelled as using MTP in
+my own notes for several hours. `/props` says `speculative: null`, and no row in
+either prediction file carries a draft counter. I assumed a fast model must be
+speculating, and the assumption outlived three status reports.
 
-## F1 hides the thing you actually care about
+## Restraint: two runs tie on score and land 78 invented triples apart
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-4" id="fig-4-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-4" id="fig-4-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-4-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-4-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 292" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Two runs across several metrics, each on its own scale"><text class="sg-chart__axis" x="0" y="32">F1</text><text class="sg-chart__label" x="168" y="52.0" text-anchor="end" font-size="11">gemma-4-31B QAT</text><rect class="sg-chart__mark sg-chart__mark--1" x="178" y="43.5" width="329.9" height="9" rx="4"/><text class="sg-chart__value" x="516.9" y="52.0">0.6872</text><text class="sg-chart__label" x="168" y="69.0" text-anchor="end" font-size="11">gemma-4-12B QAT</text><rect class="sg-chart__mark sg-chart__mark--2" x="178" y="60.5" width="329.0" height="9" rx="4"/><text class="sg-chart__value" x="516.0" y="69.0">0.6854</text><text class="sg-chart__axis" x="0" y="94">RECALL</text><text class="sg-chart__label" x="168" y="114.0" text-anchor="end" font-size="11">gemma-4-31B QAT</text><rect class="sg-chart__mark sg-chart__mark--1" x="178" y="105.5" width="384.0" height="9" rx="4"/><text class="sg-chart__value" x="571.0" y="114.0">0.8000</text><text class="sg-chart__label" x="168" y="131.0" text-anchor="end" font-size="11">gemma-4-12B QAT</text><rect class="sg-chart__mark sg-chart__mark--2" x="178" y="122.5" width="351.8" height="9" rx="4"/><text class="sg-chart__value" x="538.8" y="131.0">0.7330</text><text class="sg-chart__axis" x="0" y="156">ABSTAINS ON FACTLESS</text><text class="sg-chart__label" x="168" y="176.0" text-anchor="end" font-size="11">gemma-4-31B QAT</text><rect class="sg-chart__mark sg-chart__mark--1" x="178" y="167.5" width="207.8" height="9" rx="4"/><text class="sg-chart__value" x="394.8" y="176.0">0.481</text><text class="sg-chart__label" x="168" y="193.0" text-anchor="end" font-size="11">gemma-4-12B QAT</text><rect class="sg-chart__mark sg-chart__mark--2" x="178" y="184.5" width="307.2" height="9" rx="4"/><text class="sg-chart__value" x="494.2" y="193.0">0.711</text><text class="sg-chart__axis" x="0" y="218">INVENTED TRIPLES</text><text class="sg-chart__label" x="168" y="238.0" text-anchor="end" font-size="11">gemma-4-31B QAT</text><rect class="sg-chart__mark sg-chart__mark--1" x="178" y="229.5" width="371.5" height="9" rx="4"/><text class="sg-chart__value" x="558.5" y="238.0">172</text><text class="sg-chart__label" x="168" y="255.0" text-anchor="end" font-size="11">gemma-4-12B QAT</text><rect class="sg-chart__mark sg-chart__mark--2" x="178" y="246.5" width="203.0" height="9" rx="4"/><text class="sg-chart__value" x="390.0" y="255.0">94</text></svg></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">model</th><th style="text-align:right">F1</th><th style="text-align:right">recall</th><th style="text-align:right">abstain</th><th style="text-align:right">spurious</th></tr></thead><tbody><tr><td style="text-align:left">gemma-4-31B QAT</td><td style="text-align:right">0.6872</td><td style="text-align:right"><strong>0.8000</strong></td><td style="text-align:right"><strong>0.481</strong></td><td style="text-align:right"><strong>172</strong></td></tr><tr><td style="text-align:left">gemma-4-12B QAT</td><td style="text-align:right">0.6854</td><td style="text-align:right">0.7330</td><td style="text-align:right">0.711</td><td style="text-align:right">94</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">Two runs that F1 cannot separate, across the columns that do separate them. Each metric is drawn on its own scale, because the units differ.</figcaption></figure>
 
-Indistinguishable on F1. Not the same model.
+Indistinguishable on score. Not the same model.
 
-The 31B finds 0.80 of the facts, best in the field. It also invents 172 triples on
-the 322 notes that assert nothing, nearly twice the 12B's 94, and stays correctly
-silent on 48% of them.
+The 31B QAT build finds 0.8000 of the facts, best in the field. It also invents
+172 triples on the 322 notes that assert nothing, against the 12B QAT build's 94,
+and stays correctly silent on 48% of them.
 
-The non-QAT 31B lands on the same trade-off: 164 invented triples and 51% correct
+The non-QAT 31B lands on the same trade: 164 invented triples, 51% correct
 abstention. Scaling to 31B bought recall and spent restraint. The aggregate hid
-the whole trade.
+the whole trade, and the aggregate is the number a leaderboard prints.
 
-At the other end, **granite-4.1-3b abstains on 79% of factless notes and invents
-69 triples.** Twenty-first on F1, but still the fewest inventions in this field.
+At the other end, **granite-4.1-3b abstains on 79% of the factless notes and
+invents 69 triples.** Twenty-second on score, and still the fewest inventions in
+this field.
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-scatter" id="fig-scatter-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-scatter" id="fig-scatter-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-scatter-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-scatter-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 440" preserveAspectRatio="xMidYMid meet" role="img" aria-label="strict f1 against invented triples"><line class="sg-chart__grid" x1="58" x2="730" y1="388.0" y2="388.0"/><text class="sg-chart__value" x="48" y="392.0" text-anchor="end" opacity=".7">0</text><line class="sg-chart__grid" x1="58" x2="730" y1="329.0" y2="329.0"/><text class="sg-chart__value" x="48" y="333.0" text-anchor="end" opacity=".7">50</text><line class="sg-chart__grid" x1="58" x2="730" y1="270.0" y2="270.0"/><text class="sg-chart__value" x="48" y="274.0" text-anchor="end" opacity=".7">100</text><line class="sg-chart__grid" x1="58" x2="730" y1="211.0" y2="211.0"/><text class="sg-chart__value" x="48" y="215.0" text-anchor="end" opacity=".7">150</text><line class="sg-chart__grid" x1="58" x2="730" y1="152.0" y2="152.0"/><text class="sg-chart__value" x="48" y="156.0" text-anchor="end" opacity=".7">200</text><line class="sg-chart__grid" x1="58" x2="730" y1="93.0" y2="93.0"/><text class="sg-chart__value" x="48" y="97.0" text-anchor="end" opacity=".7">250</text><line class="sg-chart__grid" x1="58" x2="730" y1="34.0" y2="34.0"/><text class="sg-chart__value" x="48" y="38.0" text-anchor="end" opacity=".7">300</text><text class="sg-chart__value" x="143.1" y="408" text-anchor="middle" opacity=".7">0.1</text><text class="sg-chart__value" x="228.1" y="408" text-anchor="middle" opacity=".7">0.2</text><text class="sg-chart__value" x="313.2" y="408" text-anchor="middle" opacity=".7">0.3</text><text class="sg-chart__value" x="398.3" y="408" text-anchor="middle" opacity=".7">0.4</text><text class="sg-chart__value" x="483.3" y="408" text-anchor="middle" opacity=".7">0.5</text><text class="sg-chart__value" x="568.4" y="408" text-anchor="middle" opacity=".7">0.6</text><text class="sg-chart__value" x="653.4" y="408" text-anchor="middle" opacity=".7">0.7</text><text class="sg-chart__axis" x="394.0" y="428" text-anchor="middle">STRICT F1</text><text class="sg-chart__axis" x="12" y="18">INVENTED TRIPLES</text><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="675.3" cy="268.8" r="6"><title>Qwen3.6-35B-A3B UD-Q4, MoE</title></circle><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="666.4" cy="213.4" r="6"><title>Qwen3.6-27B dense UD-Q4</title></circle><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="661.9" cy="278.3" r="6"><title>Muse Glimmer 30B K-Quant-17GB, DFlash off</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="642.6" cy="185.0" r="5"><title>gemma-4-31B QAT UD-Q4</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="641.0" cy="277.1" r="5"><title>gemma-4-12B QAT UD-Q4</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="636.8" cy="265.3" r="5"><title>gemma-4-26B-A4B QAT UD-Q4, unsloth</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="633.3" cy="194.5" r="5"><title>gemma-4-31B UD-Q4</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="632.5" cy="238.1" r="5"><title>gemma-4-12B UD-Q4</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="617.3" cy="264.1" r="5"><title>gemma-4-26B-A4B QAT q4_0, google</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="602.9" cy="264.1" r="5"><title>gemma-4-E2B QAT q4_0</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="597.2" cy="224.0" r="5"><title>gemma-4-E4B UD-Q6</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="587.6" cy="264.1" r="5"><title>gemma-4-E2B UD-Q8</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="584.9" cy="233.4" r="5"><title>gemma-4-E4B QAT q4_0</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="584.5" cy="215.7" r="5"><title>gemma-4-E4B UD-Q4</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="583.6" cy="255.8" r="5"><title>gemma-4-E2B UD-Q6</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="578.1" cy="268.8" r="5"><title>gemma-4-E2B UD-Q4</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="576.4" cy="224.0" r="5"><title>gemma-4-E4B UD-Q8</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="556.0" cy="258.2" r="5"><title>LFM2.5-2.6B Q4_K_M</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="550.9" cy="240.5" r="5"><title>LFM2.5-2.6B Q6_K</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="547.1" cy="228.7" r="5"><title>LFM2.5-2.6B Q8_0</title></circle><circle class="sg-chart__mark sg-chart__mark--2 sg-chart__ring" cx="520.1" cy="306.6" r="6"><title>granite-4.1-3b UD-Q4</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="511.5" cy="128.4" r="5"><title>gemma-3n-E4B UD-Q4</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="500.2" cy="284.2" r="5"><title>LFM2.5-8B-A1B Q4_K_M</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="450.8" cy="202.7" r="5"><title>Qwen3-1.7B UD-Q4</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="392.6" cy="122.5" r="5"><title>SmolLM3-3B Q8_0</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="390.7" cy="116.6" r="5"><title>granite-4.0-1b UD-Q4</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="291.4" cy="63.5" r="5"><title>LFM2.5-VL-1.6B Q6_K</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="289.8" cy="58.8" r="5"><title>LFM2.5-VL-1.6B Q8_0</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="208.6" cy="285.3" r="5"><title>LFM2.5-1.2B Q6_K</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="200.1" cy="280.6" r="5"><title>LFM2.5-1.2B Q8_0</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="198.5" cy="291.2" r="5"><title>MiniCPM5-1B Q8_0</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="173.9" cy="68.2" r="5"><title>LFM2.5-230M Q6_K</title></circle><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="169.3" cy="76.5" r="5"><title>LFM2.5-230M Q8_0</title></circle><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="656.0" cy="254.7" r="6"><title>Qwen3.8-27B Q4_K_M, MTP</title></circle><text class="sg-chart__label" x="686.3" y="259.8" text-anchor="start">Qwen3.6-35B-A3B</text><text class="sg-chart__label" x="677.4" y="218.4" text-anchor="start">Qwen3.6-27B dense</text><text class="sg-chart__label" x="653.6" y="190.0" text-anchor="start">gemma-4-31B</text><text class="sg-chart__label" x="509.1" y="310.6" text-anchor="end">granite-4.1-3b</text></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>top of the field</span><span><i style="background:var(--sg-chart-2)"></i>lowest invention</span><span><i style="background:var(--sg-chart-muted)"></i>other runs</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">model</th><th style="text-align:left">quant</th><th style="text-align:right">F1</th><th style="text-align:right">invented triples</th></tr></thead><tbody><tr><td style="text-align:left">Qwen3.6-35B-A3B</td><td style="text-align:left">UD-Q4, MoE</td><td style="text-align:right">0.7257</td><td style="text-align:right">101</td></tr><tr><td style="text-align:left">Qwen3.6-27B dense</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.7152</td><td style="text-align:right">148</td></tr><tr><td style="text-align:left">Muse Glimmer 30B</td><td style="text-align:left">K-Quant-17GB, DFlash off</td><td style="text-align:right">0.7100</td><td style="text-align:right">93</td></tr><tr><td style="text-align:left">Qwen3.8-27B</td><td style="text-align:left">Q4_K_M, MTP</td><td style="text-align:right">0.7030</td><td style="text-align:right">113</td></tr><tr><td style="text-align:left">gemma-4-31B</td><td style="text-align:left">QAT UD-Q4</td><td style="text-align:right">0.6872</td><td style="text-align:right">172</td></tr><tr><td style="text-align:left">gemma-4-12B</td><td style="text-align:left">QAT UD-Q4</td><td style="text-align:right">0.6854</td><td style="text-align:right">94</td></tr><tr><td style="text-align:left">gemma-4-26B-A4B</td><td style="text-align:left">QAT UD-Q4, unsloth</td><td style="text-align:right">0.6804</td><td style="text-align:right">104</td></tr><tr><td style="text-align:left">gemma-4-31B</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.6763</td><td style="text-align:right">164</td></tr><tr><td style="text-align:left">gemma-4-12B</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.6754</td><td style="text-align:right">127</td></tr><tr><td style="text-align:left">gemma-4-26B-A4B</td><td style="text-align:left">QAT q4_0, google</td><td style="text-align:right">0.6575</td><td style="text-align:right">105</td></tr><tr><td style="text-align:left">gemma-4-E2B</td><td style="text-align:left">QAT q4_0</td><td style="text-align:right">0.6406</td><td style="text-align:right">105</td></tr><tr><td style="text-align:left">gemma-4-E4B</td><td style="text-align:left">UD-Q6</td><td style="text-align:right">0.6339</td><td style="text-align:right">139</td></tr><tr><td style="text-align:left">gemma-4-E2B</td><td style="text-align:left">UD-Q8</td><td style="text-align:right">0.6226</td><td style="text-align:right">105</td></tr><tr><td style="text-align:left">gemma-4-E4B</td><td style="text-align:left">QAT q4_0</td><td style="text-align:right">0.6194</td><td style="text-align:right">131</td></tr><tr><td style="text-align:left">gemma-4-E4B</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.6189</td><td style="text-align:right">146</td></tr><tr><td style="text-align:left">gemma-4-E2B</td><td style="text-align:left">UD-Q6</td><td style="text-align:right">0.6179</td><td style="text-align:right">112</td></tr><tr><td style="text-align:left">gemma-4-E2B</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.6114</td><td style="text-align:right">101</td></tr><tr><td style="text-align:left">gemma-4-E4B</td><td style="text-align:left">UD-Q8</td><td style="text-align:right">0.6094</td><td style="text-align:right">139</td></tr><tr><td style="text-align:left">LFM2.5-2.6B</td><td style="text-align:left">Q4_K_M</td><td style="text-align:right">0.5854</td><td style="text-align:right">110</td></tr><tr><td style="text-align:left">LFM2.5-2.6B</td><td style="text-align:left">Q6_K</td><td style="text-align:right">0.5795</td><td style="text-align:right">125</td></tr><tr><td style="text-align:left">LFM2.5-2.6B</td><td style="text-align:left">Q8_0</td><td style="text-align:right">0.5750</td><td style="text-align:right">135</td></tr><tr><td style="text-align:left">granite-4.1-3b</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.5432</td><td style="text-align:right">69</td></tr><tr><td style="text-align:left">gemma-3n-E4B</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.5331</td><td style="text-align:right">220</td></tr><tr><td style="text-align:left">LFM2.5-8B-A1B</td><td style="text-align:left">Q4_K_M</td><td style="text-align:right">0.5198</td><td style="text-align:right">88</td></tr><tr><td style="text-align:left">Qwen3-1.7B</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.4618</td><td style="text-align:right">157</td></tr><tr><td style="text-align:left">SmolLM3-3B</td><td style="text-align:left">Q8_0</td><td style="text-align:right">0.3933</td><td style="text-align:right">225</td></tr><tr><td style="text-align:left">granite-4.0-1b</td><td style="text-align:left">UD-Q4</td><td style="text-align:right">0.3911</td><td style="text-align:right">230</td></tr><tr><td style="text-align:left">LFM2.5-VL-1.6B</td><td style="text-align:left">Q6_K</td><td style="text-align:right">0.2744</td><td style="text-align:right">275</td></tr><tr><td style="text-align:left">LFM2.5-VL-1.6B</td><td style="text-align:left">Q8_0</td><td style="text-align:right">0.2725</td><td style="text-align:right">279</td></tr><tr><td style="text-align:left">LFM2.5-1.2B</td><td style="text-align:left">Q6_K</td><td style="text-align:right">0.1771</td><td style="text-align:right">87</td></tr><tr><td style="text-align:left">LFM2.5-1.2B</td><td style="text-align:left">Q8_0</td><td style="text-align:right">0.1671</td><td style="text-align:right">91</td></tr><tr><td style="text-align:left">MiniCPM5-1B</td><td style="text-align:left">Q8_0</td><td style="text-align:right">0.1652</td><td style="text-align:right">82</td></tr><tr><td style="text-align:left">LFM2.5-230M</td><td style="text-align:left">Q6_K</td><td style="text-align:right">0.1363</td><td style="text-align:right">271</td></tr><tr><td style="text-align:left">LFM2.5-230M</td><td style="text-align:left">Q8_0</td><td style="text-align:right">0.1309</td><td style="text-align:right">264</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">Every run by its F1 and by how many triples it invents on the 322 notes whose correct answer is an empty list. Two runs can score the same and write sharply different amounts of false data downstream.</figcaption></figure>
 
 So the decision is about what your pipeline does with a wrong fact. Caught by a
-write gate and costs a review: buy recall, take the 31B. Lands in a graph where
-nothing will ever find it again: buy restraint, and granite-4.1-3b invents fewer
-triples than all twenty runs scoring above it.
+write gate and costing a review: buy recall, take the 31B. Landing in a graph
+where nothing will ever find it again: buy restraint, and granite-4.1-3b invents
+fewer triples than all twenty-one runs scoring above it.
 
-## Read the parse column first
+## Parse rate: read it first, because 0.90 is malformed JSON and 1.00 can still be wrong
 
-**Both gemma-4-12B runs parse at 0.90 and 0.92, with zero rows at the context
-limit.** That is malformed JSON, not truncation. The 12B QAT's 0.6854 counts 83
-unreadable rows as failures. Its real capability is above the number I printed, the
-31B and Qwen rows at 1.00 carry no such handicap, and the gap between them is
-overstated by an amount I cannot currently quantify.
+**Both gemma-4-12B runs parse at 0.92 and 0.90, with zero rows at the context
+limit.** That is malformed JSON, not truncation. The QAT build's 0.6854 counts 83
+unreadable rows as failures and the non-QAT build's 0.6754 counts 98. Their real
+capability is above the numbers I printed, the 31B and Qwen rows at 1.00 carry no
+such handicap, and the gap between them is overstated by an amount I cannot
+currently quantify.
 
 **MiniCPM5-1B parses 0.87.** Its 0.763 abstention and 82 spurious triples describe
 only the output that made it through parsing. The unreadable rows still count as
-F1 failures, so its 0.1652 remains a floor on capability, not evidence of unusual
+failures, so its 0.1652 is a floor on capability rather than evidence of unusual
 restraint.
 
-**LFM2.5-1.2B parses 0.73.**
+**LFM2.5-1.2B parses 0.73 at Q8_0 and 0.59 at Q6_K.**
 
 And the reverse trap. **LFM2.5-230M parses 1.00 and scores 0.1309.** Nothing is
-wrong with its format. It is answering fluently and incorrectly. A clean parse rate
-is not evidence of a working model.
+wrong with its format. It is answering fluently and incorrectly. A clean parse
+rate is not evidence of a working model.
 
-## A third of the field never reasons
+## Reasoning: ten of thirty-four runs never reason, and I can explain one case
 
 | reasons on ~0% of rows | reasons on ~100% |
 |---|---|
@@ -245,108 +271,114 @@ On gemma-4-E4B I know why. One sentence in my prompt, `No prose, no markdown.`,
 suppressed reasoning across 10,000 notes while every row still recorded
 `thinking: true`. Removing it restored reasoning on 770 of 770 notes.
 
-I have tried that diagnostic on four models. Twenty-nine runs are unchecked. A
-model that silently loses its reasoning pass scores as a worse model, so some
-fraction of the bottom half of this table is a prompt problem wearing the costume
-of a capability problem, and I cannot tell you which rows.
+I have run that diagnostic against four models, and twenty-nine runs are
+unchecked. A run that silently loses its reasoning pass scores as a worse model,
+so some fraction of the bottom half of this table is a prompt problem wearing the
+costume of a capability problem, and I cannot tell you which rows.
 
-Two runs reason partially, both gemma-4-E4B, both on 85% of rows: the QAT q4_0
-build and UD-Q6. I had written that up as a QAT effect when it was the only build
-showing it. UD-Q6 is not a QAT build, so whatever this is, it is not that.
+Two runs reason on 85% of rows, both gemma-4-E4B: the QAT q4_0 build and UD-Q6. I
+wrote that up as a QAT effect when it was the only build showing it. UD-Q6 is not
+a QAT build, so whatever this is, it is not that. The same model at UD-Q4 and
+UD-Q8 reasons on every row, which rules out a plain size-of-quant story too.
 
-The same model at UD-Q4 and UD-Q8 reasons on every row, which rules out a plain
-size-of-quant story too. I do not know what it is.
+I do not know what it is.
 
-## What this is not
+## Limits: one corpus, five cards, and four rows that are not native runs
 
-### Not a level measurement
+### Not a level measurement: one generator wrote every note
 
-One set of experiment data, one generation pipeline, one generator
-model. A model trained on data resembling my generator has an advantage I cannot
-detect from inside. That is the limit I cannot close without a second set of data
-from a different lineage.
+One set of experiment data, one generation pipeline, one generator model. A model
+trained on data resembling my generator has an advantage I cannot detect from
+inside. That is the limit I cannot close without a second set of data from a
+different lineage.
 
-### Not one GPU
+### Not one GPU, and the Vulkan half is unbounded
 
-Large models ran wherever they fit: local RTX 5080, local RX 7900
-XTX, rented RTX 3090s and 5090s. I calibrated it.
+A rented RTX 3090 against the local RTX 5080, identical configuration, came back
+**+0.0057, range −0.0136 to +0.0251**, with 640 of 1,001 outputs byte identical.
+So rented runs match the local field to within about **±0.019 at n=1001**, wider
+than several deltas here. None of the neighbouring-pair verdicts change if you
+widen them by that much, because they were already ties.
 
-A rented 3090 against the local
-5080, identical configuration, came back **+0.0057 F1, CI [−0.0136, +0.0251]**,
-byte identity 640/1001. So rented runs match the local field to within about
-**±0.019 at n=1001**, wider than several deltas here. None of the adjacent-pair
-verdicts change if you widen them by that much, because they were already
-ties.
-
-That bound is CUDA to CUDA. The XTX runs Vulkan on different `llama.cpp` builds,
-and I have never measured it against the 5080. It touches the 31B QAT, Muse
-Glimmer and Qwen3.8 rows. None carries a cross-hardware ordering claim.
+That bound is CUDA to CUDA. The RX 7900 XTX runs Vulkan on different `llama.cpp`
+builds, and we have never measured it against the 5080. It touches the 31B QAT,
+Muse Glimmer and Qwen3.8 rows, and none of those carries a cross-hardware
+ordering claim.
 
 ### Four rows are not native runs
 
-gemma-3n-E4B, Qwen3-1.7B, granite-4.1-3b and
-granite-4.0-1b were extracted from 10,000-note runs. The same notes score −0.0079
-differently depending on which set they ran inside, with 47% of output text
-differing. I had this down as three rows until I traced every figure in this piece
-to its artifact and found the fourth.
+gemma-3n-E4B, Qwen3-1.7B, granite-4.1-3b and granite-4.0-1b were extracted from
+10,000-note runs. The same notes score 0.0079 lower depending on which set they
+ran inside, with 47% of output text differing. I had this down as three rows until
+we traced every figure in this piece to its artifact and found the fourth.
 
-### One row is a different configuration
+### One row ran at a different process count
 
-LFM2.5-8B-A1B could not run at three
-processes: Q4_K_M is 5.16 GB and three copies exceed a 16 GiB card. Process count
-alone is worth about 0.0105 F1 here.
+LFM2.5-8B-A1B could not run at three processes, because Q4_K_M is 5.16 GB and
+three copies exceed a 16 GiB card. Process count alone is worth about 0.0105
+here.
 
 ### One throughput figure was corrected
 
-The 27B dense run was two thirds through
-when this table was first written, and I read its speed as 64.7 tok/s off three
-samples. The finished run says 67.8 across 1,001 notes, with every hundred-note
-slice between 67.7 and 68.0. The earlier figure was 4.6% low and every ratio here
-uses the new one.
+The dense 27B run was two thirds through when this table was first written, and we
+read its speed as 64.7 tok/s off three samples. The finished run says 67.8 across
+1,001 notes, with every hundred-note slice between 67.7 and 68.0. The earlier
+figure was 4.6% low, and every ratio here uses the new one.
 
-## What I would run today
+### Three figures are single-sourced
 
-**If it fits: Qwen3.6-35B-A3B.** Tied at the top with the dense 27B and separable
-from everything below it, parses everything, 0.693 abstention, 234 tok/s. 16.4 GiB
-at UD-Q4, so a 24 GB card.
+The memory footprints, 16.4, 13.27 and 15.84 GiB, are read from `llama.cpp`
+startup output at load time and are not captured in a committed artifact. Read
+them as single-sourced rather than measured.
 
-Qwen3.8 at Q4_K_M ties the comparable Qwen3.6-27B run. It does not overturn the
-35B-A3B recommendation, which already rested on speed and restraint rather than
-a separable accuracy lead over the dense 27B. The pending UD-Q4 run will make
-the quant comparison closer; this result cannot.
+## What would move this table: five open items, and the first one is large
 
-Take it over the 27B on the tie-break rather than the score. Same family, same
-quant, statistically the same F1, and the MoE runs 3.5 times faster while
-abstaining on 0.693 of the factless notes against the 27B's 0.547. The dense 27B
-invents 148 triples where the 35B invents 101. There is no accuracy argument
-between them and two practical ones, both pointing the same way.
-
-**On a 16 GB card: gemma-4-26B-A4B at QAT UD-Q4.** At 0.6804, it ties the models
-three rows above it and reaches **323 tok/s, the fastest run in this project.** It
-fits in 13.27 GiB because QAT shrinks it. The non-QAT build of the same model is
-15.84 GiB and does not fit that card at all.
-
-**If invented facts are expensive: granite-4.1-3b.** It invents 69 triples on the
-factless notes, about half the 135 from the model directly above it.
-
-**If you need recall: gemma-4-31B.** 0.8000, and you pay in precision and restraint.
-
-**Nothing below about 1.2B on this prompt.** It either fails to parse or answers
-confidently and wrongly.
-
-## Five things would move this table
-
-1. **The 12B parse failures diagnosed.** 83 to 98 unreadable rows on a model near
-   the top is the largest single understatement in this table, and I have not opened
-   it.
+1. **Diagnose the 12B parse failures.** 83 and 98 unreadable rows on runs near the
+   top of the table is the largest single understatement in it, and I have not
+   opened it.
 
 2. **Run the prompt-clause test against the other eighteen models.**
 
-3. **The 3k pairs now running**, both QAT pairs at n=3002 with each pair confined to
-   one card, which removes the cross-hardware term and narrows the interval by about
-   √3.
+3. **Finish the 3k pairs now running**, both QAT pairs at n=3002 with each pair
+   confined to one card, which removes the cross-hardware term and narrows the
+   interval by about the square root of three.
 
 4. **Run a second set of experiment data from a different generator.**
 
-5. **Run Qwen3.8-27B at UD-Q4.** The current Q4_K_M result does not match the
-   quant used by the two Qwen3.6 leaders.
+5. **Run Qwen3.8-27B at UD-Q4.** The Q4_K_M result does not match the quant used
+   by the two Qwen3.6 leaders.
+
+## The verdict: Qwen3.6-35B-A3B if it fits, gemma-4-26B-A4B if it does not
+
+**If it fits, Qwen3.6-35B-A3B at UD-Q4.** It ties the dense 27B, separates from
+the bottom of the size ladder by +0.0851, parses every row, abstains on 0.693 of
+the factless notes and runs at 234 tok/s. It reports 16.4 GiB at load, so a 24 GB
+card. There is no paired interval between it and the 31B QAT build, so read its
+place above that row as observed order rather than as a tested result.
+
+Take it over the dense 27B on the tie-break rather than on the score. Same
+family, same quant, the same accuracy within this test, and the MoE runs 3.5 times
+faster while abstaining on 0.693 of the factless notes against the 27B's 0.547.
+The dense 27B invents 148 triples where the 35B invents 101. There is no accuracy
+argument between them and two practical ones, both pointing the same way.
+
+Qwen3.8 at Q4_K_M ties the matched Qwen3.6-27B run and does not overturn that.
+The recommendation already rested on speed and restraint rather than on a
+separable accuracy lead.
+
+**On a 16 GB card, gemma-4-26B-A4B at QAT UD-Q4.** At 0.6804 it ties the three
+rows above it and reaches **323 tok/s, the fastest run in this project**. It fits
+in 13.27 GiB because QAT shrinks it, where the non-QAT build of the same model
+reports 15.84 GiB and does not fit that card at all.
+
+**If invented facts are expensive, granite-4.1-3b.** It invents 69 triples on the
+factless notes, about half the 135 from the run directly above it, and it costs
+you twenty-one places on the score to get that.
+
+**If you need recall, gemma-4-31B QAT.** 0.8000, and you pay for it in precision
+and restraint.
+
+**Not for anyone below about 1.2B on this prompt.** Those runs either fail to
+parse or answer confidently and wrongly.
+
+Buy the operating point, not the rank.

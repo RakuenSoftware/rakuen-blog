@@ -4,8 +4,9 @@ Twenty-four local models on one 1,001-note fact-extraction corpus, with a paired
 
 ## Status
 
-Published 2026-08-06 and updated 2026-08-14 with Qwen3.8-27B Q4_K_M. Every
-figure in the article traces to a raw artifact in the series evidence base.
+Published 2026-08-06, updated 2026-08-14 with Qwen3.8-27B Q4_K_M, and rewritten
+2026-08-20 against the updated voice and article guides. Every figure in the
+article traces to a raw artifact in the series evidence base.
 
 ## Evidence
 
@@ -31,3 +32,10 @@ interviews or vendor claims in it, so there is no right-of-reply obligation
 outstanding. Where a prior claim was withdrawn, the withdrawal is stated in the
 article at the point the claim appeared, and the superseded run is retained under
 `results/`.
+
+The 2026-08-20 rewrite carried every prior first-party result forward. Two
+comparisons were withdrawn as unsupported by the paired tests rather than
+deleted, one rank ordinal was corrected, and the matched Qwen3.6-27B comparison
+run was traced to its own artifact. All three are recorded in
+`evidence/figures.md` and marked in the article. No file under `evidence/raw/`
+was changed.

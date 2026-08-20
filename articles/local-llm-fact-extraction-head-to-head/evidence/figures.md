@@ -103,6 +103,31 @@ the score artifacts mapped above. A reproduction pass ran each paired interval
 in its own process; several endpoints moved in the fourth decimal and no verdict
 changed.
 
+## The matched Qwen3.6 comparison run
+
+The Qwen3.8 paired comparison does not use the leaderboard's Qwen3.6-27B row. It
+uses a separate run at the same quant, the same speculation setting and the same
+card, so that the comparison holds those three constant.
+
+| figure | value | artifact |
+|---|---|---:|
+| Qwen3.6-27B Q4_K_M, MTP on, RX 7900 XTX | 0.7177 F1, 0.6545 precision, 0.7943 recall | `results/qwen36-mtp-xtx/Qwen3.6-27b.Q4_K_M.xtx.mtp-on.score.json` |
+| its prediction file, used by the bootstrap | 1,001 rows | `results/qwen36-mtp-xtx/Qwen3.6-27b.Q4_K_M.xtx.mtp-on.pred.jsonl` |
+| the leaderboard Qwen3.6-27B row, a different run | 0.7152 F1, UD-Q4 | `results/vast/Qwen3.6-27B.UD-Q4_K_XL.live.score.json` |
+
+The two Qwen3.6-27B numbers are different runs and the article now says so where
+the comparison appears. The matched run is not a leaderboard row.
+
+## Runtime builds
+
+| campaign | build | source |
+|---|---|---|
+| `results/qwen38-27b-xtx-20260814/` | `llama.cpp` b10356 | `PROVENANCE.md` in that directory |
+| `results/muse-glimmer-30b-xtx-20260810/` | `llama.cpp` b10356 (`0666ad2b2`) | `PARTIAL-2026-08-11.md` in that directory |
+
+No other campaign recorded a build string per run. The article states that limit
+rather than inferring a version from campaign dates.
+
 ## Intervals
 
 All from `harness/harness/bootstrap_ci.py`, paired, resampling notes, fixed seed.
@@ -194,3 +219,25 @@ The article states both limits where the intervals appear.
   startup output at load time and are not captured in a committed artifact. They
   are single-sourced and should be read as such.
 - **The 1.79 TB/s card bandwidth** is a vendor specification, not a measurement.
+
+## Correction, 2026-08-20
+
+Three changes, made while bringing the article to the updated voice and article
+guides. No raw artifact was altered, and no score changed.
+
+**The rank ordinal was stale.** granite-4.1-3b was printed as twenty-first on
+score with twenty runs above it. The Qwen3.8 row added on 2026-08-14 moved it to
+twenty-second with twenty-one above it. Its finding is unchanged: at 69 spurious
+triples it still invents fewer than every run scoring above it, the nearest of
+which is Muse Glimmer 30B at 93.
+
+**Two comparisons were withdrawn.** The article said the 35B beat a dense 31B by
+more than the dense 31B beat a 2B. On observed scores that is false against the
+QAT 31B, where 0.7257 minus 0.6872 is +0.0385 against the ladder's +0.0465, and
+there is no paired interval between the 35B and either 31B run. The article also
+gave per-token weight traffic as 16.4 GiB against roughly 1.5 GiB; 16.4 GiB is
+the 35B-A3B's own measured footprint, reused as a dense 27B figure it was never
+measured for. Both are marked as withdrawn at the point they appeared.
+
+**The matched Qwen3.6 comparison run is now traced**, above, including its own
+0.7177 score and the fact that it is not the 0.7152 leaderboard row.
