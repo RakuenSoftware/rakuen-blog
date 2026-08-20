@@ -169,6 +169,52 @@ a fact about a person are held to one standard because they end up in one store,
 and a question asked in one repository can be answered by code in another with
 the graph saying how confident it is and why.
 
+## A contract and the code that implements it are two hops apart
+
+Code intelligence is where this started. It is not where it stopped, and the
+generalisation is the part that pays.
+
+Push a PDF at it. A signed contract, a payroll policy, a compliance standard.
+Structured ingestion keeps what plain text extraction throws away: page
+coordinates, reading order, tables as cells, OCR for the scanned ones, and the
+identity and confidence of whatever extractor produced each span
+([`STRUCTURED_PDF.md`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/docs/STRUCTURED_PDF.md)).
+A citation is a document hash, a page and a bounding box, so an answer can point
+at the paragraph it came from rather than paraphrasing it.
+
+That document is then mined for the entities it mentions. Each mention is
+embedded and resolved against the canonical entities already known, and the
+search runs up the scope lattice, from the project the document arrived in, out
+to the workspace, out to global
+([`kb_curator_resolve_entities.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_curator_resolve_entities.c#L1-L12)).
+A narrow mention lands on the broad entity that already exists instead of
+forking a near-duplicate beside it.
+
+The entities that document resolves onto are the same entities the code units
+resolve onto. A curator pass writes the links, and the file that does it states
+the consequence in its own header: doc to entity to code unit becomes a graph
+traversal
+([`kb_curator_link_artifacts.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_curator_link_artifacts.c#L5-L9)).
+There is an endpoint for exactly that question
+([`kb_http.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/http/kb_http.c#L997-L998)).
+
+So a clause in a signed agreement and the function that enforces it are not
+three systems away from each other. They are two hops in one graph. Which
+retention period the contract obliges you to, and which scheduled job actually
+deletes the rows, is one question with one answer citing a page on one side and
+a line number on the other.
+
+The refusals hold on this path too. Near matches above the threshold resolve,
+unrelated ones commit as new canonical entities, and mentions landing in the
+uncertain band between go to a judge rather than being merged on a hunch.
+Re-ingesting changed bytes creates a new version and does not move the old
+coordinates under a new file. Where the retrieved evidence is too thin for the
+question, answerability says so instead of producing something.
+
+An organisation's documents are not a different kind of input here. They are
+more of the same input, and the entity registry is what puts a payroll policy
+and a scheduler on the same node.
+
 ## Two clocks, and neither one overwrites
 
 A graph that ranks everything has to be honest about time, and there are two

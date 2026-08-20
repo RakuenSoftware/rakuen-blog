@@ -38,6 +38,19 @@ unrelated modifications in files not cited here.
 | relation weights: `defines` 1.00, `contains` 0.85, `depends_on` 0.75, `calls` 0.55, `co_edited` 0.60, `co_discussed` 0.45 | `src/modules/memory/memory_graph_fusion.c:26-50` |
 | a non-code-shaped query is refused entry to code subgraphs, checked per node | `src/modules/memory/memory_graph_fusion.c:186-189, 226-227` |
 
+### Documents in the same graph
+
+| claim in the article | source |
+|---|---|
+| structured PDF ingestion keeps page coordinates, reading order, tables as cells, OCR, extractor identity and confidence | `docs/STRUCTURED_PDF.md` layers and evidence model |
+| a citation is a document hash, a page and a bounding box | same, evidence model |
+| re-ingesting changed bytes creates a new version and does not move old coordinates | same |
+| answerability reports weak coverage instead of producing an answer | same, retrieval |
+| document mentions are embedded and resolved against canonical entities, searching up the scope lattice | `src/kb/kb_curator_resolve_entities.c:1-12` |
+| the uncertain band is adjudicated by a judge rather than merged | same |
+| doc to entity to code unit is a graph traversal | `src/kb/kb_curator_link_artifacts.c:5-9` |
+| an endpoint answers that question | `src/kb/http/kb_http.c:997-998`, `POST /v1/implements` |
+
 ### Cross-repo resolution
 
 | claim in the article | source |
