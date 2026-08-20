@@ -77,7 +77,21 @@ in, and scope sorts hard on what the caller is allowed to see. The fusion is not
 a blend of two result lists. It is one candidate set that several kinds of
 evidence built together.
 
-## The code graph is in the same graph, which is why it works
+## Code was not added to this memory. The memory was added to the code
+
+The order things were built in explains the design better than the design
+explains itself.
+
+This did not start as a memory system that later grew a code index. It started
+as code intelligence: tree-sitter extractors pulling symbols, references, calls,
+imports and git co-change out of a repository into a graph
+([`CODE_INTELLIGENCE.md`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/docs/CODE_INTELLIGENCE.md)).
+The memory layer was built on top of that, to make the code intelligence better.
+Everything above, the classes and the ontology and the distillation, exists
+because a system that reads code needed somewhere to keep what it worked out.
+
+That is why code is not a guest in this graph. It is what the graph was for, and
+the general memory is the part that arrived later.
 
 Nothing about that walk is specific to prose. Code lives in the same edge table
 under prefixed keys: a file, a symbol, an import, an export, a route, a project
@@ -148,11 +162,12 @@ vouch for. An untrusted caller's import corroboration cannot exceed the middle
 tier, and an untrusted definer can never lend top-tier export corroboration at
 all, because its export list is not something it can attest to about itself.
 
-This is the write gate again, in a different domain. Refuse the unvalidated
-edge, tier what remains by the evidence behind it, queue the genuinely
-ambiguous for a human, and never let an unverified source promote itself. The
-result is that a question asked in one repository can be answered by code in
-another, and the graph will tell you how confident it is and why.
+This is the same write gate, on the same graph. Refuse the unvalidated edge,
+tier what remains by the evidence behind it, queue the genuinely ambiguous for a
+human, and never let an unverified source promote itself. A dependency edge and
+a fact about a person are held to one standard because they end up in one store,
+and a question asked in one repository can be answered by code in another with
+the graph saying how confident it is and why.
 
 ## Two clocks, and neither one overwrites
 

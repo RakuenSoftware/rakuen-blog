@@ -29,6 +29,11 @@ unrelated modifications in files not cited here.
 
 | claim in the article | source |
 |---|---|
+| tree-sitter extractors pull symbols, references, calls, imports and git co-change into the graph | `docs/CODE_INTELLIGENCE.md:1-4, 32` |
+| the memory layer was built on top of code intelligence to make it better | first-party, supplied by the author 2026-08-20; see below |
+
+| claim in the article | source |
+|---|---|
 | code nodes are prefixed keys in the same edge table | `src/modules/memory/memory_graph_fusion.c:158-165` |
 | relation weights: `defines` 1.00, `contains` 0.85, `depends_on` 0.75, `calls` 0.55, `co_edited` 0.60, `co_discussed` 0.45 | `src/modules/memory/memory_graph_fusion.c:26-50` |
 | a non-code-shaped query is refused entry to code subgraphs, checked per node | `src/modules/memory/memory_graph_fusion.c:186-189, 226-227` |
@@ -146,6 +151,13 @@ apparent conflict.
 
 **"the system Rakuen runs."** First-party, same basis. The article's standfirst
 discloses the interest.
+
+**The build order.** That the memory layer grew out of code intelligence, and
+was built to make it better, is the author's account of his own project,
+supplied 2026-08-20. The public repository begins at a snapshot import so the
+history that would show it is not visible. What the source does corroborate is
+the shape the claim predicts: code nodes are first-class in the shared edge
+table, and the relation weights rank code relations above conversational ones.
 
 **"34,000 lines of C."** Computed, not read off a line. A `wc -l` over the file
 set above on the working tree on 2026-08-20, counting comments and blank lines,
