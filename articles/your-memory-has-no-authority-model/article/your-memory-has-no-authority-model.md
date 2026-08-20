@@ -137,6 +137,17 @@ Trust caps what a repository can vouch for. An untrusted definer can never lend
 top-tier export corroboration, because its export list is not something it can
 attest to about itself.
 
+One more thing the code graph does with time. Every projected edge belongs to a
+generation, a project has exactly one visible at a time, and the walk traverses
+only edges whose generation is visible on a project that is current. Generations
+move from pending to visible to superseded, so publishing a new projection is a
+swap and never an edit in place.
+
+The consequence is the part worth having. A traversal cannot mix symbols from
+two different states of the tree, which is what an incrementally updated code
+index does to you on a bad day. You get one consistent view of the repository as
+it was at a moment, or the current one, and never a blend.
+
 ## A contract and the code that implements it are two hops apart
 
 Push a document at it. A signed contract, a payroll policy, a compliance
@@ -186,33 +197,6 @@ the idea that a repository is the thing to look in. Today that question becomes
 a message to an engineer who reads for twenty minutes and replies in prose
 nobody can check, which is two people doing a worse version of a job the store
 can do with both citations attached.
-
-## Two clocks, and neither one overwrites
-
-A graph that ranks everything has to be honest about time, and there are two
-independent clocks doing it.
-
-Facts carry both. Valid time is the interval a fact held in the world.
-Transaction time is when the system stopped believing it. Correcting a fact
-stamps the second and leaves the row in place, so "what was true last year" and
-"what did you believe last week" are different queries against different
-columns.
-
-The code graph runs on generations. Every projected edge belongs to one, a
-project has exactly one visible at a time, and the walk traverses only edges
-whose generation is visible on a project that is current. Generations move from
-pending to visible to superseded, so publishing a new projection is a swap and
-never an edit in place.
-
-The consequence is the part worth having. A traversal cannot mix symbols from
-two different states of the tree, which is exactly what an incrementally
-updated code index does to you on a bad day. You get one consistent view of the
-repository as it was at a moment, or you get the current one, and never a
-blend.
-
-Both clocks obey the same rule for different reasons. A fact is superseded
-because the world moved. A generation is superseded because the repository
-moved. Neither destroys what it replaced.
 
 ## One graph, four scopes, and visibility is a rank
 
@@ -380,6 +364,12 @@ something you stated, on any relation at all. In a fused graph that guard is
 doing more than protecting one answer, because retracting an edge removes a
 path and quietly changes what the walk can reach.
 
+Because the old rows survive, two clocks have somewhere to write. Valid time is
+the interval a fact held in the world, transaction time is when the system
+stopped believing it, so "what was true last year" and "what did you believe
+last week" are different queries against different columns. A store that
+overwrites can answer neither.
+
 All of which is a promise until something records it. Mutations land in a
 hash-chained, append-only audit store, the same record shape the server keeps,
 with write-once enforced underneath.
@@ -388,7 +378,7 @@ A chain is checkable in a way a policy is not. Every system in the comparison
 can tell you what it currently holds. This one can tell you whether anything was
 quietly changed on the way to holding it.
 
-## The model cannot invent its way around the rules
+## The model cannot invent its way around the rules, and the rules grow anyway
 
 None of this holds if a model can route around it by making up a relation. So
 the vocabulary is checked before anything is written.
@@ -410,8 +400,7 @@ acquaintances.
 
 The obvious objection is that seventeen relationships is a rounding error
 against the world, and a vocabulary that is wrong rejects things that are true.
-
-## The vocabulary grows without anyone approving it
+Which is why the vocabulary grows on its own.
 
 A relationship the system has never seen is not thrown away. It is admitted as
 speculation, with a provisional entry created so the fact has something to hang
@@ -574,15 +563,13 @@ A-MEM (`ceffb860`) organises memories as Zettelkasten-style linked notes with no
 temporal, authority or ontology layer. It is a research implementation and I am
 not holding it to a production bar.
 
-## This one is in production, and most of the field's open source is not
-
 `aimee` is not a research project. It is the system Rakuen runs, the memory
 described above is the memory doing that work, and it has been carrying it in
 production for about a year. The public repository is younger than that,
 because its first commit is a snapshot import.
 
-That is worth stating because the audit turned up something I was not looking
-for. Across the seven, the open-source artifact and the working system are
+That is worth stating because of something this audit turned up without looking
+for it. Across the seven, the open-source artifact and the working system are
 frequently different objects.
 
 A-MEM is a research implementation, and its own README sends you to a separate
