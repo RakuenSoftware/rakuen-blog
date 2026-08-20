@@ -52,6 +52,17 @@ unrelated modifications in files not cited here.
 | tiers L0 to L5; stable L2 promotes on confidence; L5 patterns condense across at least three sessions | `src/headers/memory.h:323-345` |
 | promotion into the policy tier can require a recorded operator approval | `src/db2/memory_promotion.h:76-84`, `memory_promotion_approvals` |
 
+### Distillation
+
+| claim in the article | source |
+|---|---|
+| a durable fact in three distinct sessions is synthesised into a pattern | `src/db2/memory_promotion.c:386-410`, `COUNT(DISTINCT p.session_id) >= 3` |
+| an entity corroborated by three distinct sources is promoted out of local scope | `src/kb/kb_curator_promote.c:85-95`, `HAVING COUNT(DISTINCT l.from_id) >= :minsrc`, `scope_kind <> 'global'` |
+| promotion default minimum sources is three | `src/modules/config/config_kb_curator.c`, `kb_curator_promote_min_sources` |
+| one store serves a person, a team or a company | `docs/STORAGE_TIERS.md` |
+| promotion into a broader scope is an explicit audited write | `docs/KNOWLEDGE.md` |
+| demotion runs on verdicts attributed across recalls | `src/db2/demotion.h:106-110` |
+
 ### The write path
 
 | claim in the article | source |

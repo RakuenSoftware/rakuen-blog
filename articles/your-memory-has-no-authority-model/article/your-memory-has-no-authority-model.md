@@ -3,7 +3,7 @@ title: "Your agent's memory has no authority model"
 date: 2026-08-20
 author: Rakuen Software
 tags: [memory, agents, knowledge-graph, ontology, aimee]
-excerpt: "Seven publicly available memory systems, read at a pinned commit. Six keep their stores in separate piles and let a model's guess overwrite what a person said. One graph, and a write path strict enough to deserve one, is a different design."
+excerpt: "Seven publicly available memory systems, investigated at a pinned commit. Six keep their stores in separate piles and let a model's guess overwrite what a person said. One graph that distils what a team corroborates, and a write path strict enough to deserve one, is a different design."
 ---
 
 *Published 2026-08-20. Rakuen builds aimee, one of the seven systems audited
@@ -36,8 +36,12 @@ throw at the read.
 
 `aimee` answers it with one graph. Facts, conversations, episodes and code are
 not separate stores that get stapled together at the end. They are one substrate
-that a single query ranks, and everything strict about the write path exists
-because of that.
+that a single query ranks.
+
+And that substrate distils. What three separate sessions corroborate stops
+belonging to the session it came from and becomes something the deployment
+knows, so a team's store compounds on work nobody filed. Everything strict about
+the write path exists because of those two facts together.
 
 Something to be up front about: `aimee` is opinionated. `aimee` is highly
 opinionated. Take this for what it's worth.
@@ -171,9 +175,43 @@ context and organisational knowledge sit in one substrate, ranked by one query,
 separated by an authorisation boundary that is a first-class part of the
 ranking.
 
+## Three corroborations, and something local becomes shared
+
+The store distils. Things that recur across independent work climb out of the
+scope they were learned in and become available to everyone on the deployment,
+and the same threshold governs it in three different places.
+
+A durable fact that has turned up in three separate sessions is synthesised into
+a pattern, on a query that counts distinct sessions and skips anything already
+condensed
+([`memory_promotion.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/memory_promotion.c#L386-L410)).
+An entity corroborated by three distinct sources is promoted out of local scope,
+on a query that explicitly considers only the not-yet-global ones
+([`kb_curator_promote.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_curator_promote.c#L85-L95)).
+A novel relation seen three times becomes part of the vocabulary. Three
+independent corroborations is what the system treats as the difference between
+somebody's experience and a thing that is known.
+
+The word doing the work in each is *distinct*. Not the same fact asserted three
+times in one conversation, which is one person being emphatic. Three separate
+sessions, three separate source artifacts, three sightings in work nobody
+staged together.
+
+On a shared deployment those are different people. One store serves a person, a
+team or a company, and what one engineer's work established stops being theirs
+once enough independent work agrees with it. Nobody files it, nobody curates it,
+and nobody has to know it happened for it to be there next time somebody asks.
+
+The loop closes on the other side too. Demotion runs on verdicts attributed
+across everyone's recalls, so a shared memory that keeps proving wrong in
+practice sinks on the evidence of the people it failed. The store gets better
+because it is used, and it gets better fastest where it is used by the most
+people.
+
 ## Which is why the write path has to be strict
 
-Here is what fusion costs you, and it is the reason for everything below.
+That flywheel is also the threat model, and it is the reason for everything
+below.
 
 In a system where facts sit in their own store and get consulted when a query
 looks factual, a wrong fact gives a wrong answer to the questions that reach it.
@@ -185,9 +223,14 @@ for questions that never mentioned either endpoint. A relationship a model
 invented at three in the morning does not sit quietly in a corner waiting to be
 asked about. It bends recall.
 
+And on a shared deployment it does not bend only yours. Something that survives
+long enough to be corroborated three times is promoted into everyone's context,
+which means a store that distils is a store where a bad write has compound
+interest.
+
 That is why the rest of this piece is about writes. A system that fuses
-everything has to be far more careful about what it admits than one that keeps
-its mistakes in separate boxes.
+everything and shares the result has to be far more careful about what it admits
+than one that keeps its mistakes in separate boxes.
 
 ## A model's guess never outranks what you told it
 
