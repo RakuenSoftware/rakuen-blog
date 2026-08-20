@@ -535,9 +535,9 @@ coverage.
 
 ## Six of seven systems keep their stores in separate piles
 
-Every row below was read from the project's own source at the commit named, on
-20 August 2026. Where a project's design differs from what a summary line can
-carry, the paragraphs after the table say so.
+Every cell was read from the project's own source at the commit named, on 20
+August 2026. The per-system findings, the test behind each column and the line
+numbers behind each verdict are in the audit file rather than here.
 
 | system | commit | one fused graph | fragment points at its source | typed write gate | authority classes | valid time | model may remove a fact |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -549,27 +549,16 @@ carry, the paragraphs after the table say so.
 | LangMem | `29cbe41e` | no | no document model | no | none | no | yes, hard delete |
 | Memobase | `358c16bb` | no | blobs kept, slots do not reference them | slot schema | none | no | yes, slot rewrite |
 
-Graphiti is the closest architecture and the fairest comparison. It is
-bitemporal: `valid_at`, `invalid_at` and `expired_at` all sit on `EntityEdge`,
-and a contradicted edge is expired, with the row kept
-([`edges.py:262-283`](https://github.com/getzep/graphiti/blob/c406932767ee490ad2311fd694a6b2ac3b164599/graphiti_core/edges.py#L262-L283)).
+Graphiti is the closest architecture and the fairest comparison. It is genuinely
+bitemporal and a contradicted edge is expired with the row kept
+([`edges.py`](https://github.com/getzep/graphiti/blob/c406932767ee490ad2311fd694a6b2ac3b164599/graphiti_core/edges.py#L262-L283)). Custom edge types exist,
+but what they constrain is which definitions the extraction prompt is shown, so
+nothing checks the relation the model returns against them. There is no
+confidence, provenance or authority field on an edge at all.
 
-Custom edge types are supported and filtered per node-label pair. What that
-filtering does is choose which type definitions the extraction prompt is shown
-([`edge_operations.py:458-486`](https://github.com/getzep/graphiti/blob/c406932767ee490ad2311fd694a6b2ac3b164599/graphiti_core/utils/maintenance/edge_operations.py#L458-L486)).
-Nothing then checks the relation the model returns against them. What is
-validated on the way in is that the LLM's entity names exist in the node list,
-and self-edges are dropped
-([`edge_operations.py:210-241`](https://github.com/getzep/graphiti/blob/c406932767ee490ad2311fd694a6b2ac3b164599/graphiti_core/utils/maintenance/edge_operations.py#L210-L241)).
-
-There is no confidence, provenance or authority field on `EntityEdge` at all,
-so an edge the user dictated and one the model inferred are indistinguishable
-rows. The graph holds what was extracted from episodes; source code is not a
-first-class citizen of it.
-
-cognee has arrived at the same problem and named it. Its temporal conflict
-resolver tags superseded edges and keeps them, which is the right behaviour,
-and its module docstring explains why it cannot do that automatically:
+cognee arrived at the same problem and named it. Its temporal conflict resolver
+tags superseded edges and keeps them, and its docstring says why that cannot
+happen automatically:
 
 ```text
 Nothing is applied automatically: the caller names the relationships that are
@@ -578,85 +567,53 @@ legitimately many-valued and must never be collapsed, and there is no
 cardinality metadata to tell them apart.
 ```
 
-[`temporal_conflict_resolver.py:13-16`](https://github.com/topoteretes/cognee/blob/fd5045f6b60522c1953fc1ae258e041ba53602d8/cognee/modules/graph/utils/temporal_conflict_resolver.py#L13-L16).
+[`temporal_conflict_resolver.py`](https://github.com/topoteretes/cognee/blob/fd5045f6b60522c1953fc1ae258e041ba53602d8/cognee/modules/graph/utils/temporal_conflict_resolver.py#L13-L16).
 That missing cardinality metadata is what a relation's own correction policy
-carries in the store.
+carries in the store. cognee ships real ontology support and defaults to no
+ontology file, with contradiction detection off
+([`config.py`](https://github.com/topoteretes/cognee/blob/fd5045f6b60522c1953fc1ae258e041ba53602d8/cognee/modules/cognify/config.py#L13-L17)).
 
-cognee ships real ontology support and constructs its default resolver with
-`ontology_file=None`
-([`get_default_ontology_resolver.py:10-12`](https://github.com/topoteretes/cognee/blob/fd5045f6b60522c1953fc1ae258e041ba53602d8/cognee/modules/ontology/get_default_ontology_resolver.py#L10-L12)).
-A supplied OWL file enriches extracted entities by fuzzy match, a name with no
-match is still constructed, and contradiction detection defaults to `False`
-([`cognify/config.py:13-17`](https://github.com/topoteretes/cognee/blob/fd5045f6b60522c1953fc1ae258e041ba53602d8/cognee/modules/cognify/config.py#L13-L17)).
+mem0's open-source graph memory no longer exists: "Graph memory is removed from
+OSS. It's a built-in, always-on Mem0 Platform feature"
+([`oss-v2-to-v3.mdx`](https://github.com/mem0ai/mem0/blob/3599aa75ed64ee41c3b1d8133a8b39403fb8f703/docs/migration/oss-v2-to-v3.mdx#L41)). The same
+release made extraction ADD-only, which is a real improvement on an LLM choosing
+DELETE per fact. What replaces it is accumulation: self-contained sentences,
+related ones linked by id, and nothing reconciling two that contradict.
 
-mem0's open-source graph memory no longer exists. The v3 release removed it:
-"Graph memory is removed from OSS. It's a built-in, always-on Mem0 Platform
-feature"
-([`oss-v2-to-v3.mdx:41`](https://github.com/mem0ai/mem0/blob/3599aa75ed64ee41c3b1d8133a8b39403fb8f703/docs/migration/oss-v2-to-v3.mdx#L41)).
+Letta's V1 server is retired to an `archive` branch that "receives no fixes or
+security updates, and should not be used in production", and memory is now a
+block the agent rewrites in place
+([`toolset.ts`](https://github.com/letta-ai/letta-code/blob/d1dc6880971dc55a5e5dfcf845d4cba740b14585/src/tools/toolset.ts#L61-L68)). Credit where it is due, and
+it is a design nobody else here has: MemFS tracks every block in git, so a
+destructive rewrite leaves a commit. That is an audit trail. The store still has
+no idea which line came from the user.
 
-The same release made extraction ADD-only: "Single-pass ADD-only (one LLM call,
-no UPDATE/DELETE)". That is a real improvement on the previous design, where an
-LLM chose between ADD, UPDATE and DELETE per fact and a DELETE removed the
-vector row while keeping the prior text in a history table
-([`main.py:2100-2122`](https://github.com/mem0ai/mem0/blob/3599aa75ed64ee41c3b1d8133a8b39403fb8f703/mem0/memory/main.py#L2100-L2122)).
-
-What replaces it is accumulation. Memories are self-contained sentences,
-related ones linked by id, and nothing reconciles two that contradict.
-
-Letta's V1 server has been retired and its memory is text the model edits. The
-repository at `letta-ai/letta` is now a landing page, the source lives in
-`letta-ai/letta-code`, and the V1 server sits on an `archive` branch that
-"receives no fixes or security updates, and should not be used in production."
-The memory surface is a block the agent rewrites through `memory_replace`,
-`memory_insert` and `memory_rethink`
-([`toolset.ts:61-68`](https://github.com/letta-ai/letta-code/blob/d1dc6880971dc55a5e5dfcf845d4cba740b14585/src/tools/toolset.ts#L61-L68)).
-
-Credit where it is due, and it is a design nobody else here has: MemFS tracks
-every block in git, so a rewrite that destroyed a fact leaves a commit. That is
-an audit trail. The store itself still has no idea which line came from the
-user.
-
-LangMem lets the model delete a memory outright. `create_manage_memory_tool`
-permits `create`, `update` and `delete` by default, and the delete branch is one
-line: `await store.adelete(namespace, key=str(id))` on the async path
-([`tools.py:293-294`](https://github.com/langchain-ai/langmem/blob/29cbe41e58528f92e9efa773c12e15c47be3808c/src/langmem/knowledge/tools.py#L293-L294)),
-`store.delete(namespace, key=str(id))` on the sync one
-([`tools.py:327-328`](https://github.com/langchain-ai/langmem/blob/29cbe41e58528f92e9efa773c12e15c47be3808c/src/langmem/knowledge/tools.py#L327-L328)).
-No history row, no tombstone, no class check on what is being removed.
-
-It is the plainest case in the set. A tool call the model chooses to emit
-removes a fact a person stated, and afterwards the store cannot tell you it
+LangMem is the plainest case in the set. `create_manage_memory_tool` permits
+`delete` by default and the branch is one line,
+`store.delete(namespace, key=str(id))`
+([`tools.py`](https://github.com/langchain-ai/langmem/blob/29cbe41e58528f92e9efa773c12e15c47be3808c/src/langmem/knowledge/tools.py#L327-L328)), with no history
+row and no check on what is being removed. A tool call the model chooses to
+emit removes a fact a person stated, and afterwards the store cannot tell you it
 happened.
 
-Memobase does have a schema, and it is the closest thing here to an ontology.
-Profiles are topic and subtopic slots and extraction fills them. Reconciliation
-is an LLM choosing `APPEND`, `UPDATE` or `ABORT`, where `UPDATE` means rewriting
-the slot's memo text
-([`merge_profile.py:34-46`](https://github.com/memodb-io/memobase/blob/358c16bbc6d687937d79bc2f984a11c3be8da901/src/server/api/memobase_server/prompts/merge_profile.py#L34-L46)).
-A slot holds one attribute of one profile, and the prior text does not survive
-the rewrite.
+Memobase has the closest thing here to an ontology, in topic and subtopic
+profile slots. Reconciliation is an LLM choosing to append, update or abort,
+where updating means rewriting the slot's text over what was there.
 
-On the source column, the field does better than the criticism usually aimed at
+On the source column the field does better than the criticism usually aimed at
 it, and worse than that sounds. Retention is common: Graphiti keeps the raw
-episode on the node, mem0 writes every message to a table, and Letta has every
-version of every block in git.
-
-What is uncommon is a path from the thing you retrieved back to the whole it
-came from. mem0's memories carry no reference to the messages that produced
-them, so the raw text is retained beside the store and not reachable from it.
-Memobase keeps the blob and its profile slots do not name it. cognee is the
-closest: a chunk names its document, and the document names a filesystem
-location instead of holding the text, so the store depends on that path still
-resolving.
+episode, mem0 writes every message to a table, Letta has every block version in
+git. What is uncommon is a path from the thing you retrieved back to the whole
+it came from, and cognee gets closest by having a chunk name its document while
+the document names a filesystem location instead of holding the text.
 
 The cheap part is keeping the bytes and nearly everyone does it. The part that
 takes deciding is making the fragment carry enough to reconstitute its context,
 and then making retrieval able to walk it.
 
-I also read A-MEM (`ceffb860`), which organises memories as Zettelkasten-style
-linked notes with LLM-generated links and carries no temporal, authority or
-ontology layer. It is a research implementation and I am not holding it to a
-production bar.
+A-MEM (`ceffb860`) organises memories as Zettelkasten-style linked notes with no
+temporal, authority or ontology layer. It is a research implementation and I am
+not holding it to a production bar.
 
 ## This one is in production, and most of the field's open source is not
 
