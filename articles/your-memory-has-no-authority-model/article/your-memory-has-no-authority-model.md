@@ -195,11 +195,9 @@ on a query that considers only the not-yet-global ones
 ([`kb_curator_promote.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_curator_promote.c#L85-L95)).
 A novel relation seen three times joins the vocabulary.
 
-The word doing the work in each is *distinct*, and it is what turns counting
-into evidence. The same thing asserted three times in one conversation is one
-person being emphatic. The same thing reached three times in work nobody staged
-together is three independent parties agreeing, and at team scale that is not a
-proxy for quality. It is what quality means.
+The word doing the work in each is *distinct*: distinct sessions, distinct
+source artifacts, sightings in work nobody staged together. At team scale that
+is not a proxy for quality. It is what quality means.
 
 None of this is visible while it happens, and that is the point. An engineer
 does their work. Months later somebody who has never spoken to them asks a
@@ -212,8 +210,17 @@ sinks on the evidence of the people it failed.
 
 Which makes collective use the selection pressure, in both directions. What
 several people reach independently rises. What fails the people it reached
-sinks. Neither needs a curator, and neither can be gamed by one enthusiastic
-participant, because one participant is not several.
+sinks. Neither needs a curator.
+
+There is nothing novel in the principle underneath that, and it is stronger for
+being old. Independent convergence is what replication means in science, what a
+second team reaching your architecture tells you about the architecture, and
+what makes a finding worth more than the confidence of whoever reported it. Two
+people agreeing after talking is a conversation. Two people agreeing without
+having talked is evidence.
+
+The system counts distinct sources because that is the difference, and it is
+the whole reason the count means anything.
 
 ## Which is why the write path has to be strict
 
