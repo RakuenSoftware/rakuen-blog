@@ -26,20 +26,20 @@ unrelated modifications in files not cited here.
 
 | claim in the article | source |
 |---|---|
-| the pure write-gate validator, quoted in full | `src/modules/memory/memory_fact_gate.c:14-22` |
+| the write gate checks both ends against what the relation permits | `src/modules/memory/memory_fact_gate.c:14-22` |
 | "never write an unvalidated semantic edge" | `src/db2/rel_types_store.c:208` |
-| seventeen seed relations, and the seven-row extract of them | `src/rel_types.c:18` onward |
-| `rel_types` table and its `status` values | `src/db2/schema.sql:1412` |
+| seventeen relations ship with the system | `src/rel_types.c:18` onward |
+| the live relation set lives in a table the running system extends | `src/db2/schema.sql:1412` |
 | provisional staging of a novel relation, sighting counted after commit | `src/db2/rel_types_store.c:255-270` |
-| the `ontology_evaluations` upsert, quoted in full | `src/db2/ontology_evolution.c:41-46` |
+| a sighting counts only after its fact committed; a rejected relation keeps that verdict | `src/db2/ontology_evolution.c:41-46` |
 | auto-promotion sweep, catch-all exclusion | `src/kb/kb_curator_drain.c:800-828` |
 | auto-promote default on, threshold 3 | `src/modules/config/config_kb_curator.c:74-76` |
-| `fact_class_for`, quoted in full | `src/db2/fact_lifecycle.c:48-59` |
-| class confidences 1.0 / 0.6 / 0.4 | `src/db2/fact_lifecycle.c:26-32` |
-| durable B raises confidence to 0.8, never to A | `src/db2/fact_lifecycle.h:58-61` |
+| the class a fact is born into, and Class A unreachable from a model | `src/db2/fact_lifecycle.c:48-59` |
+| Class A carries full confidence; B and C sit below it | `src/db2/fact_lifecycle.c:26-32` |
+| a confirmed Class B fact stops expiring and never becomes A | `src/db2/fact_lifecycle.h:58-61` |
 | extractor pinned to `FACT_AUTHORITY_MODEL` | `src/kb/kb_memory_facts.c:300-305` |
 | model confidence used only as a 0.6 floor | `src/kb/kb_memory_facts.c:39`, applied at `:281` |
-| Class C expiry SQL, quoted in full | `src/db2/fact_lifecycle.c:83-86` |
+| unconfirmed speculation expires by being stamped, not removed | `src/db2/fact_lifecycle.c:83-86` |
 | `supersede` / `hard_delete` / `immutable` semantics | `src/db2/fact_lifecycle.h:62-85` |
 | a model authority cannot retract a Class A edge | `src/db2/fact_lifecycle.h:77-82` |
 | transaction time and valid time columns | `src/db2/schema.sql:1400-1409` |
@@ -55,7 +55,7 @@ unrelated modifications in files not cited here.
 | abstention default-off, threshold uncalibrated | `docs/proposals/done/retrieval-abstention-confidence-gate.md` |
 | memory subsystem is 34,000 lines of C | `wc -l` over `src/modules/memory/*.c`, `src/db2/memory_*.c`, `src/db2/{typed_facts,rel_types_store,ontology_evolution,demotion}.c`, `src/db2/fact_*.c`, `src/db2/entity_*.c`, `src/rel_types.c`: 34,115 lines, rounded down |
 | PostgreSQL with pgvector | `docs/STORAGE_TIERS.md` |
-| `aimee expand <domain> [url]` is human-approvable | `docs/proposals/done/typed-fact-knowledge-layer.md` §2 |
+| teaching a domain up front from its documentation is human-approvable | `docs/proposals/done/typed-fact-knowledge-layer.md` §2 |
 
 **One figure is computed.** "34,000 lines of C" is a `wc -l`
 over the file set listed above, taken on the working tree on 2026-08-20. It

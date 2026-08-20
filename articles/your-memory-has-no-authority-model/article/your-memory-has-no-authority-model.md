@@ -43,241 +43,189 @@ Everything below describes `aimee`'s typed-fact layer, which is where identity
 and world facts live. Free-text prose memory, which carries episodic and code
 recall, has different write semantics and is out of scope here.
 
-## The write gate: a triple that fails its ontology never becomes a row
+## A model's guess never outranks what you told it
 
-`aimee` holds identity and world facts as typed triples on semantic edges, and
-every emitter routes through one commit point. The pure validator is twenty-three
-lines:
+Every fact in the store is born into one of three classes, and the class is
+decided by who asserted it, not by how sure anyone sounds.
 
-```c
-const rel_type_def_t *def = rel_types_seed_lookup(rel_type);
-if (!def)
-   return FACT_GATE_NOVEL; /* caller consults the live ontology: stage or defer */
+Say something yourself, using a relation the system already understands, and the
+fact is Class A. It carries full confidence, it wins every conflict about the
+same subject and relation, and it never expires. Let the background extractor
+infer something from a note you wrote, and the best it can earn is Class B.
+Everything else is Class C, which is to say speculation, and speculation is on a
+clock.
 
-if (matched)
-   *matched = def;
-if (!rel_type_kind_allowed(def, 1, head_kind) || !rel_type_kind_allowed(def, 0, tail_kind))
-   return FACT_GATE_REJECT_KIND;
-return FACT_GATE_ACCEPT;
-```
+The rule that assigns the class is eleven lines long and has no way to reach
+Class A from a model
+([`fact_lifecycle.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/fact_lifecycle.c#L48-L59)).
+The extractor's calls pass their authority as a constant
+([`kb_memory_facts.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_memory_facts.c#L300-L305)),
+so there is no argument a prompt could win.
 
-[`memory_fact_gate.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/modules/memory/memory_fact_gate.c#L14-L22).
-The relation is looked up in an ontology that declares which entity kinds may
-sit on each end. `works_for` takes a `PERSON` and an `ORG`. A model that emits
-`printer works_for kernel` gets `FACT_GATE_REJECT_KIND`, and the commit path
-returns before writing anything: "REJECT_KIND / BADARG: never write an
-unvalidated semantic edge"
-([`rel_types_store.c:208`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/rel_types_store.c#L207-L208)).
+The model is asked how confident it is, and the answer is used once, as a floor:
+below six-tenths the triple is dropped
+([`kb_memory_facts.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_memory_facts.c#L39)).
+Above the floor the number buys nothing. A model that returns perfect confidence
+on a hallucinated triple lands exactly where a hedging one does.
 
-The ontology lives in a table. Seventeen relations ship in an in-code seed so a
-fresh install validates before anything has been learned, and each row is
-self-describing:
+The awkward branch is the first one. A relation nobody has established yet is
+speculation even when you asserted it personally, because what is unproven there
+is the vocabulary and your authority cannot cure that. It costs you something
+real. It is still the right trade, because the alternative is letting a word
+become permanent the first time somebody uses it.
 
-| relation | subject | object | correction policy | sensitivity |
-| --- | --- | --- | --- | --- |
-| `works_for` | PERSON | ORG | supersede | normal |
-| `spouse` | PERSON | PERSON (symmetric) | supersede | pii |
-| `parent_of` | PERSON | PERSON (inverse `child_of`) | immutable | pii |
-| `born_in` | PERSON | PLACE | immutable | pii |
-| `lives_in` | PERSON | PLACE | supersede | pii |
-| `device_has_ip` | DEVICE | IP | supersede | normal |
-| `also_known_as` | PERSON | ANY | hard_delete | normal |
+Reinforcement moves a fact along that scale and never off the end of it. A model
+inference confirmed enough times stops expiring and stays Class B
+([`fact_lifecycle.h`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/fact_lifecycle.h#L58-L61)).
+Repetition buys durability. It does not buy authority.
 
-All seventeen are in
-[`rel_types.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/rel_types.c#L18).
-The live overlay is the `rel_types` table
-([`schema.sql:1412`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/schema.sql#L1412)),
-carrying the same columns plus a `status` of `active`, `provisional`, `mapped`
-or `rejected`.
+Speculation that never gets confirmed runs out its clock, and even then the row
+is only stamped as no longer believed
+([`fact_lifecycle.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/fact_lifecycle.c#L83-L86)).
+Expiry is a change of standing. It is never a deletion.
 
-Two consequences follow. The good one: a relation's semantics travel with the
-relation, so nothing downstream has to be told, per call, that `works_for` holds
-one value and `knows` holds many. The awkward one: an ontology that is wrong
-rejects legitimate facts, and a seventeen-row seed is wrong about most of the
-world on day one. The next section is how that stops being fatal.
+## Correcting a fact leaves the old one where it is
 
-## Novel relations stage as speculation and promote themselves at three sightings
+Tell the system something that contradicts what it holds, and the old value is
+stamped with the moment it stopped being believed. Then the new one is written
+beside it. Nothing is removed, and the fact you superseded is still there to be
+asked about.
 
-A relation the seed does not know is not rejected. It is staged: a provisional
-`rel_types` row is inserted so the edge's `relation_id` resolves, the edge
-commits at the lowest confidence class, and the sighting is counted
-([`rel_types_store.c:255-270`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/rel_types_store.c#L255-L270)).
-The counter is one statement:
+What a correction means is a property of the fact being corrected. Most
+relations supersede. A few are marked so that a stale value stops
+matching queries while the row itself is kept for the record, which is what an
+old nickname needs: it has to stop resolving, and it should not vanish. A few
+more refuse to be quietly rewritten at all
+([`fact_lifecycle.h`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/fact_lifecycle.h#L62-L85)).
 
-```sql
-INSERT INTO ontology_evaluations (rel_type, occurrence_count, status, created_at)
- VALUES (?1, 1, 'pending', ?2)
- ON CONFLICT (rel_type) DO UPDATE
- SET occurrence_count = ontology_evaluations.occurrence_count + 1
- RETURNING occurrence_count
-```
+That last kind does not mean you are locked out. It means no model may rewrite
+the value behind your back. You can still supersede it yourself, and the new
+value arrives with your authority on it. The guard runs in both directions: an
+inferred correction cannot retract something you stated, on any relation at all.
 
-The count is bumped only after the edge committed, so a failed write cannot
-inflate a candidate's standing. A previously rejected relation keeps its
-status on conflict, so it cannot resurface as a candidate by being emitted
-again.
+Because the old rows survive, two different questions have somewhere to look.
+What was true in the world last year is one axis, held on the fact itself. What
+the system believed last week is the other, held in the stamp. A store that
+overwrites has neither, and it will answer both questions with whatever it
+happens to hold right now.
 
-The curator drain then promotes candidates without asking anyone. At each poll
-it pulls pending relations whose `occurrence_count` has reached the threshold
-and flips them to `active`
-([`kb_curator_drain.c:800-828`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_curator_drain.c#L800-L828)).
-Auto-promotion is on by default and the threshold is three
-([`config_kb_curator.c:74-76`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/modules/config/config_kb_curator.c#L74-L76)).
+## The model cannot invent its way around the rules
 
-The one hard exclusion is a catch-all bucket. `other`, `unknown`, `misc` and
-`unspecified` are skipped on the promotion path even when they clear the
-threshold, because a durable `misc` relation cannot later be reconciled to a
-real predicate. The extractor is separately instructed not to emit one, and the
-drain excludes them anyway.
+None of the above would matter if a model could route around it by making up a
+relation. So the vocabulary is checked before anything is written.
 
-This is what "the ontology extends itself" has to mean to be worth anything. A
-relation earns durability by recurring across sources, and nothing about the
-promotion needs a person in the loop. Compare `aimee expand kubernetes <url>`,
-which seeds a domain's relations up front from its documentation and is
-deliberately human-approvable, because it changes the ontology's shape. Nothing
-has recurred yet to be counted.
+Facts are triples, and each kind of relationship declares what may sit on either
+end of it. Employment joins a person to an organisation, an address joins a
+device to an address.
 
-## A model-inferred fact can never reach the class a person's statement gets
+When a triple arrives, the relationship is looked up and the two ends are
+checked against what it permits
+([`memory_fact_gate.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/modules/memory/memory_fact_gate.c#L14-L22)).
+A model that proposes the printer works for the kernel gets a rejection, and the
+commit path stops before writing anything, under a comment that says never to
+write an unvalidated edge
+([`rel_types_store.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/rel_types_store.c#L207-L208)).
 
-The rule is eleven lines:
+Seventeen relationships ship with the system so a fresh install can validate
+before it has learned anything
+([`rel_types.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/rel_types.c#L18)),
+and the live set lives in a table that the running system extends
+([`schema.sql`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/schema.sql#L1412)).
+Each one carries its own rules with it, which is why nothing downstream ever has
+to be told, case by case, that a person has one employer and many acquaintances.
 
-```c
-const char *fact_class_for(fact_authority_t authority, fact_gate_verdict_t verdict)
-{
-   if (verdict == FACT_GATE_NOVEL)
-      return FACT_CLASS_C;
-   if (authority == FACT_AUTHORITY_USER)
-      return FACT_CLASS_A; /* a direct user assertion of a known relation earns A */
-   if (verdict == FACT_GATE_ACCEPT)
-      return FACT_CLASS_B; /* model inference consistent with the ontology */
-   return FACT_CLASS_C;    /* anything else (reject/badarg) — conservative */
-}
-```
+The obvious objection is that seventeen relationships is a rounding error
+against the world, and an ontology that is wrong rejects things that are true.
 
-[`fact_lifecycle.c:48-59`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/fact_lifecycle.c#L48-L59).
-The class is stamped on the edge and drives everything after it.
+## The vocabulary grows without anyone approving it
 
-- Class A is a direct user assertion of a known relation. Confidence 1.0. It
-  wins every conflict on the same subject and relation, and it never expires.
-- Class B is a model inference the ontology accepted. Confidence 0.6, raised to
-  0.8 once the same fact has been observed enough times to become durable.
-- Class C is speculation, which includes every fact using a relation the
-  ontology has not accepted. Confidence 0.4, and it expires.
+A relationship the system has never seen is not thrown away. It is admitted as
+speculation, with a provisional entry created so the fact has something to hang
+on, and the sighting is counted
+([`rel_types_store.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/rel_types_store.c#L255-L270)).
 
-The background extractor is wired to Class B or C. It calls
-`db2_fact_commit(..., FACT_AUTHORITY_MODEL, 1)`
-([`kb_memory_facts.c:300-305`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_memory_facts.c#L300-L305)),
-so the authority argument is a constant at that call site. The model is asked for
-a confidence score and it is used only as a floor: below 0.6 the triple is
-dropped
-([`kb_memory_facts.c:39`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_memory_facts.c#L39)).
-Above it, the score buys nothing. A model returning `"confidence": 1.0` on a
-hallucinated triple gets Class B, the same as a cautious one.
+The counting is careful in two ways worth noticing. A sighting registers only
+after the fact it came from actually committed, so a failed write cannot inflate
+a candidate's standing. And a relationship already rejected keeps that verdict,
+so it cannot creep back onto the shortlist by being proposed again
+([`ontology_evolution.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/ontology_evolution.c#L41-L46)).
 
-Look at the first branch. A novel relation is Class C even when the user
-asserted it, because the ontology is what is unproven there and the speaker's
-authority cannot cure that. It costs the user something, and it is the right
-trade: an unvalidated relation should not carry permanent authority because one
-person used it once.
+Recur across enough separate sources and the maintenance pass promotes the
+relationship to a real one, on its own, with nobody asked
+([`kb_curator_drain.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/kb/kb_curator_drain.c#L800-L828)).
+Three sightings is the default and promotion is on out of the box
+([`config_kb_curator.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/modules/config/config_kb_curator.c#L74-L76)).
 
-Expiry does the cleaning, and its SQL is where "unconfirmed speculation cannot
-calcify into a remembered fact" stops being a slogan:
+One family of words is barred from ever making it. A model that falls back on a
+catch-all is refused promotion no matter how often it does so, because a durable
+relationship called `misc` can never be reconciled to a real one later. The
+extractor is told not to reach for those, and the promotion pass excludes them
+anyway.
 
-```sql
-UPDATE entity_edges SET superseded_at = ?2
- WHERE edge_class = 'semantic' AND confidence_class = 'C'
-   AND superseded_at = '' AND suppressed = 0 AND weight <= 1
-   AND asserted_at <> '' AND asserted_at < ?1
-```
+This is the only version of a self-extending vocabulary that seems worth having.
+A word earns permanence by turning up again in work nobody staged, and no one
+signs off on it. The one path that does want a human is teaching a whole domain
+up front from its documentation, which changes the shape of the vocabulary
+before any evidence has accumulated to justify it.
 
-Unconfirmed Class C edges past their TTL are stamped, and the rows stay. A Class
-B fact re-observed a hundred times becomes durable B; it never becomes A.
-Nothing a model produces reaches the class a person's statement gets, by any
-path, including repetition.
+## Two spellings of a name are one thing, and a bad guess is reversible
 
-## Correction stamps the old row and keeps it
+A graph keyed on names splits under ordinary use. Call the same machine DevBox
+one day and the workstation the next and you have two unrelated nodes that never
+learn about each other.
 
-`correction_behavior` is a column on the relation, so the policy for correcting
-a fact is a property of what kind of fact it is.
+So the ends of a fact are resolved to an identity before the fact is stored
+([`rel_types_store.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/rel_types_store.c#L155-L183)).
+Names point at that identity and never at each other, which makes a circular
+chain of nicknames impossible by construction instead of something to be
+detected later
+([`schema.sql`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/schema.sql#L1443-L1456)).
 
-- `supersede`, the default. `superseded_at` is stamped on the old edge and the
-  new one is inserted. Both rows stay.
-- `hard_delete`, a name kept for familiarity that is not a delete. The edge and
-  its aliases stop resolving via a `suppressed` flag and the row is retained. It
-  is used for `also_known_as`, where a stale alias actively misleads and has to
-  stop matching.
-- `immutable`, which refuses a model or inferred correction to an
-  already-asserted value. `born_in` and `parent_of` carry it.
+Values are left alone. An address or an age is not somebody, and running it
+through an identity register would invent a person where there is none.
 
-`immutable` does not mean the user cannot change it. It means no model may
-silently rewrite it: a direct user assertion supersedes the prior value as a new
-Class A fact, and a non-user authority is refused with
-`FACT_RETRACT_IMMUTABLE`. The reverse guard sits in the same contract. A model
-authority cannot retract a user-stated Class A edge at all, on any relation
-([`fact_lifecycle.h:62-85`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/fact_lifecycle.h#L62-L85)).
+Two things about this matter more than the matching itself. Every close-call
+merge is written down and can be undone
+([`entity_registry.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/entity_registry.c#L242-L408)),
+which is the difference between a system that is confident and one that can be
+wrong safely. And a name with several plausible owners is not guessed at. It
+goes on a queue with a status and a bounded number of retries, blocking neither
+the write nor the recall
+([`schema.sql`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/schema.sql#L1465-L1472)).
 
-Because nothing is removed, both time axes have data to answer from.
-`superseded_at` is transaction time, meaning when `aimee` stopped believing the
-edge. `valid_from` and `valid_until` are valid time, meaning the real-world
-interval the fact held. "What IP did the NAS used to have" and "what did `aimee`
-believe last week" are different queries against different columns, and a system
-that overwrites can answer neither.
+## What survives is decided by how it turned out
 
-## Endpoints resolve to a surrogate id, and a wrong merge is reversible
+Recall is not free of consequences. Each one records which facts it put in front
+of the model, and each fact that shaped an answer gets a verdict written against
+it: accepted, corrected, contradicted, rolled back, or beside the point.
 
-Name-keyed graphs fragment. "DevBox", "the workstation" and "my main box" become
-three unrelated nodes, and "Theo" and "Theodore" either never reconcile or
-wrongly merge.
-
-Entity-kind endpoints are canonicalised before the edge is written
-([`rel_types_store.c:155-183`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/rel_types_store.c#L155-L183)).
-`entity_registry` holds a globally unique surrogate `canonical_id`;
-`entity_aliases` maps a normalised name to it and is single-hop by construction,
-so an alias can never point at another alias and a circular chain is
-structurally impossible, with nothing to guard against afterwards
-([`schema.sql:1443-1456`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/schema.sql#L1443-L1456)).
-
-Scalars are left alone. An IP literal or an age is not an entity, and running it
-through a registry would invent identity where there is none.
-
-Two properties matter more than the resolution itself. Every near-match merge
-writes an `entity_merges` row, and `db2_entity_unmerge` reverses a recorded merge
-([`entity_registry.c:242-408`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/entity_registry.c#L242-L408)).
-
-An ambiguous name, where several canonical targets are plausible, lands in
-`entity_name_conflicts` with a status, a priority and a bounded retry, blocking
-neither the write nor recall. Ambiguity is queued for a decision. Nothing
-guesses on its behalf.
-
-## What stays is decided by the outcomes a memory was attributed to
-
-Every recall writes a `retrieval_event` artifact naming the rows it surfaced.
-Each surfaced row that contributed to a response gets a `retrieval_attribution`
-row carrying a verdict: `accepted`, `corrected`, `contradicted`, `rolled_back`
-or `irrelevant`. The demotion scorer reads a time-decayed window of those
-verdicts and nothing else. Its contract writes the exclusion list down:
+Whether a memory keeps its standing is then decided from a time-decayed window
+of those verdicts and nothing else. The contract spells out what is deliberately
+excluded:
 
 ```text
 The scorer reads only attributed outcome evidence — not source tags, declared
 confidence, author id, or retrieval frequency.
 ```
 
-[`demotion.h:106-110`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/demotion.h#L104-L112).
-That list is the design. A memory retrieved constantly and wrong every time
-scores negatively, because frequency is not an input, and a flattering source
-tag earns a memory nothing.
+[`demotion.h`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/demotion.h#L104-L112).
+That exclusion list is the whole idea. A memory pulled up constantly and wrong
+every time sinks, because being popular is not evidence. A memory wearing a
+respectable provenance tag earns nothing for it.
 
-Below `n_min` attributed outcomes the scorer returns `NAN` and declines to rank
-at all, which is the same refusal as abstaining on weak evidence, pointed at
-maintenance instead of recall
-([`demotion.c:690-774`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/demotion.c#L690-L774)).
+Under a floor of recorded outcomes the scorer declines to judge at all and says
+so
+([`demotion.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/demotion.c#L690-L774)).
+It is the same instinct as abstaining on a weak answer, pointed at housekeeping.
 
-Contradiction is not resolution. Both claims stay, the pipeline links them and
-preserves their sources, and review or policy decides the current value
+Contradictions are not resolved by picking a winner. Both claims stay, linked,
+with their sources intact, and the current value is a matter of policy rather
+than of whichever arrived last
 ([`CURATOR_PIPELINE.md`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/docs/CURATOR_PIPELINE.md)).
-An unresolved contradiction also raises a curiosity item, one of five gap types
-alongside `missing_fact`, `stale_fact` and `weak_coverage`, so the store carries
-a backlog of what it knows it does not know.
+An unresolved one also raises a question on a backlog of things the system knows
+it does not know, alongside gaps like a fact that has gone stale and a topic it
+has thin coverage of
+([`curiosity.h`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/curiosity.h#L25-L29)).
 
 ## Six of seven systems have no field that distinguishes the two kinds of fact
 
