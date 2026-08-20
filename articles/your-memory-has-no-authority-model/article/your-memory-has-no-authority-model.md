@@ -196,6 +196,25 @@ Where the readers do run, a citation is a document hash, a page and a bounding
 box, so an answer can point at the paragraph it came from rather than
 paraphrasing it.
 
+One thing about how it is stored, because the usual answer is wrong. Chunking a
+document and keeping the chunks is not a representation of that document. The
+whole text is the primary evidence. A chunk is secondary evidence, and it earns
+its place only by pointing back at the thing it came from.
+
+So a stored fragment carries the source path, the content hash of the whole
+file, the heading path it sits under, and the exact line span it covers. It also
+carries its neighbours, doubly linked in reading order, so the text either side
+is one hop away
+([`schema.sql`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/schema.sql#L136),
+[`kb_payload.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/kb_payload.c#L1708-L1716)).
+A retrieved fragment is never a floating paragraph whose origin has to be
+guessed at.
+
+That matters for the same reason nothing else here is destroyed. A chunk that
+replaces its document has thrown away the context that made it mean anything,
+and no similarity score recovers it. A clause retrieved without the section it
+qualifies is not a shorter answer. It is a wrong one.
+
 A conversation is a document too. Export the channel where an incident was
 worked through, or the thread where a design was argued out, and it ingests like
 anything else. That is worth doing because of what those threads contain: not

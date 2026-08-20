@@ -43,6 +43,8 @@ unrelated modifications in files not cited here.
 | claim in the article | source |
 |---|---|
 | ingestion routes by format and falls through to passthrough | `src/kb/kb_ingest_normalize.c:20-47` |
+| a stored fragment carries source path, whole-file content hash, heading path and line span | `src/db2/schema.sql:136`, `kb_documents` |
+| fragments are doubly linked in reading order and neighbours are one hop away | `src/db2/kb_payload.c:1708-1716`, `prev_chunk_id`/`next_chunk_id` |
 | office formats and HTML go through a converter; PDFs get their own extraction layer | same, plus `docs/STRUCTURED_PDF.md` |
 | PDF layers are separate dependencies that degrade individually without claiming the lost capability | `docs/STRUCTURED_PDF.md` degradation table |
 | structured PDF ingestion keeps page coordinates, reading order, tables as cells, OCR, extractor identity and confidence | `docs/STRUCTURED_PDF.md` layers and evidence model |
