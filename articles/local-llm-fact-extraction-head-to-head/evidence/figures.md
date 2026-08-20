@@ -126,7 +126,7 @@ the comparison appears. The matched run is not a leaderboard row.
 | `results/muse-glimmer-30b-xtx-20260810/` | `llama.cpp` b10356 (`0666ad2b2`) | `PARTIAL-2026-08-11.md` in that directory |
 
 No other campaign recorded a build string per run. The article states that limit
-rather than inferring a version from campaign dates.
+instead of inferring a version from campaign dates.
 
 ## Intervals
 
@@ -239,5 +239,5 @@ gave per-token weight traffic as 16.4 GiB against roughly 1.5 GiB; 16.4 GiB is
 the 35B-A3B's own measured footprint, reused as a dense 27B figure it was never
 measured for. Both are marked as withdrawn at the point they appeared.
 
-**The matched Qwen3.6 comparison run is now traced**, above, including its own
-0.7177 score and the fact that it is not the 0.7152 leaderboard row.
+**The matched Qwen3.6 comparison run is now traced**, above, with its own 0.7177
+score and its distinction from the 0.7152 leaderboard row.

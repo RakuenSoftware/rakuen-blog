@@ -8,8 +8,8 @@ excerpt: "Thirty-four saved runs on one 1,001-note corpus. The ladder from 2B to
 
 *Published 2026-08-06, last measured 2026-08-14, last corrected 2026-08-20.
 Rakuen builds aimee, the system measured here, and the prompt under test is the
-one aimee ships. Every figure traces to the
-[evidence repository](https://github.com/RakuenSoftware/rakuen-blog/tree/main/articles/local-llm-fact-extraction-head-to-head),
+one aimee ships. Every figure traces to the [evidence
+repository](https://github.com/RakuenSoftware/rakuen-blog/tree/main/articles/local-llm-fact-extraction-head-to-head),
 with a per-figure provenance map in
 [evidence/figures.md](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/local-llm-fact-extraction-head-to-head/evidence/figures.md).*
 
@@ -25,17 +25,17 @@ It does not turn every difference after the decimal point into a win.
 
 *Correction, 2026-08-09. The first graph originally sorted runs by observed
 score, which placed Q4 above Q6 or Q8 where the paired tests called them ties.
-The default view now shows what the paired tests support, and Numbers retains the
-exact scores. Two Gemma Q4 rows moved to the campaign that produced their own Q6
-and Q8 rows, E4B from 0.6166 to 0.6189 and E2B from 0.6017 to 0.6114, and stale
-abstention and spurious columns were refreshed from the score files. No verdict
-changed.*
+The default view now shows what the paired tests support, and Numbers retains
+the exact scores. Two Gemma Q4 rows moved to the campaign that produced their
+own Q6 and Q8 rows, E4B from 0.6166 to 0.6189 and E2B from 0.6017 to 0.6114, and
+stale abstention and spurious columns were refreshed from the score files. No
+verdict changed.*
 
-*Update, 2026-08-14. A native 1,001-note Qwen3.8-27B Q4_K_M run scored 0.7030 and
-was added as a row.*
+*Update, 2026-08-14. A native 1,001-note Qwen3.8-27B Q4_K_M run scored 0.7030
+and was added as a row.*
 
-*Correction, 2026-08-20. granite-4.1-3b was printed as twenty-first on score with
-twenty runs above it. Adding the Qwen3.8 row the week before had made it
+*Correction, 2026-08-20. granite-4.1-3b was printed as twenty-first on score
+with twenty runs above it. Adding the Qwen3.8 row the week before had made it
 twenty-second, with twenty-one above it, and its finding of the fewest invented
 triples in the field is unchanged. Two comparisons this data cannot support were
 withdrawn in the same pass, and both are marked where they stood.*
@@ -45,8 +45,8 @@ withdrawn in the same pass, and both are marked where they stood.*
 The model reads one remembered note and returns subject-relation-object triples
 as JSON. The prompt is the one my production system already sends, read out of
 `kb_memory_facts.c` rather than written for the benchmark. That flatters the
-result and I am keeping it, because a score here is a statement about the system
-I actually run, which was the only question I had.
+result and I am keeping it. A score here is a statement about the system I run,
+which was the only question I had.
 
     Vera Duarte joined the retrieval team last quarter.
     {"subject": "Vera Duarte", "relation": "member_of", "object": "retrieval team"}
@@ -55,8 +55,8 @@ Notes run one or two sentences, median 53 characters. The relation comes from 24
 canonical predicates, or the model coins a snake_case one when none fits. It has
 to keep durable state and drop everything transient, so `Hoping to get
 Fairweather Chemicals over the line this quarter` is worth no facts at all. 322
-of the 1,001 notes are that kind, and getting them right means returning an empty
-list.
+of the 1,001 notes are that kind, and getting them right means returning an
+empty list.
 
 A retraction is not an absence either. `Kestrel Freight is no longer a customer`
 wants the original fact back with `negated` set.
@@ -78,10 +78,10 @@ models ran wherever they fit: a local RTX 5080, a local RX 7900 XTX, and rented
 RTX 3090s and 5090s. The rented machines were hourly instances we did not keep,
 so nothing measured on them can be re-run against the same silicon.
 
-Two runs record their runtime build. Qwen3.8-27B and Muse Glimmer 30B both ran on
-`llama.cpp` b10356 on the RX 7900 XTX under Vulkan. The earlier campaigns did not
-capture a build string per run, so their runtime version is not recoverable from
-the artifacts, and every comparison that crosses campaigns carries that gap.
+Two runs record their runtime build. Qwen3.8-27B and Muse Glimmer 30B both ran
+on `llama.cpp` b10356 on the RX 7900 XTX under Vulkan. The earlier campaigns did
+not capture a build string per run, so their runtime version is not recoverable
+from the artifacts, and any comparison across campaigns carries that gap.
 
 ## Quantisation: Q4 did not beat Q6 or Q8, and the sort order said it did
 
@@ -99,20 +99,20 @@ switched off: 0.6835 precision, 0.7386 recall, and 93 invented triples on the
 factless notes. It ran on the RX 7900 XTX against a 17GB K-Quant target. That is
 one saved observation with no paired cross-model interval behind it.
 
-Qwen3.8-27B at Q4_K_M scored **0.7030**: 0.6463 precision, 0.7705 recall, and 113
-invented triples on the factless notes. It ran on the RX 7900 XTX with multi-token
-prediction (MTP) accepting 59.9% of proposed tokens. One of the 1,001 responses
-reached the 8,192-token context limit and failed to parse.
+Qwen3.8-27B at Q4_K_M scored **0.7030**: 0.6463 precision, 0.7705 recall, and
+113 invented triples on the factless notes. It ran on the RX 7900 XTX with
+multi-token prediction (MTP) accepting 59.9% of proposed tokens. One of the
+1,001 responses reached the 8,192-token context limit and failed to parse.
 
 The matched comparison is a separate Qwen3.6-27B run at the same quant and the
 same MTP setting on the same card, which scored 0.7177 rather than the 0.7152
-UD-Q4 run on the leaderboard. Qwen3.6 came out **+0.0147** ahead, paired 95% range
-−0.0038 to +0.0335. That is a tie. The two used different `llama.cpp` builds, so
-the range does not isolate the model generation.
+UD-Q4 run on the leaderboard. Qwen3.6 came out **+0.0147** ahead, paired 95%
+range −0.0038 to +0.0335. That is a tie. The two used different `llama.cpp`
+builds, so the range does not isolate the model generation.
 
-The Qwen3.6-35B-A3B leader was **+0.0228** ahead, paired range +0.0042 to +0.0417.
-That comparison also changes the quant, the backend and the hardware. It
-separates two saved configurations, not two model generations.
+The Qwen3.6-35B-A3B leader was **+0.0228** ahead, paired range +0.0042 to
++0.0417. That comparison also changes quant, backend and hardware. It separates
+two saved configurations, not two model generations.
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-qwen38" id="fig-qwen38-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-qwen38" id="fig-qwen38-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-qwen38-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-qwen38-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 150" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Qwen3.6 F1 differences against Qwen3.8 with paired 95% intervals"><line class="sg-chart__rule" x1="291.7" x2="291.7" y1="18" y2="118"/><text class="sg-chart__axis" x="291.7" y="14" text-anchor="middle">NO DIFFERENCE</text><line class="sg-chart__grid" x1="435.0" x2="435.0" y1="18" y2="118"/><text class="sg-chart__value" x="435.0" y="138" text-anchor="middle" opacity=".7">+0.02</text><line class="sg-chart__grid" x1="578.3" x2="578.3" y1="18" y2="118"/><text class="sg-chart__value" x="578.3" y="138" text-anchor="middle" opacity=".7">+0.04</text><text class="sg-chart__label" x="198" y="49" text-anchor="end">Qwen3.6-27B Q4_K_M</text><line class="sg-chart__line sg-chart__line--muted" x1="264.4" x2="531.7" y1="45" y2="45"/><line class="sg-chart__line sg-chart__line--muted" x1="264.4" x2="264.4" y1="40.5" y2="49.5"/><line class="sg-chart__line sg-chart__line--muted" x1="531.7" x2="531.7" y1="40.5" y2="49.5"/><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="397.0" cy="45" r="4.5"/><text class="sg-chart__value" x="660" y="49" opacity=".7">+0.0147</text><text class="sg-chart__label" x="198" y="99" text-anchor="end">Qwen3.6-35B-A3B UD-Q4</text><line class="sg-chart__line sg-chart__line--1" x1="321.8" x2="590.5" y1="95" y2="95"/><line class="sg-chart__line sg-chart__line--1" x1="321.8" x2="321.8" y1="90.5" y2="99.5"/><line class="sg-chart__line sg-chart__line--1" x1="590.5" x2="590.5" y1="90.5" y2="99.5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="455.1" cy="95" r="4.5"/><text class="sg-chart__value" x="660" y="99">+0.0228</text></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>range excludes zero</span><span><i style="background:var(--sg-chart-muted)"></i>range contains zero</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">Qwen3.6 run minus Qwen3.8</th><th style="text-align:right">F1 difference</th><th style="text-align:left">paired 95% range</th><th style="text-align:left">result</th></tr></thead><tbody><tr><td style="text-align:left">27B Q4_K_M, MTP</td><td style="text-align:right">+0.0147</td><td style="text-align:left">[−0.0038, +0.0335]</td><td style="text-align:left">tie</td></tr><tr><td style="text-align:left">35B-A3B UD-Q4</td><td style="text-align:right">+0.0228</td><td style="text-align:left">[+0.0042, +0.0417]</td><td style="text-align:left"><strong>separable configurations</strong></td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">Paired resampling over the same 1,001 notes. The 27B comparison is the closest saved configuration. The 35B comparison also changes quant, backend and hardware, so its separated interval does not isolate model generation.</figcaption></figure>
 
@@ -130,14 +130,14 @@ The deltas use unrounded scores. The comparison-only Smol Q4 run scored 0.3581,
 is not one of the 34 leaderboard rows, and is mapped in the evidence note with
 its prediction artifacts.
 
-LFM2.5 shows why a score can look backwards. Q8 found two more true facts than Q4
-and emitted 38 more false ones, so its recall rose and its precision fell. The
-lower score is a different operating point, not evidence that four-bit weights
-preserved the model better.
+LFM2.5 shows why a score can look backwards. Q8 found two more true facts than
+Q4 and emitted 38 more false ones, so its recall rose and its precision fell.
+The lower score is a different operating point, not evidence that four-bit
+weights preserved the model better.
 
 `abstain` is how often a model correctly returns nothing on the 322 factless
-notes. `spurious` counts the triples it invents on them instead. `reasons` is the
-fraction of rows carrying a reasoning pass.
+notes. `spurious` counts the triples it invents on them instead. `reasons` is
+the fraction of rows carrying a reasoning pass.
 
 ## The ranking: the top is a tie, and six steps below it are not separable
 
@@ -152,9 +152,9 @@ Six consecutive steps, 2B to 31B, and this data cannot order any neighbouring
 pair. The break sits one rung higher than the ranking suggests. The two Qwen3.6
 runs are above it, and they cannot be ordered against each other either.
 
-Glimmer and Qwen3.8 fall between the dense Qwen3.6 and the 31B on observed score.
-Glimmer has no paired cross-model interval. Qwen3.8 ties the matched Qwen3.6-27B
-run, subject to the build difference above.
+Glimmer and Qwen3.8 fall between the dense Qwen3.6 and the 31B on observed
+score. Glimmer has no paired cross-model interval. Qwen3.8 ties the matched
+Qwen3.6-27B run, subject to the build difference above.
 
 That second fact cost me the claim I wrote first. I had the 35B down as the only
 separably best run in the field, on a table where the 27B had no score yet. It
@@ -165,12 +165,12 @@ ends against each other.
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-2" id="fig-2-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-2" id="fig-2-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-2-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-2-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 140" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Paired differences with 95% intervals"><line class="sg-chart__grid" x1="321.8" x2="321.8" y1="26" y2="102.0"/><text class="sg-chart__value" x="321.8" y="120.0" text-anchor="middle" opacity=".7">+0.04</text><line class="sg-chart__grid" x1="497.6" x2="497.6" y1="26" y2="102.0"/><text class="sg-chart__value" x="497.6" y="120.0" text-anchor="middle" opacity=".7">+0.08</text><line class="sg-chart__grid" x1="673.4" x2="673.4" y1="26" y2="102.0"/><text class="sg-chart__value" x="673.4" y="120.0" text-anchor="middle" opacity=".7">+0.12</text><text class="sg-chart__label" x="176" y="59.0" text-anchor="end">E2B QAT → 31B QAT</text><line class="sg-chart__line sg-chart__line--1" x1="242.7" x2="459.0" y1="55.0" y2="55.0"/><line class="sg-chart__line sg-chart__line--1" x1="242.7" x2="242.7" y1="50.5" y2="59.5"/><line class="sg-chart__line sg-chart__line--1" x1="459.0" x2="459.0" y1="50.5" y2="59.5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="350.4" cy="55.0" r="4.5"/><text class="sg-chart__value" x="692" y="59.0">+0.0465</text><text class="sg-chart__label" x="176" y="89.0" text-anchor="end">E2B QAT → 35B-A3B</text><line class="sg-chart__line sg-chart__line--1" x1="413.7" x2="627.3" y1="85.0" y2="85.0"/><line class="sg-chart__line sg-chart__line--1" x1="413.7" x2="413.7" y1="80.5" y2="89.5"/><line class="sg-chart__line sg-chart__line--1" x1="627.3" x2="627.3" y1="80.5" y2="89.5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="520.0" cy="85.0" r="4.5"/><text class="sg-chart__value" x="692" y="89.0">+0.0851</text></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>range excludes zero</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">span</th><th style="text-align:right">delta</th><th style="text-align:left">95% CI</th><th style="text-align:left"></th></tr></thead><tbody><tr><td style="text-align:left">E2B QAT → 31B QAT</td><td style="text-align:right"><strong>+0.0465</strong></td><td style="text-align:left">[+0.0220, +0.0712]</td><td style="text-align:left">significant</td></tr><tr><td style="text-align:left">E2B QAT → 35B-A3B</td><td style="text-align:right"><strong>+0.0851</strong></td><td style="text-align:left">[+0.0609, +0.1095]</td><td style="text-align:left">significant</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">The same stretch measured end to end rather than rung by rung.</figcaption></figure>
 
-Every step is noise. The sum is not. Six intervals of about ±0.020 stacked end to
-end leave room to hide a real 0.0465.
+Every step is noise. The sum is not. Six intervals of about ±0.020 stacked end
+to end leave room to hide a real 0.0465.
 
-**Read the size ladder end to end.** Rung by rung it says size does nothing, which
-is the most expensive mistake available in this kind of benchmark and the default
-way people run them.
+**Read the size ladder end to end.** Rung by rung it says size does nothing,
+which is the most expensive mistake available in this kind of benchmark and the
+default way people run them.
 
 ## Size: +0.0465 across fifteen times the parameters, and one separable step above it
 
@@ -181,20 +181,20 @@ ladder separates on its own: the dense Qwen3.6-27B over the 31B QAT build,
 **+0.0280**, range +0.0106 to +0.0456.
 
 Qwen3.6-35B-A3B is a mixture of experts (MoE), with 35B of weights resident and
-about 3B of them doing work on any given token. It ties the dense 27B on accuracy
-at **−0.0106**, range −0.0294 to +0.0088, and reaches that score at 3.5 times the
-throughput.
+about 3B of them doing work on any given token. It ties the dense 27B on
+accuracy at **−0.0106**, range −0.0294 to +0.0088, and reaches that score at 3.5
+times the throughput.
 
 Sparsity bought no points here. It bought the same points for a fraction of the
-weights read per token, which is the better deal and the harder one to see from a
-leaderboard.
+weights read per token, which is the better deal and the harder one to see from
+a leaderboard.
 
 *Withdrawn 2026-08-20. This section previously said the 35B beat a dense 31B by
 more than the dense 31B beat a 2B, and gave per-token weight traffic as 16.4 GiB
 against roughly 1.5 GiB. The first compares two runs with no paired interval
 between them, and on observed scores it is false against the QAT 31B. The second
-reused the 35B's measured memory footprint as a dense 27B figure. Neither was
-load-bearing for the finding.*
+reused the 35B's measured memory footprint as a dense 27B figure. The finding
+stands without either.*
 
 Throughput follows the same line.
 
@@ -202,19 +202,18 @@ Throughput follows the same line.
 
 The 35B runs at **234.0 tok/s against 67.8** for the dense 27B from its own
 family, both on rented RTX 5090s, and the two write almost the same amount:
-median 1,100 completion tokens against 1,256. The gap is per-token cost, not
-answer length.
+median 1,100 completion tokens against 1,256. So the gap is per-token cost.
 
-Qwen3.8 decoded at a median **72.1 tokens per second** on the RX 7900 XTX, with a
-median completion of 293 tokens and a median latency of 4.51 seconds. Those
-figures describe this run on this card. The shorter answers make an end-to-end
-speed comparison against Qwen3.6 misleading.
+Qwen3.8 decoded at a median **72.1 tokens per second** on the RX 7900 XTX. Its
+median completion was 293 tokens and its median latency 4.51 seconds. Those
+figures describe this run on this card, and the shorter answers make an
+end-to-end speed comparison against Qwen3.6 misleading.
 
-The 35B ran with no speculative decoding at all and still beat a dense 12B running
-a draft head at 82% acceptance. I had both Qwen3.6 runs labelled as using MTP in
-my own notes for several hours. `/props` says `speculative: null`, and no row in
-either prediction file carries a draft counter. I assumed a fast model must be
-speculating, and the assumption outlived three status reports.
+The 35B ran with no speculative decoding at all and still beat a dense 12B
+running a draft head at 82% acceptance. I had both Qwen3.6 runs labelled as
+using MTP in my own notes for several hours. `/props` says `speculative: null`,
+and no row in either prediction file carries a draft counter. I assumed a fast
+model must be speculating, and the assumption outlived three status reports.
 
 ## Restraint: two runs tie on score and land 78 invented triples apart
 
@@ -223,8 +222,8 @@ speculating, and the assumption outlived three status reports.
 Indistinguishable on score. Not the same model.
 
 The 31B QAT build finds 0.8000 of the facts, best in the field. It also invents
-172 triples on the 322 notes that assert nothing, against the 12B QAT build's 94,
-and stays correctly silent on 48% of them.
+172 triples on the 322 notes that assert nothing, against the 12B QAT build's
+94, and stays correctly silent on 48% of them.
 
 The non-QAT 31B lands on the same trade: 164 invented triples, 51% correct
 abstention. Scaling to 31B bought recall and spent restraint. The aggregate hid
@@ -244,15 +243,15 @@ fewer triples than all twenty-one runs scoring above it.
 ## Parse rate: read it first, because 0.90 is malformed JSON and 1.00 can still be wrong
 
 **Both gemma-4-12B runs parse at 0.92 and 0.90, with zero rows at the context
-limit.** That is malformed JSON, not truncation. The QAT build's 0.6854 counts 83
-unreadable rows as failures and the non-QAT build's 0.6754 counts 98. Their real
-capability is above the numbers I printed, the 31B and Qwen rows at 1.00 carry no
-such handicap, and the gap between them is overstated by an amount I cannot
-currently quantify.
+limit.** That is malformed JSON, not truncation. The QAT build's 0.6854 counts
+83 unreadable rows as failures and the non-QAT build's 0.6754 counts 98. Their
+real capability is above the numbers I printed, the 31B and Qwen rows at 1.00
+carry no such handicap, and the gap between them is overstated by an amount I
+cannot currently quantify.
 
-**MiniCPM5-1B parses 0.87.** Its 0.763 abstention and 82 spurious triples describe
-only the output that made it through parsing. The unreadable rows still count as
-failures, so its 0.1652 is a floor on capability rather than evidence of unusual
+**MiniCPM5-1B parses 0.87.** Its 0.763 abstention and 82 spurious triples
+describe only the output that made it through parsing. The unreadable rows still
+count as failures, so its 0.1652 is a floor on capability, not a sign of unusual
 restraint.
 
 **LFM2.5-1.2B parses 0.73 at Q8_0 and 0.59 at Q6_K.**
@@ -273,13 +272,13 @@ suppressed reasoning across 10,000 notes while every row still recorded
 
 I have run that diagnostic against four models, and twenty-nine runs are
 unchecked. A run that silently loses its reasoning pass scores as a worse model,
-so some fraction of the bottom half of this table is a prompt problem wearing the
-costume of a capability problem, and I cannot tell you which rows.
+so some fraction of the bottom half of this table is a prompt problem wearing
+the costume of a capability problem, and I cannot tell you which rows.
 
-Two runs reason on 85% of rows, both gemma-4-E4B: the QAT q4_0 build and UD-Q6. I
-wrote that up as a QAT effect when it was the only build showing it. UD-Q6 is not
-a QAT build, so whatever this is, it is not that. The same model at UD-Q4 and
-UD-Q8 reasons on every row, which rules out a plain size-of-quant story too.
+Two runs reason on 85% of rows, both gemma-4-E4B: the QAT q4_0 build and UD-Q6.
+I wrote that up as a QAT effect when it was the only build showing it. UD-Q6 is
+not a QAT build, so whatever this is, it is not that. The same model at UD-Q4
+and UD-Q8 reasons on every row, which rules out a plain size-of-quant story too.
 
 I do not know what it is.
 
@@ -287,10 +286,10 @@ I do not know what it is.
 
 ### Not a level measurement: one generator wrote every note
 
-One set of experiment data, one generation pipeline, one generator model. A model
-trained on data resembling my generator has an advantage I cannot detect from
-inside. That is the limit I cannot close without a second set of data from a
-different lineage.
+One set of experiment data, one generation pipeline, one generator model. A
+model trained on data resembling my generator has an advantage I cannot detect
+from inside. That is the limit I cannot close without a second set of data from
+a different lineage.
 
 ### Not one GPU, and the Vulkan half is unbounded
 
@@ -309,8 +308,8 @@ ordering claim.
 
 gemma-3n-E4B, Qwen3-1.7B, granite-4.1-3b and granite-4.0-1b were extracted from
 10,000-note runs. The same notes score 0.0079 lower depending on which set they
-ran inside, with 47% of output text differing. I had this down as three rows until
-we traced every figure in this piece to its artifact and found the fourth.
+ran inside, with 47% of output text differing. I had this down as three rows
+until we traced every figure in this piece to its artifact and found the fourth.
 
 ### One row ran at a different process count
 
@@ -320,18 +319,18 @@ here.
 
 ### One throughput figure was corrected
 
-The dense 27B run was two thirds through when this table was first written, and we
-read its speed as 64.7 tok/s off three samples. The finished run says 67.8 across
-1,001 notes, with every hundred-note slice between 67.7 and 68.0. The earlier
-figure was 4.6% low, and every ratio here uses the new one.
+The dense 27B run was two thirds through when this table was first written, and
+we read its speed as 64.7 tok/s off three samples. The finished run says 67.8
+across 1,001 notes, with every hundred-note slice between 67.7 and 68.0. The
+earlier figure was 4.6% low, and every ratio here uses the new one.
 
 ### Three figures are single-sourced
 
 The memory footprints, 16.4, 13.27 and 15.84 GiB, are read from `llama.cpp`
-startup output at load time and are not captured in a committed artifact. Read
-them as single-sourced rather than measured.
+startup output at load time and are not captured in a committed artifact. They
+are single-sourced.
 
-## What would move this table: five open items, and the first one is large
+## What would move this table: five open items, and 181 unreadable rows in the first
 
 1. **Diagnose the 12B parse failures.** 83 and 98 unreadable rows on runs near the
    top of the table is the largest single understatement in it, and I have not
@@ -352,33 +351,31 @@ them as single-sourced rather than measured.
 
 **If it fits, Qwen3.6-35B-A3B at UD-Q4.** It ties the dense 27B, separates from
 the bottom of the size ladder by +0.0851, parses every row, abstains on 0.693 of
-the factless notes and runs at 234 tok/s. It reports 16.4 GiB at load, so a 24 GB
-card. There is no paired interval between it and the 31B QAT build, so read its
-place above that row as observed order rather than as a tested result.
+the factless notes and runs at 234 tok/s. It reports 16.4 GiB at load, so a 24
+GB card. No paired interval sits between it and the 31B QAT build, so its place
+above that row is observed order and nothing more.
 
-Take it over the dense 27B on the tie-break rather than on the score. Same
-family, same quant, the same accuracy within this test, and the MoE runs 3.5 times
-faster while abstaining on 0.693 of the factless notes against the 27B's 0.547.
-The dense 27B invents 148 triples where the 35B invents 101. There is no accuracy
-argument between them and two practical ones, both pointing the same way.
+Take it over the dense 27B on the tie-break, not the score. Same family, same
+quant, statistically the same F1, and the MoE runs 3.5 times faster while
+abstaining on 0.693 of the factless notes against the 27B's 0.547. The dense 27B
+invents 148 triples where the 35B invents 101. There is no accuracy argument
+between them and two practical ones, both pointing the same way.
 
 Qwen3.8 at Q4_K_M ties the matched Qwen3.6-27B run and does not overturn that.
-The recommendation already rested on speed and restraint rather than on a
-separable accuracy lead.
+The recommendation already rested on speed and restraint, not on a separable
+accuracy lead.
 
 **On a 16 GB card, gemma-4-26B-A4B at QAT UD-Q4.** At 0.6804 it ties the three
-rows above it and reaches **323 tok/s, the fastest run in this project**. It fits
-in 13.27 GiB because QAT shrinks it, where the non-QAT build of the same model
-reports 15.84 GiB and does not fit that card at all.
+rows above it and reaches **323 tok/s, the fastest run in this project**. It
+fits in 13.27 GiB because QAT shrinks it, where the non-QAT build of the same
+model reports 15.84 GiB and does not fit that card at all.
 
-**If invented facts are expensive, granite-4.1-3b.** It invents 69 triples on the
-factless notes, about half the 135 from the run directly above it, and it costs
-you twenty-one places on the score to get that.
+**If invented facts are expensive, granite-4.1-3b.** It invents 69 triples on
+the factless notes, about half the 135 from the run directly above it, and costs
+you twenty-one places on the score.
 
 **If you need recall, gemma-4-31B QAT.** 0.8000, and you pay for it in precision
 and restraint.
 
 **Not for anyone below about 1.2B on this prompt.** Those runs either fail to
 parse or answer confidently and wrongly.
-
-Buy the operating point, not the rank.
