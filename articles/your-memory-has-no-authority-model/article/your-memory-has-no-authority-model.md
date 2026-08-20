@@ -446,9 +446,9 @@ The scorer reads only attributed outcome evidence — not source tags, declared
 confidence, author id, or retrieval frequency.
 ```
 
-`demotion.h`. That exclusion list is the whole idea. A memory pulled up
-constantly and wrong every time sinks, and a memory wearing a respectable
-provenance tag earns nothing for it.
+That exclusion list is the whole idea. A memory pulled up constantly and wrong
+every time sinks, and a memory wearing a respectable provenance tag earns
+nothing for it.
 
 Note which frequency is being refused, because the system counts the other one
 carefully. How many independent sources asserted a thing is corroboration, and
@@ -497,7 +497,7 @@ happen automatically:
 
 ```text
 Nothing is applied automatically: the caller names the relationships that are
-single-valued. Most cognee relationships (``knows``, ``mentions``,...) are
+single-valued. Most cognee relationships (``knows``, ``mentions``, ...) are
 legitimately many-valued and must never be collapsed, and there is no
 cardinality metadata to tell them apart.
 ```
@@ -555,16 +555,9 @@ described above is the memory doing that work, and it has been carrying it in
 production for about a year. The public repository is younger than that,
 because its first commit is a snapshot import.
 
-That is worth stating because of something this audit turned up without looking
-for it. Across the seven, the open-source artifact and the working system are
-frequently different objects.
-
-A-MEM is a research implementation, and its own README sends you to a separate
-repository to reproduce the paper. Letta's V1 server is on an `archive` branch
-that "receives no fixes or security updates, and should not be used in
-production", and the current source is a different repository. mem0's graph
-memory left the open source entirely and is now "a built-in, always-on Mem0
-Platform feature". cognee's contradiction detection ships switched off.
+Which is worth stating, because everything above it describes a field where the
+open-source artifact and the working system are frequently different objects: a
+paper, an archived server, a feature that moved to the paid tier.
 
 None of that is dishonest and none of it is unusual. A research group publishes
 to be cited and a company keeps its differentiator on the paid tier. It does
@@ -595,10 +588,6 @@ system holding all four would settle it, and I would rather be shown one than
 keep the claim.
 
 ## What this design costs
-
-Fusion is not free, and the bill arrives on the write path. Every guard in the
-middle of this piece exists because an edge is a path, and a system that lets
-anything become an edge has let anything change every ranking.
 
 A vocabulary that is wrong rejects facts that are true. Seventeen relations is
 a small seed, so on a fresh corpus most of what arrives is novel, lands as
