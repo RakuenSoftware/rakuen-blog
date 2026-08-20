@@ -33,6 +33,26 @@ unrelated modifications in files not cited here.
 | relation weights: `defines` 1.00, `contains` 0.85, `depends_on` 0.75, `calls` 0.55, `co_edited` 0.60, `co_discussed` 0.45 | `src/modules/memory/memory_graph_fusion.c:26-50` |
 | a non-code-shaped query is refused entry to code subgraphs, checked per node | `src/modules/memory/memory_graph_fusion.c:186-189, 226-227` |
 
+### Cross-repo resolution
+
+| claim in the article | source |
+|---|---|
+| symbols are keyed per project, so a call and its definition in another repo are unrelated nodes | `docs/proposals/done/cross-repo-dependency-graph.md` thesis |
+| forty repositories on the reference deployment | same |
+| the `LiStartConnection` example | same |
+| every edge carries a confidence tier and its evidence, never a bare boolean | `src/db2/cross_repo_resolver.h`, §3.2 |
+| top tier needs trusted-rooted corroboration by import resolution or export membership plus three call sites across three files | `cross-repo-dependency-graph.md` §3.2 (a)/(b) |
+| single call site is tentative and excluded from default output | same, LOW/TENTATIVE |
+| several plausible definers, or an import resolving to several files, is routed to a review queue and never guessed | `src/db2/cross_repo_resolver.h:80-99`, §3.5/§3.7 |
+| a vendored copy colliding with the original routes to ambiguous | `cross-repo-dependency-graph.md` §3.7 tie-break |
+| untrusted caller caps at the middle tier; untrusted definer can never lend top-tier export corroboration | same, §0 untrusted signal caps |
+
+**One claim rests on a proposal rather than a line.** The forty-repository
+figure and the `LiStartConnection` example come from the proposal's thesis
+statement, which is a first-party description of the author's own deployment
+rather than something the source can show. The tier machinery it describes is
+verified in `cross_repo_resolver.h`.
+
 ### Time
 
 | claim in the article | source |

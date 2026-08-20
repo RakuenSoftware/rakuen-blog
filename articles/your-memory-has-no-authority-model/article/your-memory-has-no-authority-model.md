@@ -111,6 +111,49 @@ walk proceeds
 ([`memory_graph_fusion.c`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/modules/memory/memory_graph_fusion.c#L186-L189)).
 Ask about your spouse and no call graph appears.
 
+## The graph does not stop at the repository boundary
+
+A per-repo code graph answers questions inside one checkout. Most of what you
+want to know lives across the line between two.
+
+Take a client that calls `LiStartConnection`, a function defined in a separate
+library repository. Both are indexed. Symbols are keyed by project, so the call
+in one and the definition in the other are two unrelated nodes, and asking who
+calls that function returns nothing useful. The reference deployment carries
+forty repositories with that seam running between every pair of them.
+
+Resolving it by name is the obvious move and the wrong one, because names
+collide, vendored copies duplicate them, and a planted export in a repository
+you did not write is an attack rather than an accident. So the resolver refuses
+to emit a boolean. Every cross-repo edge carries a confidence tier and the
+evidence that earned it
+([`cross_repo_resolver.h`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/cross_repo_resolver.h)).
+
+The top tier needs corroboration rooted in a repository you have marked
+trusted, by one of two independent routes. Either an import in the caller
+resolves to the definer under per-language rules, or the symbol is in the
+definer's exports while the caller uses it at least three times across at least
+three distinct files. That second threshold should look familiar. It is
+the corroboration rule from further up this piece, pointed at code.
+
+What happens to the rest is the part that matters. A single call site is
+tentative and stays out of the default output. A symbol with several plausible
+definers goes to a review queue as ambiguous and is never emitted as a
+dependency. An import that resolves to more than one indexed file is routed
+there too, never guessed, and a vendored copy that collides with the original
+goes the same way.
+
+Trust is a property of each repository and it caps what that repository can
+vouch for. An untrusted caller's import corroboration cannot exceed the middle
+tier, and an untrusted definer can never lend top-tier export corroboration at
+all, because its export list is not something it can attest to about itself.
+
+This is the write gate again, in a different domain. Refuse the unvalidated
+edge, tier what remains by the evidence behind it, queue the genuinely
+ambiguous for a human, and never let an unverified source promote itself. The
+result is that a question asked in one repository can be answered by code in
+another, and the graph will tell you how confident it is and why.
+
 ## Two clocks, and neither one overwrites
 
 A graph that ranks everything has to be honest about time, and there are two
