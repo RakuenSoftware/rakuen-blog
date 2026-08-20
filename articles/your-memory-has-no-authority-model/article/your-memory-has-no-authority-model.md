@@ -3,7 +3,7 @@ title: "Your agent's memory has no authority model"
 date: 2026-08-20
 author: Rakuen Software
 tags: [memory, agents, knowledge-graph, ontology, aimee]
-excerpt: "Seven publicly available memory systems, read at a pinned commit. In six of them a language model's guess and a person's statement are the same kind of row, and the model's own output decides which rows survive. That is an architectural property of the write path, not a retrieval quality problem."
+excerpt: "Seven publicly available memory systems, read at a pinned commit. In six of them a language model's guess and a person's statement are the same kind of row, and the model's own output decides which rows survive. That is a property of the write path, settled when the fact is stored."
 ---
 
 *Published 2026-08-20. Rakuen builds aimee, one of the seven systems audited
@@ -30,14 +30,14 @@ language model inferred are the same kind of row, with no field distinguishing
 them, and the model's own output decides which rows survive. In three, a model
 tool call destroys the prior content outright.
 
-That is not a quality problem that better retrieval fixes. It is a property of
-what the store is allowed to accept and what it is allowed to forget, decided at
-the write, and it survives any amount of context you throw at the read.
+Better retrieval leaves that where it is. What the store accepts, and what it
+lets go, is settled at the write, and it survives any amount of context you
+throw at the read.
 
 `aimee` is the exception, and the rest of this is the mechanism that makes it
 one: a write gate that validates a triple against a typed ontology before
 commit, a provenance-keyed authority class a model can never reach, and a store
-where correction stamps a row rather than removing it.
+where a correction stamps the old row and leaves it there.
 
 Everything below describes `aimee`'s typed-fact layer, which is where identity
 and world facts live. Free-text prose memory, which carries episodic and code
@@ -69,8 +69,8 @@ returns before writing anything: "REJECT_KIND / BADARG: never write an
 unvalidated semantic edge"
 ([`rel_types_store.c:208`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/rel_types_store.c#L207-L208)).
 
-The ontology is a table, not code. Seventeen relations ship in the in-code seed
-so a fresh install validates before anything has been learned, and each row is
+The ontology lives in a table. Seventeen relations ship in an in-code seed so a
+fresh install validates before anything has been learned, and each row is
 self-describing:
 
 | relation | subject | object | correction policy | sensitivity |
@@ -90,12 +90,11 @@ The live overlay is the `rel_types` table
 carrying the same columns plus a `status` of `active`, `provisional`, `mapped`
 or `rejected`.
 
-Two consequences follow, and the second is the awkward one. Favourable: a
-relation's semantics travel with the relation, so nothing downstream has to be
-told, per call, that `works_for` holds one value and `knows` holds many.
-Awkward: an ontology that is wrong rejects legitimate facts, and a
-seventeen-row seed is wrong about most of the world on day one. The next
-section is how that stops being fatal.
+Two consequences follow. The good one: a relation's semantics travel with the
+relation, so nothing downstream has to be told, per call, that `works_for` holds
+one value and `knows` holds many. The awkward one: an ontology that is wrong
+rejects legitimate facts, and a seventeen-row seed is wrong about most of the
+world on day one. The next section is how that stops being fatal.
 
 ## Novel relations stage as speculation and promote themselves at three sightings
 
@@ -113,8 +112,8 @@ INSERT INTO ontology_evaluations (rel_type, occurrence_count, status, created_at
  RETURNING occurrence_count
 ```
 
-The count is bumped only after the edge actually committed, so a failed write
-cannot inflate a candidate's standing. A previously rejected relation keeps its
+The count is bumped only after the edge committed, so a failed write cannot
+inflate a candidate's standing. A previously rejected relation keeps its
 status on conflict, so it cannot resurface as a candidate by being emitted
 again.
 
@@ -135,12 +134,12 @@ This is what "the ontology extends itself" has to mean to be worth anything. A
 relation earns durability by recurring across sources, and nothing about the
 promotion needs a person in the loop. Compare `aimee expand kubernetes <url>`,
 which seeds a domain's relations up front from its documentation and is
-deliberately human-approvable, because it changes the ontology's shape rather
-than counting evidence for a shape already in use.
+deliberately human-approvable, because it changes the ontology's shape. Nothing
+has recurred yet to be counted.
 
 ## A model-inferred fact can never reach the class a person's statement gets
 
-This is the load-bearing rule, and it is eleven lines:
+The rule is eleven lines:
 
 ```c
 const char *fact_class_for(fact_authority_t authority, fact_gate_verdict_t verdict)
@@ -175,10 +174,11 @@ dropped
 Above it, the score buys nothing. A model returning `"confidence": 1.0` on a
 hallucinated triple gets Class B, the same as a cautious one.
 
-Note the first branch. A novel relation is Class C even when the user asserted
-it, because what is unproven there is the ontology rather than the speaker. That
-costs the user something and it is the correct trade: an unvalidated relation
-should not carry permanent authority because a person used it once.
+Look at the first branch. A novel relation is Class C even when the user
+asserted it, because the ontology is what is unproven there and the speaker's
+authority cannot cure that. It costs the user something, and it is the right
+trade: an unvalidated relation should not carry permanent authority because one
+person used it once.
 
 Expiry does the cleaning, and its SQL is where "unconfirmed speculation cannot
 calcify into a remembered fact" stops being a slogan:
@@ -190,12 +190,12 @@ UPDATE entity_edges SET superseded_at = ?2
    AND asserted_at <> '' AND asserted_at < ?1
 ```
 
-Unconfirmed Class C edges past their TTL are stamped, not removed. And a Class B
-fact re-observed a hundred times becomes durable B; it never becomes A. Nothing
-a model produces reaches the class a person's statement gets, by any path,
-including repetition.
+Unconfirmed Class C edges past their TTL are stamped, and the rows stay. A Class
+B fact re-observed a hundred times becomes durable B; it never becomes A.
+Nothing a model produces reaches the class a person's statement gets, by any
+path, including repetition.
 
-## Correction stamps a row. It does not remove one
+## Correction stamps the old row and keeps it
 
 `correction_behavior` is a column on the relation, so the policy for correcting
 a fact is a property of what kind of fact it is.
@@ -234,7 +234,7 @@ Entity-kind endpoints are canonicalised before the edge is written
 `entity_registry` holds a globally unique surrogate `canonical_id`;
 `entity_aliases` maps a normalised name to it and is single-hop by construction,
 so an alias can never point at another alias and a circular chain is
-structurally impossible rather than guarded after the fact
+structurally impossible, with nothing to guard against afterwards
 ([`schema.sql:1443-1456`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/schema.sql#L1443-L1456)).
 
 Scalars are left alone. An IP literal or an age is not an entity, and running it
@@ -244,19 +244,18 @@ Two properties matter more than the resolution itself. Every near-match merge
 writes an `entity_merges` row, and `db2_entity_unmerge` reverses a recorded merge
 ([`entity_registry.c:242-408`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/entity_registry.c#L242-L408)).
 
-And a genuinely ambiguous name, where several canonical targets are plausible,
-lands in `entity_name_conflicts` with a status, a priority and a bounded retry,
-blocking neither the write nor recall. Ambiguity is queued. It is not resolved by
-guessing.
+An ambiguous name, where several canonical targets are plausible, lands in
+`entity_name_conflicts` with a status, a priority and a bounded retry, blocking
+neither the write nor recall. Ambiguity is queued for a decision. Nothing
+guesses on its behalf.
 
-## What stays is decided by attributed outcomes, not by how often it was read
+## What stays is decided by the outcomes a memory was attributed to
 
 Every recall writes a `retrieval_event` artifact naming the rows it surfaced.
 Each surfaced row that contributed to a response gets a `retrieval_attribution`
 row carrying a verdict: `accepted`, `corrected`, `contradicted`, `rolled_back`
 or `irrelevant`. The demotion scorer reads a time-decayed window of those
-verdicts and nothing else. Its contract states the exclusion list rather than
-leaving it to be inferred:
+verdicts and nothing else. Its contract writes the exclusion list down:
 
 ```text
 The scorer reads only attributed outcome evidence — not source tags, declared
@@ -265,8 +264,8 @@ confidence, author id, or retrieval frequency.
 
 [`demotion.h:106-110`](https://github.com/RakuenSoftware/aimee/blob/50c5d88d37bae618ee08b0101f163682e864ace9/src/db2/demotion.h#L104-L112).
 That list is the design. A memory retrieved constantly and wrong every time
-scores negatively, because frequency is not an input, and a memory carrying a
-flattering source tag gets no credit for it.
+scores negatively, because frequency is not an input, and a flattering source
+tag earns a memory nothing.
 
 Below `n_min` attributed outcomes the scorer returns `NAN` and declines to rank
 at all, which is the same refusal as abstaining on weak evidence, pointed at
@@ -290,23 +289,24 @@ line can carry, the paragraphs after the table say so.
 | system | commit | typed write gate | authority classes | valid time | model may remove a fact |
 | --- | --- | --- | --- | --- | --- |
 | `aimee` typed facts | `50c5d88d` | yes, kind-validated | A / B / C, enforced | yes | no, superseded |
-| Graphiti (Zep) | `c4069327` | no | none | yes | expired, not dropped |
-| cognee | `fd5045f6` | optional, enrichment only | none | edge `updated_at` | tagged, not dropped |
+| Graphiti (Zep) | `c4069327` | no | none | yes | expired, retained |
+| cognee | `fd5045f6` | optional, enrichment only | none | edge `updated_at` | tagged, retained |
 | mem0 OSS | `3599aa75` | no | none | no | not in v3, ADD-only |
 | Letta Code | `d1dc6880` | no | none | no | yes, block rewrite |
 | LangMem | `29cbe41e` | no | none | no | yes, hard delete |
 | Memobase | `358c16bb` | slot schema | none | no | yes, slot rewrite |
 
-Graphiti is the closest architecture and the fairest comparison. It is genuinely
+Graphiti is the closest architecture and the fairest comparison. It is
 bitemporal: `valid_at`, `invalid_at` and `expired_at` all sit on `EntityEdge`,
-and a contradicted edge is expired rather than deleted
+and a contradicted edge is expired, with the row kept
 ([`edges.py:262-283`](https://github.com/getzep/graphiti/blob/c406932767ee490ad2311fd694a6b2ac3b164599/graphiti_core/edges.py#L262-L283)).
 
 Custom edge types are supported and filtered per node-label pair. What that
 filtering does is choose which type definitions the extraction prompt is shown
 ([`edge_operations.py:458-486`](https://github.com/getzep/graphiti/blob/c406932767ee490ad2311fd694a6b2ac3b164599/graphiti_core/utils/maintenance/edge_operations.py#L458-L486)).
-It is not a write-time rejection. The validation that does run on the way in
-checks that the LLM's entity names exist in the node list and drops self-edges
+Nothing then checks the relation the model returns against them. The validation
+that does run on the way in checks that the LLM's entity names exist in the node
+list and drops self-edges
 ([`edge_operations.py:210-241`](https://github.com/getzep/graphiti/blob/c406932767ee490ad2311fd694a6b2ac3b164599/graphiti_core/utils/maintenance/edge_operations.py#L210-L241));
 the relation name is taken as given and becomes the edge's `name`.
 
@@ -314,10 +314,9 @@ There is no confidence, provenance or authority field on `EntityEdge` at all, so
 an edge the user dictated and an edge the model inferred are indistinguishable
 rows.
 
-cognee has arrived at the same problem and named it precisely. Its temporal
-conflict resolver tags superseded edges rather than deleting them, which is the
-right behaviour, and its module docstring explains why it cannot do that
-automatically:
+cognee has arrived at the same problem and named it. Its temporal conflict
+resolver tags superseded edges and keeps them, which is the right behaviour, and
+its module docstring explains why it cannot do that automatically:
 
 ```text
 Nothing is applied automatically: the caller names the relationships that are
@@ -333,8 +332,9 @@ carries, per relation, in the store.
 cognee also ships real ontology support, and the default resolver is constructed
 with `ontology_file=None`
 ([`get_default_ontology_resolver.py:10-12`](https://github.com/topoteretes/cognee/blob/fd5045f6b60522c1953fc1ae258e041ba53602d8/cognee/modules/ontology/get_default_ontology_resolver.py#L10-L12)).
-An operator-supplied OWL file is matched fuzzily to enrich extracted entities
-rather than to reject them, and contradiction detection defaults to `False`
+An operator-supplied OWL file is matched fuzzily to enrich extracted entities,
+and a name with no match is still constructed. Contradiction detection defaults
+to `False`
 ([`cognify/config.py:13-17`](https://github.com/topoteretes/cognee/blob/fd5045f6b60522c1953fc1ae258e041ba53602d8/cognee/modules/cognify/config.py#L13-L17)).
 
 mem0's open-source graph memory no longer exists. The v3 release removed it:
@@ -363,8 +363,8 @@ The memory surface is a block the agent rewrites through `memory_replace`,
 
 Credit where it is due, and it is a design nobody else here has: MemFS tracks
 every block in git, so a rewrite that destroyed a fact leaves a commit. That is
-an audit trail. It is not an authority model, and the store itself has no idea
-which line came from the user.
+an audit trail. The store itself still has no idea which line came from the
+user.
 
 LangMem lets the model delete a memory outright. `create_manage_memory_tool`
 permits `create`, `update` and `delete` by default, and the delete branch is one
@@ -374,7 +374,7 @@ line: `await store.adelete(namespace, key=str(id))` on the async path
 ([`tools.py:327-328`](https://github.com/langchain-ai/langmem/blob/29cbe41e58528f92e9efa773c12e15c47be3808c/src/langmem/knowledge/tools.py#L327-L328)).
 No history row, no tombstone, no class check on what is being removed.
 
-This is the clearest case in the set. A tool call the model chooses to emit
+It is the plainest case in the set. A tool call the model chooses to emit
 removes a fact a person stated, and afterwards the store cannot tell you it
 happened.
 
@@ -383,8 +383,8 @@ Profiles are topic and subtopic slots and extraction fills them. Reconciliation
 is an LLM choosing `APPEND`, `UPDATE` or `ABORT`, where `UPDATE` means rewriting
 the slot's memo text
 ([`merge_profile.py:34-46`](https://github.com/memodb-io/memobase/blob/358c16bbc6d687937d79bc2f984a11c3be8da901/src/server/api/memobase_server/prompts/merge_profile.py#L34-L46)).
-The slot is a place for an attribute, not a typed relation between two entities,
-and the prior text does not survive the rewrite.
+A slot holds one attribute of one profile, and the prior text does not survive
+the rewrite.
 
 I also read A-MEM (`ceffb860`), which organises memories as Zettelkasten-style
 linked notes with LLM-generated links and carries no temporal, authority or
@@ -398,13 +398,11 @@ on 20 August 2026, `aimee`'s typed-fact layer is the only one in which all three
 of the following hold: a model-extracted fact cannot reach the authority class a
 user-stated fact gets, by any path including repetition; a model authority
 cannot retract a user-stated fact on any relation; and a triple whose subject or
-object kind violates the relation's ontology is refused a row rather than
-written and sorted out later.
+object kind violates the relation's ontology is refused a row.
 
 I looked for a counterexample among the systems I could read and did not find
-one. That is a claim about my search, not about the world. Hosted systems whose
-source I cannot read are outside it, and so is any system I did not think to
-clone. One system with an authority column enforced on the write path would
+one. That is a claim about what I searched. Hosted systems whose source I cannot
+read are outside it, and so is any system I did not think to clone. One system with an authority column enforced on the write path would
 settle it, and I would rather be shown one than keep the claim.
 
 ## What this design costs, and what it does not cover
@@ -414,12 +412,12 @@ relations, so on a fresh corpus most of what arrives is novel, lands at Class C,
 and has to earn its way to durable through three sightings across sources. A
 fact stated once, in a domain nobody has taught the ontology, expires. That is
 the deliberate trade for never letting speculation calcify, and it is a real
-cost paid by the user who says something true exactly once.
+cost paid by the user who says something true once.
 
 Retaining everything has a price too. Nothing is deleted, so `entity_edges`
 grows with every correction, and a store that has been running for a year
-carries every value each fact has ever held. Superseded rows are cheap to filter
-and they are not free to keep.
+carries every value each fact has ever held. Superseded rows are cheap to filter and they
+still occupy disk.
 
 Recall abstention exists and is default-off with its threshold uncalibrated,
 because calibrating it needs labelled ask-outcome data nobody has collected. I
@@ -449,16 +447,16 @@ issue.
 
 ## Go and check your own
 
-Three checks to run against whatever memory system you have, in ascending order
-of how much a bad answer should worry you.
+Three checks to run against whatever memory system you have. The third should
+worry you most.
 
 Open the schema for a stored fact and look for a field recording who asserted
 it, distinct from the model that wrote it down. If there is no such column, the
 distinction does not exist at runtime, whatever the prompt says.
 
 Follow the delete path from the model's tool surface and see what survives it. A
-history table is better than nothing and is not the same as a tombstone the
-recall path walks past.
+history table is worth having. A tombstone the recall path walks past is worth
+more, because the fact is still in the graph.
 
 Then try to write the two queries "what did you believe last week" and "what was
 true last year" against different columns. If they are the same query,

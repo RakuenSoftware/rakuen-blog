@@ -3,7 +3,7 @@
 An architecture piece. A source audit of seven publicly available agent memory
 systems, and the mechanism in `aimee`'s typed-fact layer that makes it the
 exception: a typed write gate, provenance-keyed authority classes, and
-correction that stamps rather than removes.
+correction that stamps the old row and keeps it.
 
 ## Status
 

@@ -82,15 +82,15 @@ audited here.
   (`graphiti_core/utils/maintenance/edge_operations.py:210-241`); the relation
   name is taken as returned and becomes the edge's `name`
   (`:300-303`). `edge_type_map` selects which custom type definitions are put in
-  the extraction prompt's context (`:458-486`), which shapes the request rather
-  than rejecting the response.
+  the extraction prompt's context (`:458-486`). That shapes the request. The
+  response is written as returned.
 - Authority classes: no. `EntityEdge`
   (`graphiti_core/edges.py:262-283`) carries `name`, `fact`, `episodes`,
   temporal fields and free-form `attributes`. `grep` for `provenance`,
   `authority` and `confidence` across `edges.py` and `nodes.py` returns nothing.
 - Valid time: yes. `valid_at` and `invalid_at` are the real-world interval;
   `expired_at` is the transaction-time close.
-- Model removal: contradicted edges are expired rather than deleted
+- Model removal: contradicted edges are expired and the rows kept
   (`resolve_edge_contradictions`, `edge_operations.py:538+`). `EntityEdge.delete`
   exists as an explicit API call and is not on the ingestion path.
 
@@ -108,7 +108,8 @@ This is the strongest competing design in the set and the article says so.
   constructed.
 - Authority classes: no field found.
 - Valid time: partial. `temporal_conflict_resolver` ranks by the edge's own
-  `updated_at`, which is assertion recency rather than a real-world interval.
+  `updated_at`, which records assertion recency. There is no real-world
+  interval.
 - Model removal: no. Superseded edges are tagged `superseded`, `superseded_by`
   and `supersession_reason` and retained
   (`cognee/modules/graph/utils/temporal_conflict_resolver.py:39-95`).
@@ -124,10 +125,10 @@ The docstring quoted in the article is at
 - Write gate: no. Memories are free-text sentences.
 - Authority classes: no. The additive extraction prompt asks the model to
   attribute in prose ("use \"User\" for user-stated facts"), which is a string
-  convention rather than a stored field
+  convention. No field carries it
   (`mem0/configs/prompts.py:472-495`).
-- Valid time: no. There is an observation-date anchor used to resolve relative
-  references during extraction, not a stored interval.
+- Valid time: no. An observation-date anchor resolves relative references
+  during extraction and is not stored as an interval.
 - Model removal: not on the current OSS path. `main.py:940-1010` calls
   `generate_additive_extraction_prompt` and the release notes describe
   "Single-pass ADD-only (one LLM call, no UPDATE/DELETE)"
@@ -135,7 +136,7 @@ The docstring quoted in the article is at
   (`mem0/memory/main.py:2100-2122`) removes the vector row and writes a history
   row with the prior value and `is_deleted=1`. It is retained in the tree and
   its only remaining callers are the explicit `delete(memory_id)` (`:1882`) and
-  `delete_all()` (`:1934`) API calls, not the extraction path.
+  `delete_all()` (`:1934`) API calls. The extraction path does not reach it.
 - Graph memory removed from OSS: `docs/migration/oss-v2-to-v3.mdx:41`.
 
 The article credits ADD-only as an improvement on the LLM-chooses-DELETE design
@@ -167,12 +168,12 @@ about its schema.
 
 ### Memobase
 
-- Write gate: a slot schema rather than a relation ontology. Profiles are
-  topic/subtopic slots (`src/server/api/example_config/`), which constrains
-  where an attribute lands but not the types of two entities in a relation.
+- Write gate: a slot schema. Profiles are topic/subtopic slots
+  (`src/server/api/example_config/`), which constrains where an attribute lands.
+  It says nothing about the types of two entities in a relation.
 - Authority classes: no field found.
 - Valid time: no. Dates appear inside the memo text as `[mentioned on ...]`
-  annotations, not as columns.
+  annotations. No column carries them.
 - Model removal: yes. `UPDATE` in the merge prompt means "rewrite the updated
   memo"
   (`src/server/api/memobase_server/prompts/merge_profile.py:34-46`); the prior
@@ -189,8 +190,8 @@ that it is not being held to a production bar.
 ## Limits of this audit
 
 - **Static reading only.** No system was installed, run, or exercised against a
-  workload. Every verdict is about what the committed source permits, not about
-  what a deployment does.
+  workload. Every verdict is about what the committed source permits. What a
+  deployment does is outside it.
 - **Hosted products are out of scope.** Mem0 Platform, Zep's hosted service and
   Letta Cloud are named where their existence changes what the open source can
   do, and no claim is made about their internals, which I cannot read.
@@ -199,8 +200,7 @@ that it is not being held to a production bar.
   schema definition plus a read of the write path. A field stored inside a
   free-form `attributes` dict or a JSON payload would not necessarily surface.
   This is the most likely place for the audit to be wrong, and it is the reason
-  the article's claim is scoped to my search rather than asserted about the
-  world.
+  the article's claim is scoped to my search.
 - **A single commit is a snapshot.** Six of the eight repositories were at a
   commit less than two weeks old on the audit date. Any of these findings can
   be made obsolete by one merge, which is why every one carries its commit.
@@ -211,8 +211,7 @@ that it is not being held to a production bar.
 materially criticised subject to receive the specific claim with a fair chance
 to respond. That has not been done for any of the seven projects named here.
 
-The mitigating facts, stated so a reader can weigh them rather than to excuse
-the gap: every criticism is a quotation or a line reference against a public
+The mitigating facts, stated so a reader can weigh the gap: every criticism is a quotation or a line reference against a public
 commit, so each project's maintainers and any reader can check it without
 relying on this article's characterisation; no claim is made about intent,
 competence or roadmap; and the two cells that most flatter this article's

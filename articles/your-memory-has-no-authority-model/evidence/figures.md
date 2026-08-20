@@ -57,7 +57,7 @@ unrelated modifications in files not cited here.
 | PostgreSQL with pgvector | `docs/STORAGE_TIERS.md` |
 | `aimee expand <domain> [url]` is human-approvable | `docs/proposals/done/typed-fact-knowledge-layer.md` §2 |
 
-**One figure is derived rather than read.** "34,000 lines of C" is a `wc -l`
+**One figure is computed.** "34,000 lines of C" is a `wc -l`
 over the file set listed above, taken on the working tree on 2026-08-20. It
 counts comments and blank lines, and the file set is a judgement about what
 counts as the memory subsystem. It is an order-of-magnitude claim in the piece
