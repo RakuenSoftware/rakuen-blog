@@ -30,10 +30,6 @@ and a fact a language model inferred are the same kind of row, with no field
 distinguishing them, and the model's own output decides which rows survive. In
 three, a model tool call destroys the prior content outright.
 
-Better retrieval leaves that where it is. What the store accepts, and what it
-lets go, is settled at the write, and it survives any amount of context you
-throw at the read.
-
 `aimee` answers it with one graph. Facts, conversations, episodes and code are
 not separate stores that get stapled together at the end. They are one
 substrate that a single query ranks.
@@ -103,10 +99,7 @@ layer was built on top of that, to make the code intelligence better.
 Everything above, the classes and the ontology and the distillation, exists
 because a system that reads code needed somewhere to keep what it worked out.
 
-That is why code is not a guest in this graph. It is what the graph was for,
-and the general memory is the part that arrived later.
-
-Nothing about that walk is specific to prose. Code lives in the same edge table
+Code is not a guest in this graph. Code lives in the same edge table
 under prefixed keys: a file, a symbol, an import, an export, a route, a
 project. One namespace, one traversal.
 
@@ -194,7 +187,7 @@ goes to a judge.
 
 Those are the same entities the code units resolve onto, and a curator pass
 writes the links. The file that does it states the consequence in its own
-header: doc to entity to code unit becomes a graph traversal , and there is an
+header: doc to entity to code unit becomes a graph traversal, and there is an
 endpoint for exactly that question.
 
 So a clause in a signed agreement and the function that enforces it are two
@@ -345,9 +338,6 @@ one part that is about not missing the moment when knowing it mattered.
 
 ## Which is why the write path has to be strict
 
-That flywheel is also the threat model, and it is the reason for everything
-below.
-
 In a system where facts sit in their own store and get consulted when a query
 looks factual, a wrong fact gives a wrong answer to the questions that reach
 it. The damage is bounded by the query.
@@ -358,14 +348,9 @@ for questions that never mentioned either endpoint. A relationship a model
 invented at three in the morning does not sit quietly in a corner waiting to be
 asked about. It bends recall.
 
-And on a shared deployment it does not bend only yours. Something that survives
-long enough to be corroborated three times is promoted into everyone's context,
-which means a store that distils is a store where a bad write has compound
-interest.
-
-That is why the rest of this piece is about writes. A system that fuses
-everything and shares the result has to be far more careful about what it
-admits than one that keeps its mistakes in separate boxes.
+And on a shared deployment it does not bend only yours. Something corroborated
+three times is promoted into everyone's context, so a store that distils is a
+store where a bad write earns compound interest.
 
 ## A model's guess never outranks what you told it
 
@@ -380,8 +365,7 @@ Class B. Everything else is Class C, which is to say speculation, and
 speculation is on a clock.
 
 The rule that assigns the class is eleven lines long and has no way to reach
-Class A from a model. The extractor's calls pass their authority as a constant
-, so there is no argument a prompt could win.
+Class A from a model. The extractor's calls pass their authority as a constant, so there is no argument a prompt could win.
 
 The model is asked how confident it is, and the answer is used once, as a
 floor: below six-tenths the triple is dropped. Above the floor the number buys
@@ -399,8 +383,7 @@ model inference confirmed enough times stops expiring and stays Class B.
 Repetition buys durability. It does not buy authority.
 
 Speculation that never gets confirmed runs out its clock, and even then the row
-is only stamped as no longer believed. Expiry is a change of standing. It is
-never a deletion.
+is only stamped as no longer believed.
 
 ## Correcting a fact leaves the old one where it is
 
@@ -421,13 +404,11 @@ path and quietly changes what the walk can reach.
 
 All of which is a promise until something records it. Mutations land in a
 hash-chained, append-only audit store, the same record shape the server keeps,
-with write-once enforced underneath. A chain is checkable in a way a policy is
-not: you can ask whether the history you are being shown is the history that
-happened.
+with write-once enforced underneath.
 
-That distinction is worth more than it first looks. Every system in the
-comparison can tell you what it currently holds. The question this answers is
-whether anything was quietly changed on the way to holding it.
+A chain is checkable in a way a policy is not. Every system in the comparison
+can tell you what it currently holds. This one can tell you whether anything was
+quietly changed on the way to holding it.
 
 ## The model cannot invent its way around the rules
 
@@ -444,7 +425,7 @@ gets a rejection, and the commit path stops before writing anything, under a
 comment that says never to write an unvalidated edge.
 
 Seventeen relationships ship with the system so a fresh install can validate
-before it has learned anything , and the live set lives in a table the running
+before it has learned anything, and the live set lives in a table the running
 system extends. Each one carries its own rules, which is why nothing downstream
 has to be told, case by case, that a person has one employer and many
 acquaintances.
@@ -490,7 +471,7 @@ Values are left alone. An address or an age is not somebody, and running it
 through an identity register would invent a person where there is none.
 
 Two things about this matter more than the matching itself. Every close-call
-merge is written down and can be undone , which is the difference between a
+merge is written down and can be undone, which is the difference between a
 system that is confident and one that can be wrong safely. And a name with
 several plausible owners is not guessed at. It goes on a queue with a status
 and a bounded number of retries, blocking neither the write nor the recall.
@@ -562,7 +543,7 @@ happen automatically:
 
 ```text
 Nothing is applied automatically: the caller names the relationships that are
-single-valued. Most cognee relationships (``knows``, ``mentions``, ...) are
+single-valued. Most cognee relationships (``knows``, ``mentions``,...) are
 legitimately many-valued and must never be collapsed, and there is no
 cardinality metadata to tell them apart.
 ```
