@@ -201,6 +201,13 @@ smaller one stops paying for CPU expert compute.
   builds and no draft model, so those ladders run stock K-quants without
   speculation. They support statements about the *shape* of an LFM ladder, not a
   like-for-like ranking against gemma-4.
+- **The offloaded arms left VRAM unused.** The expert-offload tuner capped
+  itself at 14,200 MiB of a card with roughly 15,600 usable, so the 26B arms ran
+  with 1.7 to 2.4 GiB idle. Configurations up to 15,074 MiB loaded cleanly in
+  testing and two arms ran for hours above the cap without incident, so those
+  arms are 10 to 15% slower than the hardware allows. The cap was left in place
+  because changing it mid-campaign would have given one ladder two different
+  serving budgets.
 - **One card.** Everything here is an RTX 5080 with roughly 15.6 GiB usable. The
   capacity findings are findings about that card; the thresholds move with the
   hardware, even if the mechanism does not.

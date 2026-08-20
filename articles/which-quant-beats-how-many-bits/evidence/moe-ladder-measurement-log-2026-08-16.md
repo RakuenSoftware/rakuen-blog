@@ -548,6 +548,37 @@ Neither cost a result — both arms completed — but a gate that cannot see the
 verbosity case would not stop a genuinely runaway arm, and the low rungs are
 where that behaviour appears.
 
+### The offloaded arms ran with unused VRAM, on purpose
+
+The expert-offload tuner rejects any configuration using more than 14,200 MiB,
+which left roughly 1.7 to 2.4 GiB of a 16 GiB card unused on the arms that most
+needed it:
+
+| arm | VRAM used | headroom | expert offload |
+|---|---:|---:|---|
+| 26B-A4B Q4 | 14,166 | 1,714 | first 8 layers |
+| 26B-A4B Q6 | 14,102 | 1,778 | first 15 layers |
+| 26B-A4B Q8 | 13,516 | 2,364 | first 19 layers |
+
+That ceiling is too cautious and the campaign's own data says so. Tuning
+26B-A4B Q4 explicitly rejected `n=7` at 14,622 MiB and `n=6` at 15,074 MiB, both
+of which loaded cleanly. Two arms have since run for hours above the ceiling
+without incident: 26B QAT Q4 at 14,746 MiB for 1 h 17 m, and gemma-4 12B Q8 at
+14,546 MiB for 2 h 51 m.
+
+Raising it to about 14,800 MiB would move one or two more layers onto the card
+per offloaded arm, worth perhaps 10 to 15% on those arms.
+
+**It was left alone deliberately.** All three 26B rungs and Qwen's Q4 were tuned
+at 14,200. Changing the ceiling with Qwen Q6 and Q8 outstanding would give one
+ladder two different serving budgets, which is the single inconsistency this
+campaign cannot afford: the ceiling is an operational choice, but varying it
+inside a ladder would make it behave like a variable.
+
+The cost is bounded, known, and cheaper than a ladder that is not internally
+comparable. It is recorded rather than fixed because the evidence that the
+margin was too large arrived after the arms it constrained had already run.
+
 ### Synthesis prefers more bits; extraction does not
 
 Across every model with both halves scored, synthesis content F1 rises with
