@@ -24,8 +24,8 @@ refuse to let a model's guess overwrite a person's statement, or tell you what
 it believed last week. Those are properties of a write path, and a context
 window does not have one.
 
-I read the source of seven publicly available memory systems on 20 August 2026,
-each at a pinned commit. In six of them, a fact a person stated and a fact a
+I investigated the source of seven publicly available memory systems on 20 August
+2026, each at a pinned commit. In six of them, a fact a person stated and a fact a
 language model inferred are the same kind of row, with no field distinguishing
 them, and the model's own output decides which rows survive. In three, a model
 tool call destroys the prior content outright.
