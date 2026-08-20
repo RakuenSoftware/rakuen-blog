@@ -22,8 +22,8 @@ Raw artifacts for the whole series live under
 | `MEASUREMENT_LOG.md` | the defect log, including every retracted claim |
 
 `evidence/figures.md` maps each figure in the article to the artifact behind it.
-Every path in it was checked to resolve. Two figures are marked there as
-single-sourced rather than traced: the VRAM readings and the card bandwidth.
+Every path in it was checked to resolve. Two figures are marked there as single-sourced, with no traced artifact behind
+them: the VRAM readings and the card bandwidth.
 
 ## Reporting record
 
@@ -33,9 +33,8 @@ outstanding. Where a prior claim was withdrawn, the withdrawal is stated in the
 article at the point the claim appeared, and the superseded run is retained under
 `results/`.
 
-The 2026-08-20 rewrite carried every prior first-party result forward. Two
-comparisons were withdrawn as unsupported by the paired tests rather than
-deleted, one rank ordinal was corrected, and the matched Qwen3.6-27B comparison
+The 2026-08-20 rewrite carried every prior first-party result forward. Two comparisons were withdrawn as unsupported by the paired tests and left on the
+page, one rank ordinal was corrected, and the matched Qwen3.6-27B comparison
 run was traced to its own artifact. All three are recorded in
 `evidence/figures.md` and marked in the article. No file under `evidence/raw/`
 was changed.

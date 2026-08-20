@@ -4,7 +4,7 @@ Every number in the article, and the artifact it came from. Paths are relative t
 `evidence/raw/` in this folder unless stated otherwise.
 
 Built by matching each printed F1 against the strict F1 in every scored artifact in
-the results tree, rather than by transcribing from notes. Two errors in the article
+the results tree. Nothing here was transcribed from notes. Two errors in the article
 were found that way and corrected: a fourth subset-extracted row that had been
 described as three, and a partial-reasoning result attributed to QAT that also
 appears on a non-QAT build.
@@ -66,14 +66,15 @@ prediction file.
 | LFM2.5-230M Q6_K | 0.1363 | `results/lfm25-family/LFM2.5-230M.Q6_K.score.json` |
 | LFM2.5-230M Q8_0 | 0.1309 | `results/lfm25-family/LFM2.5-230M.Q8_0.score.json` |
 
-**Four rows are subset extractions**, not native 1,001-note runs: granite-4.1-3b,
+**Four rows are subset extractions** from larger runs, with no native 1,001-note
+run of their own: granite-4.1-3b,
 gemma-3n-E4B, Qwen3-1.7B and granite-4.0-1b, all from `results/subset-1001/`. The
 article states that limit against itself.
 
 ## Quant verdict graph and correction
 
-The graph defaults to the supported same-model result rather than sorting the
-point estimates. `=` is rendered as a tie; `>` is reserved for a paired range
+The graph defaults to the supported same-model result. It does not sort the point
+estimates. `=` is rendered as a tie; `>` is reserved for a paired range
 that excludes zero. The command form, components and all thirteen paired results
 are recorded in `raw/quant-clarification-2026-08-09.md`.
 
@@ -218,7 +219,7 @@ The article states both limits where the intervals appear.
 - **VRAM figures** (16.4, 13.27 and 15.84 GiB) are read from `llama.cpp` server
   startup output at load time and are not captured in a committed artifact. They
   are single-sourced and should be read as such.
-- **The 1.79 TB/s card bandwidth** is a vendor specification, not a measurement.
+- **The 1.79 TB/s card bandwidth** is a vendor specification. Nobody measured it here.
 
 ## Correction, 2026-08-20
 

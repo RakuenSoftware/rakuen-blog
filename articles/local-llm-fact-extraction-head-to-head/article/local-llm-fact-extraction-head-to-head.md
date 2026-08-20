@@ -43,10 +43,10 @@ withdrawn in the same pass, and both are marked where they stood.*
 ## The task: 322 of the 1,001 notes are worth no facts at all
 
 The model reads one remembered note and returns subject-relation-object triples
-as JSON. The prompt is the one my production system already sends, read out of
-`kb_memory_facts.c` rather than written for the benchmark. That flatters the
-result and I am keeping it. A score here is a statement about the system I run,
-which was the only question I had.
+as JSON. The prompt is the one my production system already sends, lifted out of
+`kb_memory_facts.c` unchanged. That flatters the result and I am keeping it. A
+score here is a statement about the system I run, which was the only question I
+had.
 
     Vera Duarte joined the retrieval team last quarter.
     {"subject": "Vera Duarte", "relation": "member_of", "object": "retrieval team"}
@@ -105,14 +105,15 @@ multi-token prediction (MTP) accepting 59.9% of proposed tokens. One of the
 1,001 responses reached the 8,192-token context limit and failed to parse.
 
 The matched comparison is a separate Qwen3.6-27B run at the same quant and the
-same MTP setting on the same card, which scored 0.7177 rather than the 0.7152
-UD-Q4 run on the leaderboard. Qwen3.6 came out **+0.0147** ahead, paired 95%
-range −0.0038 to +0.0335. That is a tie. The two used different `llama.cpp`
-builds, so the range does not isolate the model generation.
+same MTP setting on the same card, which scored 0.7177 against the leaderboard
+row's 0.7152 at UD-Q4. Qwen3.6 came out **+0.0147** ahead, paired 95% range
+−0.0038 to +0.0335. That is a tie. The two used different `llama.cpp` builds, so
+the range does not isolate the model generation.
 
 The Qwen3.6-35B-A3B leader was **+0.0228** ahead, paired range +0.0042 to
 +0.0417. That comparison also changes quant, backend and hardware. It separates
-two saved configurations, not two model generations.
+two saved configurations, and model generation is one of several things that
+differ between them.
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-qwen38" id="fig-qwen38-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-qwen38" id="fig-qwen38-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-qwen38-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-qwen38-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 150" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Qwen3.6 F1 differences against Qwen3.8 with paired 95% intervals"><line class="sg-chart__rule" x1="291.7" x2="291.7" y1="18" y2="118"/><text class="sg-chart__axis" x="291.7" y="14" text-anchor="middle">NO DIFFERENCE</text><line class="sg-chart__grid" x1="435.0" x2="435.0" y1="18" y2="118"/><text class="sg-chart__value" x="435.0" y="138" text-anchor="middle" opacity=".7">+0.02</text><line class="sg-chart__grid" x1="578.3" x2="578.3" y1="18" y2="118"/><text class="sg-chart__value" x="578.3" y="138" text-anchor="middle" opacity=".7">+0.04</text><text class="sg-chart__label" x="198" y="49" text-anchor="end">Qwen3.6-27B Q4_K_M</text><line class="sg-chart__line sg-chart__line--muted" x1="264.4" x2="531.7" y1="45" y2="45"/><line class="sg-chart__line sg-chart__line--muted" x1="264.4" x2="264.4" y1="40.5" y2="49.5"/><line class="sg-chart__line sg-chart__line--muted" x1="531.7" x2="531.7" y1="40.5" y2="49.5"/><circle class="sg-chart__mark sg-chart__mark--muted sg-chart__ring" cx="397.0" cy="45" r="4.5"/><text class="sg-chart__value" x="660" y="49" opacity=".7">+0.0147</text><text class="sg-chart__label" x="198" y="99" text-anchor="end">Qwen3.6-35B-A3B UD-Q4</text><line class="sg-chart__line sg-chart__line--1" x1="321.8" x2="590.5" y1="95" y2="95"/><line class="sg-chart__line sg-chart__line--1" x1="321.8" x2="321.8" y1="90.5" y2="99.5"/><line class="sg-chart__line sg-chart__line--1" x1="590.5" x2="590.5" y1="90.5" y2="99.5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="455.1" cy="95" r="4.5"/><text class="sg-chart__value" x="660" y="99">+0.0228</text></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>range excludes zero</span><span><i style="background:var(--sg-chart-muted)"></i>range contains zero</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">Qwen3.6 run minus Qwen3.8</th><th style="text-align:right">F1 difference</th><th style="text-align:left">paired 95% range</th><th style="text-align:left">result</th></tr></thead><tbody><tr><td style="text-align:left">27B Q4_K_M, MTP</td><td style="text-align:right">+0.0147</td><td style="text-align:left">[−0.0038, +0.0335]</td><td style="text-align:left">tie</td></tr><tr><td style="text-align:left">35B-A3B UD-Q4</td><td style="text-align:right">+0.0228</td><td style="text-align:left">[+0.0042, +0.0417]</td><td style="text-align:left"><strong>separable configurations</strong></td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">Paired resampling over the same 1,001 notes. The 27B comparison is the closest saved configuration. The 35B comparison also changes quant, backend and hardware, so its separated interval does not isolate model generation.</figcaption></figure>
 
@@ -132,8 +133,8 @@ its prediction artifacts.
 
 LFM2.5 shows why a score can look backwards. Q8 found two more true facts than
 Q4 and emitted 38 more false ones, so its recall rose and its precision fell.
-The lower score is a different operating point, not evidence that four-bit
-weights preserved the model better.
+The lower score marks a different operating point. It is no evidence that
+four-bit weights preserved the model better.
 
 `abstain` is how often a model correctly returns nothing on the 322 factless
 notes. `spurious` counts the triples it invents on them instead. `reasons` is
@@ -163,7 +164,7 @@ has one now, and the two are a tie.
 I nearly published the rest as one flat band from 2B to 31B. Then we tested the
 ends against each other.
 
-<figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-2" id="fig-2-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-2" id="fig-2-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-2-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-2-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 140" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Paired differences with 95% intervals"><line class="sg-chart__grid" x1="321.8" x2="321.8" y1="26" y2="102.0"/><text class="sg-chart__value" x="321.8" y="120.0" text-anchor="middle" opacity=".7">+0.04</text><line class="sg-chart__grid" x1="497.6" x2="497.6" y1="26" y2="102.0"/><text class="sg-chart__value" x="497.6" y="120.0" text-anchor="middle" opacity=".7">+0.08</text><line class="sg-chart__grid" x1="673.4" x2="673.4" y1="26" y2="102.0"/><text class="sg-chart__value" x="673.4" y="120.0" text-anchor="middle" opacity=".7">+0.12</text><text class="sg-chart__label" x="176" y="59.0" text-anchor="end">E2B QAT → 31B QAT</text><line class="sg-chart__line sg-chart__line--1" x1="242.7" x2="459.0" y1="55.0" y2="55.0"/><line class="sg-chart__line sg-chart__line--1" x1="242.7" x2="242.7" y1="50.5" y2="59.5"/><line class="sg-chart__line sg-chart__line--1" x1="459.0" x2="459.0" y1="50.5" y2="59.5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="350.4" cy="55.0" r="4.5"/><text class="sg-chart__value" x="692" y="59.0">+0.0465</text><text class="sg-chart__label" x="176" y="89.0" text-anchor="end">E2B QAT → 35B-A3B</text><line class="sg-chart__line sg-chart__line--1" x1="413.7" x2="627.3" y1="85.0" y2="85.0"/><line class="sg-chart__line sg-chart__line--1" x1="413.7" x2="413.7" y1="80.5" y2="89.5"/><line class="sg-chart__line sg-chart__line--1" x1="627.3" x2="627.3" y1="80.5" y2="89.5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="520.0" cy="85.0" r="4.5"/><text class="sg-chart__value" x="692" y="89.0">+0.0851</text></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>range excludes zero</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">span</th><th style="text-align:right">delta</th><th style="text-align:left">95% CI</th><th style="text-align:left"></th></tr></thead><tbody><tr><td style="text-align:left">E2B QAT → 31B QAT</td><td style="text-align:right"><strong>+0.0465</strong></td><td style="text-align:left">[+0.0220, +0.0712]</td><td style="text-align:left">significant</td></tr><tr><td style="text-align:left">E2B QAT → 35B-A3B</td><td style="text-align:right"><strong>+0.0851</strong></td><td style="text-align:left">[+0.0609, +0.1095]</td><td style="text-align:left">significant</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">The same stretch measured end to end rather than rung by rung.</figcaption></figure>
+<figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-2" id="fig-2-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-2" id="fig-2-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-2-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-2-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 140" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Paired differences with 95% intervals"><line class="sg-chart__grid" x1="321.8" x2="321.8" y1="26" y2="102.0"/><text class="sg-chart__value" x="321.8" y="120.0" text-anchor="middle" opacity=".7">+0.04</text><line class="sg-chart__grid" x1="497.6" x2="497.6" y1="26" y2="102.0"/><text class="sg-chart__value" x="497.6" y="120.0" text-anchor="middle" opacity=".7">+0.08</text><line class="sg-chart__grid" x1="673.4" x2="673.4" y1="26" y2="102.0"/><text class="sg-chart__value" x="673.4" y="120.0" text-anchor="middle" opacity=".7">+0.12</text><text class="sg-chart__label" x="176" y="59.0" text-anchor="end">E2B QAT → 31B QAT</text><line class="sg-chart__line sg-chart__line--1" x1="242.7" x2="459.0" y1="55.0" y2="55.0"/><line class="sg-chart__line sg-chart__line--1" x1="242.7" x2="242.7" y1="50.5" y2="59.5"/><line class="sg-chart__line sg-chart__line--1" x1="459.0" x2="459.0" y1="50.5" y2="59.5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="350.4" cy="55.0" r="4.5"/><text class="sg-chart__value" x="692" y="59.0">+0.0465</text><text class="sg-chart__label" x="176" y="89.0" text-anchor="end">E2B QAT → 35B-A3B</text><line class="sg-chart__line sg-chart__line--1" x1="413.7" x2="627.3" y1="85.0" y2="85.0"/><line class="sg-chart__line sg-chart__line--1" x1="413.7" x2="413.7" y1="80.5" y2="89.5"/><line class="sg-chart__line sg-chart__line--1" x1="627.3" x2="627.3" y1="80.5" y2="89.5"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="520.0" cy="85.0" r="4.5"/><text class="sg-chart__value" x="692" y="89.0">+0.0851</text></svg><div class="sg-figure__legend"><span><i style="background:var(--sg-chart-1)"></i>range excludes zero</span></div></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">span</th><th style="text-align:right">delta</th><th style="text-align:left">95% CI</th><th style="text-align:left"></th></tr></thead><tbody><tr><td style="text-align:left">E2B QAT → 31B QAT</td><td style="text-align:right"><strong>+0.0465</strong></td><td style="text-align:left">[+0.0220, +0.0712]</td><td style="text-align:left">significant</td></tr><tr><td style="text-align:left">E2B QAT → 35B-A3B</td><td style="text-align:right"><strong>+0.0851</strong></td><td style="text-align:left">[+0.0609, +0.1095]</td><td style="text-align:left">significant</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">The same stretch, measured end to end.</figcaption></figure>
 
 Every step is noise. The sum is not. Six intervals of about ±0.020 stacked end
 to end leave room to hide a real 0.0465.
@@ -243,16 +244,16 @@ fewer triples than all twenty-one runs scoring above it.
 ## Parse rate: read it first, because 0.90 is malformed JSON and 1.00 can still be wrong
 
 **Both gemma-4-12B runs parse at 0.92 and 0.90, with zero rows at the context
-limit.** That is malformed JSON, not truncation. The QAT build's 0.6854 counts
-83 unreadable rows as failures and the non-QAT build's 0.6754 counts 98. Their
-real capability is above the numbers I printed, the 31B and Qwen rows at 1.00
-carry no such handicap, and the gap between them is overstated by an amount I
-cannot currently quantify.
+limit.** The failures are malformed JSON. The QAT build's 0.6854 counts 83
+unreadable rows as failures and the non-QAT build's 0.6754 counts 98. Their real
+capability is above the numbers I printed, the 31B and Qwen rows at 1.00 carry
+no such handicap, and the gap between them is overstated by an amount I cannot
+currently quantify.
 
 **MiniCPM5-1B parses 0.87.** Its 0.763 abstention and 82 spurious triples
 describe only the output that made it through parsing. The unreadable rows still
-count as failures, so its 0.1652 is a floor on capability, not a sign of unusual
-restraint.
+count as failures, so its 0.1652 is a floor on capability. The restraint it
+appears to show is an artifact of what parsed.
 
 **LFM2.5-1.2B parses 0.73 at Q8_0 and 0.59 at Q6_K.**
 
@@ -355,15 +356,15 @@ the factless notes and runs at 234 tok/s. It reports 16.4 GiB at load, so a 24
 GB card. No paired interval sits between it and the 31B QAT build, so its place
 above that row is observed order and nothing more.
 
-Take it over the dense 27B on the tie-break, not the score. Same family, same
-quant, statistically the same F1, and the MoE runs 3.5 times faster while
-abstaining on 0.693 of the factless notes against the 27B's 0.547. The dense 27B
-invents 148 triples where the 35B invents 101. There is no accuracy argument
-between them and two practical ones, both pointing the same way.
+Take it over the dense 27B on the tie-break. Same family, same quant,
+statistically the same F1, and the MoE runs 3.5 times faster while abstaining on
+0.693 of the factless notes against the 27B's 0.547. The dense 27B invents 148
+triples where the 35B invents 101. There is no accuracy argument between them
+and two practical ones, both pointing the same way.
 
 Qwen3.8 at Q4_K_M ties the matched Qwen3.6-27B run and does not overturn that.
-The recommendation already rested on speed and restraint, not on a separable
-accuracy lead.
+The recommendation already rested on speed and restraint. It never had a
+separable accuracy lead to lose.
 
 **On a 16 GB card, gemma-4-26B-A4B at QAT UD-Q4.** At 0.6804 it ties the three
 rows above it and reaches **323 tok/s, the fastest run in this project**. It
