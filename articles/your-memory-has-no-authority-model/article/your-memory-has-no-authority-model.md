@@ -1,499 +1,387 @@
 ---
-title: "Your agent's memory has no authority model"
+title: "Agent memory needs an authority model"
 date: 2026-08-20
 author: Rakuen Software
 tags: [memory, agents, knowledge-graph, ontology, aimee]
-excerpt: "Seven publicly available memory systems, investigated at a pinned commit. Six keep their stores in separate piles and let a model's guess overwrite what a person said. One graph that distils what a team corroborates, and a write path strict enough to deserve one, is a different design."
+excerpt: "I compared thirteen inspectable agent-memory implementations at pinned commits, plus one packaged engine whose source I could not audit. mnem and Menhir overturn the broad code-plus-memory uniqueness claim. Menhir also proves that authority-aware memory exists. The remaining question is whether authority, source, time and code structure meet on the default write and recall paths."
 ---
 
-*Published 2026-08-20. Rakuen builds aimee, one of the seven systems audited
-here, and benefits if readers prefer its design. Every claim below is a
-quotation or a line reference against a pinned public commit, so it is checkable
-without taking my word for any of it. The audit is recorded in
+*Drafted 2026-08-20; comparison expanded 2026-08-21. Rakuen builds aimee, one
+of the thirteen inspectable systems compared here, and benefits if readers
+prefer its design. The named projects have not yet had a chance to respond. The
+audit is recorded in
 [evidence/source-audit-2026-08-20.md](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/your-memory-has-no-authority-model/evidence/source-audit-2026-08-20.md),
 with a per-claim source map in
 [evidence/figures.md](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/your-memory-has-no-authority-model/evidence/figures.md).*
 
-Long context retired the question agent memory used to be judged on. Whether
-the right turn comes back from a corpus is a question a large enough window
-answers by not asking it. Paste the conversation in. The retrieval problem
-stops existing.
+*Implementation note, 20 August 2026. The `aimee` sections describe
+[PR 2824](https://github.com/RakuenSoftware/aimee/pull/2824) at `5a5350b9`, not
+the baseline audit commit. The baseline excluded typed facts from graph recall,
+never scheduled their lifecycle, and exposed no fact retraction or entity
+unmerge path.*
+
+*The baseline also let maintenance delete orphaned facts and rewrite their
+confirmation counts. The PR head fixes those gaps. It remains open, so this
+article remains a draft.*
+
+*Two authority gaps remain. The retraction handler lets a memory-write caller
+declare itself `user`, instead of deriving authority from authentication. An
+ordinary model-authored write can also supersede a Class A fact on a
+single-valued relation. Both paths must be fixed before publication.*
+
+Long context can remove the retrieval problem from agent memory. Put the whole
+conversation in the window and no old turn has to be found.
 
 What a window cannot do is decide which of two contradictory facts is true,
 refuse to let a model's guess overwrite a person's statement, or tell you what
 it believed last week. Those are properties of a write path, and a context
 window does not have one.
 
-I investigated the source of seven publicly available memory systems on 20
-August 2026, each at a pinned commit. In six of them, a fact a person stated
-and a fact a language model inferred are the same kind of row, with no field
-distinguishing them, and the model's own output decides which rows survive. In
-three, a model tool call destroys the prior content outright.
+On 20 and 21 August 2026, I traced the write paths of thirteen publicly
+inspectable memory implementations at pinned commits and read A-MEM separately
+as a research reference. I also read Supermemory's public repository and
+self-hosting documentation, but its memory engine is distributed as a packaged
+server binary rather than as source in that repository. I do not count it as a
+negative result.
 
-`aimee` answers it with one graph. Facts, conversations, episodes and code are
-not separate stores that get stapled together at the end. They are one
-substrate that a single query ranks.
+The expanded set changed the article. Hindsight and MemOS have substantially
+more provenance, lifecycle and correction machinery than the original table
+showed. mnem puts code, documents and conversations into one versioned graph.
+Menhir goes further: it joins a structural code graph to semantic memory,
+retains source receipts and superseded history, separates user-grounded claims
+from agent inference at admission, and reserves promoted ground truth for an
+operator.
 
-And that substrate distils under collective use. What several people reach
-independently rises out of the scope it was learned in, what fails the people
-it reached sinks, and a team's store compounds on work nobody filed. Everything
-strict about the write path exists because of those two facts together.
+The useful claim is therefore not that agent memory has no authority model.
+Some does. The question is whether the authority distinction is stored,
+enforced on every correction path, and used by the recall path that runs by
+default.
 
-Something to be up front about: `aimee` is opinionated. `aimee` is highly
-opinionated. Take this for what it's worth.
+`aimee` is a general-purpose memory service for an organisation. It puts facts,
+conversations, documents and code in one graph ranked by one query.
+
+Its core goal is to let any part of an organisation reach any other. Legal can
+follow a policy into engineering; finance can follow a cost decision into
+operations. A question can then follow the documents and discussions that
+produced a decision to the code running now. The answer can show how the
+organisation got there and cite the exact behaviour it implements.
+
+mnem and Menhir both provide code-to-memory paths. Menhir is the direct
+counterexample: its structural and semantic entities share one Neo4j graph, and
+its blast-radius query can return affected code, tests and related memories.
+What remains distinctive in this audit is a narrower conjunction of source
+documents, a native code graph, endpoint-kind validation and per-fact assertion
+authority. Even there, `aimee`'s correction guard is incomplete.
+
+The graph also distils what separate people and sessions corroborate. That
+reach is why its design puts rules on the write path: a bad edge changes what
+later queries can find and can influence later distillation.
+
+It is an opinionated system. Take this for what it is worth.
 
 ## One recall, one score
 
-Lexical matching and dense vectors produce a set of candidate memories, and
-then it stops being ordinary. The top twelve candidates are asked which
-canonical entities they mention, and those become up to forty-eight seeds for a
-walk across the graph. The walk runs two hops by default, weighted by how
-useful each edge has proven, and it collects memories attached to every node it
-reaches.
+Lexical matching and dense vectors produce the first candidates. The top twelve
+supply up to forty-eight canonical entities as seeds. Expansion collects the
+memories attached to each seed, then follows its direct neighbours using the
+relation and authority class of each edge.
 
-Memories the walk finds that the vectors and the keywords both missed are added
-to the candidate set. The code calls this the bridge case, and it is the whole
-point. A question can be worded nothing like the memory that answers it, so
-long as something the question does match is connected to it.
+The graph adds memories that both lexical and vector search missed. A question
+can share no words with its answer if an entity connects the two.
 
-Everything then ranks together under one score with fourteen parts: lexical
-overlap, dense similarity, entity match, graph proximity, code proximity,
-PageRank, confidence, evidence strength, salience, surprise, temporal fit,
-lifecycle state, coverage and query intent. A typed fact, a conversation from
-March and a function you edited last week compete in the same ranking, on the
+One fourteen-part score ranks the result, including lexical and dense match,
+graph and code proximity, confidence, evidence, time and query intent. A typed
+fact, a conversation from March and a function edited last week compete on the
 same scale.
 
-Floors then guarantee that summaries and facts keep their seats even when raw
-score would crowd them out, conversational neighbours of the winners are pulled
-in, and scope sorts hard on what the caller is allowed to see. The fusion is
-not a blend of two result lists. It is one candidate set that several kinds of
-evidence built together.
+Reserved slots keep summaries and facts from being crowded out. The winners
+pull in neighbouring turns, then scope removes anything the caller cannot see.
 
-Fourteen weighted signals invites an obvious question, which is who picked the
-weights. Nobody did. A background worker turns accumulated feature rows and
-recorded retrieval outcomes into a fitted model (`kb_ranker_fit.h`, run from
-`kb_service_workers.c`), keyed to the same retrieval events the demotion scorer
-reads. The ranking learns from which candidates turned out to be useful.
+The weights are fitted from feature rows and recorded retrieval outcomes. A new
+ranking model lands as a proposal until a benchmark gate promotes it. Shadow
+evaluation can record per-query rank and score changes between fused and
+unfused ranking over real traffic, without retaining the payloads. It is an
+evaluation harness, not a production path.
 
-And a fitted model does not get to install itself. It lands as a proposal and a
-benchmark gate has to promote it. The same rule the facts live under, applied
-to the thing that ranks them.
+## Code was the beginning. General memory lets it reach the real world
 
-Changes to this machinery are measured before they ship. A shadow mode records
-per-query rank and score deltas between fused and unfused ranking, compactly
-enough to run over real traffic without keeping the payloads. That is an
-evaluation harness and not a production path, which is the honest description
-of it.
+Before it was `aimee`, it was `aimem`: a code graph with a small fact memory,
+built about a year ago to solve a production need. It was not an R&D project.
+Engineers used it on live work, and what failed for them determined what we
+built next.
 
-## Code was not added to this memory. The memory was added to the code
+Every expansion of memory since has come from that production loop. The users
+have been demanding and the code has had to survive their workloads.
+Tree-sitter extractors put symbols, calls, imports and git co-change into the
+graph, and memory grew on top of it. Code still lives in the same edge table as
+conversational memory: files, symbols, routes and projects use prefixed keys in
+the same namespace.
 
-The order things were built in explains the design better than the design
-explains itself. This did not start as a memory system that later grew a code
-index. It started as code intelligence, tree-sitter extractors pulling symbols,
-calls, imports and git co-change into a graph, and the memory layer was built on
-top to make that better. The classes, the ontology and the distillation all
-exist because a system reading code needed somewhere to keep what it worked out.
+That origin no longer bounds the product. `aimee` is general-purpose memory for
+an organisation, not a code-memory tool. That breadth is what makes its code
+graph different: a function can point at the contract, policy decision or
+operational consequence behind it. A team with no code question can still use
+the same facts, documents, conversations and reminders under its own scope.
 
-So code lives in the same edge table under prefixed keys: a file, a symbol, an
-import, an export, a route, a project. One namespace, one traversal. The
-relation weights are where it shows, with `defines` pulling hardest at 1.00 and
-`calls` at 0.55, sitting in the same list as `co_edited` at 0.60 and
-`co_discussed` at 0.45.
+That lets a prose question reach code. A question about a pool wedging under
+load can find the conversations that mention it, cross into the symbols and
+return the retry function. Starting from the function can recover the thread
+where its policy was decided. A per-node gate keeps queries with no code-shaped
+token out of the call graph.
 
-A static analyser produces the first group. Only history produces the second,
-and to this walk they are the same kind of edge.
+Cross-repository links need more care. Names collide, vendored copies duplicate
+them, and an untrusted repository can plant an export. Each link carries a
+confidence tier and the evidence behind it.
 
-Which is why a question asked in prose reaches code. Ask why a pool wedges under
-load, hit the conversations that mention it, cross into the symbols, and come
-back with the retry function. It runs the other way too: start from a symbol and
-get the thread where somebody decided the policy it implements. A code index has
-never heard the conversation, a conversation store cannot reach the call graph,
-and the interesting answer is almost always one hop across that boundary.
+Top-tier links need a trusted import resolution or an exported symbol used at
+three call sites across three files. A lone call site stays tentative and out of
+default output. Several possible definers or a collision goes to review.
+Untrusted repositories cannot vouch themselves into the top tier.
 
-One guard keeps it from becoming mush. A query that does not look like a code
-question is refused entry to code subgraphs, checked per node as the walk
-proceeds. Ask about your spouse and no call graph appears.
+Code also has its own clock. Every projected edge belongs to a generation, and
+each project exposes one generation at a time. Publishing a new projection
+swaps pending for visible and marks the old one superseded.
 
-The graph does not stop at the checkout boundary either. Symbols are keyed by
-project, so a client calling `LiStartConnection` and the library defining it are
-two unrelated nodes, and the reference deployment carries forty repositories
-with that seam between every pair.
+A traversal sees one state of the tree. Old and new symbols never mix.
 
-Resolving it by name is the obvious move and the wrong one, because names
-collide, vendored copies duplicate them, and a planted export in a repository
-you did not write is an attack rather than an accident. So no booleans. Every
-cross-repo edge carries a confidence tier and the evidence that earned it.
+## A contract, the decision behind it, and the code running now
 
-The top tier wants corroboration rooted in a repository you marked trusted:
-an import resolving to the definer, or the symbol in its exports while the
-caller uses it three times across three distinct files. That second threshold is
-the corroboration rule from further down this piece, pointed at code. A single
-call site, several plausible definers, or a vendored copy colliding with its
-original all go to a review queue rather than being guessed.
+Documents enter the same graph. Office formats go through a converter. PDF
+extraction keeps page coordinates, reading order, table cells, optical character
+recognition and the confidence of each layer. A citation names the document
+hash, page and bounding box.
 
-Trust caps what a repository can vouch for. An untrusted definer can never lend
-top-tier export corroboration, because its export list is not something it can
-attest to about itself.
+The full text remains the primary evidence. Each fragment records its source
+path, whole-file hash, heading path and line span, with links to its neighbours
+in reading order. A retrieved clause can recover the section that qualified it.
 
-One more thing the code graph does with time. Every projected edge belongs to a
-generation, a project has exactly one visible at a time, and the walk traverses
-only edges whose generation is visible on a project that is current. Generations
-move from pending to visible to superseded, so publishing a new projection is a
-swap and never an edit in place.
+A conversation can enter through the same path. The code shows what was
+decided; the thread may be the only record of why.
 
-The consequence is the part worth having. A traversal cannot mix symbols from
-two different states of the tree, which is what an incrementally updated code
-index does to you on a bad day. You get one consistent view of the repository as
-it was at a moment, or the current one, and never a blend.
-
-## A contract and the code that implements it are two hops apart
-
-Push a document at it. A signed contract, a payroll policy, a compliance
-standard, a spreadsheet somebody has been maintaining since 2019.
-
-Ingestion routes by format and falls through to taking the bytes as they are.
-Office formats take a converter, and PDFs take an extraction layer that keeps
-page coordinates, reading order, tables as cells and OCR, each layer degrading
-on its own terms without claiming what it lost. A citation is then a document
-hash, a page and a bounding box.
-
-One thing about how it is stored, because the usual answer is wrong. Chunking a
-document and keeping the chunks is not a representation of that document. The
-whole text is the primary evidence, and a chunk is secondary evidence that
-earns its place by pointing back at what it came from.
-
-So a fragment carries the source path, the content hash of the whole file, its
-heading path and its line span, and it is doubly linked to its neighbours in
-reading order. A clause retrieved without the section it qualifies is not a
-shorter answer. It is a wrong one.
-
-A conversation is a document too. Export the thread where a design was argued
-out and it ingests like anything else, which is worth doing because of what
-those threads hold: not what was decided, which the code already shows, but
-why, which it never does. That reasoning is the least durable thing an
-organisation produces, stated once by somebody who has since moved teams.
+Together those sources give a decision a history. The document states the
+obligation, the thread records why a policy was chosen, and prior versions show
+what changed. The current code projection shows the implementation the graph
+treats as live, down to the cited line.
 
 Whatever goes in is mined for the entities it mentions, each resolved against
 the canonical entities already known by searching up the scope lattice from
 project to workspace to global. A narrow mention lands on the broad entity that
-exists instead of forking a duplicate beside it, and the uncertain band between
-a near match and a new entity goes to a judge.
+exists. Uncertain matches go to a judge. Code units resolve onto the same
+entities, so document to entity to code becomes a graph traversal.
 
-Those are the same entities the code units resolve onto. A curator pass writes
-the links, and the file that does it states the consequence in its own header:
-doc to entity to code unit becomes a graph traversal, with an endpoint for
-exactly that question.
+A clause in a signed agreement and the function that enforces it are two hops
+apart. One answer can name the required retention period, the job that deletes
+the rows, and a citation on each side.
 
-So a clause in a signed agreement and the function that enforces it are two hops
-apart. Which retention period the contract obliges you to, and which scheduled
-job deletes the rows, is one question with one answer citing a page on one side
-and a line number on the other.
+The person asking does not need the symbol name or repository. A compliance
+officer can ask in the language of the contract and receive both sources.
 
-Which changes who can ask. A compliance officer, a lawyer, or an engineer three
-days into the job does not need a symbol name, or the repository holding it, or
-the idea that a repository is the thing to look in. Today that question becomes
-a message to an engineer who reads for twenty minutes and replies in prose
-nobody can check, which is two people doing a worse version of a job the store
-can do with both citations attached.
+## Scope ranks inside the query
 
-## One graph, four scopes, and visibility is a rank
+Memory shares one graph. Query-time scope separates projects and workspaces.
 
-Your memory and your company's memory are the same graph. What separates them
-is not which store they sit in but how visible they are to the query asking.
+A recall carries the caller's active project and workspace. Active-project
+memory gets the first visibility band, the workspace gets the second, and
+shared or global memory gets the third. Anything else scores zero.
 
-Scope comes in four kinds: user, project, workspace, global. A recall carries
-the caller's active project and workspace, and every candidate is ranked
-against them. A memory scoped to the active project outranks one scoped to the
-workspace, which outranks something shared or global, and anything outside the
-caller's context scores zero and is gone.
+The database query receives that ranking as parameters. A later filter would
+leak through timing and through which candidates reached the scorer. Scope must
+take effect inside retrieval.
 
-That ranking is bound into the query as parameters, not applied to the results
-afterwards. The distinction matters more than it sounds: filtering after
-ranking leaks through timing and through which candidates were considered, so
-the authorisation boundary has to be inside the retrieval, not downstream of
-it.
-
-Relevance is preserved inside each band. The sort is stable, so the reranker's
-ordering survives within a visibility bucket and only the bands themselves are
-hard. You get the most relevant thing you are allowed to see, and never a hint
-of the more relevant thing you are not.
+A stable sort preserves relevance inside each visibility band. The result is the
+best match the caller may see, with no signal that a stronger hidden match
+exists.
 
 Underneath that runs a second axis: how settled a memory is, from scratch at L0
 through durable fact at L2 to policy at L4 and synthesised pattern at L5. A
-memory climbs by evidence, and stable facts promote on confidence while
-patterns condense from the same fact appearing across separate sessions. One
-step wants a person. Promotion into the tier that carries operating policy can
-require a recorded operator approval, because a rule the system will apply to
-future work is not something a confidence score should be allowed to enact
-alone.
+memory climbs through evidence. Policy can require a recorded operator approval
+because it changes future work.
 
-The two axes are independent, which is what makes this cohere. A tier says how
-much the system trusts a memory. A scope says who it belongs to. Personal
-context and organisational knowledge sit in one substrate, ranked by one query.
-
-Because that boundary lives inside the ranking, widening who is allowed to ask a
-question is not the same decision as widening what any of them can see.
+Tier records how settled a memory is. Scope records where it may appear.
 
 ## A team's memory, distilled out of work nobody filed
 
-The design goal is that a team's memory gets better the more the team uses it.
-Not larger. Better, in the sense that what it holds becomes more refined and
-more of it is worth reading, because a store built this way has one thing no
-individual has: several people arriving at the same conclusion separately.
+The design goal is refinement under use. Something one engineer established can
+climb out of its original scope after independent work corroborates it. Nobody
+has to file or curate it.
 
-One store serves a person, a team or a company, and it distils. Something one
-engineer's work established climbs out of the scope it was learned in once
-enough independent work agrees with it. Nobody files it and nobody curates it.
+Three is the default threshold in three places, but the units differ. A durable
+fact seen in three distinct sessions can become a pattern. An entity
+corroborated by three distinct sources can move out of local scope. A novel
+relation joins the vocabulary after three committed sightings.
 
-The same threshold governs that in three places. A durable fact that has turned
-up in three separate sessions is synthesised into a pattern, on a query
-counting distinct sessions. An entity corroborated by three distinct sources is
-promoted out of local scope, on a query that considers only the not-yet-global
-ones. A novel relation seen three times joins the vocabulary.
+That last counter does not record distinct sources. One participant can repeat
+a relation to the threshold. The fact still enters as speculation, but the
+vocabulary promotion is weaker evidence than the other two paths.
 
-None of this is visible while it happens, and that is the point. An engineer
-does their work. Months later somebody who has never spoken to them asks a
-question, and the answer carries what that work established, because enough
-other work independently agreed with it in between.
+Months later, somebody who never spoke to the first engineer can receive an
+answer carrying what that work established.
 
 The loop closes on the other side. Demotion runs on verdicts attributed across
-everyone's recalls, so a shared memory that keeps proving wrong in practice
-sinks on the evidence of the people it failed.
+everyone's recalls. A shared memory that keeps failing in practice sinks.
 
-Which makes collective use the selection pressure in both directions, and
-neither direction needs a curator.
-
-There is nothing novel in the principle underneath that, and it is stronger for
-being old. Independent convergence is what replication means in science, what a
-second team reaching your architecture tells you about the architecture, and
-what makes a finding worth more than the confidence of whoever reported it. Two
-people agreeing after talking is a conversation. Two people agreeing without
-having talked is evidence.
-
-The system counts distinct sources because that is the difference, and it is
-the whole reason the count means anything.
-
-## Some memory is armed rather than stored
-
-Everything so far answers a question when one is asked. One part of the store
-does the opposite.
+## Prospective memory waits for its trigger
 
 A prospective memory is a reminder with a trigger, an action, an anchor and a
 recurrence. It sits armed, and context assembly checks the current turn against
-the armed set before the turn is answered. An anchor can be an entity or a
-file, so a reminder can be attached to the thing it concerns instead of to a
-date.
+the set before answering. An entity or file can anchor it, so the reminder does
+not need a date.
 
-The difference from recall is who initiates. Nobody has to remember that there
-was something to remember, which is the failure mode a note-to-self has and
-cannot fix. The store raises it when you touch the subject.
+The store raises the reminder when somebody touches its subject. The person does
+not first have to remember that a note exists.
 
-Everything else in this piece is about not losing what you know. This is the
-one part that is about not missing the moment when knowing it mattered.
+## Fusion raises the cost of a bad write
 
-## Which is why the write path has to be strict
+A wrong fact in an isolated fact store harms queries that retrieve it. In a
+fused graph, an edge changes what the walk reaches and what enters the ranking,
+including queries that mention neither endpoint. On a shared deployment, later
+sessions can also carry it into pattern synthesis. A bad write can spread.
 
-In a system where facts sit in their own store and get consulted when a query
-looks factual, a wrong fact gives a wrong answer to the questions that reach
-it. The damage is bounded by the query.
+## Fact extraction does not grant model authority
 
-In one graph it is not. An edge is a path, and paths change what the walk
-reaches, which changes what enters the candidate set, which changes the ranking
-for questions that never mentioned either endpoint. A relationship a model
-invented at three in the morning does not sit quietly in a corner waiting to be
-asked about. It bends recall.
+Every fact is born into one of three classes. The asserted authority and the
+write-gate verdict choose the class, not how sure anyone sounds.
 
-And on a shared deployment it does not bend only yours. Something corroborated
-three times is promoted into everyone's context, so a store that distils is a
-store where a bad write earns compound interest.
+Say something yourself through a relation the system understands and the fact is
+Class A. It carries full confidence and is exempt from expiry. A background
+extraction can reach Class B. Novel relations and other unconfirmed claims begin
+in Class C.
 
-## A model's guess never outranks what you told it
+The extraction path has no route from model authority to Class A. The extractor
+passes model authority as a constant, so a fact-extraction prompt cannot claim
+the user's class. That guarantee does not yet cover every correction API.
 
-Every fact is born into one of three classes, and the class is decided by who
-asserted it, not by how sure anyone sounds.
+The extractor ignores the model's self-reported confidence. It commits only
+when both endpoints occur in the source note. That catches invented endpoints,
+but not a false relation between two names that are present.
 
-Say something yourself, using a relation the system already understands, and
-the fact is Class A. It carries full confidence, it wins every conflict about
-the same subject and relation, and it never expires. Let the background
-extractor infer something from a note you wrote, and the best it can earn is
-Class B. Everything else is Class C, which is to say speculation.
+A new relation remains speculation even when a person asserted it. The
+unsettled part is the vocabulary, and personal authority cannot settle that.
 
-The rule that assigns the class is eleven lines long and has no way to reach
-Class A from a model. The extractor's calls pass their authority as a constant,
-so there is no argument a prompt could win.
-
-The model is asked how confident it is, and the answer is used once, as a
-floor: below six-tenths the triple is dropped. Above the floor the number buys
-nothing. A model that returns perfect confidence on a hallucinated triple lands
-exactly where a hedging one does.
-
-The awkward branch is the first one. A relation nobody has established yet is
-speculation even when you asserted it personally, because what is unproven
-there is the vocabulary and your authority cannot cure that. It costs you
-something real, and it is still the right trade.
-
-Reinforcement moves a fact along that scale and never off the end of it. A
-model inference confirmed enough times stops expiring and stays Class B, and
-speculation that is never confirmed runs out its clock and is stamped as no
-longer believed. Repetition buys durability. It does not buy authority.
+Reinforcement can make a model inference durable, but it stays Class B.
+Unconfirmed speculation runs out its clock and is stamped as no longer
+believed. Repetition buys durability. It does not buy authority.
 
 ## Correcting a fact leaves the old one where it is
 
-What a correction means is a property of the fact being corrected. Most
-relations supersede: the old value is stamped and the new one written beside
-it. A few are marked so a stale value stops matching while the row stays for
-the record, which is what an old nickname needs. A few more refuse to be
-quietly rewritten at all.
+Each relation carries its correction policy. Most supersede: stamp the old value
+and write the new one beside it. Some retire a stale value from matching while
+keeping its row. Others refuse quiet rewrites.
 
-That last kind does not mean you are locked out. It means no model may rewrite
-the value behind your back. You can still supersede it yourself, and the new
-value arrives with your authority on it.
+A person can still supersede a protected value. At the storage-function level,
+`facts.retract` refuses model authority against Class A. Its server handler,
+however, accepts `authority: "user"` from the request rather than deriving it
+from the authenticated actor. A caller with memory-write capability can select
+the user branch. The guard exists, but this boundary does not enforce who may
+invoke it.
 
-The guard runs in both directions. An inferred correction cannot retract
-something you stated, on any relation at all. In a fused graph that guard is
-doing more than protecting one answer, because retracting an edge removes a
-path and quietly changes what the walk can reach.
+The ordinary commit path is not as strict. If a model extracts a different
+object for a single-valued relation, the relation's correction policy runs
+without comparing authority classes. A Class B `works_for` write can therefore
+supersede the current Class A value. The row survives, but current recall no
+longer sees it.
 
-Because the old rows survive, two clocks have somewhere to write. Valid time is
-the interval a fact held in the world, transaction time is when the system
-stopped believing it, so "what was true last year" and "what did you believe
-last week" are different queries against different columns. A store that
-overwrites can answer neither.
+The retained rows carry two clocks. Valid time records when the fact held in the
+world. Transaction time records when the system believed it. "What was true
+last year" and "what did you believe last week" become different queries.
 
-All of which is a promise until something records it. Mutations land in a
-hash-chained, append-only audit store, the same record shape the server keeps,
-with write-once enforced underneath.
-
-A chain is checkable in a way a policy is not. Every system in the comparison
-can tell you what it currently holds. This one can tell you whether anything was
-quietly changed on the way to holding it.
-
-## The model cannot invent its way around the rules, and the rules grow anyway
-
-None of this holds if a model can route around it by making up a relation. So
-the vocabulary is checked before anything is written.
+## The write gate rejects the wrong kinds, and the vocabulary can grow
 
 Facts are triples, and each kind of relationship declares what may sit on
 either end of it. Employment joins a person to an organisation, an address
-joins a device to an address.
-
-When a triple arrives the relationship is looked up and both ends are checked
-against what it permits. A model that proposes the printer works for the kernel
-gets a rejection, and the commit path stops before writing anything, under a
-comment that says never to write an unvalidated edge.
+joins a device to an address. The write gate looks up the relation and checks
+both ends. If the model says the printer works for the kernel, the commit stops
+before writing a row.
 
 Seventeen relationships ship with the system so a fresh install can validate
-before it has learned anything, and the live set lives in a table the running
-system extends. Each one carries its own rules, which is why nothing downstream
-has to be told, case by case, that a person has one employer and many
-acquaintances.
+before it has learned anything. The live set sits in a table the running system
+can extend, with cardinality and endpoint rules attached to each relation.
 
-The obvious objection is that seventeen relationships is a rounding error
-against the world, and a vocabulary that is wrong rejects things that are true.
-Which is why the vocabulary grows on its own.
+A relation the system has never seen enters as speculation. A provisional entry
+gives the fact somewhere to attach, and the sighting is counted.
 
-A relationship the system has never seen is not thrown away. It is admitted as
-speculation, with a provisional entry created so the fact has something to hang
-on, and the sighting is counted.
+A sighting registers only after its fact commits. Failed writes do not raise the
+candidate's standing, and a rejected relation keeps that verdict.
 
-The counting is careful in two ways worth noticing. A sighting registers only
-after the fact it came from actually committed, so a failed write cannot
-inflate a candidate's standing. And a relationship already rejected keeps that
-verdict, so it cannot creep back onto the shortlist by being proposed again.
+Three committed sightings let the maintenance pass promote the relation.
+Catch-alls such as `misc` never qualify because they cannot later reconcile to a
+specific relationship.
 
-Recur across enough separate sources and the maintenance pass promotes it, on
-the threshold the distillation runs on, with nobody asked. One family of words
-is barred from ever making it: a model falling back on a catch-all is refused
-however often it does so, because a durable relationship called `misc` can never
-be reconciled to a real one later.
-
-The one path that does want a human is teaching a whole domain up front from its
-documentation, which changes the shape of the vocabulary before any evidence has
-accumulated to justify it.
+A person may also teach a domain from its documentation before evidence has
+accumulated. That is the human path into the vocabulary.
 
 ## Two spellings of a name are one thing, and a bad guess is reversible
 
-Identity is not a nicety here. The graph walk starts from the entities a
-candidate memory mentions, so a name that splits into three nodes is three
-places the walk cannot get to.
+The graph walk starts from the entities a candidate mentions. Split one person
+across three nodes and the walk loses paths.
 
 The ends of a fact are resolved to an identity before the fact is stored. Names
-point at that identity and never at each other, which makes a circular chain of
-nicknames impossible by construction.
+point at that identity, never at other names. Values such as an address or age
+bypass the identity register.
 
-Values are left alone. An address or an age is not somebody, and running it
-through an identity register would invent a person where there is none.
+Every completed merge is recorded and reversible. A name with several plausible
+owners goes to a queue with bounded retries. It blocks neither write nor recall.
 
-Two things about this matter more than the matching itself. Every close-call
-merge is written down and can be undone, which is the difference between a
-system that is confident and one that can be wrong safely. And a name with
-several plausible owners is not guessed at. It goes on a queue with a status
-and a bounded number of retries, blocking neither the write nor the recall.
+## Demotion reads outcomes, not popularity
 
-## What survives is decided by how it turned out
+Each recall records the memories placed in front of the model. Memories that
+shaped the answer receive an outcome: accepted, corrected, contradicted, rolled
+back or beside the point.
 
-Recall is not free of consequences. Each one records which memories it put in
-front of the model, and each memory that shaped an answer gets a verdict
-written against it: accepted, corrected, contradicted, rolled back, or beside
-the point.
-
-Whether a memory keeps its standing is then decided from a time-decayed window
-of those verdicts and nothing else. The contract spells out what is
-deliberately excluded:
+Demotion reads a time-decayed window of those outcomes. Its contract excludes
+everything else:
 
 ```text
 The scorer reads only attributed outcome evidence — not source tags, declared
 confidence, author id, or retrieval frequency.
 ```
 
-That exclusion list is the whole idea. A memory pulled up constantly and wrong
-every time sinks, and a memory wearing a respectable provenance tag earns
-nothing for it.
-
-Note which frequency is being refused, because the system counts the other one
-carefully. How many independent sources asserted a thing is corroboration, and
-it promotes. How often a row got surfaced is popularity, and it counts for
-nothing.
-
-Being retrieved is something that happens to a memory. Being arrived at
-separately is something several people did.
+A frequently retrieved memory that keeps failing sinks. Independent sources
+asserting the same thing still count as corroboration. Retrieval frequency is a
+property of ranking; source count is evidence about the claim.
 
 Under a floor of recorded outcomes the scorer declines to judge at all and says
-so. It is the same instinct as abstaining on a weak answer, pointed at
-housekeeping.
+so.
 
 Contradictions are not resolved by picking a winner. Both claims stay, linked,
-with their sources intact, and the current value is a matter of policy. An
-unresolved one also raises a question on a backlog of things the system knows
-it does not know, alongside gaps like a fact gone stale and a topic with thin
-coverage.
+with their sources intact. Policy chooses the current value. Unresolved
+conflicts join a backlog with stale facts and topics that have thin coverage.
 
-## Six of seven systems keep their stores in separate piles
+## Ten of thirteen do not connect memory and code in one graph
 
-Every cell was read from the project's own source at the commit named, on 20
-August 2026. The per-system findings, the test behind each column and the line
-numbers behind each verdict are in the audit file rather than here.
+Every cell was read from the project's own source at the commit named, on 20 or
+21 August 2026. "Authority" means an enforced distinction between a person's
+assertion and a model inference, not confidence, content type or message role.
+"Typed gate" means that a relation with the wrong endpoint kinds is refused a
+row. The final column says what disappears from current recall and what
+survives. The audit file carries the complete tests and source lines.
 
-| system | commit | one fused graph | fragment points at its source | typed write gate | authority classes | valid time | model may remove a fact |
+| system | commit | memory and code in one graph | retrieved fact reaches source | typed endpoint gate | assertion authority | valid time | correction or removal path |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `aimee` | `50c5d88d` | yes, with code | hash, span, heading, neighbours | yes, kind-validated | A / B / C, enforced | yes, plus code generations | no, superseded |
-| Graphiti (Zep) | `c4069327` | graph only | raw episode kept, no document above it | no | none | yes | expired, retained |
-| cognee | `fd5045f6` | graph plus vector | chunk names a document, document names a path | optional, enrichment only | none | edge `updated_at` | tagged, retained |
-| mem0 OSS | `3599aa75` | no, graph removed | messages kept, memories do not reference them | no | none | no | not in v3, ADD-only |
-| Letta Code | `d1dc6880` | no | git history of the block | no | none | no | yes, block rewrite |
-| LangMem | `29cbe41e` | no | no document model | no | none | no | yes, hard delete |
-| Memobase | `358c16bb` | no | blobs kept, slots do not reference them | slot schema | none | no | yes, slot rewrite |
+| `aimee` | PR 2824 `5a5350b9`, open | yes, native code graph | hash, span, heading, neighbours | yes | A / B / C; correction authority is partly caller-declared | yes, plus code generations | retained supersession; two correction paths can bypass A |
+| Graphiti (Zep) | `c4069327` | graph, no native code model | raw episode kept | no | none | yes | expired edge retained |
+| cognee | `fd5045f6` | graph plus vector, no native code model | chunk to document to path | optional enrichment only | none | edge `updated_at` only | tagged edge retained |
+| mem0 OSS | `3599aa75` | no; graph removed | messages kept, memory lacks link | no | none | no | v3 extraction is ADD-only |
+| Letta Code | `d1dc6880` | no | block history in git | no | none | no | model rewrites block; git retains history |
+| LangMem | `29cbe41e` | no | no document model | no | none | no | model tool hard-deletes |
+| Memobase | `358c16bb` | no | blobs kept, slots lack link | slot schema, not relation kinds | none | no | model rewrites slot |
+| Hindsight | `3de41af8` | hybrid memory graph, no native code model | fact to document and original text | no | world / experience are content types, not authority | yes, occurred start / end | invalidation archives; MCP document delete permanently removes linked facts |
+| MemOS | `be68e2fb` | graph plus vector, no native code structure | source snippet or locator; versions retained | no | provenance and confidence, no assertion rank | event metadata, no general valid interval | MCP delete reaches hard `DETACH DELETE` |
+| mnem | `2a8a3698` | yes, code, documents and conversations | chunk to document with source offsets | schema tree exists; endpoint validation not implemented | author / agent provenance, no assertion rank | no | MCP tombstone hides current fact; history is reversible |
+| Menhir | `4e4f39ed` | yes, structural code and semantic memory | episode, evidence span and code anchors | yes for work-artifact links; not extracted memory edges | user-grounded vs agent inference; candidate / persistent / promoted | yes | delete requires operator tier; superseded history retained |
+| Neo4j Agent Memory | `5b4e00af` | graph memory, no native code model | entities link to messages; direct fact tool does not set source | no | explicit / inferred share confidence field | yes, `valid_from` / `valid_until` | preference supersession retained; no delete in shipped MCP tools |
+| Memori | `538b61f2` | facts and triples, no native code model | fact-mention link to conversation | no | source / signal taxonomy, no enforced rank | no | host API hard-deletes entity memory; agent tool is read-only |
 
-Graphiti is the closest architecture and the fairest comparison. It is genuinely
-bitemporal and a contradicted edge is expired with the row kept
+Within the original seven-system set, Graphiti was the closest architecture. It
+is bitemporal and keeps contradicted edges as expired rows
 ([`edges.py`](https://github.com/getzep/graphiti/blob/c406932767ee490ad2311fd694a6b2ac3b164599/graphiti_core/edges.py#L262-L283)). Custom edge types exist,
-but what they constrain is which definitions the extraction prompt is shown, so
-nothing checks the relation the model returns against them. There is no
-confidence, provenance or authority field on an edge at all.
+but they control what definitions the extraction prompt sees.
 
-cognee arrived at the same problem and named it. Its temporal conflict resolver
-tags superseded edges and keeps them, and its docstring says why that cannot
-happen automatically:
+The write path does not check the returned relation against those definitions.
+Its edge has no confidence, provenance or authority field.
+
+cognee's conflict resolver keeps superseded edges. Its docstring also states why
+correction policy cannot be generic:
 
 ```text
 Nothing is applied automatically: the caller names the relationships that are
@@ -502,103 +390,144 @@ legitimately many-valued and must never be collapsed, and there is no
 cardinality metadata to tell them apart.
 ```
 
+The quote comes from
 [`temporal_conflict_resolver.py`](https://github.com/topoteretes/cognee/blob/fd5045f6b60522c1953fc1ae258e041ba53602d8/cognee/modules/graph/utils/temporal_conflict_resolver.py#L13-L16).
-That missing cardinality metadata is what a relation's own correction policy
-carries in the store. cognee ships real ontology support and defaults to no
-ontology file, with contradiction detection off
+Cardinality metadata lets a relation carry that policy in the store. cognee
+ships ontology support but defaults to no ontology file, with contradiction
+detection off
 ([`config.py`](https://github.com/topoteretes/cognee/blob/fd5045f6b60522c1953fc1ae258e041ba53602d8/cognee/modules/cognify/config.py#L13-L17)).
 
-mem0's open-source graph memory no longer exists: "Graph memory is removed from
-OSS. It's a built-in, always-on Mem0 Platform feature"
+mem0 removed graph memory from its open-source release: "Graph memory is removed
+from OSS. It's a built-in, always-on Mem0 Platform feature"
 ([`oss-v2-to-v3.mdx`](https://github.com/mem0ai/mem0/blob/3599aa75ed64ee41c3b1d8133a8b39403fb8f703/docs/migration/oss-v2-to-v3.mdx#L41)). The same
-release made extraction ADD-only, which is a real improvement on an LLM choosing
-DELETE per fact. What replaces it is accumulation: self-contained sentences,
-related ones linked by id, and nothing reconciling two that contradict.
+release made extraction ADD-only, removing the old model-selected deletion path.
+Contradictory memories now accumulate without reconciliation.
 
-Letta's V1 server is retired to an `archive` branch that "receives no fixes or
-security updates, and should not be used in production", and memory is now a
-block the agent rewrites in place
-([`toolset.ts`](https://github.com/letta-ai/letta-code/blob/d1dc6880971dc55a5e5dfcf845d4cba740b14585/src/tools/toolset.ts#L61-L68)). Credit where it is due, and
-it is a design nobody else here has: MemFS tracks every block in git, so a
-destructive rewrite leaves a commit. That is an audit trail. The store still has
-no idea which line came from the user.
+Letta stores memory as a block the agent can rewrite
+([`toolset.ts`](https://github.com/letta-ai/letta-code/blob/d1dc6880971dc55a5e5dfcf845d4cba740b14585/src/tools/toolset.ts#L61-L68)). MemFS tracks every block in git,
+so the old content survives in a commit. The block still has no field
+separating user text from model text.
 
 LangMem is the plainest case in the set. `create_manage_memory_tool` permits
 `delete` by default and the branch is one line,
 `store.delete(namespace, key=str(id))`
 ([`tools.py`](https://github.com/langchain-ai/langmem/blob/29cbe41e58528f92e9efa773c12e15c47be3808c/src/langmem/knowledge/tools.py#L327-L328)), with no history
-row and no check on what is being removed. A tool call the model chooses to
-emit removes a fact a person stated, and afterwards the store cannot tell you it
-happened.
+row or check on what is removed.
 
 Memobase has the closest thing here to an ontology, in topic and subtopic
-profile slots. Reconciliation is an LLM choosing to append, update or abort,
-where updating means rewriting the slot's text over what was there.
+profile slots. An LLM chooses to append, update or abort. Update rewrites the
+slot text.
 
-On the source column the field does better than the criticism usually aimed at
-it, and worse than that sounds. Retention is common: Graphiti keeps the raw
-episode, mem0 writes every message to a table, Letta has every block version in
-git. What is uncommon is a path from the thing you retrieved back to the whole
-it came from, and cognee gets closest by having a chunk name its document while
-the document names a filesystem location instead of holding the text.
+Source retention is more common than the usual criticism allows. Graphiti keeps
+the raw episode, mem0 writes every message to a table and Letta has git history.
+In the original seven-system set, the missing part was usually a path from the
+retrieved fragment back to that source. cognee came closest: a chunk names its
+document, and the document names a filesystem path.
 
-The cheap part is keeping the bytes and nearly everyone does it. The part that
-takes deciding is making the fragment carry enough to reconstitute its context,
-and then making retrieval able to walk it.
+The added systems make that last paragraph less bleak. Hindsight is presented
+as a persistent MCP agent-memory product, not a research prototype, and its
+recall combines semantic, keyword, graph and temporal strategies
+([product guide](https://github.com/vectorize-io/hindsight/blob/3de41af867582c810309d6ea4c1b1de9d0ed9b7e/hindsight-docs/blog/2026-03-04-mcp-agent-memory.md#the-approach)).
+It stores the original document and gives each memory unit a `document_id`.
+Invalidating a fact moves it out of recall, consolidation and the graph, but
+into a reversible archive rather than oblivion
+([migration](https://github.com/vectorize-io/hindsight/blob/3de41af867582c810309d6ea4c1b1de9d0ed9b7e/hindsight-api-slim/hindsight_api/alembic/versions/c9a1b2d3e4f5_add_invalidated_memory_units.py#L1-L26)).
+Its world facts, experiences, observations and mental models are meaningful
+memory types. They do not say whether a person asserted a fact or a model
+inferred it. The gentler fact-level path is not the whole deletion story:
+Hindsight also exposes an MCP `delete_document` tool that permanently removes
+the document and every memory linked to it
+([`mcp_tools.py`](https://github.com/vectorize-io/hindsight/blob/3de41af867582c810309d6ea4c1b1de9d0ed9b7e/hindsight-api-slim/hindsight_api/mcp_tools.py#L3742-L3803)).
 
-A-MEM (`ceffb860`) organises memories as Zettelkasten-style linked notes with no
-temporal, authority or ontology layer. It is a research implementation and I am
-not holding it to a production bar.
+MemOS deserves similar precision. Its public model stores source roles,
+message IDs, document paths and archived versions
+([`item.py`](https://github.com/MemTensor/MemOS/blob/be68e2fb5370866bd5e2b188bb3d22bd13b49e09/src/memos/memories/textual/item.py#L16-L92)).
+That is provenance and recoverable history. It is not an authority ranking,
+and the shipped MCP delete path reaches a hard graph delete.
+The architecture introduction's `MemLifecycle` and `MemGovernance` claims are
+broader than the like-for-like modules I could locate in the public core, so I
+credit the implemented metadata and history rather than treating every
+architecture label as a runtime guarantee.
 
-`aimee` is not a research project. It is the system Rakuen runs, the memory
-described above is the memory doing that work, and it has been carrying it in
-production for about a year. The public repository is younger than that,
-because its first commit is a snapshot import.
+mnem falsifies the original code-plus-memory claim. Its ingest path accepts
+source code, documents and conversation exports, links chunks back to document
+nodes, and commits snapshots of the node, edge and schema trees. Those snapshots
+can branch, diff, merge and roll back. A tombstone
+removes a fact from current retrieval while the prior commit remains available
+([README](https://github.com/Uranid/mnem/blob/2a8a36985dbcf107378a76daeeef7154691220e7/README.md#L23-L31)).
+It does not yet validate candidate edge endpoints against its schema tree, and
+its author, agent and task fields are commit provenance rather than a rank on
+each assertion.
 
-Which is worth stating, because everything above it describes a field where the
-open-source artifact and the working system are frequently different objects: a
-paper, an archived server, a feature that moved to the paid tier.
+Menhir is the stronger counterexample. Its structural and semantic entities
+share one Neo4j graph
+([README](https://github.com/Archolith/menhir/blob/4e4f39ed388a1c689740a7d48daade9fbc79c000/README.md#L24-L58)).
+A claim that declares itself user-sourced must be grounded in retained turn
+evidence or it is downgraded to `agent_inference`. Candidate memories stay out
+of recall until review, and only an operator can promote persistent memory to
+verified ground truth or invoke deletion. This is an authority model. Its
+remaining caveat is deployment state: scalar-state and event-history recall
+authority are shipped but default-off, so those derived views do not yet govern
+the ordinary recall path by default.
 
-None of that is dishonest and none of it is unusual. A research group publishes
-to be cited and a company keeps its differentiator on the paid tier. It does
-mean a reader comparing architectures is often comparing a paper, a retired
-server and a hosted product, and only some of it is code they can put under
-load.
+Neo4j Agent Memory and Memori broaden the production set without changing that
+conclusion. Neo4j Agent Memory carries `valid_from`, `valid_until` and source IDs,
+but its MCP fact tool accepts arbitrary subject, predicate and object strings
+with one confidence field. Memori links facts to the conversations that mention
+them, but its source and signal taxonomy classifies memory content rather than
+ranking who may overrule whom.
 
-The architecture above is none of those. It is public under AGPL-3.0, the
-extraction prompt in the fact benchmark is lifted from the shipped extractor
-unchanged, and the memory subsystem carries thirty-one of its own test files.
-Every claim in this piece is written against a line number because there is a
-running system behind each one.
+Supermemory does not receive a row. Its documentation says inferred memories
+carry `isInference: true`, rank below stated facts and can enter a review queue
+([memory review](https://github.com/supermemoryai/supermemory/blob/34876664810a43a55954a0a83571662a3bd333b8/apps/docs/recall/memory-review.mdx#L8-L36)).
+That would overlap this article's authority test. The self-hosting path,
+however, downloads `supermemory-server` as a release binary; the repository
+contains the documentation, clients and MCP layer, not the engine that
+implements those fields
+([self-hosting quickstart](https://github.com/supermemoryai/supermemory/blob/34876664810a43a55954a0a83571662a3bd333b8/apps/docs/self-hosting/quickstart.mdx#L28-L58)).
+I cannot turn an unauditable implementation into either a yes or a no.
+The docs also describe AST-aware code chunking, but do not establish from
+inspectable engine source that code structure and temporal memory occupy one
+traversable graph.
 
-## The claim, scoped so one counterexample would settle it
+A-MEM (`ceffb860`) sits outside the table because it is a research implementation.
+The open-source field also includes retired servers and features moved to
+hosted tiers. The table describes only the pinned source a reader can inspect,
+not the hosted products behind mem0, Zep or Letta.
 
-Of the seven systems in the table above, plus A-MEM, all read at a pinned
-commit on 20 August 2026, `aimee` is the only one in which all four of the
-following hold: conversational memory, typed facts and source code are ranked
-by one query against one graph; a model-extracted fact cannot reach the
-authority class a user-stated fact gets, by any path including repetition; a
-model authority cannot retract a user-stated fact on any relation; and a triple
-whose subject or object kind violates the relation's ontology is refused a row.
+## The narrower claim this audit supports
 
-I looked for a counterexample among the systems I could read and did not find
-one. That is a claim about what I searched. Hosted systems whose source I
-cannot read are outside it, and so is any system I did not think to clone. One
-system holding all four would settle it, and I would rather be shown one than
-keep the claim.
+Of the thirteen inspectable implementations in the table, `aimee` is the only
+one I found that combines all four of these in one store: a native call and
+import graph, a path from a retrieved document fragment to its source, an
+endpoint-kind gate for semantic relations, and a stored user-versus-model
+authority class. Menhir has the native code graph, provenance and assertion
+authority, and an endpoint-kind gate for work-artifact links, but not for the
+general extracted semantic-memory graph. mnem has the fused,
+versioned graph, but not per-assertion authority.
+
+That is a claim about this search set, not the field. Aimee stores the authority
+class, but its current correction boundary does not authenticate every use of
+it. Supermemory is outside the set because the engine source was not available
+in the repository I inspected. A single inspectable implementation holding the
+same conjunction would settle it.
+
+The stronger enforcement claim does not survive the current source. PR 2824's
+storage function protects a user-stated fact from model retraction, but the
+server lets a memory-write caller declare user authority. A conflicting
+model-authored commit on a single-valued relation can also replace the current
+value without an authority comparison.
 
 ## What this design costs
 
 A vocabulary that is wrong rejects facts that are true. Seventeen relations is
-a small seed, so on a fresh corpus most of what arrives is novel, lands as
-speculation, and has to earn its way to durable across three sightings. A fact
-stated once, in a domain nobody has taught, expires. That is the deliberate
-trade, and it is a real cost paid by the person who says something true once.
+a small seed. On a fresh corpus, novel facts land as speculation and need three
+committed sightings to promote their relation. A true fact stated once in an
+untaught domain expires.
 
-Retaining everything has a price too. Nothing is deleted, so the edge table
-grows with every correction, and a store running for a year carries every value
-each fact has ever held. Superseded rows are cheap to filter and they still
-occupy disk.
+Retaining fact rows has a price too. The edge table grows with every correction,
+and a store running for a year carries every value each fact has held.
+Superseded rows still occupy disk.
 
 Recall abstention exists and is default-off with its threshold uncalibrated,
 because calibrating it needs labelled ask-outcome data nobody has collected. I
@@ -606,26 +535,20 @@ would rather say that than ship a threshold I guessed.
 
 ## Who this is not for
 
-The real split here is not difficulty. It is whether you want a library or a
-system.
+Choose first between a library and a system. mem0 and LangMem run inside your
+process. If that is the shape you want, use one of them. `aimee` is an AGPL-3.0
+server.
 
-mem0 and LangMem are libraries. You import them, pass an API key, and they run
-inside your process. If that is the shape you want, take one of those, because
-`aimee` is not that and never will be.
+Setup is clone, `docker compose up`, then a seven-step wizard that provisions
+the store and selects the embedder. Graphiti asks for a Neo4j, FalkorDB or
+Neptune cluster first. Both are a different commitment from `pip install`.
 
-It is a server you run: clone, `docker compose up`, and click through a
-seven-step wizard that provisions the store and picks the embedder. That is
-less work than standing up Graphiti, which asks you to bring your own Neo4j,
-FalkorDB or Neptune cluster first. It is still a different commitment from a
-`pip install`.
+As of 20 August 2026, there is no hosted `aimee` tier. Mem0, Zep and Letta will
+operate their systems for you. If you do not want to run a database, use one of
+those.
 
-Which points at the other disqualifier. There is no hosted tier. Mem0, Zep and
-Letta will all operate this for you and `aimee` will not, so if you do not want
-to run a database, the answer here is no and the answer there is yes.
-
-And if your agent's memory holds preferences that are cheap to be wrong about,
-none of the machinery above is worth its cost to you. Wrong preference, mild
-annoyance, next turn corrects it.
+If the memory holds preferences that are cheap to get wrong, this machinery is
+not worth its cost. The next turn can correct a mild annoyance.
 
 The argument starts to bind when a remembered fact drives an action, and it
 binds harder when memory and code are the same question. A device address, a
@@ -634,8 +557,8 @@ is.
 
 ## Go and check your own
 
-Four checks to run against whatever memory system you have. The last one is the
-one almost nothing passes.
+Four checks to run against whatever memory system you have. mnem and Menhir now
+pass the last one, which is why the original article had to change.
 
 Open the schema for a stored fact and look for a field recording who asserted
 it, distinct from the model that wrote it down. If there is no such column, the
