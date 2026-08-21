@@ -4,8 +4,10 @@ An architecture piece. `aimee` holds conversations, typed facts and source code
 in one graph ranked by one query, with scope ranked inside recall and two clocks
 on facts. Every guard on its write path exists because an edge is a path.
 
-Around that: thirteen inspectable implementations read at pinned commits on 20
-and 21 August 2026, plus A-MEM as a research reference. Supermemory is recorded
+Around that: fourteen inspectable projects used for, or adjacent to, agent
+memory, read at pinned commits on 20 and 21 August 2026, plus A-MEM as a research
+reference. Graphiti is explicitly treated as a temporal knowledge-graph
+framework rather than an agent-memory service. Supermemory is recorded
 separately because its public repository distributes the memory engine as a
 packaged server binary rather than exposing its implementation source.
 
@@ -16,8 +18,8 @@ Draft, 2026-08-20. Not publication-ready. One blocker remains, below.
 ## Evidence
 
 No runtime measurement and no performance or accuracy claim about any system.
-The evidence is a static source audit of fifteen repositories: thirteen scored
-implementations, A-MEM as a research reference, and Supermemory as an unscored
+The evidence is a static source audit of sixteen repositories: fourteen scored
+projects, A-MEM as a research reference, and Supermemory as an unscored
 source-availability finding.
 
 [`evidence/source-audit-2026-08-20.md`](evidence/source-audit-2026-08-20.md)
@@ -38,6 +40,9 @@ commit recorded in the audit.
 [`evidence/raw/aimee-testing-revalidation-2026-08-21.md`](evidence/raw/aimee-testing-revalidation-2026-08-21.md)
 records the current `testing` audit.
 
+[`evidence/raw/graphiti-response-and-graphify-2026-08-21.md`](evidence/raw/graphiti-response-and-graphify-2026-08-21.md)
+records the Graphiti classification correction and the pinned Graphify audit.
+
 ## Current `aimee` pin
 
 The article is pinned to `testing` at `1d36f8c1`. Current semantic edges
@@ -55,11 +60,11 @@ record says its live mTLS actor branch was not exercised.
 
 ## Blocker
 
-**Right of reply is outstanding.** No project named in the comparison was
-given the specific claim ahead of publication. Options are to solicit reply from
-each named project first, or to publish with the gap stated in the article text
-as well as here. The audit records the mitigating facts and does not treat them
-as satisfying the obligation.
+**Right of reply is outstanding for the other named projects.** Graphiti's
+maintainers responded and their classification correction is incorporated.
+The other projects were not given the specific claim ahead of publication.
+Options are to solicit their replies first, or to publish with the gap stated
+in the article text as well as here.
 
 ## Reporting record
 
@@ -68,9 +73,9 @@ reporting. The argument that fusion is what makes write-path discipline
 necessary, and the closing recommendation, are Rakuen Software's analysis and
 are written in the first person.
 
-**Interest.** Rakuen Software builds `aimee`, one of the thirteen inspectable systems compared,
-and benefits if readers prefer its design. Disclosed in the standfirst, next to
-the opening finding.
+**Interest.** Rakuen Software builds `aimee`, one of the fourteen inspectable
+projects compared, and benefits if readers prefer its design. Disclosed in the
+standfirst, next to the opening finding.
 
 **Refused metric.** No head-to-head accuracy or savings figure against any other
 system appears. The claim is architectural and is specified so a single

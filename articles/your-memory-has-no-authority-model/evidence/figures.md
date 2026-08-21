@@ -247,11 +247,13 @@ is an order-of-magnitude claim in the piece and is used as one.
 | Menhir's scalar-state and event-history recall authority remain default-off | Menhir `.agent/default-off-features.md:1-13,35-38`, `4e4f39ed` |
 | Neo4j Agent Memory carries source IDs and valid-time bounds, while its MCP fact tool accepts an untyped triple and no source ID | Neo4j Agent Memory `long_term.py:228-308,825-920`; `_tools.py:243-278`, `5b4e00af` |
 | Memori links facts to conversations but has no authority or valid-time field; host deletion is not in the shipped agent tool | Memori SQLite migration `:75-197`; `recall.py:193-211`; OpenClaw tool inventory and `memori-recall.ts:1-145`, `538b61f2` |
+| Graphiti is a temporal knowledge-graph framework rather than an agent-memory service; its row does not stand in for Zep | maintainer response supplied by the author, 2026-08-21; Graphiti source findings in the audit at `c4069327` |
+| Graphify combines an AST code and document graph with saved Q&A work memory; source verdicts and corrections are retained in memory files and projected through a sidecar, without user-versus-model authority | Graphify `README.md:30-36,102-114,672-678`; `graphify/ingest.py:274-341`; `graphify/reflect.py:42-48,350-361,758-790`, `b2cd3626` |
 | Supermemory docs claim `isInference`, down-ranking, review and AST-aware code chunking, but self-hosting installs a packaged binary whose engine source is absent from the repository | Supermemory `memory-review.mdx:8-36`; `super-rag.mdx:95-122`; `self-hosting/overview.mdx:1-31`; `self-hosting/quickstart.mdx:8-58`; repository tree at `34876664` |
 
 ## Comparison-table cells
 
-Each cell of the thirteen-system table is sourced in
+Each cell of the fourteen-project table is sourced in
 [`source-audit-2026-08-20.md`](source-audit-2026-08-20.md), which records the
 commit, the file and the reasoning for every verdict, including the cells where
 a one-word answer understates a project's design.

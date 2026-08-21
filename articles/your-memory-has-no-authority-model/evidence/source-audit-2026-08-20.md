@@ -1,22 +1,26 @@
-# Source audit: thirteen-system comparison and one research reference
+# Source audit: fourteen-project comparison and one research reference
 
 Dates of audit: 2026-08-20 and 2026-08-21.
 
-Method: each external repository was cloned with `git clone --depth 1` from its
-public GitHub origin on the audit date and the resulting `HEAD` was recorded
-before reading. The six added inspectable systems and Supermemory were cloned
-on 2026-08-21. `aimee` was read from the local checkout as described below. No
+Method: each external repository was cloned from its public GitHub origin on the
+audit date and the resulting `HEAD` was recorded before reading. The initial
+collection used shallow clones; Graphify used a filtered clone of its `v8`
+branch. The seven added inspectable projects and Supermemory were cloned on
+2026-08-21. `aimee` was read from the local checkout as described below. No
 repository was modified. Every comparison-table verdict below cites a file and
 line range in the committed tree at that commit. First-party documentation in
 those trees was read to establish each project's own product and architecture
 claims; implementation verdicts were checked against source rather than inferred
 from a third-party summary or a model's description of a project.
 
-Thirteen inspectable systems appear in the article's comparison table. A-MEM
-was read as a research-only reference and is recorded below without a table
-row. Supermemory was also reviewed, but its self-hosted memory engine is a
-packaged binary whose implementation is not present in the public repository.
-It is recorded as an audit limit, not scored as a negative row.
+Fourteen inspectable projects appear in the article's comparison table. This is
+not a claim that every row is an agent-memory service: Graphiti is a framework
+for building temporal knowledge graphs, while Graphify is a local knowledge-
+graph tool with an explicit work-memory loop. A-MEM was read as a research-only
+reference and is recorded below without a table row. Supermemory was also
+reviewed, but its self-hosted memory engine is a packaged binary whose
+implementation is not present in the public repository. It is recorded as an
+audit limit, not scored as a negative row.
 
 `aimee` was read from a detached worktree of `origin/testing` at
 `1d36f8c186bf91267ee878a06f1c1d92615a7783`. The repository's clean-container
@@ -41,6 +45,7 @@ working-tree modifications were not cited.
 | Menhir | `Archolith/menhir` | `4e4f39ed388a1c689740a7d48daade9fbc79c000` | 2026-08-20 |
 | Neo4j Agent Memory | `neo4j-labs/agent-memory` | `5b4e00af88342707d011bb9d4f2b34503f43a8c3` | 2026-08-19 |
 | Memori | `MemoriLabs/Memori` | `538b61f245295aa1a43df8033879f8293627f74d` | 2026-07-28 |
+| Graphify | `Graphify-Labs/graphify`, `v8` | `b2cd36267456c166788c95be6e68574064a92a42` | 2026-08-20 |
 | Supermemory, engine not scored | `supermemoryai/supermemory` | `34876664810a43a55954a0a83571662a3bd333b8` | 2026-08-20 |
 
 `letta-ai/letta` was also cloned (`87fd37aa`, 2026-08-15) and found to contain no
@@ -132,6 +137,13 @@ audited here.
 
 ### Graphiti
 
+Scope correction from right of reply: Graphiti's maintainers describe the
+project as a framework for building temporal knowledge graphs, not an
+agent-memory service. They state that most of the memory features in the
+reporting questions are available in Zep rather than Graphiti. This audit and
+the article therefore score only the public Graphiti framework and do not label
+the row “Graphiti (Zep)” or infer hosted Zep behavior from it.
+
 - Write gate: no. `extract_edges` validates that the LLM's entity names appear
   in the node list and drops self-edges
   (`graphiti_core/utils/maintenance/edge_operations.py:210-241`); the relation
@@ -141,15 +153,53 @@ audited here.
   response is written as returned.
 - Authority classes: no. `EntityEdge`
   (`graphiti_core/edges.py:262-283`) carries `name`, `fact`, `episodes`,
-  temporal fields and free-form `attributes`. `grep` for `provenance`,
-  `authority` and `confidence` across `edges.py` and `nodes.py` returns nothing.
+  temporal fields and free-form `attributes`. `episodes` supplies source
+  linkage, but no field ranks a user assertion over a model inference.
 - Valid time: yes. `valid_at` and `invalid_at` are the real-world interval;
   `expired_at` is the transaction-time close.
 - Model removal: contradicted edges are expired and the rows kept
   (`resolve_edge_contradictions`, `edge_operations.py:538+`). `EntityEdge.delete`
   exists as an explicit API call and is not on the ingestion path.
 
-This is the strongest competing design in the set and the article says so.
+Graphiti remains relevant as an inspectable temporal graph substrate adjacent
+to agent memory. It is not presented as a standalone memory service.
+
+### Graphify
+
+- Product scope: the pinned `v8` tree describes a local tool that maps code,
+  documents and media into one queryable knowledge graph. Code is parsed with
+  tree-sitter and `calls`, `imports`, `inherits` and `mixes_in` are resolved
+  across files (`README.md:30-36,102-114`). It also ships a work-memory loop,
+  not merely a code index (`README.md:672-678`).
+- Memory and code: yes. `save_query_result` writes a Q&A outcome as Markdown
+  with source-node links, then documents that the file is extracted into the
+  graph on the next update (`graphify/ingest.py:274-341`). Code nodes and those
+  semantic memory documents therefore reach the same `graph.json`. The derived
+  per-node learning state is kept in `.graphify_learning.json` and merged at
+  read time rather than stamped into the structural graph
+  (`graphify/reflect.py:42-48,758-790`).
+- Source path: yes. Nodes carry `source_file` and `source_location`; the build
+  normalises and preserves those fields, and query output exposes them
+  (`graphify/build.py:970-976,1194-1204`; `README.md:77-98`). Saved Q&A also
+  records up to ten source-node labels (`graphify/ingest.py:304-336`).
+- Typed write gate: no for the article's semantic endpoint-kind test. The build
+  rejects malformed or dangling endpoints and has relation-specific structural
+  guards, but it does not declare subject/object kinds per semantic relation
+  (`graphify/build.py:1144-1177,1205-1239`).
+- Authority classes: no enforced user-versus-model rank. Work-memory records an
+  outcome, contributor, correction and source nodes; those fields describe
+  provenance and feedback, not who may outrank whom
+  (`graphify/ingest.py:271-318`).
+- Valid time: no. The Q&A record has one write timestamp, and reflection uses it
+  for decay. It is not a separate real-world validity interval
+  (`graphify/ingest.py:300-310`; `graphify/reflect.py:262-285`).
+- Correction: yes, retained. A correction is appended to a new Markdown record.
+  Reflection reads all records and makes the most recent correction for a
+  repeated question current in the derived lessons; the source files survive
+  (`graphify/reflect.py:133-156,350-361,387-412`).
+
+This row credits Graphify as a fourth code-plus-memory implementation while
+keeping its sidecar learning state and lack of assertion authority explicit.
 
 ### cognee
 
@@ -443,6 +493,9 @@ used to reach the whole source it came from?
 - **Graphiti** — `EpisodicNode.content` holds raw episode data
   (`graphiti_core/nodes.py:319-321`). Episodes are themselves the ingest unit;
   there is no document object above them to return to.
+- **Graphify** — retrieved nodes carry `source_file` and `source_location`, and
+  saved Q&A memory records retain the source-node labels that supported the
+  answer (`graphify/build.py:970-976`; `graphify/ingest.py:304-336`).
 - **cognee** — `DocumentChunk.is_part_of` names its `Document`
   (`cognee/modules/chunking/models/DocumentChunk.py:10-25`), and `Document`
   carries `raw_data_location`, a path, rather than the text
@@ -498,10 +551,12 @@ conversations are common enough to deserve a separate column.
 
 ## Right of reply
 
-**Outstanding, and not satisfied.** The repository's reporting rules require a
-materially criticised subject to receive the specific claim with a fair chance
-to respond. That has not been done for any of the fourteen external projects
-named here.
+**Partially complete.** Graphiti's maintainers responded on 2026-08-21. Their
+classification correction and the distinction between Graphiti and Zep are now
+incorporated, and their Graphify suggestion was audited at a pinned commit.
+The repository's reporting rules require every materially criticised subject to
+receive the specific claim with a fair chance to respond. That has not been done
+for the other fourteen external projects named here.
 
 The mitigating facts, stated so a reader can weigh the gap: every criticism is a quotation or a line reference against a public
 commit, so each project's maintainers and any reader can check it without

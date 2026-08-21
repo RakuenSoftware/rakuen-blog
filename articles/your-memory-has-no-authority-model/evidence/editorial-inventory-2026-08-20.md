@@ -16,7 +16,7 @@ Source findings cut from the article remain in
 | reporting item | kind | disposition |
 | --- | --- | --- |
 | Static read of `aimee` `testing` at `1d36f8c1`, including fused recall, authenticated fact authority, provenance, correction, lifecycle, ontology, identity and curation | first-party source audit | Retained across the architecture tour and comparison row. The repository's clean-container PostgreSQL validation record was read but not rerun; its live mTLS actor branch remains a stated limit. |
-| Static read of Graphiti at `c4069327` | external source audit | Retained in the table and as the closest architecture in the original seven-system set. The expanded audit found stronger counterexamples. Full findings remain in the source audit. |
+| Static read of Graphiti at `c4069327` | external source audit | Retained as an adjacent temporal knowledge-graph framework, explicitly not an agent-memory service or a proxy for Zep. Full findings remain in the source audit. |
 | Static read of cognee at `fd5045f6` | external source audit | Retained in the table and as the clearest account of why correction needs relation policy. Full findings remain in the source audit. |
 | Static read of mem0 at `3599aa75` | external source audit | Retained in the table and compressed to the ADD-only change. Full findings remain in the source audit. |
 | Static read of Letta Code at `d1dc6880`, plus the current Letta repository and its retired server notice | external source audit | Retained in the table, with its git-history mitigation. Full findings remain in the source audit. |
@@ -46,24 +46,28 @@ Source findings cut from the article remain in
 | Static read of Neo4j Agent Memory at `5b4e00af`, including source edges, valid-time fields, MCP fact insertion and preference supersession | external source audit, 2026-08-21 expansion | Added to the table. Source and valid-time capabilities are credited; the arbitrary MCP triple write does not pass the endpoint-kind or authority tests. |
 | Static read of Memori at `538b61f2`, including BYODB facts, knowledge triples, conversation mentions, source/signal filters and deletion | external source audit, 2026-08-21 expansion | Added to the table as a broader production-memory reference. Its source/signal taxonomy is described as classification, not assertion authority. |
 | Static read of Supermemory at `34876664`, including self-hosting, memory review, graph-memory and code-ingestion documentation plus repository tree inspection | external documentation and source-availability audit, 2026-08-21 expansion | Retained outside the scored table. The docs claim inferred-memory down-ranking, review and temporal graph history, but the packaged `supermemory-server` engine implementation was not present in the repository. The article records this as unknown rather than a negative verdict. |
+| Graphiti maintainer response supplied by the author on 2026-08-21 | right of reply | Incorporated. The article now says Graphiti is a framework for temporal knowledge graphs, removes “Graphiti (Zep)”, and does not attribute Zep's memory-service features to the public framework. The suggested Graphify project was added to the audit. |
+| Static read of Graphify `v8` at `b2cd3626`, including AST code and document ingestion, source locations, saved Q&A outcomes, correction aggregation and the learning sidecar | external source audit, 2026-08-21 response follow-up | Added to the table as a fourth code-plus-memory implementation. Its structural graph and experiential sidecar are distinguished, and outcome provenance is not recast as assertion authority. |
 
 ## Publication disposition
 
-The 2026-08-21 expansion found two direct counterexamples to the prior
+The 2026-08-21 expansion found three direct counterexamples to the prior
 code-plus-memory uniqueness language. mnem combines source code, documents and
 conversation exports in one versioned graph. Menhir combines a structural code
 graph and governed semantic memory in one Neo4j graph. Menhir also implements a
 grounded user-versus-agent admission distinction and operator-promoted truth.
-The title, excerpt, opening, comparison heading, table, narrow claim and closing
-check were changed. Popularity and project age were not used as exemptions.
+Graphify combines its AST code and document graph with Q&A records re-ingested
+from its work-memory loop. The title, excerpt, opening, comparison heading,
+table, narrow claim and closing check were changed. Popularity and project age
+were not used as exemptions.
 
 Supermemory was not assigned negative comparison cells. Its documentation
 overlaps the article's authority and temporal tests, while the implementation
 of the packaged server engine was absent from the inspected repository. That
 source-availability finding is now explicit in the article and audit.
 
-The named projects have not received a right of reply. That is the remaining
-publication blocker.
+Graphiti has received and exercised a right of reply. The remaining named
+projects have not; that is the publication blocker.
 
 During the pass, `src/modules/db2/c/ontology_evolution.c:24-55` was read at the pinned
 commit. Its promotion counter is keyed only by relation type and has no source
