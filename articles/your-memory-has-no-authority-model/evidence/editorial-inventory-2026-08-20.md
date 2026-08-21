@@ -86,13 +86,14 @@ production expansion collects seed-attached memories and direct neighbours;
 the separate two-hop SQL helper has no production caller. The article and
 source map now state the behaviour that the production path implements.
 
-The same read found an authority gap outside the PR's stated repair list. The
-explicit retraction path protects Class A from model authority, but the normal
-semantic upsert applies a functional relation's correction policy without
-comparing authority classes. The model extractor calls that path, so a
-conflicting Class B write can supersede a current Class A value. The article's
-comparison row and scoped claim were narrowed; publication now also depends on
-closing and testing this path.
+The same read found two authority gaps outside the PR's stated repair list. The
+storage-level retraction path protects Class A from model authority, but its
+server handler accepts the authority string from any memory-write caller rather
+than deriving it from the authenticated actor. The normal semantic upsert also
+applies a functional relation's correction policy without comparing authority
+classes. The model extractor calls that path, so a conflicting Class B write can
+supersede a current Class A value. The article's comparison row and scoped claim
+were narrowed; publication now depends on closing and testing both paths.
 
 The article previously said the current extractor used a 0.6 self-reported
 confidence floor. That described the baseline commit. At the PR head the floor

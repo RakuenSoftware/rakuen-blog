@@ -50,16 +50,19 @@ expiry, exposes the correction paths, protects typed facts from pruning and
 weight normalisation, and adds a PostgreSQL end-to-end suite. That is a static
 read of the PR and its tests; this reporting pass did not rerun the suite.
 
-The PR does not yet enforce authority on every correction path. The explicit
-retraction function skips Class A for model authority, but
-`db2_entity_edge_upsert_semantic()` supersedes the current object of a functional
-relation without comparing classes. Since the extractor calls that path with
-model authority, a Class B `works_for` write can make a Class A value non-current.
-The end-to-end suite tests model retraction, but not this conflicting-write case.
+The PR does not yet enforce authority on every correction path. Its server
+handler accepts `authority: "user"` from any caller holding memory-write
+capability instead of deriving authority from the authenticated principal. The
+storage function skips Class A for model authority, but the caller can select
+the user branch. Separately, `db2_entity_edge_upsert_semantic()` supersedes the
+current object of a functional relation without comparing classes. Since the
+extractor calls that path with model authority, a Class B `works_for` write can
+make a Class A value non-current. The end-to-end suite tests the storage-level
+model retraction, but not either server-boundary or conflicting-write case.
 
 **Before this article ships, PR 2824 must merge, every `aimee` claim must be
 re-verified against its merge commit, and every citation must be repointed. The
-conflicting-write authority gap above must also be closed.**
+two authority gaps above must also be closed.**
 
 The target branch has also moved DB2 from `src/db2/` to `src/modules/db2/c/`, so
 the old paths and line numbers cannot be carried forward mechanically.

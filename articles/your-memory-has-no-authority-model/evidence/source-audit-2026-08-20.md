@@ -122,11 +122,16 @@ rewrite their confirmation counts.
 - Valid time: `valid_from` / `valid_until` remain on `entity_edges`, while
   `asserted_at`, `superseded_at` and `suppressed` carry transaction-time and
   correction state (`src/modules/db2/c/schema.sql:88, 1794-1803`).
-- Model removal: yes, by conflicting commit. The explicit retraction contract
+- Model removal: yes, by two correction paths. The explicit retraction contract
   skips Class A rows for non-user authority and retains the row under a
   supersession stamp or tombstone (`src/modules/db2/c/fact_lifecycle.h:63-85`).
-  PR 2824 exposes that contract through `facts.retract`
-  (`src/server/server_facts.c:18-69`). The ordinary semantic upsert is different:
+  PR 2824 exposes that contract through `facts.retract`, but its server handler
+  accepts `authority: "user"` from the request and the route requires only
+  `CAP_MEMORY_WRITE`; authenticated capability sets include that grant
+  (`src/server/server_facts.c:18-69`; `src/server/server_auth.c:43-64`;
+  `src/headers/server.h:157-164`). Authority is therefore not derived from the
+  authenticated actor at this boundary. The ordinary semantic upsert is also
+  different:
   for a functional relation it supersedes a prior object without comparing the
   old and new authority classes (`src/modules/db2/c/entity_edges.c:275-320`).
   The model extractor reaches that path with `FACT_AUTHORITY_MODEL`

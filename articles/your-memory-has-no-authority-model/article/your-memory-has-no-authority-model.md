@@ -24,9 +24,10 @@ unmerge path.*
 confirmation counts. The PR head fixes those gaps. It remains open, so this
 article remains a draft.*
 
-*One authority gap remains. The explicit retraction command protects Class A
-from a model, but an ordinary model-authored write can still supersede a Class A
-fact on a single-valued relation. That path must be fixed before publication.*
+*Two authority gaps remain. The retraction handler lets a memory-write caller
+declare itself `user`, instead of deriving authority from authentication. An
+ordinary model-authored write can also supersede a Class A fact on a
+single-valued relation. Both paths must be fixed before publication.*
 
 Long context can remove the retrieval problem from agent memory. Put the whole
 conversation in the window and no old turn has to be found.
@@ -236,7 +237,7 @@ fused graph, an edge changes what the walk reaches and what enters the ranking,
 including queries that mention neither endpoint. On a shared deployment, later
 sessions can also carry it into pattern synthesis. A bad write can spread.
 
-## A model's guess never receives your authority
+## Fact extraction does not grant model authority
 
 Every fact is born into one of three classes. The asserted authority and the
 write-gate verdict choose the class, not how sure anyone sounds.
@@ -246,9 +247,9 @@ Class A. It carries full confidence and is exempt from expiry. A background
 extraction can reach Class B. Novel relations and other unconfirmed claims begin
 in Class C.
 
-The class assignment has no path from model authority to Class A. The extractor
-passes model authority as a constant, so a prompt cannot claim the user's
-class.
+The extraction path has no route from model authority to Class A. The extractor
+passes model authority as a constant, so a fact-extraction prompt cannot claim
+the user's class. That guarantee does not yet cover every correction API.
 
 The extractor ignores the model's self-reported confidence. It commits only
 when both endpoints occur in the source note. That catches invented endpoints,
@@ -267,8 +268,12 @@ Each relation carries its correction policy. Most supersede: stamp the old value
 and write the new one beside it. Some retire a stale value from matching while
 keeping its row. Others refuse quiet rewrites.
 
-A person can still supersede a protected value. The explicit `facts.retract`
-command refuses a model attempt against Class A.
+A person can still supersede a protected value. At the storage-function level,
+`facts.retract` refuses model authority against Class A. Its server handler,
+however, accepts `authority: "user"` from the request rather than deriving it
+from the authenticated actor. A caller with memory-write capability can select
+the user branch. The guard exists, but this boundary does not enforce who may
+invoke it.
 
 The ordinary commit path is not as strict. If a model extracts a different
 object for a single-valued relation, the relation's correction policy runs
@@ -353,7 +358,7 @@ survives. The audit file carries the complete tests and source lines.
 
 | system | commit | memory and code in one graph | retrieved fact reaches source | typed endpoint gate | assertion authority | valid time | correction or removal path |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `aimee` | PR 2824 `5a5350b9`, open | yes, native code graph | hash, span, heading, neighbours | yes | A / B / C; correction guard incomplete | yes, plus code generations | retained supersession; conflicting model write can displace A |
+| `aimee` | PR 2824 `5a5350b9`, open | yes, native code graph | hash, span, heading, neighbours | yes | A / B / C; correction authority is partly caller-declared | yes, plus code generations | retained supersession; two correction paths can bypass A |
 | Graphiti (Zep) | `c4069327` | graph, no native code model | raw episode kept | no | none | yes | expired edge retained |
 | cognee | `fd5045f6` | graph plus vector, no native code model | chunk to document to path | optional enrichment only | none | edge `updated_at` only | tagged edge retained |
 | mem0 OSS | `3599aa75` | no; graph removed | messages kept, memory lacks link | no | none | no | v3 extraction is ADD-only |
@@ -501,14 +506,17 @@ authority, and an endpoint-kind gate for work-artifact links, but not for the
 general extracted semantic-memory graph. mnem has the fused,
 versioned graph, but not per-assertion authority.
 
-That is a claim about this search set, not the field. Supermemory is outside it
-because the engine source was not available in the repository I inspected. A
-single inspectable implementation holding the same conjunction would settle
-it.
+That is a claim about this search set, not the field. Aimee stores the authority
+class, but its current correction boundary does not authenticate every use of
+it. Supermemory is outside the set because the engine source was not available
+in the repository I inspected. A single inspectable implementation holding the
+same conjunction would settle it.
 
-The stronger claim does not survive the current source. PR 2824 protects a
-user-stated fact from explicit model retraction, but not from a conflicting
-model-authored commit on a single-valued relation.
+The stronger enforcement claim does not survive the current source. PR 2824's
+storage function protects a user-stated fact from model retraction, but the
+server lets a memory-write caller declare user authority. A conflicting
+model-authored commit on a single-valued relation can also replace the current
+value without an authority comparison.
 
 ## What this design costs
 

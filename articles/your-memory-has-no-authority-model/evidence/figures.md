@@ -41,7 +41,8 @@ must be repointed and re-verified against the resulting commit.
 | relation gravity and A/B/C confidence class reach the fusion score | `src/modules/memory/memory_graph_fusion.c:26-117, 262-277` |
 | fact promotion and speculative expiry run in the normal maintenance cycle | `src/modules/memory/memory_health.c:390-413` |
 | `facts.retract`, `entities.merge` and `entities.unmerge` have production command handlers | `src/server/server_facts.c:18-123` |
-| explicit model retraction protects Class A, but a conflicting model-authored commit on a functional relation can supersede it | `src/modules/db2/c/fact_lifecycle.h:63-85`; `src/modules/db2/c/entity_edges.c:275-320`; `src/kb/kb_memory_facts.c:358-378` |
+| the storage-level retraction guard protects Class A from model authority, but the server accepts caller-declared `user` authority from a memory-write client | `src/modules/db2/c/fact_lifecycle.h:63-85`; `src/server/server_facts.c:18-47`; `src/server/server_auth.c:43-64`; `src/headers/server.h:157-164` |
+| a conflicting model-authored commit on a functional relation can supersede Class A without comparing authority | `src/modules/db2/c/entity_edges.c:275-320`; `src/kb/kb_memory_facts.c:358-378` |
 | orphan pruning cannot delete semantic facts | `src/modules/db2/c/entity_edges.c:749-784` |
 | co-occurrence upsert and normalization cannot change a semantic fact's confirmation count | `src/modules/db2/c/entity_edges.c:78-96, 787-824` |
 | the PR adds a PostgreSQL typed-fact end-to-end script containing forty-two calls to its assertion helper | `tests/e2e/typed-facts-pg-e2e.sh`; inspected, not executed for this article |
