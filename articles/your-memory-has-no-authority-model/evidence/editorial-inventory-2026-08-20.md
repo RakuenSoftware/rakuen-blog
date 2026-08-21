@@ -15,9 +15,7 @@ Source findings cut from the article remain in
 
 | reporting item | kind | disposition |
 | --- | --- | --- |
-| Static read of `aimee` at `50c5d88d`, including fused recall, scope, fact lifecycle, ontology, identity, curation and audit paths | first-party source audit | Retained across the architecture tour, compressed where several source details establish one capability. All citations still require repointing and re-verification after PR 2824 merges. |
-| Static read of open `aimee` PR 2824 at `5a5350b9` | first-party source audit | Added after the initial cut. It supports the provisional product-tour account of typed-fact recall, lifecycle scheduling, correction commands and maintenance guards. It also corrected the article's graph expansion from two hops to direct neighbours. The PostgreSQL end-to-end script was inspected but not run; no raw artifact was produced. |
-| Byte comparison of every cited `aimee` file against `50c5d88d` | first-party source verification | Retained in the source audit. Not repeated in article prose. |
+| Static read of `aimee` `testing` at `1d36f8c1`, including fused recall, authenticated fact authority, provenance, correction, lifecycle, ontology, identity and curation | first-party source audit | Retained across the architecture tour and comparison row. The repository's clean-container PostgreSQL validation record was read but not rerun; its live mTLS actor branch remains a stated limit. |
 | Static read of Graphiti at `c4069327` | external source audit | Retained in the table and as the closest architecture in the original seven-system set. The expanded audit found stronger counterexamples. Full findings remain in the source audit. |
 | Static read of cognee at `fd5045f6` | external source audit | Retained in the table and as the clearest account of why correction needs relation policy. Full findings remain in the source audit. |
 | Static read of mem0 at `3599aa75` | external source audit | Retained in the table and compressed to the ADD-only change. Full findings remain in the source audit. |
@@ -64,41 +62,31 @@ overlaps the article's authority and temporal tests, while the implementation
 of the packaged server engine was absent from the inspected repository. That
 source-availability finding is now explicit in the article and audit.
 
-The two existing blockers remain: PR 2824 must merge, every `aimee` claim must
-then be re-verified and repointed, and the named projects have not received a
-right of reply. This editorial pass does not clear either one.
+The named projects have not received a right of reply. That is the remaining
+publication blocker.
 
-During the pass, `src/db2/ontology_evolution.c:24-55` was re-read at the pinned
+During the pass, `src/modules/db2/c/ontology_evolution.c:24-55` was read at the pinned
 commit. Its promotion counter is keyed only by relation type and has no source
 field. The prior article called all three distillation thresholds independent;
 the shorter article now distinguishes the two `DISTINCT` queries from this
 occurrence counter and states the weaker guarantee in place.
 
-The scope claim was also checked against `src/db2/memory_scope_query.c:40-59`.
+The scope claim was also checked against
+`src/modules/db2/c/memory_scope_query.c:40-59`.
 That read path ranks three bands: active project, active workspace, and
 shared/global. The prior article's four-scope claim imported `user` from the
 artifact schema. The article and source map now describe the recall query
 itself.
 
-PR 2824 was read after the initial inventory. Its fusion function defaults a
-`max_hops` argument to two but never uses it to traverse a second edge. The
+The fusion function defaults a `max_hops` argument to two but never uses it to
+traverse a second edge. The
 production expansion collects seed-attached memories and direct neighbours;
 the separate two-hop SQL helper has no production caller. The article and
 source map now state the behaviour that the production path implements.
 
-The same read found an authority gap outside the PR's stated repair list. The
-explicit retraction path protects Class A from model authority, but the normal
-semantic upsert applies a functional relation's correction policy without
-comparing authority classes. The model extractor calls that path, so a
-conflicting Class B write can supersede a current Class A value. The article's
-comparison row and scoped claim were narrowed; publication now also depends on
-closing and testing this path.
-
-The article previously said the current extractor used a 0.6 self-reported
-confidence floor. That described the baseline commit. At the PR head the floor
-has been replaced by a source-grounding check on both endpoints, so the product
-tour now describes that check.
+The extractor uses a source-grounding check on both endpoints rather than its
+own reported confidence, so the product tour describes that check.
 
 The WORM paragraph was cut. The audit store is default-off, and no call from the
-fact correction files to its write seam was found at the PR head. Its existence
-does not support the prior sentence that each fact mutation enters it.
+fact correction files to its write seam was found at the pinned commit. Its
+existence does not support the prior sentence that each fact mutation enters it.

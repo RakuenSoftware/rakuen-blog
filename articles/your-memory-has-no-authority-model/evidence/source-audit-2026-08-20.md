@@ -18,21 +18,16 @@ row. Supermemory was also reviewed, but its self-hosted memory engine is a
 packaged binary whose implementation is not present in the public repository.
 It is recorded as an audit limit, not scored as a negative row.
 
-The baseline `aimee` audit used
-`50c5d88d37bae618ee08b0101f163682e864ace9`, which is public and reachable from
-`origin/agent/human-trigger-workflows`. Every file in that audit was verified
-byte-identical to the commit before writing. The article's provisional `aimee`
-row was then re-read from the head of open PR 2824,
-`5a5350b99ad610cef2e6c7b758c35ad2cd8fdc9d`. That second read was static: the PR's
-PostgreSQL end-to-end script was inspected but not run. Files carrying unrelated
+`aimee` was read from a detached worktree of `origin/testing` at
+`1d36f8c186bf91267ee878a06f1c1d92615a7783`. The repository's clean-container
+PostgreSQL validation record was read but not rerun. Files carrying unrelated
 working-tree modifications were not cited.
 
 ## Commits
 
 | system | repository | commit | commit date |
 |---|---|---|---|
-| `aimee` baseline | `RakuenSoftware/aimee` | `50c5d88d37bae618ee08b0101f163682e864ace9` | 2026-08-06 |
-| `aimee` article row, open PR 2824 | `RakuenSoftware/aimee#2824` | `5a5350b99ad610cef2e6c7b758c35ad2cd8fdc9d` | 2026-08-20 |
+| `aimee` | `RakuenSoftware/aimee`, `testing` | `1d36f8c186bf91267ee878a06f1c1d92615a7783` | 2026-08-21 |
 | Graphiti | `getzep/graphiti` | `c406932767ee490ad2311fd694a6b2ac3b164599` | 2026-08-20 |
 | cognee | `topoteretes/cognee` | `fd5045f6b60522c1953fc1ae258e041ba53602d8` | 2026-08-19 |
 | mem0 | `mem0ai/mem0` | `3599aa75ed64ee41c3b1d8133a8b39403fb8f703` | 2026-08-20 |
@@ -88,68 +83,48 @@ test, so a reader can disagree with a verdict by applying the same test.
 
 ### `aimee`
 
-#### Baseline audit: `50c5d88d`
-
-- Write gate: `src/modules/memory/memory_fact_gate.c:14-22` returns
-  `FACT_GATE_REJECT_KIND` on a kind violation;
-  `src/db2/rel_types_store.c:207-208` returns before any write on that verdict.
-  The gate is the only setter of `edge_class = 'semantic'`.
-- Authority classes: `src/db2/fact_lifecycle.c:48-59`. `FACT_CLASS_A` is
-  unreachable from `FACT_AUTHORITY_MODEL`. `db2_fact_promote_durable` raises a
-  Class B confidence to 0.8 and is documented as never promoting to A
-  (`src/db2/fact_lifecycle.h:58-61`).
-- Valid time: `valid_from` / `valid_until` on `entity_edges`, separate from
-  `superseded_at` (`src/db2/schema.sql:1400-1409`).
-- Model removal: no at the storage primitive. `db2_fact_retract` skips Class A
-  rows for a non-user authority and `hard_delete` is a `suppressed` flag with
-  the row retained (`src/db2/fact_lifecycle.h:62-85`). The audit later found
-  that this primitive had no production caller at the baseline.
-
-The baseline did not deliver the product behaviour the row implied. Typed facts
-were excluded from graph traversal, relation gravity was not passed into fusion,
-the fact lifecycle was not scheduled, and there was no production retraction or
-entity-unmerge surface. Generic maintenance could also delete semantic facts or
-rewrite their confirmation counts.
-
-#### Provisional article row: PR 2824 head `5a5350b9`
-
 - Write gate: `src/modules/memory/memory_fact_gate.c:12-42` checks both endpoint
   kinds. `src/modules/db2/c/rel_types_store.c:199-234` refuses kind failures and
   bad arguments before the semantic-edge write.
-- Authority classes: `src/modules/db2/c/fact_lifecycle.c:26-60` assigns A, B or
-  C, with Class A unreachable from model authority. Promotion and expiry retain
-  the class and the row (`:62-121`).
+- Authority classes: `src/modules/db2/c/fact_lifecycle.c:26-71` maps recorded
+  provenance and write authority to A, B or C, with Class A unreachable from
+  model authority. Promotion and expiry retain the class and row (`:73-132`).
+- Authenticated admission: the server caps a requested user retraction by its
+  attested transport (`src/server/server_facts.c:22-77`). The knowledge service
+  derives authority from its authenticated actor and applies the same ceiling
+  (`src/kb/kb_service_memory.c:34-74,1417-1443`). Model-composed context-block
+  text is forced to model authority (`:856-878`). Stored-memory provenance is
+  derived from the writer and defaults to `agent_message`, so the later drain
+  can distinguish user text from agent text
+  (`src/modules/db2/c/schema.sql:371-382`; `src/kb/kb_memory_facts.c:400-423`).
+- Functional correction: a write compares A/B/C rank before changing a current
+  single-valued fact. An outranked write is dropped rather than inserted beside
+  the stronger value (`src/modules/db2/c/entity_edges.c:303-355`). Tests cover
+  model-below-user, user-above-model and equal-rank correction
+  (`src/tests/test_fact_lifecycle.c:252-282`).
 - Valid time: `valid_from` / `valid_until` remain on `entity_edges`, while
   `asserted_at`, `superseded_at` and `suppressed` carry transaction-time and
-  correction state (`src/modules/db2/c/schema.sql:88, 1794-1803`).
-- Model removal: yes, by conflicting commit. The explicit retraction contract
-  skips Class A rows for non-user authority and retains the row under a
-  supersession stamp or tombstone (`src/modules/db2/c/fact_lifecycle.h:63-85`).
-  PR 2824 exposes that contract through `facts.retract`
-  (`src/server/server_facts.c:18-69`). The ordinary semantic upsert is different:
-  for a functional relation it supersedes a prior object without comparing the
-  old and new authority classes (`src/modules/db2/c/entity_edges.c:275-320`).
-  The model extractor reaches that path with `FACT_AUTHORITY_MODEL`
-  (`src/kb/kb_memory_facts.c:358-378`). The old Class A row remains stored but is
-  no longer current.
+  correction state (`src/modules/db2/c/schema.sql:88,1803-1813`).
+- Correction: model authority cannot retract Class A. Supersession and
+  tombstoning retain the edge row (`src/modules/db2/c/fact_lifecycle.h:76-98`).
 - Recall: graph readers admit current semantic rows and exclude superseded or
-  suppressed ones (`src/modules/db2/c/entity_edges.c:27-39, 1102-1110`). Fusion
+  suppressed ones (`src/modules/db2/c/entity_edges.c:27-39,1126-1146`). Fusion
   now scores the traversed relation and the fact's A/B/C class
   (`src/modules/memory/memory_graph_fusion.c:26-117, 262-277`).
 - Lifecycle and maintenance: fact promotion and speculative expiry are scheduled
   in the normal maintenance cycle (`src/modules/memory/memory_health.c:390-413`).
   Orphan pruning and weight normalization exclude semantic rows, and the generic
   co-occurrence upsert cannot increment a fact's confirmation count
-  (`src/modules/db2/c/entity_edges.c:78-96, 749-824`).
+  (`src/modules/db2/c/entity_edges.c:78-96,784-859`).
 - Extractor confidence: the current extractor ignores the model's reported
   confidence and instead requires both endpoints to occur in the source note
-  (`src/kb/kb_memory_facts.c:39-54, 338-346`). This corrects the baseline audit's
-  description of a 0.6 floor.
-
-PR 2824 adds `tests/e2e/typed-facts-pg-e2e.sh`, which contains forty-two calls to
-its assertion helper over the PostgreSQL typed-fact path. This audit did not
-execute the script. The PR remains open, so its head is evidence for a draft
-product tour, not a final publication pin.
+  (`src/kb/kb_memory_facts.c:39-54,338-346`).
+- Validation: `docs/validation/typed-fact-write-authority.md` records a
+  clean-container run through the real store, drain and PostgreSQL commit paths.
+  It reports the Class A value remaining current while a same-drain Class B
+  control commits. This audit did not rerun that validation. The record says the
+  live mTLS actor branch and the model-delete retire path were not exercised;
+  those mappings are unit-tested (`:185-217`).
 
 Scope: this row covers the typed-fact layer only, which is the layer the article
 describes. Free-text prose memory has separate write semantics and is not
@@ -463,7 +438,8 @@ used to reach the whole source it came from?
 
 - **`aimee`** — the fragment carries source path, whole-file content hash,
   heading path and line span, and is doubly linked to its neighbours in reading
-  order (`src/db2/schema.sql:136`, `src/db2/kb_payload.c:1708-1716`).
+  order (`src/modules/db2/c/schema.sql`, `kb_documents`;
+  `src/modules/db2/c/kb_payload.c`, `prev_chunk_id`/`next_chunk_id`).
 - **Graphiti** — `EpisodicNode.content` holds raw episode data
   (`graphiti_core/nodes.py:319-321`). Episodes are themselves the ingest unit;
   there is no document object above them to return to.
