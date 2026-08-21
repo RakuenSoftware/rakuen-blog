@@ -11,7 +11,7 @@ packaged server binary rather than exposing its implementation source.
 
 ## Status
 
-Draft, 2026-08-20. Not publication-ready. Two blockers, below.
+Draft, 2026-08-20. Not publication-ready. One blocker remains, below.
 
 ## Evidence
 
@@ -35,39 +35,27 @@ actual reporting outcome for the expanded comparison. The competitor checkouts
 were read-only clones in a scratch directory; each is reproducible from the
 commit recorded in the audit.
 
-## Blockers
+[`evidence/raw/aimee-testing-revalidation-2026-08-21.md`](evidence/raw/aimee-testing-revalidation-2026-08-21.md)
+records the current `testing` audit.
 
-**1. The `aimee` row describes an open pull request.** At the baseline commit
-`50c5d88d`, typed facts do not participate in the graph walk. Their lifecycle
-jobs are never scheduled, fact retraction and entity unmerge have no production
-surface, orphan pruning can delete a typed fact, and co-occurrence maintenance
-can rewrite its confirmation count.
+## Current `aimee` pin
 
-[`aimee` PR 2824](https://github.com/RakuenSoftware/aimee/pull/2824) fixes those
-gaps. Its current head, `5a5350b9`, admits current semantic edges to recall,
-passes their relation and authority class into scoring, schedules promotion and
-expiry, exposes the correction paths, protects typed facts from pruning and
-weight normalisation, and adds a PostgreSQL end-to-end suite. That is a static
-read of the PR and its tests; this reporting pass did not rerun the suite.
+The article is pinned to `testing` at `1d36f8c1`. Current semantic edges
+participate in recall; their relation and authority class reach scoring; fact
+promotion and expiry are scheduled; corrections retain history; and maintenance
+does not rewrite semantic confirmation counts.
 
-The PR does not yet enforce authority on every correction path. Its server
-handler accepts `authority: "user"` from any caller holding memory-write
-capability instead of deriving authority from the authenticated principal. The
-storage function skips Class A for model authority, but the caller can select
-the user branch. Separately, `db2_entity_edge_upsert_semantic()` supersedes the
-current object of a functional relation without comparing classes. Since the
-extractor calls that path with model authority, a Class B `works_for` write can
-make a Class A value non-current. The end-to-end suite tests the storage-level
-model retraction, but not either server-boundary or conflicting-write case.
+[PR 2828](https://github.com/RakuenSoftware/aimee/pull/2828), merged at that pin,
+derives write authority from transport and actor authentication, stamps stored
+memory provenance from that identity, forces model-composed context queries to
+model authority, and refuses functional corrections outranked by the current
+fact. The repository records a clean-container PostgreSQL validation. This
+reporting pass read that record and the merged source but did not rerun it; the
+record says its live mTLS actor branch was not exercised.
 
-**Before this article ships, PR 2824 must merge, every `aimee` claim must be
-re-verified against its merge commit, and every citation must be repointed. The
-two authority gaps above must also be closed.**
+## Blocker
 
-The target branch has also moved DB2 from `src/db2/` to `src/modules/db2/c/`, so
-the old paths and line numbers cannot be carried forward mechanically.
-
-**2. Right of reply is outstanding.** No project named in the comparison was
+**Right of reply is outstanding.** No project named in the comparison was
 given the specific claim ahead of publication. Options are to solicit reply from
 each named project first, or to publish with the gap stated in the article text
 as well as here. The audit records the mitigating facts and does not treat them

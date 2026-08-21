@@ -11,41 +11,36 @@ and 21 August 2026 at the commits pinned in
 
 ## `aimee` source citations
 
-The original source map is pinned to
-`50c5d88d37bae618ee08b0101f163682e864ace9`, 2026-08-06, public and reachable
-from `origin/agent/human-trigger-workflows`. Every file cited was verified clean
-against that commit before the article was written; the working tree carried
-unrelated modifications in files not cited here.
-
-The changed typed-fact and fusion behaviour was then read at open PR 2824 head
-`5a5350b99ad610cef2e6c7b758c35ad2cd8fdc9d`, 2026-08-20. Those provisional
-citations are recorded below. The PR's PostgreSQL end-to-end script was inspected
-but not run. This is not a publication pin: after merge, every `aimee` citation
-must be repointed and re-verified against the resulting commit.
+The `aimee` source map is pinned to `origin/testing` at
+`1d36f8c186bf91267ee878a06f1c1d92615a7783`, 2026-08-21. It was read from a
+detached worktree. The repository's clean-container PostgreSQL validation record
+was inspected but not rerun for this article.
 
 ### Fusion and retrieval
 
 | claim in the article | source |
 |---|---|
-| the top twelve candidates supply up to forty-eight canonical-entity seeds | PR 2824 `5a5350b9`, `src/modules/memory/memory_core_search_c.c:854-910` |
-| expansion collects memories attached to a seed, then follows its direct neighbours; relation and A/B/C class affect the edge score | PR 2824 `5a5350b9`, `src/modules/memory/memory_graph_fusion.c:208-305` |
-| `max_hops` is defaulted to two but is not used by the expansion; the separate two-hop helper has no production caller | PR 2824 `5a5350b9`, `src/modules/memory/memory_graph_fusion.c:208-218`; `src/modules/db2/c/entity_edges.c:1147-1166`; repository-wide caller search |
+| the top twelve candidates supply up to forty-eight canonical-entity seeds | `src/modules/memory/memory_core_search_c.c:854-910` |
+| expansion collects memories attached to a seed, then follows its direct neighbours; relation and A/B/C class affect the edge score | `src/modules/memory/memory_graph_fusion.c:208-305` |
+| `max_hops` is defaulted to two but is not used by the expansion; the separate two-hop helper has no production caller | `src/modules/memory/memory_graph_fusion.c:208-218`; `src/modules/db2/c/entity_edges.c:1182-1200`; repository-wide caller search |
 | one score with fourteen named parts | `src/modules/memory/memory_core_search_b.c:248-340` |
 | lane floors for summaries and facts, session-window expansion, hard scope buckets | `src/modules/memory/memory_core_search_c.c:920-945` |
 
-### PR 2824: provisional typed-fact repair
+### Typed facts and authenticated authority
 
-| claim in the article | source at `5a5350b9` |
+| claim in the article | source at `1d36f8c1` |
 |---|---|
-| current typed facts participate in graph reads; superseded and suppressed facts do not | `src/modules/db2/c/entity_edges.c:27-39, 1102-1110` |
+| current typed facts participate in graph reads; superseded and suppressed facts do not | `src/modules/db2/c/entity_edges.c:27-39,1126-1146` |
 | relation gravity and A/B/C confidence class reach the fusion score | `src/modules/memory/memory_graph_fusion.c:26-117, 262-277` |
 | fact promotion and speculative expiry run in the normal maintenance cycle | `src/modules/memory/memory_health.c:390-413` |
 | `facts.retract`, `entities.merge` and `entities.unmerge` have production command handlers | `src/server/server_facts.c:18-123` |
-| the storage-level retraction guard protects Class A from model authority, but the server accepts caller-declared `user` authority from a memory-write client | `src/modules/db2/c/fact_lifecycle.h:63-85`; `src/server/server_facts.c:18-47`; `src/server/server_auth.c:43-64`; `src/headers/server.h:157-164` |
-| a conflicting model-authored commit on a functional relation can supersede Class A without comparing authority | `src/modules/db2/c/entity_edges.c:275-320`; `src/kb/kb_memory_facts.c:358-378` |
-| orphan pruning cannot delete semantic facts | `src/modules/db2/c/entity_edges.c:749-784` |
-| co-occurrence upsert and normalization cannot change a semantic fact's confirmation count | `src/modules/db2/c/entity_edges.c:78-96, 787-824` |
-| the PR adds a PostgreSQL typed-fact end-to-end script containing forty-two calls to its assertion helper | `tests/e2e/typed-facts-pg-e2e.sh`; inspected, not executed for this article |
+| requested user authority is capped by transport attestation at the server and authenticated actor at the knowledge service | `src/server/server_facts.c:22-77`; `src/kb/kb_service_memory.c:34-74,1417-1443` |
+| model-composed context-block text is forced to model authority | `src/kb/kb_service_memory.c:856-878` |
+| stored-memory provenance is derived from the writer, defaults to agent-authored and supplies the later fact authority | `src/modules/db2/c/schema.sql:371-382`; `src/kb/kb_memory_facts.c:400-423` |
+| a functional correction compares class rank; a lower-authority write neither supersedes nor sits beside the current value | `src/modules/db2/c/entity_edges.c:303-355`; `src/tests/test_fact_lifecycle.c:252-282` |
+| orphan pruning cannot delete semantic facts | `src/modules/db2/c/entity_edges.c:784-819` |
+| co-occurrence upsert and normalization cannot change a semantic fact's confirmation count | `src/modules/db2/c/entity_edges.c:78-96,822-859` |
+| the repository records a clean-container PostgreSQL validation of the authority paths, with live mTLS actor coverage named as a limit | `docs/validation/typed-fact-write-authority.md:1-217`; inspected, not rerun for this article |
 | the extractor ignores self-reported confidence and requires both endpoints to occur in the source note | `src/kb/kb_memory_facts.c:39-54, 338-346` |
 
 ### Ranking and evaluation
@@ -55,13 +50,13 @@ must be repointed and re-verified against the resulting commit.
 | the score weights are fitted from feature rows and recorded retrieval outcomes | `src/kb/kb_ranker_fit.h` |
 | fitting runs from a background worker | `src/kb/kb_service_workers.c:119-130` |
 | a fitted model lands as proposed and a benchmark gate must promote it | `src/kb/kb_ranker.c:155-180` |
-| shadow mode records per-query rank and score deltas for fused against unfused, and is an evaluation harness rather than a production path | `src/db2/shadow_delta.h` |
+| shadow mode records per-query rank and score deltas for fused against unfused, and is an evaluation harness rather than a production path | `src/modules/db2/c/shadow_delta.h` |
 
 ### Prospective memory
 
 | claim in the article | source |
 |---|---|
-| a reminder carries trigger, action, anchor entity, anchor file, recurrence, state and validity | `src/db2/schema.sql:185` |
+| a reminder carries trigger, action, anchor entity, anchor file, recurrence, state and validity | `src/modules/db2/c/schema.sql:206`, `prospective_memories` |
 | context assembly matches the current turn against the armed set | `src/modules/memory/memory_context.c:892` |
 
 ### The code graph
@@ -84,8 +79,8 @@ must be repointed and re-verified against the resulting commit.
 | claim in the article | source |
 |---|---|
 | ingestion routes by format and falls through to passthrough | `src/kb/kb_ingest_normalize.c:20-47` |
-| a stored fragment carries source path, whole-file content hash, heading path and line span | `src/db2/schema.sql:136`, `kb_documents` |
-| fragments are doubly linked in reading order and neighbours are one hop away | `src/db2/kb_payload.c:1708-1716`, `prev_chunk_id`/`next_chunk_id` |
+| a stored fragment carries source path, whole-file content hash, heading path and line span | `src/modules/db2/c/schema.sql`, `kb_documents` |
+| fragments are doubly linked in reading order and neighbours are one hop away | `src/modules/db2/c/kb_payload.c`, `prev_chunk_id`/`next_chunk_id` |
 | office formats and HTML go through a converter; PDFs get their own extraction layer | same, plus `docs/STRUCTURED_PDF.md` |
 | PDF layers are separate dependencies that degrade individually without claiming the lost capability | `docs/STRUCTURED_PDF.md` degradation table |
 | structured PDF ingestion keeps page coordinates, reading order, tables as cells, OCR, extractor identity and confidence | `docs/STRUCTURED_PDF.md` layers and evidence model |
@@ -97,7 +92,7 @@ must be repointed and re-verified against the resulting commit.
 | doc to entity to code unit is a graph traversal | `src/kb/kb_curator_link_artifacts.c:5-9` |
 | an endpoint answers that question | `src/kb/http/kb_http.c:997-998`, `POST /v1/implements` |
 | ordinary recall refuses code subgraphs for a query with no code-shaped token, checked per token | `src/modules/memory/memory_graph_fusion.c:119-153` |
-| scope is an authorisation band inside the ranking, not a filter applied afterwards | `src/db2/memory_scope_query.c:40-59`, `docs/retrieval-stack.md` |
+| scope is an authorisation band inside the ranking, not a filter applied afterwards | `src/modules/db2/c/memory_scope_query.c:40-59`, `docs/retrieval-stack.md` |
 
 ### Cross-repo resolution
 
@@ -106,10 +101,10 @@ must be repointed and re-verified against the resulting commit.
 | symbols are keyed per project, so a call and its definition in another repo are unrelated nodes | `docs/proposals/done/cross-repo-dependency-graph.md` thesis |
 | forty repositories on the reference deployment | same |
 | the `LiStartConnection` example | same |
-| every edge carries a confidence tier and its evidence, never a bare boolean | `src/db2/cross_repo_resolver.h`, §3.2 |
+| every edge carries a confidence tier and its evidence, never a bare boolean | `src/modules/db2/c/cross_repo_resolver.h`, §3.2 |
 | top tier needs trusted-rooted corroboration by import resolution or export membership plus three call sites across three files | `cross-repo-dependency-graph.md` §3.2 (a)/(b) |
 | single call site is tentative and excluded from default output | same, LOW/TENTATIVE |
-| several plausible definers, or an import resolving to several files, is routed to a review queue and never guessed | `src/db2/cross_repo_resolver.h:80-99`, §3.5/§3.7 |
+| several plausible definers, or an import resolving to several files, is routed to a review queue and never guessed | `src/modules/db2/c/cross_repo_resolver.h:80-99`, §3.5/§3.7 |
 | a vendored copy colliding with the original routes to ambiguous | `cross-repo-dependency-graph.md` §3.7 tie-break |
 | untrusted caller caps at the middle tier; untrusted definer can never lend top-tier export corroboration | same, §0 untrusted signal caps |
 
@@ -123,75 +118,72 @@ verified in `cross_repo_resolver.h`.
 
 | claim in the article | source |
 |---|---|
-| valid time and transaction time as separate columns | `src/db2/schema.sql:1400-1409` |
-| the walk traverses only edges whose projection generation is visible on a current project | `src/db2/entity_edges.c:21-32` |
-| generations move pending, visible, superseded, one visible per project | `src/db2/schema.sql:1503-1520` |
+| valid time and transaction time as separate columns | `src/modules/db2/c/schema.sql:88,1803-1813` |
+| the walk traverses only edges whose projection generation is visible on a current project | `src/modules/db2/c/entity_edges.c:21-39` |
+| generations move pending, visible, superseded, one visible per project | `src/modules/db2/c/schema.sql`, `code_projection_generations` |
 
 ### Scope and tier
 
 | claim in the article | source |
 |---|---|
-| three read-side visibility bands: active project, active workspace, shared/global; zero outside context | `src/db2/memory_scope_query.c:40-59` |
-| the ranking is bound into the query as parameters | `src/db2/memory_scope_query.h:13-30`, `db2_memory_scope_bind_current` |
+| three read-side visibility bands: active project, active workspace, shared/global; zero outside context | `src/modules/db2/c/memory_scope_query.c:40-59` |
+| the ranking is bound into the query as parameters | `src/modules/db2/c/memory_scope_query.h:13-30`, `db2_memory_scope_bind_current` |
 | scope and authorisation apply before candidates reach the result | `docs/retrieval-stack.md` |
 | stable sort preserves reranker order inside a visibility band | `src/modules/memory/memory_core_search_c.c:949-985` |
 | tiers L0 to L5; stable L2 promotes on confidence; L5 patterns condense across at least three sessions | `src/headers/memory.h:323-345` |
-| promotion into the policy tier can require a recorded operator approval | `src/db2/memory_promotion.h:76-84`, `memory_promotion_approvals` |
+| promotion into the policy tier can require a recorded operator approval | `src/modules/db2/c/memory_promotion.h:76-84`, `memory_promotion_approvals` |
 
 ### Distillation
 
 | claim in the article | source |
 |---|---|
-| a durable fact in three distinct sessions is synthesised into a pattern | `src/db2/memory_promotion.c:386-410`, `COUNT(DISTINCT p.session_id) >= 3` |
+| a durable fact in three distinct sessions is synthesised into a pattern | `src/modules/db2/c/memory_promotion.c:386-410`, `COUNT(DISTINCT p.session_id) >= 3` |
 | an entity corroborated by three distinct sources is promoted out of local scope | `src/kb/kb_curator_promote.c:85-95`, `HAVING COUNT(DISTINCT l.from_id) >= :minsrc`, `scope_kind <> 'global'` |
 | promotion default minimum sources is three | `src/modules/config/config_kb_curator.c`, `kb_curator_promote_min_sources` |
 | one store serves a person, a team or a company | `docs/STORAGE_TIERS.md` |
 | promotion into a broader scope is an explicit audited write | `docs/KNOWLEDGE.md` |
-| demotion runs on verdicts attributed across recalls | `src/db2/demotion.h:106-110` |
+| demotion runs on verdicts attributed across recalls | `src/modules/db2/c/demotion.h:106-110` |
 
 ### The write path
 
 | claim in the article | source |
 |---|---|
 | the write gate checks both ends against what the relation permits | `src/modules/memory/memory_fact_gate.c:14-22` |
-| "never write an unvalidated semantic edge" | `src/db2/rel_types_store.c:208` |
+| "never write an unvalidated semantic edge" | `src/modules/db2/c/rel_types_store.c:233-234` |
 | seventeen relations ship with the system | `src/rel_types.c:18` onward |
-| the live relation set lives in a table the running system extends | `src/db2/schema.sql:1412` |
-| provisional staging of a novel relation | `src/db2/rel_types_store.c:255-270` |
-| a sighting counts only after its fact committed; a rejected relation keeps that verdict | `src/db2/ontology_evolution.c:41-46` |
-| relation sightings are an occurrence count keyed only by relation type, with no distinct-source field | `src/db2/ontology_evolution.c:24-55` |
+| the live relation set lives in a table the running system extends | `src/modules/db2/c/schema.sql:1815-1828` |
+| provisional staging of a novel relation | `src/modules/db2/c/rel_types_store.c:283-296` |
+| a sighting counts only after its fact committed; a rejected relation keeps that verdict | `src/modules/db2/c/rel_types_store.c:290-296`; `src/modules/db2/c/ontology_evolution.c` |
+| relation sightings are an occurrence count keyed only by relation type, with no distinct-source field | `src/modules/db2/c/ontology_evolution.c:24-55` |
 | auto-promotion sweep, catch-all exclusion | `src/kb/kb_curator_drain.c:800-828` |
 | auto-promote default on, threshold 3 | `src/modules/config/config_kb_curator.c:74-76` |
-| the class a fact is born into, and Class A unreachable from a model | `src/db2/fact_lifecycle.c:48-59` |
-| Class A carries full confidence; B and C sit below it | `src/db2/fact_lifecycle.c:26-32` |
-| a confirmed Class B fact stops expiring and never becomes A | `src/db2/fact_lifecycle.h:58-61` |
-| extractor pinned to `FACT_AUTHORITY_MODEL` | `src/kb/kb_memory_facts.c:300-305` |
-| at the baseline commit, model confidence was used as a 0.6 floor | `src/kb/kb_memory_facts.c:39`, applied at `:281`; superseded by the PR-head finding above |
-| unconfirmed speculation expires by being stamped, not removed | `src/db2/fact_lifecycle.c:83-86` |
-| `supersede` / `hard_delete` / `immutable` semantics | `src/db2/fact_lifecycle.h:62-85` |
-| a model authority cannot retract a Class A edge | `src/db2/fact_lifecycle.h:77-82` |
-| endpoint canonicalisation before the edge write | `src/db2/rel_types_store.c:155-183` |
-| surrogate `canonical_id`, single-hop aliases | `src/db2/schema.sql:1443-1456` |
-| merge audit and `unmerge` | `src/db2/entity_registry.c:242-408` |
-| ambiguity queued in `entity_name_conflicts` | `src/db2/schema.sql:1465-1472` |
+| the class a fact is born into, and Class A unreachable from a model | `src/modules/db2/c/fact_lifecycle.c:59-71` |
+| Class A carries full confidence; B and C sit below it | `src/modules/db2/c/fact_lifecycle.c:37-43` |
+| a confirmed Class B fact stops expiring and never becomes A | `src/modules/db2/c/fact_lifecycle.h:63-74` |
+| extractor pinned to `FACT_AUTHORITY_MODEL` | `src/kb/kb_memory_facts.c:375-376` |
+| unconfirmed speculation expires by being stamped, not removed | `src/modules/db2/c/fact_lifecycle.c:91-107` |
+| `supersede` / `hard_delete` / `immutable` semantics | `src/modules/db2/c/fact_lifecycle.h:76-98` |
+| a model authority cannot retract a Class A edge | `src/modules/db2/c/fact_lifecycle.h:91-98` |
+| endpoint canonicalisation before the edge write | `src/modules/db2/c/rel_types_store.c:155-197` |
+| surrogate `canonical_id`, single-hop aliases | `src/modules/db2/c/schema.sql`, `canonical_entities` and `entity_aliases` |
+| merge audit and `unmerge` | `src/modules/db2/c/entity_registry.c:242-408` |
+| ambiguity queued in `entity_name_conflicts` | `src/modules/db2/c/schema.sql`, `entity_name_conflicts` |
 
 ### Curation
 
 | claim in the article | source |
 |---|---|
-| demotion verdict tokens | `src/db2/demotion.h:28-32` |
-| "reads only attributed outcome evidence", quoted | `src/db2/demotion.h:106-110` |
-| the scorer declines below a floor of recorded outcomes | `src/db2/demotion.c:771-773` |
+| demotion verdict tokens | `src/modules/db2/c/demotion.h:28-32` |
+| "reads only attributed outcome evidence", quoted | `src/modules/db2/c/demotion.h:106-110` |
+| the scorer declines below a floor of recorded outcomes | `src/modules/db2/c/demotion.c:771-773` |
 | contradiction keeps both claims | `docs/CURATOR_PIPELINE.md` |
-| curiosity gap types | `src/db2/curiosity.h:25-29` |
+| curiosity gap types | `src/modules/db2/c/curiosity.h:25-29` |
 | abstention default-off, threshold uncalibrated | `docs/proposals/done/retrieval-abstention-confidence-gate.md` |
 
 ### Product facts
 
 | claim in the article | source |
 |---|---|
-| memory subsystem is 34,000 lines of C | `wc -l` over `src/modules/memory/*.c`, `src/db2/memory_*.c`, `src/db2/{typed_facts,rel_types_store,ontology_evolution,demotion}.c`, `src/db2/fact_*.c`, `src/db2/entity_*.c`, `src/rel_types.c`: 34,115 lines, rounded down |
-| thirty-one memory test files | `ls src/tests/ \| grep -icE '^test_(memory\|fact\|entity\|ontology\|rel_types\|curiosity\|demotion\|directive\|kb_curator\|extract)'` |
 | AGPL-3.0 | `LICENSE`, `NOTICE` |
 | clone, `docker compose up`, browser wizard | `docs/QUICKSTART.md:5-14, 80-102` |
 | seven wizard steps, one optional and two local-only | `frontend/src/setup/wizardSteps.ts:39-55` |
