@@ -15,10 +15,8 @@ Source findings cut from the article remain in
 
 | reporting item | kind | disposition |
 | --- | --- | --- |
-| Static read of `aimee` at `50c5d88d`, including fused recall, scope, fact lifecycle, ontology, identity, curation and audit paths | first-party source audit | Retained across the architecture tour, compressed where several source details establish one capability. All citations still require repointing and re-verification after PR 2824 merges. |
-| Static read of open `aimee` PR 2824 at `5a5350b9` | first-party source audit | Added after the initial cut. It supports the provisional product-tour account of typed-fact recall, lifecycle scheduling, correction commands and maintenance guards. It also corrected the article's graph expansion from two hops to direct neighbours. The PostgreSQL end-to-end script was inspected but not run; no raw artifact was produced. |
-| Byte comparison of every cited `aimee` file against `50c5d88d` | first-party source verification | Retained in the source audit. Not repeated in article prose. |
-| Static read of Graphiti at `c4069327` | external source audit | Retained in the table and as the closest architecture in the original seven-system set. The expanded audit found stronger counterexamples. Full findings remain in the source audit. |
+| Static read of `aimee` `testing` at `1d36f8c1`, including fused recall, authenticated fact authority, provenance, correction, lifecycle, ontology, identity and curation | first-party source audit | Retained across the architecture tour and comparison row. The repository's clean-container PostgreSQL validation record was read but not rerun; its live mTLS actor branch remains a stated limit. |
+| Static read of Graphiti at `c4069327` | external source audit | Retained as an adjacent temporal knowledge-graph framework, explicitly not an agent-memory service or a proxy for Zep. Full findings remain in the source audit. |
 | Static read of cognee at `fd5045f6` | external source audit | Retained in the table and as the clearest account of why correction needs relation policy. Full findings remain in the source audit. |
 | Static read of mem0 at `3599aa75` | external source audit | Retained in the table and compressed to the ADD-only change. Full findings remain in the source audit. |
 | Static read of Letta Code at `d1dc6880`, plus the current Letta repository and its retired server notice | external source audit | Retained in the table, with its git-history mitigation. Full findings remain in the source audit. |
@@ -48,58 +46,51 @@ Source findings cut from the article remain in
 | Static read of Neo4j Agent Memory at `5b4e00af`, including source edges, valid-time fields, MCP fact insertion and preference supersession | external source audit, 2026-08-21 expansion | Added to the table. Source and valid-time capabilities are credited; the arbitrary MCP triple write does not pass the endpoint-kind or authority tests. |
 | Static read of Memori at `538b61f2`, including BYODB facts, knowledge triples, conversation mentions, source/signal filters and deletion | external source audit, 2026-08-21 expansion | Added to the table as a broader production-memory reference. Its source/signal taxonomy is described as classification, not assertion authority. |
 | Static read of Supermemory at `34876664`, including self-hosting, memory review, graph-memory and code-ingestion documentation plus repository tree inspection | external documentation and source-availability audit, 2026-08-21 expansion | Retained outside the scored table. The docs claim inferred-memory down-ranking, review and temporal graph history, but the packaged `supermemory-server` engine implementation was not present in the repository. The article records this as unknown rather than a negative verdict. |
+| Graphiti maintainer response supplied by the author on 2026-08-21 | right of reply | Incorporated. The article now says Graphiti is a framework for temporal knowledge graphs, removes “Graphiti (Zep)”, and does not attribute Zep's memory-service features to the public framework. The suggested Graphify project was added to the audit. |
+| Static read of Graphify `v8` at `b2cd3626`, including AST code and document ingestion, source locations, saved Q&A outcomes, correction aggregation and the learning sidecar | external source audit, 2026-08-21 response follow-up | Added to the table as a fourth code-plus-memory implementation. Its structural graph and experiential sidecar are distinguished, and outcome provenance is not recast as assertion authority. |
 
 ## Publication disposition
 
-The 2026-08-21 expansion found two direct counterexamples to the prior
+The 2026-08-21 expansion found three direct counterexamples to the prior
 code-plus-memory uniqueness language. mnem combines source code, documents and
 conversation exports in one versioned graph. Menhir combines a structural code
 graph and governed semantic memory in one Neo4j graph. Menhir also implements a
 grounded user-versus-agent admission distinction and operator-promoted truth.
-The title, excerpt, opening, comparison heading, table, narrow claim and closing
-check were changed. Popularity and project age were not used as exemptions.
+Graphify combines its AST code and document graph with Q&A records re-ingested
+from its work-memory loop. The title, excerpt, opening, comparison heading,
+table, narrow claim and closing check were changed. Popularity and project age
+were not used as exemptions.
 
 Supermemory was not assigned negative comparison cells. Its documentation
 overlaps the article's authority and temporal tests, while the implementation
 of the packaged server engine was absent from the inspected repository. That
 source-availability finding is now explicit in the article and audit.
 
-The two existing blockers remain: PR 2824 must merge, every `aimee` claim must
-then be re-verified and repointed, and the named projects have not received a
-right of reply. This editorial pass does not clear either one.
+Graphiti has received and exercised a right of reply. The remaining named
+projects have not; that is the publication blocker.
 
-During the pass, `src/db2/ontology_evolution.c:24-55` was re-read at the pinned
+During the pass, `src/modules/db2/c/ontology_evolution.c:24-55` was read at the pinned
 commit. Its promotion counter is keyed only by relation type and has no source
 field. The prior article called all three distillation thresholds independent;
 the shorter article now distinguishes the two `DISTINCT` queries from this
 occurrence counter and states the weaker guarantee in place.
 
-The scope claim was also checked against `src/db2/memory_scope_query.c:40-59`.
+The scope claim was also checked against
+`src/modules/db2/c/memory_scope_query.c:40-59`.
 That read path ranks three bands: active project, active workspace, and
 shared/global. The prior article's four-scope claim imported `user` from the
 artifact schema. The article and source map now describe the recall query
 itself.
 
-PR 2824 was read after the initial inventory. Its fusion function defaults a
-`max_hops` argument to two but never uses it to traverse a second edge. The
+The fusion function defaults a `max_hops` argument to two but never uses it to
+traverse a second edge. The
 production expansion collects seed-attached memories and direct neighbours;
 the separate two-hop SQL helper has no production caller. The article and
 source map now state the behaviour that the production path implements.
 
-The same read found two authority gaps outside the PR's stated repair list. The
-storage-level retraction path protects Class A from model authority, but its
-server handler accepts the authority string from any memory-write caller rather
-than deriving it from the authenticated actor. The normal semantic upsert also
-applies a functional relation's correction policy without comparing authority
-classes. The model extractor calls that path, so a conflicting Class B write can
-supersede a current Class A value. The article's comparison row and scoped claim
-were narrowed; publication now depends on closing and testing both paths.
-
-The article previously said the current extractor used a 0.6 self-reported
-confidence floor. That described the baseline commit. At the PR head the floor
-has been replaced by a source-grounding check on both endpoints, so the product
-tour now describes that check.
+The extractor uses a source-grounding check on both endpoints rather than its
+own reported confidence, so the product tour describes that check.
 
 The WORM paragraph was cut. The audit store is default-off, and no call from the
-fact correction files to its write seam was found at the PR head. Its existence
-does not support the prior sentence that each fact mutation enters it.
+fact correction files to its write seam was found at the pinned commit. Its
+existence does not support the prior sentence that each fact mutation enters it.

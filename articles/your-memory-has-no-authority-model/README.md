@@ -4,20 +4,22 @@ An architecture piece. `aimee` holds conversations, typed facts and source code
 in one graph ranked by one query, with scope ranked inside recall and two clocks
 on facts. Every guard on its write path exists because an edge is a path.
 
-Around that: thirteen inspectable implementations read at pinned commits on 20
-and 21 August 2026, plus A-MEM as a research reference. Supermemory is recorded
+Around that: fourteen inspectable projects used for, or adjacent to, agent
+memory, read at pinned commits on 20 and 21 August 2026, plus A-MEM as a research
+reference. Graphiti is explicitly treated as a temporal knowledge-graph
+framework rather than an agent-memory service. Supermemory is recorded
 separately because its public repository distributes the memory engine as a
 packaged server binary rather than exposing its implementation source.
 
 ## Status
 
-Draft, 2026-08-20. Not publication-ready. Two blockers, below.
+Draft, 2026-08-20. Not publication-ready. One blocker remains, below.
 
 ## Evidence
 
 No runtime measurement and no performance or accuracy claim about any system.
-The evidence is a static source audit of fifteen repositories: thirteen scored
-implementations, A-MEM as a research reference, and Supermemory as an unscored
+The evidence is a static source audit of sixteen repositories: fourteen scored
+projects, A-MEM as a research reference, and Supermemory as an unscored
 source-availability finding.
 
 [`evidence/source-audit-2026-08-20.md`](evidence/source-audit-2026-08-20.md)
@@ -35,43 +37,34 @@ actual reporting outcome for the expanded comparison. The competitor checkouts
 were read-only clones in a scratch directory; each is reproducible from the
 commit recorded in the audit.
 
-## Blockers
+[`evidence/raw/aimee-testing-revalidation-2026-08-21.md`](evidence/raw/aimee-testing-revalidation-2026-08-21.md)
+records the current `testing` audit.
 
-**1. The `aimee` row describes an open pull request.** At the baseline commit
-`50c5d88d`, typed facts do not participate in the graph walk. Their lifecycle
-jobs are never scheduled, fact retraction and entity unmerge have no production
-surface, orphan pruning can delete a typed fact, and co-occurrence maintenance
-can rewrite its confirmation count.
+[`evidence/raw/graphiti-response-and-graphify-2026-08-21.md`](evidence/raw/graphiti-response-and-graphify-2026-08-21.md)
+records the Graphiti classification correction and the pinned Graphify audit.
 
-[`aimee` PR 2824](https://github.com/RakuenSoftware/aimee/pull/2824) fixes those
-gaps. Its current head, `5a5350b9`, admits current semantic edges to recall,
-passes their relation and authority class into scoring, schedules promotion and
-expiry, exposes the correction paths, protects typed facts from pruning and
-weight normalisation, and adds a PostgreSQL end-to-end suite. That is a static
-read of the PR and its tests; this reporting pass did not rerun the suite.
+## Current `aimee` pin
 
-The PR does not yet enforce authority on every correction path. Its server
-handler accepts `authority: "user"` from any caller holding memory-write
-capability instead of deriving authority from the authenticated principal. The
-storage function skips Class A for model authority, but the caller can select
-the user branch. Separately, `db2_entity_edge_upsert_semantic()` supersedes the
-current object of a functional relation without comparing classes. Since the
-extractor calls that path with model authority, a Class B `works_for` write can
-make a Class A value non-current. The end-to-end suite tests the storage-level
-model retraction, but not either server-boundary or conflicting-write case.
+The article is pinned to `testing` at `1d36f8c1`. Current semantic edges
+participate in recall; their relation and authority class reach scoring; fact
+promotion and expiry are scheduled; corrections retain history; and maintenance
+does not rewrite semantic confirmation counts.
 
-**Before this article ships, PR 2824 must merge, every `aimee` claim must be
-re-verified against its merge commit, and every citation must be repointed. The
-two authority gaps above must also be closed.**
+[PR 2828](https://github.com/RakuenSoftware/aimee/pull/2828), merged at that pin,
+derives write authority from transport and actor authentication, stamps stored
+memory provenance from that identity, forces model-composed context queries to
+model authority, and refuses functional corrections outranked by the current
+fact. The repository records a clean-container PostgreSQL validation. This
+reporting pass read that record and the merged source but did not rerun it; the
+record says its live mTLS actor branch was not exercised.
 
-The target branch has also moved DB2 from `src/db2/` to `src/modules/db2/c/`, so
-the old paths and line numbers cannot be carried forward mechanically.
+## Blocker
 
-**2. Right of reply is outstanding.** No project named in the comparison was
-given the specific claim ahead of publication. Options are to solicit reply from
-each named project first, or to publish with the gap stated in the article text
-as well as here. The audit records the mitigating facts and does not treat them
-as satisfying the obligation.
+**Right of reply is outstanding for the other named projects.** Graphiti's
+maintainers responded and their classification correction is incorporated.
+The other projects were not given the specific claim ahead of publication.
+Options are to solicit their replies first, or to publish with the gap stated
+in the article text as well as here.
 
 ## Reporting record
 
@@ -80,9 +73,9 @@ reporting. The argument that fusion is what makes write-path discipline
 necessary, and the closing recommendation, are Rakuen Software's analysis and
 are written in the first person.
 
-**Interest.** Rakuen Software builds `aimee`, one of the thirteen inspectable systems compared,
-and benefits if readers prefer its design. Disclosed in the standfirst, next to
-the opening finding.
+**Interest.** Rakuen Software builds `aimee`, one of the fourteen inspectable
+projects compared, and benefits if readers prefer its design. Disclosed in the
+standfirst, next to the opening finding.
 
 **Refused metric.** No head-to-head accuracy or savings figure against any other
 system appears. The claim is architectural and is specified so a single

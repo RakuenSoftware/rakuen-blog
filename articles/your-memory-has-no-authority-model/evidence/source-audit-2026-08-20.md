@@ -1,38 +1,37 @@
-# Source audit: thirteen-system comparison and one research reference
+# Source audit: fourteen-project comparison and one research reference
 
 Dates of audit: 2026-08-20 and 2026-08-21.
 
-Method: each external repository was cloned with `git clone --depth 1` from its
-public GitHub origin on the audit date and the resulting `HEAD` was recorded
-before reading. The six added inspectable systems and Supermemory were cloned
-on 2026-08-21. `aimee` was read from the local checkout as described below. No
+Method: each external repository was cloned from its public GitHub origin on the
+audit date and the resulting `HEAD` was recorded before reading. The initial
+collection used shallow clones; Graphify used a filtered clone of its `v8`
+branch. The seven added inspectable projects and Supermemory were cloned on
+2026-08-21. `aimee` was read from the local checkout as described below. No
 repository was modified. Every comparison-table verdict below cites a file and
 line range in the committed tree at that commit. First-party documentation in
 those trees was read to establish each project's own product and architecture
 claims; implementation verdicts were checked against source rather than inferred
 from a third-party summary or a model's description of a project.
 
-Thirteen inspectable systems appear in the article's comparison table. A-MEM
-was read as a research-only reference and is recorded below without a table
-row. Supermemory was also reviewed, but its self-hosted memory engine is a
-packaged binary whose implementation is not present in the public repository.
-It is recorded as an audit limit, not scored as a negative row.
+Fourteen inspectable projects appear in the article's comparison table. This is
+not a claim that every row is an agent-memory service: Graphiti is a framework
+for building temporal knowledge graphs, while Graphify is a local knowledge-
+graph tool with an explicit work-memory loop. A-MEM was read as a research-only
+reference and is recorded below without a table row. Supermemory was also
+reviewed, but its self-hosted memory engine is a packaged binary whose
+implementation is not present in the public repository. It is recorded as an
+audit limit, not scored as a negative row.
 
-The baseline `aimee` audit used
-`50c5d88d37bae618ee08b0101f163682e864ace9`, which is public and reachable from
-`origin/agent/human-trigger-workflows`. Every file in that audit was verified
-byte-identical to the commit before writing. The article's provisional `aimee`
-row was then re-read from the head of open PR 2824,
-`5a5350b99ad610cef2e6c7b758c35ad2cd8fdc9d`. That second read was static: the PR's
-PostgreSQL end-to-end script was inspected but not run. Files carrying unrelated
+`aimee` was read from a detached worktree of `origin/testing` at
+`1d36f8c186bf91267ee878a06f1c1d92615a7783`. The repository's clean-container
+PostgreSQL validation record was read but not rerun. Files carrying unrelated
 working-tree modifications were not cited.
 
 ## Commits
 
 | system | repository | commit | commit date |
 |---|---|---|---|
-| `aimee` baseline | `RakuenSoftware/aimee` | `50c5d88d37bae618ee08b0101f163682e864ace9` | 2026-08-06 |
-| `aimee` article row, open PR 2824 | `RakuenSoftware/aimee#2824` | `5a5350b99ad610cef2e6c7b758c35ad2cd8fdc9d` | 2026-08-20 |
+| `aimee` | `RakuenSoftware/aimee`, `testing` | `1d36f8c186bf91267ee878a06f1c1d92615a7783` | 2026-08-21 |
 | Graphiti | `getzep/graphiti` | `c406932767ee490ad2311fd694a6b2ac3b164599` | 2026-08-20 |
 | cognee | `topoteretes/cognee` | `fd5045f6b60522c1953fc1ae258e041ba53602d8` | 2026-08-19 |
 | mem0 | `mem0ai/mem0` | `3599aa75ed64ee41c3b1d8133a8b39403fb8f703` | 2026-08-20 |
@@ -46,6 +45,7 @@ working-tree modifications were not cited.
 | Menhir | `Archolith/menhir` | `4e4f39ed388a1c689740a7d48daade9fbc79c000` | 2026-08-20 |
 | Neo4j Agent Memory | `neo4j-labs/agent-memory` | `5b4e00af88342707d011bb9d4f2b34503f43a8c3` | 2026-08-19 |
 | Memori | `MemoriLabs/Memori` | `538b61f245295aa1a43df8033879f8293627f74d` | 2026-07-28 |
+| Graphify | `Graphify-Labs/graphify`, `v8` | `b2cd36267456c166788c95be6e68574064a92a42` | 2026-08-20 |
 | Supermemory, engine not scored | `supermemoryai/supermemory` | `34876664810a43a55954a0a83571662a3bd333b8` | 2026-08-20 |
 
 `letta-ai/letta` was also cloned (`87fd37aa`, 2026-08-15) and found to contain no
@@ -88,79 +88,61 @@ test, so a reader can disagree with a verdict by applying the same test.
 
 ### `aimee`
 
-#### Baseline audit: `50c5d88d`
-
-- Write gate: `src/modules/memory/memory_fact_gate.c:14-22` returns
-  `FACT_GATE_REJECT_KIND` on a kind violation;
-  `src/db2/rel_types_store.c:207-208` returns before any write on that verdict.
-  The gate is the only setter of `edge_class = 'semantic'`.
-- Authority classes: `src/db2/fact_lifecycle.c:48-59`. `FACT_CLASS_A` is
-  unreachable from `FACT_AUTHORITY_MODEL`. `db2_fact_promote_durable` raises a
-  Class B confidence to 0.8 and is documented as never promoting to A
-  (`src/db2/fact_lifecycle.h:58-61`).
-- Valid time: `valid_from` / `valid_until` on `entity_edges`, separate from
-  `superseded_at` (`src/db2/schema.sql:1400-1409`).
-- Model removal: no at the storage primitive. `db2_fact_retract` skips Class A
-  rows for a non-user authority and `hard_delete` is a `suppressed` flag with
-  the row retained (`src/db2/fact_lifecycle.h:62-85`). The audit later found
-  that this primitive had no production caller at the baseline.
-
-The baseline did not deliver the product behaviour the row implied. Typed facts
-were excluded from graph traversal, relation gravity was not passed into fusion,
-the fact lifecycle was not scheduled, and there was no production retraction or
-entity-unmerge surface. Generic maintenance could also delete semantic facts or
-rewrite their confirmation counts.
-
-#### Provisional article row: PR 2824 head `5a5350b9`
-
 - Write gate: `src/modules/memory/memory_fact_gate.c:12-42` checks both endpoint
   kinds. `src/modules/db2/c/rel_types_store.c:199-234` refuses kind failures and
   bad arguments before the semantic-edge write.
-- Authority classes: `src/modules/db2/c/fact_lifecycle.c:26-60` assigns A, B or
-  C, with Class A unreachable from model authority. Promotion and expiry retain
-  the class and the row (`:62-121`).
+- Authority classes: `src/modules/db2/c/fact_lifecycle.c:26-71` maps recorded
+  provenance and write authority to A, B or C, with Class A unreachable from
+  model authority. Promotion and expiry retain the class and row (`:73-132`).
+- Authenticated admission: the server caps a requested user retraction by its
+  attested transport (`src/server/server_facts.c:22-77`). The knowledge service
+  derives authority from its authenticated actor and applies the same ceiling
+  (`src/kb/kb_service_memory.c:34-74,1417-1443`). Model-composed context-block
+  text is forced to model authority (`:856-878`). Stored-memory provenance is
+  derived from the writer and defaults to `agent_message`, so the later drain
+  can distinguish user text from agent text
+  (`src/modules/db2/c/schema.sql:371-382`; `src/kb/kb_memory_facts.c:400-423`).
+- Functional correction: a write compares A/B/C rank before changing a current
+  single-valued fact. An outranked write is dropped rather than inserted beside
+  the stronger value (`src/modules/db2/c/entity_edges.c:303-355`). Tests cover
+  model-below-user, user-above-model and equal-rank correction
+  (`src/tests/test_fact_lifecycle.c:252-282`).
 - Valid time: `valid_from` / `valid_until` remain on `entity_edges`, while
   `asserted_at`, `superseded_at` and `suppressed` carry transaction-time and
-  correction state (`src/modules/db2/c/schema.sql:88, 1794-1803`).
-- Model removal: yes, by two correction paths. The explicit retraction contract
-  skips Class A rows for non-user authority and retains the row under a
-  supersession stamp or tombstone (`src/modules/db2/c/fact_lifecycle.h:63-85`).
-  PR 2824 exposes that contract through `facts.retract`, but its server handler
-  accepts `authority: "user"` from the request and the route requires only
-  `CAP_MEMORY_WRITE`; authenticated capability sets include that grant
-  (`src/server/server_facts.c:18-69`; `src/server/server_auth.c:43-64`;
-  `src/headers/server.h:157-164`). Authority is therefore not derived from the
-  authenticated actor at this boundary. The ordinary semantic upsert is also
-  different:
-  for a functional relation it supersedes a prior object without comparing the
-  old and new authority classes (`src/modules/db2/c/entity_edges.c:275-320`).
-  The model extractor reaches that path with `FACT_AUTHORITY_MODEL`
-  (`src/kb/kb_memory_facts.c:358-378`). The old Class A row remains stored but is
-  no longer current.
+  correction state (`src/modules/db2/c/schema.sql:88,1803-1813`).
+- Correction: model authority cannot retract Class A. Supersession and
+  tombstoning retain the edge row (`src/modules/db2/c/fact_lifecycle.h:76-98`).
 - Recall: graph readers admit current semantic rows and exclude superseded or
-  suppressed ones (`src/modules/db2/c/entity_edges.c:27-39, 1102-1110`). Fusion
+  suppressed ones (`src/modules/db2/c/entity_edges.c:27-39,1126-1146`). Fusion
   now scores the traversed relation and the fact's A/B/C class
   (`src/modules/memory/memory_graph_fusion.c:26-117, 262-277`).
 - Lifecycle and maintenance: fact promotion and speculative expiry are scheduled
   in the normal maintenance cycle (`src/modules/memory/memory_health.c:390-413`).
   Orphan pruning and weight normalization exclude semantic rows, and the generic
   co-occurrence upsert cannot increment a fact's confirmation count
-  (`src/modules/db2/c/entity_edges.c:78-96, 749-824`).
+  (`src/modules/db2/c/entity_edges.c:78-96,784-859`).
 - Extractor confidence: the current extractor ignores the model's reported
   confidence and instead requires both endpoints to occur in the source note
-  (`src/kb/kb_memory_facts.c:39-54, 338-346`). This corrects the baseline audit's
-  description of a 0.6 floor.
-
-PR 2824 adds `tests/e2e/typed-facts-pg-e2e.sh`, which contains forty-two calls to
-its assertion helper over the PostgreSQL typed-fact path. This audit did not
-execute the script. The PR remains open, so its head is evidence for a draft
-product tour, not a final publication pin.
+  (`src/kb/kb_memory_facts.c:39-54,338-346`).
+- Validation: `docs/validation/typed-fact-write-authority.md` records a
+  clean-container run through the real store, drain and PostgreSQL commit paths.
+  It reports the Class A value remaining current while a same-drain Class B
+  control commits. This audit did not rerun that validation. The record says the
+  live mTLS actor branch and the model-delete retire path were not exercised;
+  those mappings are unit-tested (`:185-217`).
 
 Scope: this row covers the typed-fact layer only, which is the layer the article
 describes. Free-text prose memory has separate write semantics and is not
 audited here.
 
 ### Graphiti
+
+Scope correction from right of reply: Graphiti's maintainers describe the
+project as a framework for building temporal knowledge graphs, not an
+agent-memory service. They state that most of the memory features in the
+reporting questions are available in Zep rather than Graphiti. This audit and
+the article therefore score only the public Graphiti framework and do not label
+the row “Graphiti (Zep)” or infer hosted Zep behavior from it.
 
 - Write gate: no. `extract_edges` validates that the LLM's entity names appear
   in the node list and drops self-edges
@@ -171,15 +153,53 @@ audited here.
   response is written as returned.
 - Authority classes: no. `EntityEdge`
   (`graphiti_core/edges.py:262-283`) carries `name`, `fact`, `episodes`,
-  temporal fields and free-form `attributes`. `grep` for `provenance`,
-  `authority` and `confidence` across `edges.py` and `nodes.py` returns nothing.
+  temporal fields and free-form `attributes`. `episodes` supplies source
+  linkage, but no field ranks a user assertion over a model inference.
 - Valid time: yes. `valid_at` and `invalid_at` are the real-world interval;
   `expired_at` is the transaction-time close.
 - Model removal: contradicted edges are expired and the rows kept
   (`resolve_edge_contradictions`, `edge_operations.py:538+`). `EntityEdge.delete`
   exists as an explicit API call and is not on the ingestion path.
 
-This is the strongest competing design in the set and the article says so.
+Graphiti remains relevant as an inspectable temporal graph substrate adjacent
+to agent memory. It is not presented as a standalone memory service.
+
+### Graphify
+
+- Product scope: the pinned `v8` tree describes a local tool that maps code,
+  documents and media into one queryable knowledge graph. Code is parsed with
+  tree-sitter and `calls`, `imports`, `inherits` and `mixes_in` are resolved
+  across files (`README.md:30-36,102-114`). It also ships a work-memory loop,
+  not merely a code index (`README.md:672-678`).
+- Memory and code: yes. `save_query_result` writes a Q&A outcome as Markdown
+  with source-node links, then documents that the file is extracted into the
+  graph on the next update (`graphify/ingest.py:274-341`). Code nodes and those
+  semantic memory documents therefore reach the same `graph.json`. The derived
+  per-node learning state is kept in `.graphify_learning.json` and merged at
+  read time rather than stamped into the structural graph
+  (`graphify/reflect.py:42-48,758-790`).
+- Source path: yes. Nodes carry `source_file` and `source_location`; the build
+  normalises and preserves those fields, and query output exposes them
+  (`graphify/build.py:970-976,1194-1204`; `README.md:77-98`). Saved Q&A also
+  records up to ten source-node labels (`graphify/ingest.py:304-336`).
+- Typed write gate: no for the article's semantic endpoint-kind test. The build
+  rejects malformed or dangling endpoints and has relation-specific structural
+  guards, but it does not declare subject/object kinds per semantic relation
+  (`graphify/build.py:1144-1177,1205-1239`).
+- Authority classes: no enforced user-versus-model rank. Work-memory records an
+  outcome, contributor, correction and source nodes; those fields describe
+  provenance and feedback, not who may outrank whom
+  (`graphify/ingest.py:271-318`).
+- Valid time: no. The Q&A record has one write timestamp, and reflection uses it
+  for decay. It is not a separate real-world validity interval
+  (`graphify/ingest.py:300-310`; `graphify/reflect.py:262-285`).
+- Correction: yes, retained. A correction is appended to a new Markdown record.
+  Reflection reads all records and makes the most recent correction for a
+  repeated question current in the derived lessons; the source files survive
+  (`graphify/reflect.py:133-156,350-361,387-412`).
+
+This row credits Graphify as a fourth code-plus-memory implementation while
+keeping its sidecar learning state and lack of assertion authority explicit.
 
 ### cognee
 
@@ -468,10 +488,14 @@ used to reach the whole source it came from?
 
 - **`aimee`** — the fragment carries source path, whole-file content hash,
   heading path and line span, and is doubly linked to its neighbours in reading
-  order (`src/db2/schema.sql:136`, `src/db2/kb_payload.c:1708-1716`).
+  order (`src/modules/db2/c/schema.sql`, `kb_documents`;
+  `src/modules/db2/c/kb_payload.c`, `prev_chunk_id`/`next_chunk_id`).
 - **Graphiti** — `EpisodicNode.content` holds raw episode data
   (`graphiti_core/nodes.py:319-321`). Episodes are themselves the ingest unit;
   there is no document object above them to return to.
+- **Graphify** — retrieved nodes carry `source_file` and `source_location`, and
+  saved Q&A memory records retain the source-node labels that supported the
+  answer (`graphify/build.py:970-976`; `graphify/ingest.py:304-336`).
 - **cognee** — `DocumentChunk.is_part_of` names its `Document`
   (`cognee/modules/chunking/models/DocumentChunk.py:10-25`), and `Document`
   carries `raw_data_location`, a path, rather than the text
@@ -527,10 +551,12 @@ conversations are common enough to deserve a separate column.
 
 ## Right of reply
 
-**Outstanding, and not satisfied.** The repository's reporting rules require a
-materially criticised subject to receive the specific claim with a fair chance
-to respond. That has not been done for any of the fourteen external projects
-named here.
+**Partially complete.** Graphiti's maintainers responded on 2026-08-21. Their
+classification correction and the distinction between Graphiti and Zep are now
+incorporated, and their Graphify suggestion was audited at a pinned commit.
+The repository's reporting rules require every materially criticised subject to
+receive the specific claim with a fair chance to respond. That has not been done
+for the other fourteen external projects named here.
 
 The mitigating facts, stated so a reader can weigh the gap: every criticism is a quotation or a line reference against a public
 commit, so each project's maintainers and any reader can check it without

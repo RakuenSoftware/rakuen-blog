@@ -3,31 +3,20 @@ title: "Agent memory needs an authority model"
 date: 2026-08-20
 author: Rakuen Software
 tags: [memory, agents, knowledge-graph, ontology, aimee]
-excerpt: "I compared thirteen inspectable agent-memory implementations at pinned commits, plus one packaged engine whose source I could not audit. mnem and Menhir overturn the broad code-plus-memory uniqueness claim. Menhir also proves that authority-aware memory exists. The remaining question is whether authority, source, time and code structure meet on the default write and recall paths."
+excerpt: "I compared fourteen inspectable projects used for, or adjacent to, agent memory at pinned commits, plus one packaged engine whose source I could not audit. mnem, Menhir and Graphify overturn the broad code-plus-memory uniqueness claim. Menhir also proves that authority-aware memory exists. The remaining question is whether authority, source, time and code structure meet on the default write and recall paths."
 ---
 
 *Drafted 2026-08-20; comparison expanded 2026-08-21. Rakuen builds aimee, one
-of the thirteen inspectable systems compared here, and benefits if readers
-prefer its design. The named projects have not yet had a chance to respond. The
-audit is recorded in
+of the fourteen inspectable projects compared here, and benefits if readers
+prefer its design. Graphiti's maintainers have responded; the other named
+projects have not yet had a chance to do so. The audit is recorded in
 [evidence/source-audit-2026-08-20.md](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/your-memory-has-no-authority-model/evidence/source-audit-2026-08-20.md),
 with a per-claim source map in
 [evidence/figures.md](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/your-memory-has-no-authority-model/evidence/figures.md).*
 
-*Implementation note, 20 August 2026. The `aimee` sections describe
-[PR 2824](https://github.com/RakuenSoftware/aimee/pull/2824) at `5a5350b9`, not
-the baseline audit commit. The baseline excluded typed facts from graph recall,
-never scheduled their lifecycle, and exposed no fact retraction or entity
-unmerge path.*
-
-*The baseline also let maintenance delete orphaned facts and rewrite their
-confirmation counts. The PR head fixes those gaps. It remains open, so this
-article remains a draft.*
-
-*Two authority gaps remain. The retraction handler lets a memory-write caller
-declare itself `user`, instead of deriving authority from authentication. An
-ordinary model-authored write can also supersede a Class A fact on a
-single-valued relation. Both paths must be fixed before publication.*
+*Implementation note, 21 August 2026. The `aimee` sections describe `testing`
+at `1d36f8c1`. I read the pinned source and its validation record but did not
+rerun the tests.*
 
 Long context can remove the retrieval problem from agent memory. Put the whole
 conversation in the window and no old turn has to be found.
@@ -37,12 +26,14 @@ refuse to let a model's guess overwrite a person's statement, or tell you what
 it believed last week. Those are properties of a write path, and a context
 window does not have one.
 
-On 20 and 21 August 2026, I traced the write paths of thirteen publicly
-inspectable memory implementations at pinned commits and read A-MEM separately
-as a research reference. I also read Supermemory's public repository and
-self-hosting documentation, but its memory engine is distributed as a packaged
-server binary rather than as source in that repository. I do not count it as a
-negative result.
+On 20 and 21 August 2026, I inspected fourteen public implementations used for,
+or adjacent to, agent memory at pinned commits and read A-MEM separately as a
+research reference. They are not all agent-memory services: Graphiti is a
+framework for building temporal knowledge graphs, and Graphify is a local
+code-and-document knowledge-graph tool with a work-memory loop. I also read
+Supermemory's public repository and self-hosting documentation, but its memory
+engine is distributed as a packaged server binary rather than as source in that
+repository. I do not count it as a negative result.
 
 The expanded set changed the article. Hindsight and MemOS have substantially
 more provenance, lifecycle and correction machinery than the original table
@@ -50,7 +41,9 @@ showed. mnem puts code, documents and conversations into one versioned graph.
 Menhir goes further: it joins a structural code graph to semantic memory,
 retains source receipts and superseded history, separates user-grounded claims
 from agent inference at admission, and reserves promoted ground truth for an
-operator.
+operator. Graphify adds another code-plus-memory counterexample: saved Q&A
+outcomes are re-ingested beside its AST code and document graph, with a derived
+learning overlay for preferred, contested and corrected sources.
 
 The useful claim is therefore not that agent memory has no authority model.
 Some does. The question is whether the authority distinction is stored,
@@ -71,7 +64,8 @@ counterexample: its structural and semantic entities share one Neo4j graph, and
 its blast-radius query can return affected code, tests and related memories.
 What remains distinctive in this audit is a narrower conjunction of source
 documents, a native code graph, endpoint-kind validation and per-fact assertion
-authority. Even there, `aimee`'s correction guard is incomplete.
+authority. At the current `testing` pin, `aimee` enforces that authority on its
+typed-fact correction paths.
 
 The graph also distils what separate people and sessions corroborate. That
 reach is why its design puts rules on the write path: a bad edge changes what
@@ -249,7 +243,8 @@ in Class C.
 
 The extraction path has no route from model authority to Class A. The extractor
 passes model authority as a constant, so a fact-extraction prompt cannot claim
-the user's class. That guarantee does not yet cover every correction API.
+the user's class. Stored-note provenance is also stamped from the authenticated
+writer and defaults to agent-authored rather than user-stated.
 
 The extractor ignores the model's self-reported confidence. It commits only
 when both endpoints occur in the source note. That catches invented endpoints,
@@ -268,18 +263,17 @@ Each relation carries its correction policy. Most supersede: stamp the old value
 and write the new one beside it. Some retire a stale value from matching while
 keeping its row. Others refuse quiet rewrites.
 
-A person can still supersede a protected value. At the storage-function level,
-`facts.retract` refuses model authority against Class A. Its server handler,
-however, accepts `authority: "user"` from the request rather than deriving it
-from the authenticated actor. A caller with memory-write capability can select
-the user branch. The guard exists, but this boundary does not enforce who may
-invoke it.
+A person can still supersede a protected value. `facts.retract` treats the
+request's authority as a ceiling: user authority is granted only when the
+transport attested a person, and the knowledge service repeats the check against
+its authenticated actor. Model-composed context-block text is forced to model
+authority even when its surrounding turn belongs to a user.
 
-The ordinary commit path is not as strict. If a model extracts a different
-object for a single-valued relation, the relation's correction policy runs
-without comparing authority classes. A Class B `works_for` write can therefore
-supersede the current Class A value. The row survives, but current recall no
-longer sees it.
+The ordinary commit path applies the same ordering. If a model extracts a
+different object for a single-valued relation, the write first compares the old
+and new classes. A Class B `works_for` write cannot supersede a current Class A
+value or sit beside it. A user write can replace a model value, and equal-ranked
+writes retain the relation's ordinary correction policy.
 
 The retained rows carry two clocks. Valid time records when the fact held in the
 world. Transaction time records when the system believed it. "What was true
@@ -332,7 +326,7 @@ Demotion reads a time-decayed window of those outcomes. Its contract excludes
 everything else:
 
 ```text
-The scorer reads only attributed outcome evidence — not source tags, declared
+The scorer reads only attributed outcome evidence, not source tags, declared
 confidence, author id, or retrieval frequency.
 ```
 
@@ -347,7 +341,7 @@ Contradictions are not resolved by picking a winner. Both claims stay, linked,
 with their sources intact. Policy chooses the current value. Unresolved
 conflicts join a backlog with stale facts and topics that have thin coverage.
 
-## Ten of thirteen do not connect memory and code in one graph
+## Four of fourteen connect memory and code in one graph
 
 Every cell was read from the project's own source at the commit named, on 20 or
 21 August 2026. "Authority" means an enforced distinction between a person's
@@ -356,10 +350,10 @@ assertion and a model inference, not confidence, content type or message role.
 row. The final column says what disappears from current recall and what
 survives. The audit file carries the complete tests and source lines.
 
-| system | commit | memory and code in one graph | retrieved fact reaches source | typed endpoint gate | assertion authority | valid time | correction or removal path |
+| project | commit | memory and code in one graph | retrieved fact reaches source | typed endpoint gate | assertion authority | valid time | correction or removal path |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `aimee` | PR 2824 `5a5350b9`, open | yes, native code graph | hash, span, heading, neighbours | yes | A / B / C; correction authority is partly caller-declared | yes, plus code generations | retained supersession; two correction paths can bypass A |
-| Graphiti (Zep) | `c4069327` | graph, no native code model | raw episode kept | no | none | yes | expired edge retained |
+| `aimee` | `testing` `1d36f8c1` | yes, native code graph | hash, span, heading, neighbours | yes | A / B / C; authority derived from authenticated actor | yes, plus code generations | retained supersession; lower-authority correction refused |
+| Graphiti framework | `c4069327` | temporal graph, no native code model | raw episode kept | no | none | yes | expired edge retained |
 | cognee | `fd5045f6` | graph plus vector, no native code model | chunk to document to path | optional enrichment only | none | edge `updated_at` only | tagged edge retained |
 | mem0 OSS | `3599aa75` | no; graph removed | messages kept, memory lacks link | no | none | no | v3 extraction is ADD-only |
 | Letta Code | `d1dc6880` | no | block history in git | no | none | no | model rewrites block; git retains history |
@@ -371,14 +365,31 @@ survives. The audit file carries the complete tests and source lines.
 | Menhir | `4e4f39ed` | yes, structural code and semantic memory | episode, evidence span and code anchors | yes for work-artifact links; not extracted memory edges | user-grounded vs agent inference; candidate / persistent / promoted | yes | delete requires operator tier; superseded history retained |
 | Neo4j Agent Memory | `5b4e00af` | graph memory, no native code model | entities link to messages; direct fact tool does not set source | no | explicit / inferred share confidence field | yes, `valid_from` / `valid_until` | preference supersession retained; no delete in shipped MCP tools |
 | Memori | `538b61f2` | facts and triples, no native code model | fact-mention link to conversation | no | source / signal taxonomy, no enforced rank | no | host API hard-deletes entity memory; agent tool is read-only |
+| Graphify | `b2cd3626` | yes, AST code, documents and saved Q&A | node carries source file and location | structural guards, not semantic endpoint kinds | outcome provenance, no user/model rank | recorded-at date and decay, no valid interval | raw correction retained; latest correction wins in derived lessons |
 
-Within the original seven-system set, Graphiti was the closest architecture. It
-is bitemporal and keeps contradicted edges as expired rows
+Graphiti is not an agent-memory service and this row does not stand in for Zep.
+It is an adjacent framework for building temporal knowledge graphs. The public
+framework is bitemporal and keeps contradicted edges as expired rows
 ([`edges.py`](https://github.com/getzep/graphiti/blob/c406932767ee490ad2311fd694a6b2ac3b164599/graphiti_core/edges.py#L262-L283)). Custom edge types exist,
 but they control what definitions the extraction prompt sees.
 
 The write path does not check the returned relation against those definitions.
-Its edge has no confidence, provenance or authority field.
+Its `episodes` list links an edge back to source episodes, but the edge has no
+confidence or user-versus-model authority field.
+
+Graphiti's maintainers clarified that most of the memory features asked about
+in the reporting request belong to Zep, not Graphiti. The table therefore makes
+no claim about Zep's hosted memory features. They also pointed to Graphify for
+code graphs. At its pinned commit, Graphify maps AST code, documents and media
+into one graph, then saves Q&A outcomes as source-linked Markdown for the next
+graph update
+([`ingest.py`](https://github.com/Graphify-Labs/graphify/blob/b2cd36267456c166788c95be6e68574064a92a42/graphify/ingest.py#L274-L341)).
+Its reflection step retains corrections and projects recency-weighted source
+verdicts into a sidecar at read time; it deliberately does not stamp that
+experiential state into the structural graph
+([`reflect.py`](https://github.com/Graphify-Labs/graphify/blob/b2cd36267456c166788c95be6e68574064a92a42/graphify/reflect.py#L42-L48)).
+That is a real code-plus-memory design, but not a user-versus-model authority
+model.
 
 cognee's conflict resolver keeps superseded edges. Its docstring also states why
 correction policy cannot be generic:
@@ -419,7 +430,8 @@ profile slots. An LLM chooses to append, update or abort. Update rewrites the
 slot text.
 
 Source retention is more common than the usual criticism allows. Graphiti keeps
-the raw episode, mem0 writes every message to a table and Letta has git history.
+the raw episode, Graphify nodes carry source file and location, mem0 writes
+every message to a table and Letta has git history.
 In the original seven-system set, the missing part was usually a path from the
 retrieved fragment back to that source. cognee came closest: a chunk names its
 document, and the document names a filesystem path.
@@ -497,26 +509,26 @@ not the hosted products behind mem0, Zep or Letta.
 
 ## The narrower claim this audit supports
 
-Of the thirteen inspectable implementations in the table, `aimee` is the only
+Of the fourteen inspectable projects in the table, `aimee` is the only
 one I found that combines all four of these in one store: a native call and
 import graph, a path from a retrieved document fragment to its source, an
 endpoint-kind gate for semantic relations, and a stored user-versus-model
 authority class. Menhir has the native code graph, provenance and assertion
 authority, and an endpoint-kind gate for work-artifact links, but not for the
-general extracted semantic-memory graph. mnem has the fused,
-versioned graph, but not per-assertion authority.
+general extracted semantic-memory graph. mnem has the fused, versioned graph,
+but not per-assertion authority. Graphify has the AST and Q&A graph plus a
+source-verdict overlay, but no endpoint-kind contract or assertion authority.
 
-That is a claim about this search set, not the field. Aimee stores the authority
-class, but its current correction boundary does not authenticate every use of
-it. Supermemory is outside the set because the engine source was not available
-in the repository I inspected. A single inspectable implementation holding the
-same conjunction would settle it.
+That is a claim about this search set, not the field. Supermemory is outside the
+set because the engine source was not available in the repository I inspected.
+A single inspectable implementation holding the same conjunction would settle
+it.
 
-The stronger enforcement claim does not survive the current source. PR 2824's
-storage function protects a user-stated fact from model retraction, but the
-server lets a memory-write caller declare user authority. A conflicting
-model-authored commit on a single-valued relation can also replace the current
-value without an authority comparison.
+The current `testing` source enforces the claim: retraction authority is capped
+by transport and actor authentication, and functional corrections compare
+class rank before changing the current value. The repository's validation
+exercised the plain loopback and PostgreSQL paths; its live mTLS actor branch
+remains a stated test limit.
 
 ## What this design costs
 
@@ -541,7 +553,8 @@ server.
 
 Setup is clone, `docker compose up`, then a seven-step wizard that provisions
 the store and selects the embedder. Graphiti asks for a Neo4j, FalkorDB or
-Neptune cluster first. Both are a different commitment from `pip install`.
+Neptune cluster first. Both are a different commitment from `pip install`;
+Graphify, by contrast, is a local CLI that emits `graph.json` and related files.
 
 As of 20 August 2026, there is no hosted `aimee` tier. Mem0, Zep and Letta will
 operate their systems for you. If you do not want to run a database, use one of
