@@ -548,6 +548,42 @@ Neither cost a result — both arms completed — but a gate that cannot see the
 verbosity case would not stop a genuinely runaway arm, and the low rungs are
 where that behaviour appears.
 
+### Every offloaded arm ran with mmap enabled, against llama.cpp's own advice
+
+All six expert-offload arms carry this at load:
+
+    W llama_model_loader: tensor overrides to CPU are used with mmap enabled -
+                          consider using --no-mmap for better performance
+
+It was not acted on. gemma-4 26B-A4B at Q4, Q6 and Q8, and Qwen3.6-35B-A3B at
+Q4, Q6 and Q8 — every arm that offloads experts — was served this way.
+
+**Accuracy is unaffected.** Memory mapping changes how weights reach the compute
+path, not what the compute produces, so every F1, every paired interval and
+every ladder comparison in this log stands as measured.
+
+**Throughput is affected and the figures are therefore a lower bound.** The
+offload penalties recorded here — 109.9 tok/s at 26B Q4 against 359.6 for the
+resident QAT build, down to 34.8 at Qwen Q8 — are the cost of offload *as
+configured*, not the cost of offload. Real achievable throughput on this
+hardware is better than these numbers by an unmeasured margin.
+
+The direction of the capacity finding does not depend on it: a resident model
+beat an offloaded one by 3.3x under a configuration that handicapped the
+offloaded side, so correcting the handicap can only narrow that gap, never
+reverse it. The magnitude is what is uncertain, and it is quoted as an upper
+bound on the cost.
+
+No A/B was run. Measuring it would cost an extra arm on a matrix that already
+took five days, and it cannot change any accuracy claim — the only thing it
+would refine is a number already labelled as bounded.
+
+This is the third time in this campaign that a warning printed at model load
+went unread. The first cost two synthesis runs to a reasoning channel nobody
+looked at; the second was the same message about preserving reasoning; this one
+cost precision in the campaign's headline figure. The pattern is not that the
+warnings were obscure — it is that nothing in the harness reads them.
+
 ### The offloaded arms ran with unused VRAM, on purpose
 
 The expert-offload tuner rejects any configuration using more than 14,200 MiB,

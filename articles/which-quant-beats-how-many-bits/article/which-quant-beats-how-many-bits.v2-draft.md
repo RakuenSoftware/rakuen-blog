@@ -201,6 +201,14 @@ smaller one stops paying for CPU expert compute.
   builds and no draft model, so those ladders run stock K-quants without
   speculation. They support statements about the *shape* of an LFM ladder, not a
   like-for-like ranking against gemma-4.
+- **The offloaded throughput figures are a lower bound.** All six expert-offload
+  arms ran with memory mapping enabled, and llama.cpp warns at load that
+  `tensor overrides to CPU are used with mmap enabled — consider using
+  --no-mmap for better performance`. That warning was not acted on. It affects
+  speed only, so every accuracy figure here is unchanged, but the offload
+  penalties quoted above are the cost *as configured* and the achievable
+  throughput is better than measured. The direction of the capacity finding is
+  unaffected; its magnitude is an upper bound on the cost.
 - **The offloaded arms left VRAM unused.** The expert-offload tuner capped
   itself at 14,200 MiB of a card with roughly 15,600 usable, so the 26B arms ran
   with 1.7 to 2.4 GiB idle. Configurations up to 15,074 MiB loaded cleanly in
