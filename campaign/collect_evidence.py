@@ -49,6 +49,8 @@ def main() -> int:
     arms: dict[str, dict] = {}
     partial: list[str] = []
 
+
+
     for arm_json in sorted(glob.glob(str(ARMS_RAW / "*" / "arm.json"))):
         label = os.path.basename(os.path.dirname(arm_json))
         if ".kv-" in label:
@@ -82,8 +84,14 @@ def main() -> int:
             "cache_type_v": a.get("cache_type_v"),
             "throughput": a.get("throughput"),
             "extraction": a.get("score"),
-            "completion_tokens": a.get("completion_tokens"),
-            "output_health": a.get("output_health"),
+            # Both live UNDER score, not at the top level of arm.json. Reading
+            # them from the top level returned None for every run, which is how
+            # regenerating the bundle silently dropped stats the article quotes.
+            # The scorer computes these over the 1,001 scored notes; the server
+            # log counts requests, which includes warm-ups and retries and gives
+            # a different median.
+            "completion_tokens": (a.get("score") or {}).get("completion_tokens"),
+            "output_health": (a.get("score") or {}).get("output_health"),
         }
 
         summary = glob.glob(str(SYNTH_RAW / label / "summary_*.json"))
