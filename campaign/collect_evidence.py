@@ -54,6 +54,16 @@ def main() -> int:
         if ".kv-" in label:
             continue
         a = load(arm_json)
+
+        # Two arms finished before throughput.py existed and carry only the
+        # single warmed probe in arm.json. throughput.py backfills a real
+        # distribution from the server log into throughput.json beside it;
+        # prefer that whenever arm.json's copy is missing or has no median, so
+        # a backfilled arm stops looking like an uninstrumented one.
+        side = os.path.join(os.path.dirname(arm_json), "throughput.json")
+        have = ((a.get("throughput") or {}).get("generation_tok_per_s") or {}).get("median")
+        if have is None and os.path.exists(side):
+            a["throughput"] = load(side)
         rec = {
             "model": a.get("model"),
             "training": a.get("training"),
