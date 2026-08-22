@@ -178,9 +178,34 @@ if [ "$ARCH" = "moe" ]; then
       NCMOE=$(TARGET="$TARGET" DRAFT="$([ "$DRAFT" != "-" ] && echo "$DRAFT")" \
               CTX="$CTX" CTK="$CTK" CTV="$CTV" BIN="$BIN" \
               bash "$ROOT/tune_ncmoe.sh")
+      TUNE_RC=$?
+      # The tuner distinguishes "exited during load" (exit 1, genuinely does not
+      # fit) from "ran out of patience" (exit 2, a harness limit). Preserve that
+      # distinction: the first version of this branch collapsed both into "no
+      # -ncmoe value allowed this model to load", which is exactly the wrong
+      # conclusion the tuner had just printed a warning against, and it discarded
+      # a retryable arm as unfittable.
+      #
+      # This bit twice. A cold download of a large model can consume an entire
+      # probe budget, so the first attempt at any new weight file is the most
+      # likely to time out and the least likely to mean anything.
+      if [ "$TUNE_RC" -eq 2 ]; then
+        say "RETRYABLE offload tuning timed out; weights are cached now, retrying once"
+        NCMOE=$(TARGET="$TARGET" DRAFT="$([ "$DRAFT" != "-" ] && echo "$DRAFT")" \
+                CTX="$CTX" CTK="$CTK" CTV="$CTV" BIN="$BIN" \
+                bash "$ROOT/tune_ncmoe.sh")
+        TUNE_RC=$?
+      fi
       if [ -z "$NCMOE" ]; then
-        say "FAIL could not find any expert offload that fits this card"
-        printf 'no -ncmoe value allowed this model to load within the VRAM ceiling\n' > "$ARM/FAILED"
+        if [ "$TUNE_RC" -eq 2 ]; then
+          say "FAIL offload tuning timed out twice; this is a harness limit, not a verdict"
+          printf 'offload tuning TIMED OUT, twice. This is NOT evidence the model\n' > "$ARM/FAILED"
+          printf 'cannot be served here: no configuration was rejected on its merits.\n' >> "$ARM/FAILED"
+          printf 'Raise READY_TRIES in tune_ncmoe.sh and re-run this arm.\n' >> "$ARM/FAILED"
+        else
+          say "FAIL no expert offload fits this card"
+          printf 'every -ncmoe value exited during load; the model does not fit\n' > "$ARM/FAILED"
+        fi
         exit 1
       fi
       printf '%s\n' "$NCMOE" > "$NCMOE_KEY"
