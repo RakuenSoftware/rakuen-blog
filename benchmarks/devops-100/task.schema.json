@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rakuensoftware.com/schemas/devops-100-task-v1.json",
+  "title": "DevOps-100 task package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "execution", "workspace", "grading"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^DEVOPS-[0-9]{3}$"},
+    "version": {"type": "integer", "minimum": 1},
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "timeout_seconds", "network", "capabilities"],
+      "properties": {
+        "kind": {"enum": ["local", "oci", "vm", "kind", "control-plane"]},
+        "timeout_seconds": {"type": "integer", "minimum": 30, "maximum": 14400},
+        "network": {"enum": ["none", "fixture-only"]},
+        "capabilities": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        }
+      }
+    },
+    "workspace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seed", "prompt", "public_tests"],
+      "properties": {
+        "seed": {"type": "string"},
+        "prompt": {"type": "string"},
+        "public_tests": {"type": "string"}
+      }
+    },
+    "grading": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command", "max_score"],
+      "properties": {
+        "command": {
+          "type": "array",
+          "prefixItems": [
+            {"const": "python3"},
+            {"type": "string", "minLength": 1}
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "max_score": {"const": 100}
+      }
+    }
+  }
+}

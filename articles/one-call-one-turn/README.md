@@ -6,8 +6,14 @@ the work.
 
 ## Status
 
-Publication-ready as of 2026-08-12. Not yet published. The voice gate passes it
-and the cells behind its table are committed under `benchmarks/`.
+Published. Live at
+[rakuensoftware.com/blog/one-call-one-turn](https://rakuensoftware.com/blog/one-call-one-turn).
+The voice gate passes it and the cells behind its table are committed under
+`benchmarks/`.
+
+This file previously read "Not yet published" after the article had already
+shipped, which kept `tools/publish.py` offering it as a ready export. Exporting
+it again would have overwritten a live post.
 
 ## The claim this rests on
 

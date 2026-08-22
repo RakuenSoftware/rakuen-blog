@@ -16,9 +16,13 @@ artifact hashes before calculating 10,000 paired bootstrap replicates. The
 article selects Gemma 4 12B as the default and E2B as the latency tier.
 
 The voice gate passes, the raw analysis reproduces, and the fourth roundtable
-pass approved the article with no findings. Publication still requires the site
-checks and the queued Qwen3.8 UD-Q4 follow-up. That follow-up may update
-Qwen3.8's row; it does not invalidate the completed `Q4_K_M` measurement.
+pass approved the article with no findings.
+
+Published. Live at
+[rakuensoftware.com/blog/synthesis-model-selection](https://rakuensoftware.com/blog/synthesis-model-selection).
+The Qwen3.8 follow-up that this file listed as blocking is done and is reported in
+the article. This status previously read as pending review after the article had
+shipped.
 
 ## Candidate matrix
 

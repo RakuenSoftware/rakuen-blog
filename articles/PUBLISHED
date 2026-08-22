@@ -1,0 +1,36 @@
+# The live blog, oldest first.
+#
+# A line here is an articles/<slug> directory in this repository, and it is also
+# the URL: rakuensoftware.com/blog/<slug>. Adding a line and merging it to main
+# is what publishing is. The site polls this branch and ships the change within
+# a few minutes; nothing else has to be deployed.
+#
+# This list used to live in the site repository, so publishing meant a commit
+# here and a second commit there. It moved on 2026-08-20 to put the decision
+# next to the article it is about.
+#
+# Before that it was not a list at all, but a test: an article was published if
+# its markdown carried frontmatter. Every article here carries frontmatter,
+# including the ready-but-unpublished ones and the drafts whose own provenance
+# maps say their figures do not reproduce, so on 2026-08-12 a deploy put eleven
+# of them on the live site at once. The rule was silent about it: the build
+# succeeded, the count went up, and nothing named what was new.
+#
+# A file property cannot carry that decision, because the property is a side
+# effect of how articles are written and the decision belongs to a person.
+# Writing the line is the decision. Everything absent is held on purpose.
+#
+# Removing a line retires a live URL, which the site refuses to do unless its
+# build is run with ALLOW_UNPUBLISH=1. Renaming one changes a live URL and
+# breaks every inbound link to it. The slug is the directory name, not the
+# article's `slug:` frontmatter field.
+
+hello-rakuen-software
+smoothgui-0-9-site-primitives
+token-compression-tools-cost-more-than-they-save
+stacking-isnt-composing
+we-measured-our-reranker-and-deleted-it
+local-llm-fact-extraction-head-to-head
+speculative-decoding-was-free
+one-call-one-turn
+synthesis-model-selection

@@ -135,3 +135,9 @@ Measured constants should enter source only with their sample, interval and
 provenance. Aggregate nulls should be split by the corpus strata selected before
 the comparison. The partial E4B behavior and the unbounded relation-agnostic gain
 remain open tests, so neither belongs in a default setting yet.
+
+The E4B behavior has since been taken further. A separate investigation, recorded
+under `the-model-decides-when-to-think`, finds that the silence is
+category-dependent within a run and that the same notes go silent across runs at
+2.7 times chance. It stops short of prose because the accuracy result that would
+have led it reversed sign on its only replication.
