@@ -25,6 +25,28 @@ The finding that matters is not about bit width at all. It is that **the same
 bit width means completely different things to a dense model and to a mixture of
 experts**, and the gap between them is an order of magnitude.
 
+## How to read the numbers below
+
+Most of the differences in this campaign **do not separate**, and saying which
+do is the whole job. Two labels are used throughout and they mean different
+things:
+
+- **separates** — the paired 95% range excludes zero. The comparison resolved.
+- **indistinguishable** — the range includes zero. **This does not mean the
+  models are equal.** It means 1,001 notes could not tell them apart, and a
+  larger corpus might.
+
+Every accuracy comparison is a paired bootstrap over the same notes, seed
+`20260809`, 20,000 replicates, one comparison per process. Bare score tables are
+**point estimates only** — read the differences from the comparison tables, not
+by subtracting two cells.
+
+That distinction carries real weight here. Of the twenty-odd comparisons behind
+this article, six separate. The rest are honest nulls, and several of the
+recommendations at the end rest on nulls rather than on differences: "these are
+the same, so take the cheaper one" is a legitimate conclusion, but only if the
+reader knows that is what is being said.
+
 ## A one-bit mixture beats a two-bit dense model by nine to one
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-dense-vs-moe" id="fig-dense-vs-moe-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-dense-vs-moe" id="fig-dense-vs-moe-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-dense-vs-moe-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-dense-vs-moe-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 160" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Accuracy change at the most aggressive rung, dense against mixture of experts"><line class="sg-chart__grid" x1="275.0" x2="275.0" y1="14" y2="120"/><text class="sg-chart__value" x="275.0" y="138" text-anchor="middle" opacity=".7">-0.4</text><line class="sg-chart__grid" x1="325.0" x2="325.0" y1="14" y2="120"/><text class="sg-chart__value" x="325.0" y="138" text-anchor="middle" opacity=".7">-0.3</text><line class="sg-chart__grid" x1="375.0" x2="375.0" y1="14" y2="120"/><text class="sg-chart__value" x="375.0" y="138" text-anchor="middle" opacity=".7">-0.2</text><line class="sg-chart__grid" x1="425.0" x2="425.0" y1="14" y2="120"/><text class="sg-chart__value" x="425.0" y="138" text-anchor="middle" opacity=".7">-0.1</text><line class="sg-chart__rule" x1="475.0" x2="475.0" y1="14" y2="120"/><text class="sg-chart__value" x="475.0" y="138" text-anchor="middle" opacity=".7">no change</text><line class="sg-chart__grid" x1="525.0" x2="525.0" y1="14" y2="120"/><text class="sg-chart__value" x="525.0" y="138" text-anchor="middle" opacity=".7">+0.1</text><text class="sg-chart__label" x="238" y="36" text-anchor="end" font-size="11">gemma-4 12B (dense) Q2</text><line class="sg-chart__line sg-chart__line--1" x1="274.4" x2="318.5" y1="32" y2="32"/><line class="sg-chart__line sg-chart__line--1" x1="274.4" x2="274.4" y1="28" y2="36"/><line class="sg-chart__line sg-chart__line--1" x1="318.5" x2="318.5" y1="28" y2="36"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="296.4" cy="32" r="4"/><text class="sg-chart__value" x="708" y="36">-0.3572</text><text class="sg-chart__label" x="238" y="66" text-anchor="end" font-size="11">gemma-4 26B-A4B (MoE) Q2</text><line class="sg-chart__line sg-chart__line--2" x1="446.5" x2="467.8" y1="62" y2="62"/><line class="sg-chart__line sg-chart__line--2" x1="446.5" x2="446.5" y1="58" y2="66"/><line class="sg-chart__line sg-chart__line--2" x1="467.8" x2="467.8" y1="58" y2="66"/><circle class="sg-chart__mark sg-chart__mark--2 sg-chart__ring" cx="457.3" cy="62" r="4"/><text class="sg-chart__value" x="708" y="66">-0.0354</text><text class="sg-chart__label" x="238" y="96" text-anchor="end" font-size="11">Qwen3.6 35B-A3B (MoE) Q1</text><line class="sg-chart__line sg-chart__line--2" x1="446.1" x2="465.9" y1="92" y2="92"/><line class="sg-chart__line sg-chart__line--2" x1="446.1" x2="446.1" y1="88" y2="96"/><line class="sg-chart__line sg-chart__line--2" x1="465.9" x2="465.9" y1="88" y2="96"/><circle class="sg-chart__mark sg-chart__mark--2 sg-chart__ring" cx="456.1" cy="92" r="4"/><text class="sg-chart__value" x="708" y="96">-0.0377</text><text class="sg-chart__axis" x="475" y="156" text-anchor="middle">STRICT F1 CHANGE, WITH 95% RANGE</text></svg></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">model</th><th style="text-align:left">rung</th><th style="text-align:right">F1</th><th style="text-align:right">vs own Q4</th><th style="text-align:left">95% range</th></tr></thead><tbody><tr><td style="text-align:left">gemma-4 12B — dense</td><td style="text-align:left">Q2</td><td style="text-align:right">0.3182</td><td style="text-align:right">−0.3572</td><td style="text-align:left">[−0.4012, −0.3131]</td></tr><tr><td style="text-align:left">gemma-4 26B-A4B — MoE</td><td style="text-align:left">Q2</td><td style="text-align:right">0.6498</td><td style="text-align:right">−0.0354</td><td style="text-align:left">[−0.0569, −0.0144]</td></tr><tr><td style="text-align:left">Qwen3.6 35B-A3B — MoE</td><td style="text-align:left">Q1</td><td style="text-align:right">0.6817</td><td style="text-align:right">−0.0377</td><td style="text-align:left">[−0.0577, −0.0182]</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">Each dot is the accuracy change against that model&#x27;s own four-bit rung; each line is its paired 95% range. The dense model loses more than half its accuracy at two bits. Both mixtures lose under four points — one of them at a single bit.</figcaption></figure>
@@ -52,15 +74,48 @@ the output for less than half the accuracy.
 Six ladders. In the region people actually argue about, almost nothing
 separates:
 
+Point estimates first. **Do not read differences off this table** — the
+comparisons that resolve are listed underneath it.
+
 | model | Q4 | Q6 | Q8 | BF16 |
 |---|---:|---:|---:|---:|
-| gemma-4 E2B | 0.6091 | 0.6202 | 0.6282 | — |
-| gemma-4 E4B | 0.6183 | **0.6393** | 0.6158 | — |
+| gemma-4 E2B | 0.6091 | 0.6202 | 0.6282 | 0.6252 |
+| gemma-4 E4B | 0.6183 | 0.6393 | 0.6158 | 0.6151 |
 | gemma-4 12B | 0.6754 | 0.6646 | 0.6798 | — |
 | gemma-4 26B-A4B | 0.6852 | 0.6827 | 0.6825 | — |
-| LFM2.5-2.6B | **0.5952** | 0.5714 | 0.5625 | 0.5825 |
-| LFM2.5-8B-A1B | 0.5091 | 0.5341 | **0.5470** | — |
-| Qwen3.6 35B-A3B | 0.7194 | **0.7303** | 0.7255 | — |
+| LFM2.5-2.6B | 0.5952 | 0.5714 | 0.5625 | 0.5825 |
+| LFM2.5-8B-A1B | 0.5091 | 0.5341 | 0.5470 | 0.5365 |
+| Qwen3.6 35B-A3B | 0.7194 | 0.7303 | 0.7255 | — |
+
+Which of those differences are real:
+
+| comparison | delta | 95% range | verdict |
+|---|---:|---|---|
+| gemma-4 E4B, Q6 − Q8 | +0.0235 | [+0.0068, +0.0403] | **separates** |
+| LFM2.5-8B-A1B, Q8 − Q4 | +0.0378 | [+0.0080, +0.0675] | **separates** |
+| LFM2.5-2.6B, Q8 − Q4 | −0.0327 | [−0.0592, −0.0063] | **separates** |
+| gemma-4 E4B, BF16 − Q6 | −0.0242 | [−0.0409, −0.0080] | **separates** |
+| gemma-4 26B-A4B, Q8 − Q4 | −0.0028 | [−0.0170, +0.0115] | indistinguishable |
+| Qwen3.6 35B-A3B, Q8 − Q4 | +0.0061 | [−0.0084, +0.0210] | indistinguishable |
+| gemma-4 E2B, BF16 − Q8 | −0.0030 | [−0.0210, +0.0152] | indistinguishable |
+| LFM2.5-2.6B, BF16 − Q4 | −0.0127 | [−0.0393, +0.0137] | indistinguishable |
+| LFM2.5-8B-A1B, BF16 − Q8 | −0.0105 | [−0.0367, +0.0164] | indistinguishable |
+
+Four separate, five do not, and the four that separate **point in different
+directions**: E4B prefers six bits over eight, 8B-A1B prefers eight over four,
+2.6B prefers four over eight. There is no consistent direction to extract.
+
+On the two largest models nothing separates at all.
+
+Full precision is the case worth stating carefully, because it is easy to
+overclaim. BF16 did not beat the best quantized rung on any of the four models
+that have one, and on gemma-4 E4B it lost measurably. But three of those four
+comparisons are nulls, and **the comparator was chosen after seeing the data** —
+each model's best quantized rung, which is the maximum of a noisy set and biased
+toward making BF16 look worse. Against Q4 instead, E4B's BF16 is −0.0032 and
+nowhere near separating. The defensible reading is that full precision bought
+nothing measurable on three models and lost on one, not that quantization
+improves models.
 
 On the two largest models the top of the ladder is flat to within noise:
 26B-A4B Q8 minus Q4 is −0.0028 [−0.0170, +0.0115]; Qwen Q8 minus Q4 is +0.0061
@@ -77,7 +132,8 @@ direction.
 
 ## Quantization-aware training: take it at its own width, never below
 
-At four bits QAT is free or slightly better on all four models that publish one:
+At four bits, **no QAT pair separates**. Three are clean ties and one sits on the
+boundary:
 
 | model | non-QAT Q4 | QAT Q4 | delta | 95% CI |
 |---|---:|---:|---:|---|
@@ -135,6 +191,10 @@ before QAT was considered at all.
 Every arm is scored twice: 1,001-note fact extraction, and a frozen 1,000-case
 synthesis fixture.
 
+**None of the synthesis numbers below carry intervals.** Every extraction figure
+in this article has been through a paired bootstrap; no synthesis figure has.
+Read the synthesis rows as directions, not as differences.
+
 | model | task | Q1 | Q2 | Q4 | Q6 | Q8 |
 |---|---|---:|---:|---:|---:|---:|
 | 12B | extraction | — | **0.3182** | 0.6754 | 0.6646 | 0.6798 |
@@ -160,7 +220,10 @@ comparisons. That is the largest remaining gap in this work.
 
 ## Speed falls with width, predictably, until capacity intervenes
 
-Within a model, generation throughput tracks memory bandwidth closely:
+Throughput carries no intervals because it does not need them: each figure is
+the median of roughly 1,003 generations with under 2% spread, on fixed hardware.
+These are measurements, not estimates. Within a model, generation throughput
+tracks memory bandwidth closely:
 
 | model | Q4 | Q6 | Q8 | BF16 |
 |---|---:|---:|---:|---:|
@@ -218,10 +281,15 @@ more than half its accuracy at two bits and hid it behind a healthy tokens per
 second.
 
 **Take the QAT build at the width it ships for, and never quantize it further.**
-Free-to-better at four bits, catastrophic at two.
+The four-bit half of that is a null — no QAT pair separates at Q4, so take it for
+speed and fit rather than accuracy. The two-bit half is not a null: −0.3511 and
+−0.2982, both clearing zero by a wide margin on two independent models.
 
-**Above four bits, choose on throughput.** Accuracy did not separate on either
-large model, and the speed differences are large and monotonic.
+**Above four bits, choose on throughput.** This rests on a *null*: accuracy did
+not separate on either large model, and four of nine comparisons in that region
+that did separate point in three different directions. The speed differences, by
+contrast, are measured and large. Choosing on the thing that resolved rather
+than the thing that did not is the point.
 
 **And score the task you actually run.** Extraction and synthesis do not want the
 same quantization, and on the 12B at two bits the gap between what they say is
