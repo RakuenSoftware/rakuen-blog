@@ -249,7 +249,7 @@ def main() -> int:
         tbl,
         "Each dot is the accuracy change against that model's own four-bit rung; "
         "each line is its paired 95% range. The dense model loses more than half "
-        "its accuracy at two bits. Both mixtures lose under four points — one of "
+        "its accuracy at two bits. Both mixtures lose under four points, one of "
         "them at a single bit."))
 
     # 2. Capacity, not arithmetic.
