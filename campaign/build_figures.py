@@ -293,6 +293,13 @@ def main() -> int:
          "gemma4-e4b.base.q2", "gemma4-e4b.qat.q2", "1"),
         ("E2B: QAT Q2 − Q2", "gemma-4 E2B, QAT Q2 − non-QAT Q2",
          "gemma4-e2b.base.q2", "gemma4-e2b.qat.q2", "1"),
+        # The cost of dropping a QAT build below the width it ships for. This is
+        # the largest effect in the campaign and the reason the section exists,
+        # so the figure has to carry it rather than leave it to prose.
+        ("E4B: QAT Q2 − QAT Q4", "gemma-4 E4B, QAT Q2 − QAT Q4",
+         "gemma4-e4b.qat.q4", "gemma4-e4b.qat.q2", "1"),
+        ("E2B: QAT Q2 − QAT Q4", "gemma-4 E2B, QAT Q2 − QAT Q4",
+         "gemma4-e2b.qat.q4", "gemma4-e2b.qat.q2", "1"),
     ]
     rows = []
     trows = []
@@ -320,10 +327,11 @@ def main() -> int:
         delta_chart(rows, aria="Quantization-aware training against its non-QAT twin at matched width"),
         tbl,
         "At four bits QAT is a tie on accuracy for three of the four models and "
-        "worth taking for speed and fit; the 12B separates on synthesis. At two "
-        "bits both models that publish a QAT build collapse, and they collapse "
-        "in opposite directions: one stops producing output, the other will "
-        "not stop."))
+        "worth taking for speed and fit; the 12B separates on synthesis. Taken "
+        "below the width it ships for, QAT is the most destructive change "
+        "measured anywhere in this campaign, and the two models fail in "
+        "opposite directions: one stops producing output, the other will not "
+        "stop."))
 
     print("\n\n".join(out))
     return 0
