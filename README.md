@@ -52,11 +52,12 @@ that catches that class of bug. A number without it is not evidence.
 | [the-benchmark-audited-production](articles/the-benchmark-audited-production/) | ready | figure map, shared results tree |
 | [the-corpus-is-the-experiment](articles/the-corpus-is-the-experiment/) | ready | figure map, shared results tree |
 | [the-parallelism-limit-was-never-vram](articles/the-parallelism-limit-was-never-vram/) | ready | figure map, shared results tree |
-| [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | superseded, do not publish | v1 is incomplete against the 2026-08-16 campaign; v2 draft in progress |
+| [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | superseded, do not publish | v1 is incomplete against the 2026-08-16 campaign; v2 draft complete on evidence, 37 runs and both tasks resampled, awaiting review |
 | [synthesis-model-selection](articles/synthesis-model-selection/) | review | nine-model paired GPU matrix complete; Qwen3.8 UD-Q4 follow-up pending |
 | [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | draft | 81 cells committed and checkable; three figures do not reproduce |
 | [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |
 | [the-model-decides-when-to-think](articles/the-model-decides-when-to-think/) | investigation | four rerunnable scripts; no article written yet |
+| [kv-cache-precision](articles/kv-cache-precision/) | investigation | four cache configurations on one model recorded; no article written yet |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
 `draft` means the article exists and its provenance gaps are written down, but it

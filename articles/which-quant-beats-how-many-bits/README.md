@@ -28,20 +28,30 @@ Publishing it now would put a piece into the world that the next revision
 immediately contradicts, and the contradiction would be ours rather than a
 reader's.
 
-The successor is `article/which-quant-beats-how-many-bits.v2-draft.md`, which is
-itself incomplete: seven arms are outstanding and its synthesis figures carry no
-paired intervals. Neither file is publishable today. v1 is retained unmodified
-because it is the reference the v2 draft reproduces findings against, not
-because it is ready.
+The successor is `article/which-quant-beats-how-many-bits.v2-draft.md`. v1 is
+retained unmodified because it is the reference the v2 draft reproduces findings
+against, not because it is ready.
 
-**The campaign is COMPLETE as of 2026-08-22: 34 of 34 arms, both tasks, zero
-failed, zero gated, zero invalid.** Audited independently — every arm has full
-prediction rows and a synthesis success rate of 1.0. It ran 34 arms across seven models on
-one RTX 5080, each scored on both the 1,001-note extraction corpus and the
-1,000-case synthesis fixture, and it supplies what the published version lacks:
-ladders on mixture-of-expert models and above 12B, a second task, Q2 and Q1
-rungs, QAT arms beside their non-QAT rungs at the same width, a KV-cache
-precision sweep, and same-card throughput for every rung.
+**The campaign is COMPLETE as of 2026-08-22: 37 of 37 runs, both tasks, zero
+failed, zero gated, zero invalid.** Audited independently — every run has full
+prediction rows and a synthesis success rate of 1.0. It ran 37 runs across seven
+models on one RTX 5080, each scored on both the 1,001-note extraction corpus and
+the 1,000-case synthesis fixture, and it supplies what v1 lacks: ladders on
+mixture-of-expert models and above 12B, a second task, Q2 and Q1 rungs, QAT runs
+beside their non-QAT rungs at the same width, BF16 on every model that could
+hold it, and same-card throughput for every rung.
+
+**Both tasks now carry paired intervals**: 45 extraction comparisons at 20,000
+replicates, of which 15 separate, and 44 synthesis comparisons at 5,000
+replicates, of which 10 separate. The synthesis half had none until 2026-08-22.
+The series' paired bootstrap lived in the `synthesis-model-selection` ab-v1
+harness, hardcoded to two fixture directories and a 10,000-case population, so
+it could not be pointed at a campaign run; `campaign/synth_pair_ci.py` is that
+computation with its inputs made arguments, validated by reproducing the
+published ab-v1 pair bit for bit.
+
+The KV-cache precision sweep that this campaign also ran belongs to
+`articles/kv-cache-precision/` and is deliberately excluded from this ladder.
 
 - `evidence/moe-ladder-plan-2026-08-16.md` — the plan, registered before any arm
   ran, including the availability findings that changed the design three times
@@ -50,10 +60,14 @@ precision sweep, and same-card throughput for every rung.
   carrying the campaign's findings. Marked `draft: true`. Kept beside v1 rather
   than overwriting it so the earlier claims stay readable for comparison, since
   the revision reproduces two of them independently.
-- `evidence/moe-ladder-measurement-log-2026-08-16.md` — the defect log. Nine
-  faults so far, every one of which produced output indistinguishable from
-  success; two campaigns discarded; the results standing so far with their
-  paired intervals.
+- `evidence/moe-ladder-measurement-log-2026-08-16.md` — the defect log. Eleven
+  faults, every one of which produced output indistinguishable from success; two
+  campaigns discarded; the results standing with their paired intervals.
+- `evidence/campaign-results/arms-2026-08-22.json` — all 37 runs, both tasks,
+  with throughput and offload state.
+- `evidence/campaign-results/extraction-pairs-2026-08-22.json` and
+  `synthesis-pairs-2026-08-22.json` — every paired interval, so a figure can
+  read its range from evidence rather than have it retyped.
 
 The first completed ladder already bears on a claim this article withdrew: it
 measures LFM2.5-2.6B getting **worse** with more bits, Q8 minus Q4 of −0.0327
