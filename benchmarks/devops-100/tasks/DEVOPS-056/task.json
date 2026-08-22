@@ -1,0 +1,19 @@
+{
+  "id": "DEVOPS-056",
+  "version": 1,
+  "execution": {
+    "kind": "local",
+    "timeout_seconds": 120,
+    "network": "none",
+    "capabilities": []
+  },
+  "workspace": {
+    "seed": "environment",
+    "prompt": "prompt.md",
+    "public_tests": "tests/public"
+  },
+  "grading": {
+    "command": ["python3", "grader/grade.py"],
+    "max_score": 100
+  }
+}
