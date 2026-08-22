@@ -95,6 +95,11 @@ def load_arms() -> list[dict[str, object]]:
                     "speculative": draft != "-",
                     "cache_type_k": ctk,
                     "cache_type_v": ctv,
+                    # Kept raw so the expert-offload cache key can be rebuilt
+                    # exactly as run_arm.sh writes it, rather than reconstructed
+                    # from the display fields and hoped to match.
+                    "_width": width,
+                    "_train": train,
                 }
             )
     if not candidates:
@@ -183,6 +188,29 @@ def main() -> int:
     # serve at the f16 default whatever the manifest said, and the KV sweep
     # would have produced five identical configurations under five different
     # labels -- five runs that agree perfectly and mean nothing.
+    # Expert offload must reach the synthesis server too.
+    #
+    # This was missing and it cost every offloaded arm its synthesis half. The
+    # extraction path tunes -ncmoe per model and caches it; the synthesis path
+    # inherited the cache types and the reasoning flag but not this one, so a
+    # 36 GB model was handed to a 16 GB card with -ngl 99 and no offload:
+    #
+    #   allocating 36144.11 MiB on device 0: cudaMalloc failed: out of memory
+    #
+    # All six failures were the six arms that need offload, which is the shape
+    # that should have named the cause immediately.
+    STATE = Path("/opt/campaign/state")
+
+    def ncmoe_for(candidate):
+        """The tuned offload for this arm, or None if it is card-resident."""
+        key = STATE / "{}.{}.{}.{}{}.ncmoe".format(
+            candidate["family"], candidate["_width"], candidate["_train"],
+            candidate["cache_type_k"], candidate["cache_type_v"])
+        if not key.exists():
+            return None
+        value = key.read_text().strip()
+        return value or None
+
     stock_command = rcm.candidate_command
 
     def command_with_cache(candidate, llama_server, port):
@@ -218,6 +246,9 @@ def main() -> int:
         # probe_reasoning_flags.sh: baseline and --reasoning off both compile the
         # grammar; --reasoning-format none alone and combined both fail.
         command += ["--reasoning", "off"]
+        offload = ncmoe_for(candidate)
+        if offload:
+            command += ["-ncmoe", offload]
         if candidate.get("draft"):
             # The draft model's cache defaults to f16 independently of the
             # target's, so it has to be set too or the arm is not the
