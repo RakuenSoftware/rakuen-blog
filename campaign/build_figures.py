@@ -12,8 +12,16 @@ synthesis-model-selection: `sg-figure` wrapper, two radio inputs, a tabs strip,
 two panes, and a caption. The chart pane is inline SVG using the same class
 names those articles use, so the site's stylesheet applies unchanged.
 
+The intervals used to be typed into this file as literal strings, twice per
+comparison -- once in the chart tuple and once in the table cell -- which made
+the promise above false for exactly the numbers that matter most. The QAT figure
+drifted that way: its caption and verdict column went on asserting a tie after
+the prose beside it had been corrected. They are now read from
+`evidence/campaign-results/{extraction,synthesis}-pairs-*.json`, so a figure
+cannot state an interval no bootstrap produced.
+
 Usage:
-    build_figures.py <results.json> > figures.html
+    build_figures.py <results.json> [pairs-dir] > figures.html
 """
 
 from __future__ import annotations
@@ -142,11 +150,65 @@ def bar_chart(rows, unit, label_w=210, aria="") -> str:
     return "".join(parts)
 
 
+MINUS = "\u2212"
+
+
+def fmt_delta(v: float) -> str:
+    """Signed to four places, using the typographic minus the article uses."""
+    return f"+{v:.4f}" if v >= 0 else f"{MINUS}{abs(v):.4f}"
+
+
+def fmt_range(lo: float, hi: float) -> str:
+    return f"[{fmt_delta(lo)}, {fmt_delta(hi)}]"
+
+
+def load_pairs(pairs_dir: Path) -> dict:
+    """(task, baseline, comparison) -> row, from the vendored pair evidence."""
+    table: dict = {}
+    for task, pattern in (("extraction", "extraction-pairs-*.json"),
+                          ("synthesis", "synthesis-pairs-*.json")):
+        for path in sorted(pairs_dir.glob(pattern)):
+            for row in json.loads(path.read_text()):
+                if row.get("error"):
+                    continue
+                table[(task, row["baseline"], row["comparison"])] = row
+    if not table:
+        raise SystemExit(f"no pair evidence found under {pairs_dir}")
+    return table
+
+
 def main() -> int:
-    if len(sys.argv) != 2:
+    if len(sys.argv) not in (2, 3):
         print(__doc__.strip().splitlines()[-1], file=sys.stderr)
         return 2
-    arms = json.loads(Path(sys.argv[1]).read_text())
+    results = Path(sys.argv[1])
+    arms = json.loads(results.read_text())
+    arms = {k: v for k, v in arms.items() if not k.startswith("_")}
+    pairs_dir = Path(sys.argv[2]) if len(sys.argv) == 3 else results.parent
+    pair_rows = load_pairs(pairs_dir)
+
+    def pair(baseline, comparison, task="extraction"):
+        """delta, lo, hi for a measured pair, in the direction asked for.
+
+        A pair is stored once. Asking for it the other way round negates the
+        delta and swaps the reversed endpoints, which is the same measurement
+        read from the other side.
+        """
+        row = pair_rows.get((task, baseline, comparison))
+        if row is not None:
+            lo, hi = row["paired_bootstrap_95_range"]
+            return row["comparison_minus_baseline"], lo, hi
+        row = pair_rows.get((task, comparison, baseline))
+        if row is None:
+            raise SystemExit(
+                f"no {task} pair for {comparison} vs {baseline}; "
+                "run the sweep before rebuilding figures")
+        lo, hi = row["paired_bootstrap_95_range"]
+        return -row["comparison_minus_baseline"], -hi, -lo
+
+    def verdict(baseline, comparison, task="extraction"):
+        d, lo, hi = pair(baseline, comparison, task)
+        return "separates" if (lo > 0 or hi < 0) else "tie"
 
     def arm(label):
         return arms[label]
@@ -161,19 +223,24 @@ def main() -> int:
     out = []
 
     # 1. The headline: dense collapses, mixtures do not.
-    rows = [
-        ("gemma-4 12B (dense) Q2", -0.3572, -0.4012, -0.3131, "1"),
-        ("gemma-4 26B-A4B (MoE) Q2", -0.0354, -0.0569, -0.0144, "2"),
-        ("Qwen3.6 35B-A3B (MoE) Q1", -0.0377, -0.0577, -0.0182, "2"),
+    headline = [
+        ("gemma-4 12B (dense) Q2", "gemma-4 12B — dense", "Q2",
+         "gemma4-12b.base.q4", "gemma4-12b.base.q2", "1"),
+        ("gemma-4 26B-A4B (MoE) Q2", "gemma-4 26B-A4B — MoE", "Q2",
+         "gemma4-26b-a4b.base.q4", "gemma4-26b-a4b.base.q2", "2"),
+        ("Qwen3.6 35B-A3B (MoE) Q1", "Qwen3.6 35B-A3B — MoE", "Q1",
+         "qwen36-35b-a3b.base.q4", "qwen36-35b-a3b.base.q1", "2"),
     ]
+    rows = []
+    trows = []
+    for chart_label, table_label, rung, base, comp, series in headline:
+        d, lo, hi = pair(base, comp)
+        rows.append((chart_label, d, lo, hi, series))
+        trows.append([table_label, rung, f"{f1(comp):.4f}",
+                      fmt_delta(d), fmt_range(lo, hi)])
     tbl = table_html(
         ["model", "rung", "F1", "vs own Q4", "95% range"],
-        [["gemma-4 12B — dense", "Q2", f"{f1('gemma4-12b.base.q2'):.4f}",
-          "−0.3572", "[−0.4012, −0.3131]"],
-         ["gemma-4 26B-A4B — MoE", "Q2", f"{f1('gemma4-26b-a4b.base.q2'):.4f}",
-          "−0.0354", "[−0.0569, −0.0144]"],
-         ["Qwen3.6 35B-A3B — MoE", "Q1", f"{f1('qwen36-35b-a3b.base.q1'):.4f}",
-          "−0.0377", "[−0.0577, −0.0182]"]],
+        trows,
         ["left", "left", "right", "right", "left"])
     out.append(figure(
         "fig-dense-vs-moe",
@@ -213,30 +280,50 @@ def main() -> int:
         "layers had to compute their experts on the CPU."))
 
     # 3. QAT: fine at its width, catastrophic below it.
-    rows = [
-        ("E2B: QAT Q4 − Q4", 0.0128, -0.0095, 0.0355, "2"),
-        ("12B: QAT Q4 − Q4", 0.0178, 0.0000, 0.0363, "2"),
-        ("26B: QAT Q4 − Q4", -0.0048, -0.0235, 0.0139, "2"),
-        ("E4B: QAT Q2 − Q2", -0.2982, -0.3317, -0.2638, "1"),
-        ("E2B: QAT Q2 − Q2", -0.3511, -0.3830, -0.3187, "1"),
+    qat = [
+        ("E2B: QAT Q4 − Q4", "gemma-4 E2B, QAT Q4 − non-QAT Q4",
+         "gemma4-e2b.base.q4", "gemma4-e2b.qat.q4", "2"),
+        ("E4B: QAT Q4 − Q4", "gemma-4 E4B, QAT Q4 − non-QAT Q4",
+         "gemma4-e4b.base.q4", "gemma4-e4b.qat.q4", "2"),
+        ("12B: QAT Q4 − Q4", "gemma-4 12B, QAT Q4 − non-QAT Q4",
+         "gemma4-12b.base.q4", "gemma4-12b.qat.q4", "2"),
+        ("26B: QAT Q4 − Q4", "gemma-4 26B-A4B, QAT Q4 − non-QAT Q4",
+         "gemma4-26b-a4b.base.q4", "gemma4-26b-a4b.qat.q4", "2"),
+        ("E4B: QAT Q2 − Q2", "gemma-4 E4B, QAT Q2 − non-QAT Q2",
+         "gemma4-e4b.base.q2", "gemma4-e4b.qat.q2", "1"),
+        ("E2B: QAT Q2 − Q2", "gemma-4 E2B, QAT Q2 − non-QAT Q2",
+         "gemma4-e2b.base.q2", "gemma4-e2b.qat.q2", "1"),
     ]
+    rows = []
+    trows = []
+    for chart_label, table_label, base, comp, series in qat:
+        d, lo, hi = pair(base, comp)
+        rows.append((chart_label, d, lo, hi, series))
+        # A pair that ties on extraction may still resolve on synthesis. The
+        # 12B QAT Q4 pair does, and showing only the extraction verdict is what
+        # let this figure go on contradicting the section it sits in.
+        v = verdict(base, comp)
+        if v == "tie":
+            try:
+                if verdict(base, comp, "synthesis") == "separates":
+                    v = "separates on synthesis"
+            except SystemExit:
+                pass
+        trows.append([table_label, fmt_delta(d), fmt_range(lo, hi), v])
     tbl = table_html(
         ["pair", "delta", "95% range", "verdict"],
-        [["gemma-4 E2B, QAT Q4 − non-QAT Q4", "+0.0128", "[−0.0095, +0.0355]", "tie"],
-         ["gemma-4 12B, QAT Q4 − non-QAT Q4", "+0.0178", "[+0.0000, +0.0363]", "knife-edge"],
-         ["gemma-4 26B-A4B, QAT Q4 − non-QAT Q4", "−0.0048", "[−0.0235, +0.0139]", "tie"],
-         ["gemma-4 E4B, QAT Q2 − non-QAT Q2", "−0.2982", "[−0.3317, −0.2638]", "separates"],
-         ["gemma-4 E2B, QAT Q2 − non-QAT Q2", "−0.3511", "[−0.3830, −0.3187]", "separates"]],
+        trows,
         ["left", "right", "left", "left"])
     out.append(figure(
         "fig-qat",
         "qat",
         delta_chart(rows, aria="Quantization-aware training against its non-QAT twin at matched width"),
         tbl,
-        "At four bits QAT is a tie on accuracy across three models and worth "
-        "taking for speed and fit. At two bits both models that publish a QAT "
-        "build collapse, and they collapse in opposite directions: one stops "
-        "producing output, the other will not stop."))
+        "At four bits QAT is a tie on accuracy for three of the four models and "
+        "worth taking for speed and fit; the 12B separates on synthesis. At two "
+        "bits both models that publish a QAT build collapse, and they collapse "
+        "in opposite directions: one stops producing output, the other will "
+        "not stop."))
 
     print("\n\n".join(out))
     return 0
