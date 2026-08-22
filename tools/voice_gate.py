@@ -102,8 +102,17 @@ def prose_without_code_or_tables(body: str) -> str:
     return "\n".join(lines)
 
 
-def check(slug: str) -> list[str]:
-    path = article_path(slug)
+def check(slug: str, path: Path | None = None) -> list[str]:
+    """Check one article. `path` overrides slug resolution for draft files.
+
+    A draft lives at <slug>/article/<slug>.vN-draft.md and its README says the
+    article is not ready, so neither ready_articles() nor article_path() can
+    reach it. That is correct for deciding what blocks publication and wrong for
+    deciding what an author can check: the draft is exactly the file that still
+    has fixable problems in it. Passing a path checks that file under the same
+    rules.
+    """
+    path = path or article_path(slug)
     failures: list[str] = []
     if not path.is_file():
         return [f"missing article: {path}"]
@@ -116,7 +125,8 @@ def check(slug: str) -> list[str]:
         if not re.search(rf"^{key}:", frontmatter, re.MULTILINE):
             failures.append(f"missing frontmatter field: {key}")
 
-    evidence = ROOT / "articles" / slug / "evidence" / "figures.md"
+    slug_dir = path.parent.parent.name if path.parent.name == "article" else slug
+    evidence = ROOT / "articles" / slug_dir / "evidence" / "figures.md"
     if not evidence.is_file():
         failures.append("missing evidence/figures.md")
     if "https://github.com/RakuenSoftware/rakuen-blog/" not in body:
@@ -166,13 +176,23 @@ def check(slug: str) -> list[str]:
 
 
 def main() -> int:
-    selected = tuple(sys.argv[1:]) or ready_articles()
+    args = tuple(sys.argv[1:])
+    # An argument that names a real file is checked as that file; anything else
+    # is a slug, so existing invocations are untouched.
+    explicit = [Path(a) for a in args if Path(a).is_file()]
+    slugs = tuple(a for a in args if not Path(a).is_file())
+
+    selected: list[tuple[str, Path | None]] = [
+        (p.stem, p) for p in explicit
+    ] + [(s, None) for s in slugs]
+    if not selected:
+        selected = [(s, None) for s in ready_articles()]
     if not selected:
         print("FAIL no publication-ready articles discovered")
         return 1
     failed = False
-    for slug in selected:
-        failures = check(slug)
+    for slug, path in selected:
+        failures = check(slug, path)
         if failures:
             failed = True
             print(f"FAIL {slug}")

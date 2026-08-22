@@ -13,3 +13,8 @@ __pycache__/
 # under evidence/raw/results/ with a provenance note. Committing this directory
 # banks half-written shard files as though they were results.
 articles/*/evidence/raw/harness/results/
+.armsraw/
+.synthraw/
+.pairs_*
+.synth_pairs.json
+.run_pairs.sh
