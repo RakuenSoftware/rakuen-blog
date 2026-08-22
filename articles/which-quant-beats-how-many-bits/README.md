@@ -1,6 +1,6 @@
-# Quantization Choice Mattered More Than Bit Count
+# Two Bits Killed the Dense Model and the Mixture Barely Noticed
 
-Only one bit-width step separated; QAT's clearest benefit was fitting a 26B model on a 16-gibibyte card.
+A one-bit 35B mixture-of-experts loses four points; a two-bit 12B dense model loses thirty-six. The largest speed difference measured was whether the file fit.
 
 ## Status
 
@@ -34,8 +34,9 @@ paired intervals. Neither file is publishable today. v1 is retained unmodified
 because it is the reference the v2 draft reproduces findings against, not
 because it is ready.
 
-**A campaign extending this article is in progress from 2026-08-16 and the
-article body does not yet reflect it.** It runs 38 arms across seven models on
+**The campaign is COMPLETE as of 2026-08-22: 34 of 34 arms, both tasks, zero
+failed, zero gated, zero invalid.** Audited independently — every arm has full
+prediction rows and a synthesis success rate of 1.0. It ran 34 arms across seven models on
 one RTX 5080, each scored on both the 1,001-note extraction corpus and the
 1,000-case synthesis fixture, and it supplies what the published version lacks:
 ladders on mixture-of-expert models and above 12B, a second task, Q2 and Q1
