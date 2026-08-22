@@ -64,6 +64,14 @@ def expected_model_name(target: str) -> str:
     raises on a mismatch, which is the guard that catches a target silently
     resolving to a different file than the one asked for.
     """
+    # repo#file targets name a file outright, because -hf parses the text after
+    # a colon as a quant name and third-party NVFP4 repos name their files
+    # something that matches no quant. What llama.cpp then serves is that file,
+    # so the identity to check for is its stem.
+    if "#" in target:
+        filename = target.partition("#")[2]
+        return filename[: -len(".gguf")] if filename.endswith(".gguf") else filename
+
     repo, _, quant = target.partition(":")
     stem = repo.split("/")[-1]
     if stem.endswith("-GGUF"):
@@ -117,7 +125,8 @@ def validate_ladder(candidates: list[dict[str, object]]) -> None:
     publishers: dict[str, set[str]] = {}
     for candidate in candidates:
         target = str(candidate["target"])
-        if ":" not in target or "/" not in target:
+        well_formed = "/" in target and (":" in target or "#" in target)
+        if not well_formed:
             raise RuntimeError(f"{candidate['label']}: malformed target {target!r}")
         if candidate["speculative"] and not candidate["draft"]:
             raise RuntimeError(f"{candidate['label']}: speculative with no draft")
@@ -129,10 +138,24 @@ def validate_ladder(candidates: list[dict[str, object]]) -> None:
     # another. Note this checks TARGET publishers only: Qwen deliberately takes
     # its draft from ggml-org because unsloth ships no MTP sidecar for it, and
     # that draft is identical across all of that model's rungs.
+    # NVFP4 is the documented exception. No publisher this campaign uses ships an
+    # NVFP4 GGUF, so those rungs are third-party by necessity and differ from
+    # their siblings in format AND lineage. That is registered in
+    # evidence/nvfp4-plan-2026-08-22.md, which also states what the resulting
+    # comparison can and cannot support. Excluding them from the check keeps the
+    # rule meaningful for every rung where lineage IS controllable, instead of
+    # deleting the rule to admit one exception.
+    nvfp4_publishers: dict[str, set[str]] = {}
+    for candidate in candidates:
+        if str(candidate["_width"]).lower() == "nvfp4":
+            nvfp4_publishers.setdefault(str(candidate["family"]), set()).add(
+                str(candidate["target"]).split("/")[0])
+
     for model, names in sorted(publishers.items()):
-        if len(names) > 1:
+        controllable = names - nvfp4_publishers.get(model, set())
+        if len(controllable) > 1:
             raise RuntimeError(
-                f"{model}: rungs span multiple publishers {sorted(names)}; "
+                f"{model}: rungs span multiple publishers {sorted(controllable)}; "
                 "a ladder must hold weights lineage constant"
             )
 
@@ -215,6 +238,24 @@ def main() -> int:
 
     def command_with_cache(candidate, llama_server, port):
         command = stock_command(candidate, llama_server, port)
+
+        # The stock builder emits "-hf <target>" verbatim. For a repo#file
+        # target that produces "-hf repo#file", which llama.cpp reads as a quant
+        # tag and rejects with "no GGUF files found in repository" while
+        # printing the file it just refused. Split it into -hf repo -hff file,
+        # the same rewrite run_arm.sh and tune_ncmoe.sh do.
+        target = str(candidate["target"])
+        if "#" in target:
+            repo, _, filename = target.partition("#")
+            for i, token in enumerate(command):
+                if token == target:
+                    command[i:i + 1] = [repo, "-hff", filename]
+                    break
+            else:
+                raise RuntimeError(
+                    f"{candidate['label']}: target {target!r} not found in the "
+                    "server command, so -hff could not be substituted")
+
         command += ["-ctk", str(candidate["cache_type_k"]),
                     "-ctv", str(candidate["cache_type_v"])]
         # Reasoning is forced off at the SERVER, not merely requested through the

@@ -84,3 +84,13 @@ order	label	model	train	width	target	draft	est_gib	ctk	ctv
 35	qwen36-35b-a3b.base.q1	qwen36-35b-a3b	base	q1	unsloth/Qwen3.6-35B-A3B-GGUF:UD-IQ1_M	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	8.5	f16	f16
 36	qwen36-35b-a3b.base.q6	qwen36-35b-a3b	base	q6	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q6_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	27.0	f16	f16
 37	qwen36-35b-a3b.base.q8	qwen36-35b-a3b	base	q8	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q8_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	36.0	f16	f16
+38	gemma4-e2b.base.nvfp4	gemma4-e2b	base	nvfp4	FreedomAISVR/Gemma-4-E2B-it-NVFP4-GGUF#gemma-4-E2B-it-NVFP4.gguf	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	3.2	f16	f16
+39	gemma4-e2b.qat.nvfp4	gemma4-e2b	qat	nvfp4	FreedomAISVR/Gemma-4-E2B-it-QAT-NVFP4-GGUF#gemma-4-E2B-it-qat-nvfp4.gguf	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	3.2	f16	f16
+40	gemma4-e4b.base.nvfp4	gemma4-e4b	base	nvfp4	FreedomAISVR/Gemma-4-E4B-it-NVFP4-GGUF#gemma-4-E4B-it-NVFP4.gguf	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	4.9	f16	f16
+41	gemma4-e4b.qat.nvfp4	gemma4-e4b	qat	nvfp4	FreedomAISVR/Gemma-4-E4B-it-QAT-NVFP4-GGUF#gemma-4-E4B-it-qat-nvfp4.gguf	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	4.9	f16	f16
+42	gemma4-12b.base.nvfp4	gemma4-12b	base	nvfp4	FreedomAISVR/Gemma-4-12B-it-NVFP4-GGUF#gemma-4-12b-it-nvfp4.gguf	-	6.6	f16	f16
+43	gemma4-12b.qat.nvfp4	gemma4-12b	qat	nvfp4	FreedomAISVR/Gemma-4-12B-it-QAT-NVFP4-GGUF#gemma-4-12b-it-qat-nvfp4.gguf	-	6.4	f16	f16
+44	gemma4-26b-a4b.base.nvfp4	gemma4-26b-a4b	base	nvfp4	FreedomAISVR/Gemma-4-26B-A4B-it-NVFP4-GGUF#gemma-4-26b-NVFP4.gguf	-	13.5	f16	f16
+45	lfm25-2.6b.base.nvfp4	lfm25-2.6b	base	nvfp4	WhiskyAKM/LFM2.5-2.6B-NVFP4-GGUF#lfm2.5-2.6b-nvfp4.gguf	-	1.6	f16	f16
+46	qwen36-35b-a3b.base.nvfp4	qwen36-35b-a3b	base	nvfp4	FreedomAISVR/Qwen3.6-35B-A3B-NVFP4-GGUF#qwen3.6-35b-a3b-nvfp4.gguf	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	18.4	f16	f16
+47	gemma4-e2b.qat.nvfp4-whisky	gemma4-e2b	qat	nvfp4	WhiskyAKM/Gemma-4-E2B-it-qat-NVFP4-GGUF#gemma-4-E2B-it-qat-nvfp4.gguf	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	3.2	f16	f16

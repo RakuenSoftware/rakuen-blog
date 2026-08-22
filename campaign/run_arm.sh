@@ -149,7 +149,19 @@ esac
 # precision its own axis rather than a confound inside the width ladder.
 CTK=${CTK:-f16}
 CTV=${CTV:-f16}
-SRV_ARGS=(-hf "$TARGET" --host 127.0.0.1 --port "$PORT" -c "$CTX"
+# -hf takes <repo>[:quant], and the quant is matched against known quant names.
+# Third-party NVFP4 repos name their files things like
+# "gemma-4-E2B-it-NVFP4.gguf", which matches no quant, so -hf repo:file reports
+# "no GGUF files found in repository" while printing the very file it refused.
+# -hff names a file outright. A target written repo#file uses that path.
+if [ "${TARGET%%#*}" != "$TARGET" ]; then
+  TARGET_REPO=${TARGET%%#*}
+  TARGET_FILE=${TARGET#*#}
+  SRV_ARGS=(-hf "$TARGET_REPO" -hff "$TARGET_FILE")
+else
+  SRV_ARGS=(-hf "$TARGET")
+fi
+SRV_ARGS+=(--host 127.0.0.1 --port "$PORT" -c "$CTX"
           -np 1 --cache-ram 1024 --no-webui --no-mmproj -ngl 99
           -ctk "$CTK" -ctv "$CTV")
 
