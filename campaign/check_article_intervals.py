@@ -30,7 +30,7 @@ EVID = ROOT / "articles/which-quant-beats-how-many-bits/evidence/campaign-result
 
 # Intervals that are deliberately not from this campaign's pair sweep.
 ALLOWED_FOREIGN = {
-    (0.0091, 0.0405): "v1 of this article, different hardware and campaign",
+    (0.0091, 0.0405): "earlier campaign, different hardware; not from this sweep",
 }
 
 INTERVAL = re.compile(r"\[\s*([+-]?\d*\.\d+)\s*,\s*([+-]?\d*\.\d+)\s*\]")

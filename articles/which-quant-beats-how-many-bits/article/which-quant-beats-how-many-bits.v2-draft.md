@@ -111,10 +111,10 @@ above, across seven ladders. Five separate, none by much:
 | gemma-4 E4B, Q6 − Q4 | +0.0210 | [+0.0034, +0.0386] |
 
 They also disagree. gemma-4 E4B peaks at six bits, beating Q4, Q8 and full
-precision, which is the best-established result here and reproduces the earlier
-version of this article on different hardware. LFM2.5-8B-A1B improves with
-width, and its dense sibling LFM2.5-2.6B gets worse with width, same publisher
-and same quant family.
+precision, and it is the best-established result here: an earlier campaign on
+different hardware measured the same pair at +0.0245 [+0.0091, +0.0405].
+LFM2.5-8B-A1B improves with width, and its dense sibling LFM2.5-2.6B gets worse
+with width, same publisher and same quant family.
 
 On the two largest models nothing separates: 26B-A4B Q8 minus Q4 is −0.0028
 [−0.0170, +0.0115], Qwen Q8 minus Q4 is +0.0061 [−0.0084, +0.0210].
