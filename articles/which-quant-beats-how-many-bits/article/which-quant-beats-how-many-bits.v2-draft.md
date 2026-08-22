@@ -251,10 +251,11 @@ tracks memory bandwidth closely:
 
 | model | Q4 | Q6 | Q8 | BF16 |
 |---|---:|---:|---:|---:|
-| gemma-4 E2B | 479.0 | 444.8 | 412.5 | not run |
-| gemma-4 E4B | 341.7 | 310.5 | 274.3 | not run |
+| gemma-4 E2B | 479.0 | 444.8 | 412.5 | 321.6 |
+| gemma-4 E4B | 341.7 | 310.5 | 274.3 | 201.5 |
 | gemma-4 12B | 213.1 | 183.8 | 157.6 | not run |
 | LFM2.5-2.6B | 372.3 | 302.5 | 252.2 | 150.3 |
+| LFM2.5-8B-A1B | 510.5 | 433.2 | 364.9 | 66.9 |
 
 LFM2.5-2.6B is the clean case: weights grow 1,596 → 2,118 → 2,741 MiB and
 throughput falls 372 → 303 → 252, tracking byte count to within 8%. BF16 costs
@@ -262,6 +263,12 @@ throughput falls 372 → 303 → 252, tracking byte count to within 8%. BF16 cos
 
 That regularity holds only while the model fits. The 26B and Qwen ladders break
 it completely. A 2.6 GiB *smaller* file runs 3.3x faster, not 1.2x.
+
+LFM2.5-8B-A1B shows the same break on a much smaller model. Its ladder falls
+gently from 510.5 to 364.9 across Q4 to Q8, all of it card-resident, and then
+drops to 66.9 at BF16. That last step is 5.5x, against 1.4x for the three steps
+before it put together. The weights reach 16,162 MiB there and six layers' worth
+of experts move to the CPU, which is the entire difference.
 
 ## Limits: what this does not establish
 

@@ -435,6 +435,21 @@
     "separates": false
   },
   {
+    "baseline": "lfm25-8b-a1b.base.q4",
+    "baseline_mean_content_f1": 0.28027528796034806,
+    "cases": 1000,
+    "comparison": "lfm25-8b-a1b.base.bf16",
+    "comparison_mean_content_f1": 0.2829938710253815,
+    "comparison_minus_baseline": 0.0027185830650334466,
+    "paired_bootstrap_95_range": [
+      -0.005625142695516569,
+      0.011152003145237874
+    ],
+    "replicates": 5000,
+    "seed": 20260809,
+    "separates": false
+  },
+  {
     "baseline": "lfm25-8b-a1b.base.q6",
     "baseline_mean_content_f1": 0.2815253922990943,
     "cases": 1000,
@@ -444,6 +459,21 @@
     "paired_bootstrap_95_range": [
       -0.00552323962927182,
       0.011368328313110661
+    ],
+    "replicates": 5000,
+    "seed": 20260809,
+    "separates": false
+  },
+  {
+    "baseline": "lfm25-8b-a1b.base.q8",
+    "baseline_mean_content_f1": 0.28434689666893304,
+    "cases": 1000,
+    "comparison": "lfm25-8b-a1b.base.bf16",
+    "comparison_mean_content_f1": 0.2829938710253815,
+    "comparison_minus_baseline": -0.0013530256435514976,
+    "paired_bootstrap_95_range": [
+      -0.009374536325226635,
+      0.006416965077669157
     ],
     "replicates": 5000,
     "seed": 20260809,
