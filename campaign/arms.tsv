@@ -1,0 +1,86 @@
+# The 34-arm two-task WEIGHT quant ladder. One arm per line, in execution order.
+#
+# Availability of every target and draft below was verified against the
+# HuggingFace file listings on 2026-08-16. Nothing here is assumed to exist.
+#
+# Columns, tab-separated:
+#   order     execution order
+#   label     unique arm id; becomes the results filename stem
+#   model     model key; all arms sharing one key form one ladder
+#   train     base | qat
+#   width     q1 | q2 | q4 | q6 | q8 | bf16
+#   target    llama-server -hf argument
+#   draft     llama-server -hfd argument, or "-" for no speculation
+#   est_gib   estimated on-disk size, for ordering and the footprint guard only.
+#             NOT a measurement. The real resident size is recorded per arm.
+#
+# The ladder rungs are non-QAT because the QAT repositories publish only Q4
+# (and Q2 for E2B/E4B). QAT therefore appears as an extra arm at those widths
+# rather than as a rung. See moe-ladder-plan-2026-08-16.md.
+#
+# Within a model: base Q4 first (the slow-arm rule needs it as the baseline),
+# its QAT counterpart second (adjacent in time on the same card), then the
+# cheap low rungs, then Q6 and Q8 which are the arms at risk of spilling.
+#
+# BF16 for LFM2.5-2.6B was added on 2026-08-16 after that ladder completed and
+# showed a monotonic DECLINE with width: Q8 minus Q4 came out -0.0327 with a
+# 95% range of [-0.0592, -0.0063], clearing zero, while throughput fell 32%.
+# BF16 is the unquantised reference and therefore the sharpest test of that
+# result: if accuracy keeps falling at full precision then quantisation is not
+# what is degrading it, and the cause lies elsewhere. At ~5.2 GiB it is dense
+# and fully card-resident, so it costs one arm and confounds nothing.
+#
+# The KV cache is f16 on EVERY arm, which is llama.cpp's default, and ctk/ctv
+# are held constant rather than removed so the configuration stays provable per
+# arm rather than implied by absence.
+#
+# A KV precision sweep ran here on 2026-08-16/17 and has been REMOVED. Cache
+# precision is a separate subject with its own scaling behaviour -- KV grows
+# with context x layers x heads while weights do not -- so it belongs to its own
+# study rather than as a second axis inside a weight ladder. The three arms that
+# completed are recorded in articles/kv-cache-precision/, which also states why
+# that measurement is not yet publishable: it fixes context at 8192, which is
+# the one variable the subject is about.
+#
+# Their extraction results are banked and nothing is lost by dropping them here.
+# Removing them also drops the ~5 hours of synthesis still queued against them
+# and the unrun q4_0/q4_0 arm.
+#
+order	label	model	train	width	target	draft	est_gib	ctk	ctv
+1	lfm25-2.6b.base.q4	lfm25-2.6b	base	q4	LiquidAI/LFM2.5-2.6B-GGUF:Q4_K_M	-	1.6	f16	f16
+2	lfm25-2.6b.base.q6	lfm25-2.6b	base	q6	LiquidAI/LFM2.5-2.6B-GGUF:Q6_K	-	2.1	f16	f16
+3	lfm25-2.6b.base.q8	lfm25-2.6b	base	q8	LiquidAI/LFM2.5-2.6B-GGUF:Q8_0	-	2.8	f16	f16
+4	lfm25-2.6b.base.bf16	lfm25-2.6b	base	bf16	LiquidAI/LFM2.5-2.6B-GGUF:BF16	-	5.2	f16	f16
+5	gemma4-e2b.base.q4	gemma4-e2b	base	q4	unsloth/gemma-4-E2B-it-GGUF:UD-Q4_K_XL	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	2.0	f16	f16
+6	gemma4-e2b.qat.q4	gemma4-e2b	qat	q4	unsloth/gemma-4-E2B-it-qat-GGUF:UD-Q4_K_XL	unsloth/gemma-4-E2B-it-qat-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	2.0	f16	f16
+7	gemma4-e2b.base.q2	gemma4-e2b	base	q2	unsloth/gemma-4-E2B-it-GGUF:UD-Q2_K_XL	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	1.2	f16	f16
+8	gemma4-e2b.qat.q2	gemma4-e2b	qat	q2	unsloth/gemma-4-E2B-it-qat-GGUF:UD-Q2_K_XL	unsloth/gemma-4-E2B-it-qat-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	1.2	f16	f16
+9	gemma4-e2b.base.q6	gemma4-e2b	base	q6	unsloth/gemma-4-E2B-it-GGUF:UD-Q6_K_XL	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	2.7	f16	f16
+10	gemma4-e2b.base.q8	gemma4-e2b	base	q8	unsloth/gemma-4-E2B-it-GGUF:UD-Q8_K_XL	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	3.4	f16	f16
+11	gemma4-e2b.base.bf16	gemma4-e2b	base	bf16	unsloth/gemma-4-E2B-it-GGUF:BF16	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	10.0	f16	f16
+12	gemma4-e4b.base.q4	gemma4-e4b	base	q4	unsloth/gemma-4-E4B-it-GGUF:UD-Q4_K_XL	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	3.4	f16	f16
+13	gemma4-e4b.qat.q4	gemma4-e4b	qat	q4	unsloth/gemma-4-E4B-it-qat-GGUF:UD-Q4_K_XL	unsloth/gemma-4-E4B-it-qat-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	3.4	f16	f16
+14	gemma4-e4b.base.q2	gemma4-e4b	base	q2	unsloth/gemma-4-E4B-it-GGUF:UD-Q2_K_XL	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	2.0	f16	f16
+15	gemma4-e4b.qat.q2	gemma4-e4b	qat	q2	unsloth/gemma-4-E4B-it-qat-GGUF:UD-Q2_K_XL	unsloth/gemma-4-E4B-it-qat-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	2.0	f16	f16
+16	gemma4-e4b.base.q6	gemma4-e4b	base	q6	unsloth/gemma-4-E4B-it-GGUF:UD-Q6_K_XL	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	4.6	f16	f16
+17	gemma4-e4b.base.q8	gemma4-e4b	base	q8	unsloth/gemma-4-E4B-it-GGUF:UD-Q8_K_XL	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	5.8	f16	f16
+18	gemma4-e4b.base.bf16	gemma4-e4b	base	bf16	unsloth/gemma-4-E4B-it-GGUF:BF16	unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf	16.0	f16	f16
+19	lfm25-8b-a1b.base.q4	lfm25-8b-a1b	base	q4	LiquidAI/LFM2.5-8B-A1B-GGUF:Q4_K_M	-	4.7	f16	f16
+20	lfm25-8b-a1b.base.q6	lfm25-8b-a1b	base	q6	LiquidAI/LFM2.5-8B-A1B-GGUF:Q6_K	-	6.5	f16	f16
+21	lfm25-8b-a1b.base.q8	lfm25-8b-a1b	base	q8	LiquidAI/LFM2.5-8B-A1B-GGUF:Q8_0	-	8.5	f16	f16
+22	lfm25-8b-a1b.base.bf16	lfm25-8b-a1b	base	bf16	LiquidAI/LFM2.5-8B-A1B-GGUF:BF16	-	16.0	f16	f16
+23	gemma4-12b.base.q4	gemma4-12b	base	q4	unsloth/gemma-4-12b-it-GGUF:UD-Q4_K_XL	unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf	8.4	f16	f16
+24	gemma4-12b.qat.q4	gemma4-12b	qat	q4	unsloth/gemma-4-12B-it-qat-GGUF:UD-Q4_K_XL	unsloth/gemma-4-12B-it-qat-GGUF:MTP/mtp-gemma-4-12B-it-Q8_0.gguf	6.3	f16	f16
+25	gemma4-12b.base.q2	gemma4-12b	base	q2	unsloth/gemma-4-12b-it-GGUF:UD-Q2_K_XL	unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf	4.9	f16	f16
+26	gemma4-12b.base.q6	gemma4-12b	base	q6	unsloth/gemma-4-12b-it-GGUF:UD-Q6_K_XL	unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf	9.9	f16	f16
+27	gemma4-12b.base.q8	gemma4-12b	base	q8	unsloth/gemma-4-12b-it-GGUF:UD-Q8_K_XL	unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf	12.6	f16	f16
+28	gemma4-26b-a4b.base.q4	gemma4-26b-a4b	base	q4	unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q4_K_XL	unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	15.0	f16	f16
+29	gemma4-26b-a4b.qat.q4	gemma4-26b-a4b	qat	q4	unsloth/gemma-4-26B-A4B-it-qat-GGUF:UD-Q4_K_XL	unsloth/gemma-4-26B-A4B-it-qat-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	13.3	f16	f16
+30	gemma4-26b-a4b.base.q2	gemma4-26b-a4b	base	q2	unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q2_K_XL	unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	8.7	f16	f16
+31	gemma4-26b-a4b.base.q6	gemma4-26b-a4b	base	q6	unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q6_K_XL	unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	21.0	f16	f16
+32	gemma4-26b-a4b.base.q8	gemma4-26b-a4b	base	q8	unsloth/gemma-4-26B-A4B-it-GGUF:UD-Q8_K_XL	unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf	26.5	f16	f16
+33	qwen36-35b-a3b.base.q4	qwen36-35b-a3b	base	q4	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	20.5	f16	f16
+34	qwen36-35b-a3b.base.q2	qwen36-35b-a3b	base	q2	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q2_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	12.0	f16	f16
+35	qwen36-35b-a3b.base.q1	qwen36-35b-a3b	base	q1	unsloth/Qwen3.6-35B-A3B-GGUF:UD-IQ1_M	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	8.5	f16	f16
+36	qwen36-35b-a3b.base.q6	qwen36-35b-a3b	base	q6	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q6_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	27.0	f16	f16
+37	qwen36-35b-a3b.base.q8	qwen36-35b-a3b	base	q8	unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q8_K_XL	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	36.0	f16	f16

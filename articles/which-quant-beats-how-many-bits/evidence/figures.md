@@ -1,5 +1,32 @@
 # Figure provenance and reporting record
 
+## In progress: the two-task quant ladder, from 2026-08-16
+
+A campaign extending this article past its published scope is running and is
+**not yet reflected in the article body**. Nothing below the horizontal rule
+depends on it.
+
+| document | contents |
+|---|---|
+| `moe-ladder-plan-2026-08-16.md` | the registered plan, written before any arm ran: the arm matrix, the publisher and availability findings that shaped it, the slow-arm rule, and why the campaign is not parallelised |
+| `moe-ladder-measurement-log-2026-08-16.md` | every defect found while executing it, what each would have corrupted, which runs were discarded, and the results standing so far with their paired intervals |
+| `campaign/` (repository root) | `arms.tsv`, the runners, the bootstrap wrapper and the bundle push, all of which are the executable form of the plan |
+
+Raw artifacts live on the benchmark host at `/opt/campaign/results/<label>/`
+(extraction: `arm.json`, `score.json`, `pred.jsonl`, `throughput.json`,
+`device.txt`, `server.log`) and `/opt/campaign/results-synthesis/<label>/`
+(synthesis: `summary_<label>.json`, `raw_<label>.jsonl`, hardware record). They
+are not yet vendored into this repository; that happens when the campaign
+completes and the article is revised.
+
+What this campaign adds that the published article does not have: bit-width
+ladders on mixture-of-expert models and above 12B, a second task scored on the
+same arms, Q2 and Q1 rungs, QAT arms beside their non-QAT rungs at the same
+width, a KV-cache precision sweep, and same-card throughput for every rung.
+
+---
+
+
 Paths below are relative to the shared series evidence base at
 `articles/local-llm-fact-extraction-head-to-head/evidence/raw/`.
 

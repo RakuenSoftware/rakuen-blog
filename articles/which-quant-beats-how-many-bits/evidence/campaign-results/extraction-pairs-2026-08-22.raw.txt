@@ -1,0 +1,585 @@
+### gemma4-12b.base.q2 - gemma4-12b.base.q4
+=== gemma4-12b.base.q2 minus gemma4-12b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-12b.base.q4              0.6754  [0.6485,0.7015]  644 383 236
+gemma4-12b.base.q2              0.3182  [0.2743,0.3612]  172  29 708
+
+Paired deltas vs gemma4-12b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-12b.base.q2 - gemma4-12b.base.q4   -0.3572  [-0.4012,-0.3131]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-12b.base.q6 - gemma4-12b.base.q4
+=== gemma4-12b.base.q6 minus gemma4-12b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-12b.base.q4              0.6754  [0.6485,0.7015]  644 383 236
+gemma4-12b.base.q6              0.6646  [0.6377,0.6908]  656 438 224
+
+Paired deltas vs gemma4-12b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-12b.base.q6 - gemma4-12b.base.q4   -0.0108  [-0.0277,+0.0064]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-12b.base.q8 - gemma4-12b.base.q4
+=== gemma4-12b.base.q8 minus gemma4-12b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-12b.base.q4              0.6754  [0.6485,0.7015]  644 383 236
+gemma4-12b.base.q8              0.6798  [0.6527,0.7059]  674 429 206
+
+Paired deltas vs gemma4-12b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-12b.base.q8 - gemma4-12b.base.q4    0.0044  [-0.0132,+0.0223]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-12b.base.q8 - gemma4-12b.base.q6
+=== gemma4-12b.base.q8 minus gemma4-12b.base.q6 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-12b.base.q6              0.6646  [0.6378,0.6906]  656 438 224
+gemma4-12b.base.q8              0.6798  [0.6527,0.7059]  674 429 206
+
+Paired deltas vs gemma4-12b.base.q6 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-12b.base.q8 - gemma4-12b.base.q6    0.0151  [-0.0007,+0.0312]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-26b-a4b.base.q2 - gemma4-26b-a4b.base.q4
+=== gemma4-26b-a4b.base.q2 minus gemma4-26b-a4b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-26b-a4b.base.q4          0.6852  [0.6587,0.7110]  652 371 228
+gemma4-26b-a4b.base.q2          0.6498  [0.6209,0.6780]  592 350 288
+
+Paired deltas vs gemma4-26b-a4b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-26b-a4b.base.q2 - gemma4-26b-a4b.base.q4  -0.0354  [-0.0569,-0.0144]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-26b-a4b.base.q6 - gemma4-26b-a4b.base.q4
+=== gemma4-26b-a4b.base.q6 minus gemma4-26b-a4b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-26b-a4b.base.q4          0.6852  [0.6587,0.7110]  652 371 228
+gemma4-26b-a4b.base.q6          0.6827  [0.6565,0.7082]  668 409 212
+
+Paired deltas vs gemma4-26b-a4b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-26b-a4b.base.q6 - gemma4-26b-a4b.base.q4  -0.0026  [-0.0161,+0.0112]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-26b-a4b.base.q8 - gemma4-26b-a4b.base.q4
+=== gemma4-26b-a4b.base.q8 minus gemma4-26b-a4b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-26b-a4b.base.q4          0.6852  [0.6587,0.7110]  652 371 228
+gemma4-26b-a4b.base.q8          0.6825  [0.6560,0.7083]  662 398 218
+
+Paired deltas vs gemma4-26b-a4b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-26b-a4b.base.q8 - gemma4-26b-a4b.base.q4  -0.0028  [-0.0170,+0.0115]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-26b-a4b.base.q8 - gemma4-26b-a4b.base.q6
+=== gemma4-26b-a4b.base.q8 minus gemma4-26b-a4b.base.q6 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-26b-a4b.base.q6          0.6827  [0.6568,0.7078]  668 409 212
+gemma4-26b-a4b.base.q8          0.6825  [0.6560,0.7083]  662 398 218
+
+Paired deltas vs gemma4-26b-a4b.base.q6 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-26b-a4b.base.q8 - gemma4-26b-a4b.base.q6  -0.0002  [-0.0134,+0.0132]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e2b.base.q2 - gemma4-e2b.base.q4
+=== gemma4-e2b.base.q2 minus gemma4-e2b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e2b.base.q4              0.6091  [0.5804,0.6380]  550 376 330
+gemma4-e2b.base.q2              0.5399  [0.5101,0.5695]  480 418 400
+
+Paired deltas vs gemma4-e2b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e2b.base.q2 - gemma4-e2b.base.q4   -0.0691  [-0.0969,-0.0414]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e2b.base.q6 - gemma4-e2b.base.q4
+=== gemma4-e2b.base.q6 minus gemma4-e2b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e2b.base.q4              0.6091  [0.5804,0.6380]  550 376 330
+gemma4-e2b.base.q6              0.6202  [0.5920,0.6483]  561 368 319
+
+Paired deltas vs gemma4-e2b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e2b.base.q6 - gemma4-e2b.base.q4    0.0112  [-0.0087,+0.0317]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e2b.base.q8 - gemma4-e2b.base.q4
+=== gemma4-e2b.base.q8 minus gemma4-e2b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e2b.base.q4              0.6091  [0.5804,0.6380]  550 376 330
+gemma4-e2b.base.q8              0.6282  [0.5995,0.6571]  566 356 314
+
+Paired deltas vs gemma4-e2b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e2b.base.q8 - gemma4-e2b.base.q4    0.0191  [-0.0016,+0.0400]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e2b.base.bf16 - gemma4-e2b.base.q4
+=== gemma4-e2b.base.bf16 minus gemma4-e2b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e2b.base.q4              0.6091  [0.5804,0.6380]  550 376 330
+gemma4-e2b.base.bf16            0.6252  [0.5962,0.6535]  563 358 317
+
+Paired deltas vs gemma4-e2b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e2b.base.bf16 - gemma4-e2b.base.q4   0.0161  [-0.0044,+0.0370]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e2b.base.q8 - gemma4-e2b.base.q6
+=== gemma4-e2b.base.q8 minus gemma4-e2b.base.q6 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e2b.base.q6              0.6202  [0.5921,0.6478]  561 368 319
+gemma4-e2b.base.q8              0.6282  [0.5995,0.6571]  566 356 314
+
+Paired deltas vs gemma4-e2b.base.q6 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e2b.base.q8 - gemma4-e2b.base.q6    0.0080  [-0.0113,+0.0273]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e2b.base.bf16 - gemma4-e2b.base.q8
+=== gemma4-e2b.base.bf16 minus gemma4-e2b.base.q8 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e2b.base.q8              0.6282  [0.5995,0.6564]  566 356 314
+gemma4-e2b.base.bf16            0.6252  [0.5962,0.6535]  563 358 317
+
+Paired deltas vs gemma4-e2b.base.q8 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e2b.base.bf16 - gemma4-e2b.base.q8  -0.0030  [-0.0210,+0.0152]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e2b.qat.q2 - gemma4-e2b.qat.q4
+=== gemma4-e2b.qat.q2 minus gemma4-e2b.qat.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e2b.qat.q4               0.6219  [0.5938,0.6496]  565 372 315
+gemma4-e2b.qat.q2               0.1889  [0.1652,0.2126]  178 827 702
+
+Paired deltas vs gemma4-e2b.qat.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e2b.qat.q2 - gemma4-e2b.qat.q4     -0.4330  [-0.4643,-0.4020]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e4b.base.q2 - gemma4-e4b.base.q4
+=== gemma4-e4b.base.q2 minus gemma4-e4b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e4b.base.q4              0.6183  [0.5915,0.6443]  584 425 296
+gemma4-e4b.base.q2              0.5858  [0.5553,0.6162]  507 344 373
+
+Paired deltas vs gemma4-e4b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e4b.base.q2 - gemma4-e4b.base.q4   -0.0325  [-0.0576,-0.0081]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e4b.base.q6 - gemma4-e4b.base.q4
+=== gemma4-e4b.base.q6 minus gemma4-e4b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e4b.base.q4              0.6183  [0.5915,0.6443]  584 425 296
+gemma4-e4b.base.q6              0.6393  [0.6133,0.6649]  599 395 281
+
+Paired deltas vs gemma4-e4b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e4b.base.q6 - gemma4-e4b.base.q4    0.0210  [+0.0034,+0.0386]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e4b.base.q8 - gemma4-e4b.base.q4
+=== gemma4-e4b.base.q8 minus gemma4-e4b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e4b.base.q4              0.6183  [0.5915,0.6443]  584 425 296
+gemma4-e4b.base.q8              0.6158  [0.5894,0.6417]  581 426 299
+
+Paired deltas vs gemma4-e4b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e4b.base.q8 - gemma4-e4b.base.q4   -0.0025  [-0.0177,+0.0127]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e4b.base.bf16 - gemma4-e4b.base.q4
+=== gemma4-e4b.base.bf16 minus gemma4-e4b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e4b.base.q4              0.6183  [0.5915,0.6443]  584 425 296
+gemma4-e4b.base.bf16            0.6151  [0.5886,0.6411]  576 417 304
+
+Paired deltas vs gemma4-e4b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e4b.base.bf16 - gemma4-e4b.base.q4  -0.0033  [-0.0192,+0.0124]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e4b.base.q8 - gemma4-e4b.base.q6
+=== gemma4-e4b.base.q8 minus gemma4-e4b.base.q6 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e4b.base.q6              0.6393  [0.6133,0.6648]  599 395 281
+gemma4-e4b.base.q8              0.6158  [0.5894,0.6417]  581 426 299
+
+Paired deltas vs gemma4-e4b.base.q6 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e4b.base.q8 - gemma4-e4b.base.q6   -0.0235  [-0.0403,-0.0068]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e4b.base.bf16 - gemma4-e4b.base.q8
+=== gemma4-e4b.base.bf16 minus gemma4-e4b.base.q8 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e4b.base.q8              0.6158  [0.5889,0.6419]  581 426 299
+gemma4-e4b.base.bf16            0.6151  [0.5886,0.6411]  576 417 304
+
+Paired deltas vs gemma4-e4b.base.q8 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e4b.base.bf16 - gemma4-e4b.base.q8  -0.0007  [-0.0111,+0.0093]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e4b.qat.q2 - gemma4-e4b.qat.q4
+=== gemma4-e4b.qat.q2 minus gemma4-e4b.qat.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e4b.qat.q4               0.6217  [0.5957,0.6466]  594 437 286
+gemma4-e4b.qat.q2               0.2876  [0.2559,0.3188]  220 430 660
+
+Paired deltas vs gemma4-e4b.qat.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e4b.qat.q2 - gemma4-e4b.qat.q4     -0.3341  [-0.3671,-0.3019]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### lfm25-2.6b.base.q6 - lfm25-2.6b.base.q4
+=== lfm25-2.6b.base.q6 minus lfm25-2.6b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+lfm25-2.6b.base.q4              0.5952  [0.5648,0.6242]  544 404 336
+lfm25-2.6b.base.q6              0.5714  [0.5411,0.6015]  528 440 352
+
+Paired deltas vs lfm25-2.6b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+lfm25-2.6b.base.q6 - lfm25-2.6b.base.q4   -0.0238  [-0.0513,+0.0041]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### lfm25-2.6b.base.q8 - lfm25-2.6b.base.q4
+=== lfm25-2.6b.base.q8 minus lfm25-2.6b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+lfm25-2.6b.base.q4              0.5952  [0.5648,0.6242]  544 404 336
+lfm25-2.6b.base.q8              0.5625  [0.5323,0.5922]  531 477 349
+
+Paired deltas vs lfm25-2.6b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+lfm25-2.6b.base.q8 - lfm25-2.6b.base.q4   -0.0327  [-0.0592,-0.0063]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### lfm25-2.6b.base.bf16 - lfm25-2.6b.base.q4
+=== lfm25-2.6b.base.bf16 minus lfm25-2.6b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+lfm25-2.6b.base.q4              0.5952  [0.5648,0.6242]  544 404 336
+lfm25-2.6b.base.bf16            0.5825  [0.5529,0.6117]  547 451 333
+
+Paired deltas vs lfm25-2.6b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+lfm25-2.6b.base.bf16 - lfm25-2.6b.base.q4  -0.0127  [-0.0393,+0.0137]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### lfm25-2.6b.base.q8 - lfm25-2.6b.base.q6
+=== lfm25-2.6b.base.q8 minus lfm25-2.6b.base.q6 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+lfm25-2.6b.base.q6              0.5714  [0.5414,0.6014]  528 440 352
+lfm25-2.6b.base.q8              0.5625  [0.5323,0.5922]  531 477 349
+
+Paired deltas vs lfm25-2.6b.base.q6 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+lfm25-2.6b.base.q8 - lfm25-2.6b.base.q6   -0.0089  [-0.0331,+0.0152]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### lfm25-2.6b.base.bf16 - lfm25-2.6b.base.q8
+=== lfm25-2.6b.base.bf16 minus lfm25-2.6b.base.q8 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+lfm25-2.6b.base.q8              0.5625  [0.5324,0.5919]  531 477 349
+lfm25-2.6b.base.bf16            0.5825  [0.5529,0.6117]  547 451 333
+
+Paired deltas vs lfm25-2.6b.base.q8 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+lfm25-2.6b.base.bf16 - lfm25-2.6b.base.q8   0.0200  [-0.0029,+0.0432]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### lfm25-8b-a1b.base.q6 - lfm25-8b-a1b.base.q4
+=== lfm25-8b-a1b.base.q6 minus lfm25-8b-a1b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+lfm25-8b-a1b.base.q4            0.5091  [0.4759,0.5409]  405 306 475
+lfm25-8b-a1b.base.q6            0.5341  [0.5022,0.5642]  447 347 433
+
+Paired deltas vs lfm25-8b-a1b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+lfm25-8b-a1b.base.q6 - lfm25-8b-a1b.base.q4   0.0249  [-0.0057,+0.0554]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### lfm25-8b-a1b.base.q8 - lfm25-8b-a1b.base.q4
+=== lfm25-8b-a1b.base.q8 minus lfm25-8b-a1b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+lfm25-8b-a1b.base.q4            0.5091  [0.4759,0.5409]  405 306 475
+lfm25-8b-a1b.base.q8            0.5470  [0.5162,0.5768]  463 350 417
+
+Paired deltas vs lfm25-8b-a1b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+lfm25-8b-a1b.base.q8 - lfm25-8b-a1b.base.q4   0.0378  [+0.0080,+0.0675]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### lfm25-8b-a1b.base.bf16 - lfm25-8b-a1b.base.q4
+=== lfm25-8b-a1b.base.bf16 minus lfm25-8b-a1b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+lfm25-8b-a1b.base.q4            0.5091  [0.4759,0.5409]  405 306 475
+lfm25-8b-a1b.base.bf16          0.5365  [0.5049,0.5671]  452 353 428
+
+Paired deltas vs lfm25-8b-a1b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+lfm25-8b-a1b.base.bf16 - lfm25-8b-a1b.base.q4   0.0274  [-0.0037,+0.0577]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### lfm25-8b-a1b.base.q8 - lfm25-8b-a1b.base.q6
+=== lfm25-8b-a1b.base.q8 minus lfm25-8b-a1b.base.q6 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+lfm25-8b-a1b.base.q6            0.5341  [0.5023,0.5649]  447 347 433
+lfm25-8b-a1b.base.q8            0.5470  [0.5162,0.5768]  463 350 417
+
+Paired deltas vs lfm25-8b-a1b.base.q6 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+lfm25-8b-a1b.base.q8 - lfm25-8b-a1b.base.q6   0.0129  [-0.0145,+0.0403]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### lfm25-8b-a1b.base.bf16 - lfm25-8b-a1b.base.q8
+=== lfm25-8b-a1b.base.bf16 minus lfm25-8b-a1b.base.q8 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+lfm25-8b-a1b.base.q8            0.5470  [0.5157,0.5777]  463 350 417
+lfm25-8b-a1b.base.bf16          0.5365  [0.5049,0.5671]  452 353 428
+
+Paired deltas vs lfm25-8b-a1b.base.q8 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+lfm25-8b-a1b.base.bf16 - lfm25-8b-a1b.base.q8  -0.0105  [-0.0367,+0.0164]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### qwen36-35b-a3b.base.q1 - qwen36-35b-a3b.base.q4
+=== qwen36-35b-a3b.base.q1 minus qwen36-35b-a3b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+qwen36-35b-a3b.base.q4          0.7194  [0.6950,0.7436]  668 309 212
+qwen36-35b-a3b.base.q1          0.6817  [0.6560,0.7068]  634 346 246
+
+Paired deltas vs qwen36-35b-a3b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+qwen36-35b-a3b.base.q1 - qwen36-35b-a3b.base.q4  -0.0377  [-0.0577,-0.0182]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### qwen36-35b-a3b.base.q2 - qwen36-35b-a3b.base.q4
+=== qwen36-35b-a3b.base.q2 minus qwen36-35b-a3b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+qwen36-35b-a3b.base.q4          0.7194  [0.6950,0.7436]  668 309 212
+qwen36-35b-a3b.base.q2          0.7001  [0.6750,0.7242]  657 340 223
+
+Paired deltas vs qwen36-35b-a3b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+qwen36-35b-a3b.base.q2 - qwen36-35b-a3b.base.q4  -0.0194  [-0.0355,-0.0031]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### qwen36-35b-a3b.base.q6 - qwen36-35b-a3b.base.q4
+=== qwen36-35b-a3b.base.q6 minus qwen36-35b-a3b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+qwen36-35b-a3b.base.q4          0.7194  [0.6950,0.7436]  668 309 212
+qwen36-35b-a3b.base.q6          0.7303  [0.7056,0.7538]  681 304 199
+
+Paired deltas vs qwen36-35b-a3b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+qwen36-35b-a3b.base.q6 - qwen36-35b-a3b.base.q4   0.0109  [-0.0054,+0.0273]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### qwen36-35b-a3b.base.q8 - qwen36-35b-a3b.base.q4
+=== qwen36-35b-a3b.base.q8 minus qwen36-35b-a3b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+qwen36-35b-a3b.base.q4          0.7194  [0.6950,0.7436]  668 309 212
+qwen36-35b-a3b.base.q8          0.7255  [0.7011,0.7490]  670 297 210
+
+Paired deltas vs qwen36-35b-a3b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+qwen36-35b-a3b.base.q8 - qwen36-35b-a3b.base.q4   0.0061  [-0.0084,+0.0210]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### qwen36-35b-a3b.base.q2 - qwen36-35b-a3b.base.q1
+=== qwen36-35b-a3b.base.q2 minus qwen36-35b-a3b.base.q1 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+qwen36-35b-a3b.base.q1          0.6817  [0.6562,0.7065]  634 346 246
+qwen36-35b-a3b.base.q2          0.7001  [0.6750,0.7242]  657 340 223
+
+Paired deltas vs qwen36-35b-a3b.base.q1 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+qwen36-35b-a3b.base.q2 - qwen36-35b-a3b.base.q1   0.0183  [-0.0009,+0.0379]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### qwen36-35b-a3b.base.q8 - qwen36-35b-a3b.base.q6
+=== qwen36-35b-a3b.base.q8 minus qwen36-35b-a3b.base.q6 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+qwen36-35b-a3b.base.q6          0.7303  [0.7059,0.7538]  681 304 199
+qwen36-35b-a3b.base.q8          0.7255  [0.7011,0.7490]  670 297 210
+
+Paired deltas vs qwen36-35b-a3b.base.q6 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+qwen36-35b-a3b.base.q8 - qwen36-35b-a3b.base.q6  -0.0048  [-0.0198,+0.0103]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-12b.qat.q4 - gemma4-12b.base.q4
+=== gemma4-12b.qat.q4 minus gemma4-12b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-12b.base.q4              0.6754  [0.6485,0.7015]  644 383 236
+gemma4-12b.qat.q4               0.6932  [0.6670,0.7177]  661 366 219
+
+Paired deltas vs gemma4-12b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-12b.qat.q4 - gemma4-12b.base.q4     0.0178  [+0.0000,+0.0363]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-26b-a4b.qat.q4 - gemma4-26b-a4b.base.q4
+=== gemma4-26b-a4b.qat.q4 minus gemma4-26b-a4b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-26b-a4b.base.q4          0.6852  [0.6587,0.7110]  652 371 228
+gemma4-26b-a4b.qat.q4           0.6804  [0.6526,0.7074]  628 338 252
+
+Paired deltas vs gemma4-26b-a4b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-26b-a4b.qat.q4 - gemma4-26b-a4b.base.q4  -0.0048  [-0.0235,+0.0139]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e2b.qat.q2 - gemma4-e2b.base.q2
+=== gemma4-e2b.qat.q2 minus gemma4-e2b.base.q2 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e2b.base.q2              0.5399  [0.5101,0.5693]  480 418 400
+gemma4-e2b.qat.q2               0.1889  [0.1652,0.2126]  178 827 702
+
+Paired deltas vs gemma4-e2b.base.q2 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e2b.qat.q2 - gemma4-e2b.base.q2    -0.3511  [-0.3830,-0.3187]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e2b.qat.q4 - gemma4-e2b.base.q4
+=== gemma4-e2b.qat.q4 minus gemma4-e2b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e2b.base.q4              0.6091  [0.5804,0.6380]  550 376 330
+gemma4-e2b.qat.q4               0.6219  [0.5939,0.6491]  565 372 315
+
+Paired deltas vs gemma4-e2b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e2b.qat.q4 - gemma4-e2b.base.q4     0.0128  [-0.0095,+0.0355]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e4b.qat.q2 - gemma4-e4b.base.q2
+=== gemma4-e4b.qat.q2 minus gemma4-e4b.base.q2 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e4b.base.q2              0.5858  [0.5549,0.6157]  507 344 373
+gemma4-e4b.qat.q2               0.2876  [0.2559,0.3188]  220 430 660
+
+Paired deltas vs gemma4-e4b.base.q2 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e4b.qat.q2 - gemma4-e4b.base.q2    -0.2982  [-0.3317,-0.2638]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e4b.qat.q4 - gemma4-e4b.base.q4
+=== gemma4-e4b.qat.q4 minus gemma4-e4b.base.q4 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e4b.base.q4              0.6183  [0.5915,0.6443]  584 425 296
+gemma4-e4b.qat.q4               0.6217  [0.5953,0.6471]  594 437 286
+
+Paired deltas vs gemma4-e4b.base.q4 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e4b.qat.q4 - gemma4-e4b.base.q4     0.0033  [-0.0149,+0.0215]  INDISTINGUISHABLE
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
+### gemma4-e4b.base.bf16 - gemma4-e4b.base.q6
+=== gemma4-e4b.base.bf16 minus gemma4-e4b.base.q6 ===
+gold=1001 notes  seed=20260809  replicates=20000  (one comparison per process)
+run                                 F1            95% CI   tp  fp  fn
+gemma4-e4b.base.q6              0.6393  [0.6133,0.6648]  599 395 281
+gemma4-e4b.base.bf16            0.6151  [0.5886,0.6411]  576 417 304
+
+Paired deltas vs gemma4-e4b.base.q6 (same notes resampled for both):
+comparison                                  delta              95% CI  verdict
+gemma4-e4b.base.bf16 - gemma4-e4b.base.q6  -0.0242  [-0.0409,-0.0080]  significant
+
+n = 1001 notes resampled, 20000 bootstrap replicates.
+PAIROK
