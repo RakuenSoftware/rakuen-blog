@@ -658,5 +658,20 @@
     "seed": 20260809,
     "separates": false,
     "tool_verdict": "INDISTINGUISHABLE"
+  },
+  {
+    "baseline": "gemma4-e4b.base.q6",
+    "baseline_strict_f1": 0.6393,
+    "comparison": "gemma4-e4b.base.bf16",
+    "comparison_minus_baseline": -0.0242,
+    "comparison_strict_f1": 0.6151,
+    "paired_bootstrap_95_range": [
+      -0.0409,
+      -0.008
+    ],
+    "replicates": 20000,
+    "seed": 20260809,
+    "separates": true,
+    "tool_verdict": "significant"
   }
 ]
