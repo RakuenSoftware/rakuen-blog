@@ -41,9 +41,10 @@ Every accuracy comparison is a paired bootstrap over the same notes, seed
 **point estimates only**. Read the differences from the comparison tables, not
 by subtracting two cells.
 
-That distinction carries real weight here. Of the seventeen comparisons with
-intervals, nine separate and eight are honest nulls. Several of the
-recommendations at the end rest on those nulls rather than on differences.
+That distinction carries real weight here. The campaign resampled **44
+comparisons on extraction and 42 on synthesis**. Fourteen separate on
+extraction, ten on synthesis. Everything else is an honest null, and several of
+the recommendations at the end rest on those nulls rather than on differences.
 "These are the same, so take the cheaper one" is a legitimate conclusion, but
 only if the reader knows that is what is being said.
 
@@ -69,7 +70,7 @@ second against 213.1 at Q4, and takes two and a half times as long to finish,
 because it emits a median of **7,609 tokens per note against 958**. Eight times
 the output for less than half the accuracy.
 
-## Four bits and up: four comparisons separate, and they disagree
+## Four bits and up: five of thirty separate, and they disagree
 
 Seven ladders. In the region people actually argue about, almost nothing
 separates:
@@ -87,11 +88,12 @@ comparisons that resolve are listed underneath it.
 | LFM2.5-8B-A1B | 0.5091 | 0.5341 | 0.5470 | 0.5365 |
 | Qwen3.6 35B-A3B | 0.7194 | 0.7303 | 0.7255 | not run |
 
-Which of those differences are real:
+The five that resolve, with five representative nulls:
 
 | comparison | delta | 95% range | verdict |
 |---|---:|---|---|
 | gemma-4 E4B, Q6 − Q8 | +0.0235 | [+0.0068, +0.0403] | **separates** |
+| gemma-4 E4B, Q6 − Q4 | +0.0210 | [+0.0034, +0.0386] | **separates** |
 | LFM2.5-8B-A1B, Q8 − Q4 | +0.0378 | [+0.0080, +0.0675] | **separates** |
 | LFM2.5-2.6B, Q8 − Q4 | −0.0327 | [−0.0592, −0.0063] | **separates** |
 | gemma-4 E4B, BF16 − Q6 | −0.0242 | [−0.0409, −0.0080] | **separates** |
@@ -101,10 +103,14 @@ Which of those differences are real:
 | LFM2.5-2.6B, BF16 − Q4 | −0.0127 | [−0.0393, +0.0137] | indistinguishable |
 | LFM2.5-8B-A1B, BF16 − Q8 | −0.0105 | [−0.0367, +0.0164] | indistinguishable |
 
-Four separate and five do not, and the four that separate **point in different
-directions**. gemma-4 E4B peaks at six bits, Q6 over Q8 by **+0.0235 [+0.0068,
-+0.0403]**, independently reproducing the first version of this article, which
-measured +0.0245 [+0.0091, +0.0405] on different hardware in a different
+Thirty comparisons sit at four bits and above once every rung is paired against
+every other. **Five of the thirty separate.** They also **point in different
+directions**. gemma-4 E4B peaks at six bits, and it is the
+best-established result in the campaign: Q6 beats Q8 by **+0.0235 [+0.0068,
++0.0403]**, beats Q4 by **+0.0210 [+0.0034, +0.0386]**, and beats full precision
+by **+0.0242 [+0.0080, +0.0409]**. Three separations pointing at the same rung.
+The first of them independently reproduces the first version of this article,
+which measured +0.0245 [+0.0091, +0.0405] on different hardware in a different
 campaign. LFM2.5-8B-A1B improves with width, Q8 over Q4 by **+0.0378 [+0.0080,
 +0.0675]**. Its dense sibling LFM2.5-2.6B goes the other way, Q8 under Q4 by
 −0.0327 [−0.0592, −0.0063]: same publisher, same quant family, same card,
@@ -131,18 +137,19 @@ boundary:
 | model | non-QAT Q4 | QAT Q4 | delta | 95% CI |
 |---|---:|---:|---:|---|
 | gemma-4 E2B | 0.6091 | 0.6219 | +0.0128 | [−0.0095, +0.0355] |
-| gemma-4 E4B | 0.6183 | 0.6217 | +0.0034 | not run |
+| gemma-4 E4B | 0.6183 | 0.6217 | +0.0033 | [−0.0149, +0.0215] |
 | gemma-4 12B | 0.6754 | 0.6932 | +0.0178 | [+0.0000, +0.0363] |
 | gemma-4 26B-A4B | 0.6852 | 0.6804 | −0.0048 | [−0.0235, +0.0139] |
 
 Only the 12B pair approaches separation, and its lower bound is zero to four
-decimal places. The bootstrap calls that significant. I do not, and I am flagging
-the disagreement because it is the only QAT pair that comes near separating: I
-read all four as ties on accuracy. A second corpus putting that lower bound
-clearly above zero would change my mind.
+decimal places. I first read that as a knife-edge and called it a tie. The
+synthesis half changed my mind: on a different task and a different fixture, the
+same pair is **+0.0088 [+0.0015, +0.0164]**, which does separate. Two
+independent measurements both land positive, so the 12B QAT build is doing
+something real. The other three are ties on both tasks.
 
-QAT is still worth taking. It is faster on every model measured, and at 26B it
-decides whether the model fits the card at all.
+QAT is still worth taking on all four. It is faster on every model measured, and
+at 26B it decides whether the model fits the card at all.
 
 **Below four bits it inverts violently.** Both models publishing a QAT two-bit
 build collapse:
@@ -183,14 +190,14 @@ needed: it served from 4,094 MiB of a 16 GiB card and produced 41 tok/s.
 Choosing the smallest offload that fits was worth 2.1x before QAT was considered
 at all.
 
-## Two tasks: they do not want the same quantization
+## Two tasks: one is far less sensitive than the other
 
 Every arm is scored twice: 1,001-note fact extraction, and a frozen 1,000-case
 synthesis fixture.
 
-**None of the synthesis numbers below carry intervals.** Every extraction figure
-in this article has been through a paired bootstrap; no synthesis figure has.
-Read the synthesis rows as directions, not as differences.
+Both halves are resampled the same way. Extraction uses the series' 20,000
+replicates, synthesis its own 5,000, both at seed `20260809`, and the 42 pairs
+measured on both tasks can be compared directly.
 
 | model | task | Q1 | Q2 | Q4 | Q6 | Q8 |
 |---|---|---:|---:|---:|---:|---:|
@@ -210,9 +217,18 @@ positives counted against you, so a model emitting 7,609 tokens of loosely
 grounded output is punished hard. Synthesis rewards producing complete,
 well-formed output, and a verbose model still produces that.
 
-The synthesis harness ships a paired bootstrap that was never wired into this
-campaign. That is the largest remaining gap in this work, and it is why nothing
-above is stated as a separation.
+It is worth being exact about how far this goes, because the tempting claim is
+stronger than the evidence. **No pair separates in opposite directions on the
+two tasks.** Of the 42 pairs measured on both, seven separate on extraction
+alone, three on synthesis alone, seven separate on both and agree in direction,
+and 25 resolve on neither. So the tasks do not contradict each other. What they
+do is disagree about magnitude, by roughly an order of magnitude: the same
+weight change that moves extraction by 0.036 moves synthesis by 0.004.
+
+The practical form of that is narrower than "score the task you run", and more
+useful. Synthesis is the less discriminating benchmark here. If you pick a
+quantization on synthesis scores you will call most of the ladder a tie, because
+on synthesis most of it is.
 
 ## Throughput: falls with width, predictably, until capacity intervenes
 
@@ -237,8 +253,9 @@ it completely. A 2.6 GiB *smaller* file runs 3.3x faster, not 1.2x.
 
 ## Limits: what this does not establish
 
-- **The synthesis half has no intervals.** A pattern across seven models, not a
-  set of resolved comparisons.
+- **The two tasks use different replicate counts.** Extraction resamples 20,000
+  times, synthesis 5,000, each matching its own published series. The intervals
+  are therefore comparable within a task and only roughly so across tasks.
 - **The offloaded throughput figures are a lower bound.** All six expert-offload
   arms ran with memory mapping enabled, and llama.cpp warns at load that
   `tensor overrides to CPU are used with mmap enabled - consider using
@@ -270,23 +287,30 @@ measured anywhere in this campaign.
 
 **On a mixture of experts, quantize aggressively.** Two bits cost 26B-A4B three
 and a half points; one bit cost Qwen under four. Both stayed card-resident and
-ran three to eight times faster than their own higher-width rungs.
+ran three to eight times faster than their own higher-width rungs. The cost is
+real rather than nil, and it is ordered: on Qwen, Q4 beats Q2 by +0.0194 and Q1
+by +0.0377, both separating. You are buying speed with accuracy at a known
+exchange rate, not getting it free.
 
 **On a dense model, do not go below four bits without measuring.** The 12B lost
 more than half its accuracy at two bits and hid it behind a healthy tokens per
 second.
 
 **Take the QAT build at the width it ships for, and never quantize it further.**
-The four-bit half of that is a null. No QAT pair separates at Q4, so take it for
-speed and fit rather than accuracy. The two-bit half is not a null: −0.3511 and
-−0.2982, both clearing zero by a wide margin on two independent models.
+At four bits this is mostly a null: three of the four pairs are ties on both
+tasks, so take those for speed and fit rather than accuracy. The 12B is the
+exception, positive on both tasks and separating on synthesis. The two-bit half
+is no null at all: −0.3511 and −0.2982, both clearing zero by a wide margin on
+two independent models.
 
-**Above four bits, choose on throughput.** This rests on a *null*: accuracy did
-not separate on either large model, and four of nine comparisons in that region
-that did separate point in three different directions. The speed differences, by
-contrast, are measured and large. Choosing on the thing that resolved rather
-than the thing that did not is the point.
+**Above four bits, choose on throughput.** This rests on a *null*: twenty-five of
+the thirty comparisons in that region do not separate, and the five that do point
+in three different directions. The speed differences, by contrast, are measured
+and large. Choosing on the thing that resolved rather than the thing that did not
+is the point. The exception is a model with a demonstrated peak, and E4B at six
+bits is the only one here that has one.
 
-**And score the task you actually run.** Extraction and synthesis do not want the
-same quantization, and on the 12B at two bits the gap between what they say is
-larger than the gap between most bit widths.
+**And do not pick a quantization on the easier benchmark.** Synthesis never
+contradicted extraction, but it resolved far less: the same weight change that
+moves extraction by 0.036 moves synthesis by 0.004. Score on the task that can
+tell your candidates apart, or you will call the whole ladder a tie.
