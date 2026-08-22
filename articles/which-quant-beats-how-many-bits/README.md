@@ -4,8 +4,11 @@ A one-bit 35B mixture-of-experts loses four points; a two-bit 12B dense model lo
 
 ## Status
 
-Held for further testing. Not a publication candidate, and deliberately not
-marked as one, so the voice gate and `tools/publish.py` no longer offer it.
+Held pending review of its successor. The further testing this was waiting on is
+done, and is recorded below. Neither v1 nor the draft is a publication
+candidate, and this README does not claim otherwise, so `tools/publish.py` does
+not offer them and the voice gate's default sweep does not discover them. Both
+pass that gate when pointed at them directly, which is how the draft is checked.
 
 `article/which-quant-beats-how-many-bits.md` was gated and provenance-complete on
 2026-08-09, and nothing in it is known to be wrong. It was held because its
