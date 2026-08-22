@@ -27,9 +27,8 @@ experts, and the gap between them is an order of magnitude.
 
 ## Reading these numbers: most differences do not separate
 
-Most of the differences in this campaign do not separate, and saying which
-do is the whole job. Two labels are used throughout and they mean different
-things:
+Most of the differences in this campaign do not separate, and saying which do is
+the whole job. Two labels run throughout:
 
 - separates: the paired 95% range excludes zero. The comparison resolved.
 - indistinguishable: the range includes zero. This does not mean the
@@ -41,22 +40,20 @@ Every accuracy comparison is a paired bootstrap over the same notes, seed
 point estimates only. Read the differences from the comparison tables, not
 by subtracting two cells.
 
-That distinction carries real weight here. The campaign resampled **44
-comparisons on extraction and 42 on synthesis**. Fourteen separate on
-extraction, ten on synthesis.
-
-Everything else is an honest null, and several of the recommendations at the end
-rest on those nulls rather than on differences. "These are the same, so take the
-cheaper one" is a legitimate conclusion, but only if the reader knows that is
-what is being said.
+The campaign resampled **45 comparisons on extraction and 44 on synthesis**.
+Fifteen separate on extraction, ten on synthesis. Everything else is an honest
+null, and several of the recommendations at the end rest on those nulls rather
+than on differences. "These are the same, so take the cheaper one" is a
+legitimate conclusion, but only if the reader knows that is what is being
+said.
 
 ## Dense against mixture: one bit beats two bits by nine to one
 
 <figure class="sg-figure"><input class="sg-figure__radio sg-figure__radio--chart" type="radio" name="fig-dense-vs-moe" id="fig-dense-vs-moe-chart" checked><input class="sg-figure__radio sg-figure__radio--table" type="radio" name="fig-dense-vs-moe" id="fig-dense-vs-moe-table"><div class="sg-figure__tabs"><label class="sg-figure__tab sg-figure__tab--chart" for="fig-dense-vs-moe-chart">Chart</label><label class="sg-figure__tab sg-figure__tab--table" for="fig-dense-vs-moe-table">Numbers</label></div><div class="sg-figure__panes"><div class="sg-figure__pane sg-figure__pane--chart"><svg class="sg-chart" viewBox="0 0 760 160" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Accuracy change at the most aggressive rung, dense against mixture of experts"><line class="sg-chart__grid" x1="275.0" x2="275.0" y1="14" y2="120"/><text class="sg-chart__value" x="275.0" y="138" text-anchor="middle" opacity=".7">-0.4</text><line class="sg-chart__grid" x1="325.0" x2="325.0" y1="14" y2="120"/><text class="sg-chart__value" x="325.0" y="138" text-anchor="middle" opacity=".7">-0.3</text><line class="sg-chart__grid" x1="375.0" x2="375.0" y1="14" y2="120"/><text class="sg-chart__value" x="375.0" y="138" text-anchor="middle" opacity=".7">-0.2</text><line class="sg-chart__grid" x1="425.0" x2="425.0" y1="14" y2="120"/><text class="sg-chart__value" x="425.0" y="138" text-anchor="middle" opacity=".7">-0.1</text><line class="sg-chart__rule" x1="475.0" x2="475.0" y1="14" y2="120"/><text class="sg-chart__value" x="475.0" y="138" text-anchor="middle" opacity=".7">no change</text><line class="sg-chart__grid" x1="525.0" x2="525.0" y1="14" y2="120"/><text class="sg-chart__value" x="525.0" y="138" text-anchor="middle" opacity=".7">+0.1</text><text class="sg-chart__label" x="238" y="36" text-anchor="end" font-size="11">gemma-4 12B (dense) Q2</text><line class="sg-chart__line sg-chart__line--1" x1="274.4" x2="318.5" y1="32" y2="32"/><line class="sg-chart__line sg-chart__line--1" x1="274.4" x2="274.4" y1="28" y2="36"/><line class="sg-chart__line sg-chart__line--1" x1="318.5" x2="318.5" y1="28" y2="36"/><circle class="sg-chart__mark sg-chart__mark--1 sg-chart__ring" cx="296.4" cy="32" r="4"/><text class="sg-chart__value" x="708" y="36">-0.3572</text><text class="sg-chart__label" x="238" y="66" text-anchor="end" font-size="11">gemma-4 26B-A4B (MoE) Q2</text><line class="sg-chart__line sg-chart__line--2" x1="446.5" x2="467.8" y1="62" y2="62"/><line class="sg-chart__line sg-chart__line--2" x1="446.5" x2="446.5" y1="58" y2="66"/><line class="sg-chart__line sg-chart__line--2" x1="467.8" x2="467.8" y1="58" y2="66"/><circle class="sg-chart__mark sg-chart__mark--2 sg-chart__ring" cx="457.3" cy="62" r="4"/><text class="sg-chart__value" x="708" y="66">-0.0354</text><text class="sg-chart__label" x="238" y="96" text-anchor="end" font-size="11">Qwen3.6 35B-A3B (MoE) Q1</text><line class="sg-chart__line sg-chart__line--2" x1="446.1" x2="465.9" y1="92" y2="92"/><line class="sg-chart__line sg-chart__line--2" x1="446.1" x2="446.1" y1="88" y2="96"/><line class="sg-chart__line sg-chart__line--2" x1="465.9" x2="465.9" y1="88" y2="96"/><circle class="sg-chart__mark sg-chart__mark--2 sg-chart__ring" cx="456.1" cy="92" r="4"/><text class="sg-chart__value" x="708" y="96">-0.0377</text><text class="sg-chart__axis" x="475" y="156" text-anchor="middle">STRICT F1 CHANGE, WITH 95% RANGE</text></svg></div><div class="sg-figure__pane sg-figure__pane--table"><table><thead><tr><th style="text-align:left">model</th><th style="text-align:left">rung</th><th style="text-align:right">F1</th><th style="text-align:right">vs own Q4</th><th style="text-align:left">95% range</th></tr></thead><tbody><tr><td style="text-align:left">gemma-4 12B — dense</td><td style="text-align:left">Q2</td><td style="text-align:right">0.3182</td><td style="text-align:right">−0.3572</td><td style="text-align:left">[−0.4012, −0.3131]</td></tr><tr><td style="text-align:left">gemma-4 26B-A4B — MoE</td><td style="text-align:left">Q2</td><td style="text-align:right">0.6498</td><td style="text-align:right">−0.0354</td><td style="text-align:left">[−0.0569, −0.0144]</td></tr><tr><td style="text-align:left">Qwen3.6 35B-A3B — MoE</td><td style="text-align:left">Q1</td><td style="text-align:right">0.6817</td><td style="text-align:right">−0.0377</td><td style="text-align:left">[−0.0577, −0.0182]</td></tr></tbody></table></div></div><figcaption class="sg-figure__caption">Each dot is the accuracy change against that model&#x27;s own four-bit rung; each line is its paired 95% range. The dense model loses more than half its accuracy at two bits. Both mixtures lose under four points, one of them at a single bit.</figcaption></figure>
 
-All three separate. All three are real. And they are not the same kind of
-result: the dense model loses more than half its accuracy at two bits, while a
-mixture of experts loses under four points at *one*.
+All three separate, and they are not the same kind of result: the dense model
+loses more than half its accuracy at two bits, while a mixture of experts loses
+under four points at *one*.
 
 Qwen3.6-35B-A3B at one bit scores **0.6817**, higher than every gemma-4 run in
 this campaign at any width, including full four-bit builds.
@@ -74,11 +71,9 @@ the output for less than half the accuracy.
 
 ## Four bits and up: five of thirty separate, and they disagree
 
-Seven ladders. In the region people actually argue about, almost nothing
-separates:
-
-Point estimates first. Do not read differences off this table. The
-comparisons that resolve are listed underneath it.
+Seven ladders. Pairing every rung against every other gives thirty comparisons
+in the region people actually argue about, and five separate. Point estimates
+first, differences underneath:
 
 | model | Q4 | Q6 | Q8 | BF16 |
 |---|---:|---:|---:|---:|
@@ -105,9 +100,7 @@ The five that resolve, with five representative nulls:
 | LFM2.5-2.6B, BF16 − Q4 | −0.0127 | [−0.0393, +0.0137] | indistinguishable |
 | LFM2.5-8B-A1B, BF16 − Q8 | −0.0105 | [−0.0367, +0.0164] | indistinguishable |
 
-Thirty comparisons sit at four bits and above once every rung is paired against
-every other. Five of the thirty separate, and they point in different
-directions.
+The five point in different directions.
 
 gemma-4 E4B peaks at six bits, the best-established result in the campaign: Q6
 beats Q8 by **+0.0235 [+0.0068, +0.0403]**, beats Q4 by **+0.0210 [+0.0034,
@@ -125,23 +118,20 @@ On the two largest models nothing separates at all. 26B-A4B Q8 minus Q4 is
 −0.0028 [−0.0170, +0.0115]; Qwen Q8 minus Q4 is +0.0061 [−0.0084, +0.0210].
 
 Full precision is the fifth, and the one worth stating carefully because it is
-easy to overclaim. BF16 did not beat the best quantized rung on any of the four
-models that have one, and on gemma-4 E4B it lost measurably.
+easy to overclaim. BF16 beat no model's best quantized rung, and on gemma-4 E4B
+it lost measurably. But three of those four comparisons are nulls, and the
+comparator was chosen after seeing the data: each model's best rung is the
+maximum of a noisy set, biased toward making BF16 look worse.
 
-But three of those four comparisons are nulls, and the comparator was chosen
-after seeing the data: each model's best quantized rung, which is the maximum of
-a noisy set and biased toward making BF16 look worse. Against Q4 instead, E4B's
-BF16 is −0.0032 and nowhere near separating.
-
-I read that as full precision buying nothing measurable on three models and
-losing on one. It is not evidence that quantization improves a model, and I
-would not write it up that way.
+Against Q4 instead, E4B's BF16 is −0.0032 and nowhere near separating. I read
+that as full precision buying nothing measurable on three models and losing on
+one, not as evidence that quantization improves a model.
 
 ## Quantization-aware training: take it at its own width, never below
 
-At four bits, no quantization-aware training (QAT) pair separates on extraction. Three are clean ties and
-one sits on the boundary. Scoring the same four pairs on synthesis breaks the
-tie:
+At four bits, no quantization-aware training (QAT) pair separates on extraction:
+three are clean ties and one sits on the boundary. Scoring the same four pairs
+on synthesis breaks the tie:
 
 | model | QAT Q4 − Q4, extraction | 95% CI | synthesis | 95% CI |
 |---|---:|---|---:|---|
@@ -154,9 +144,9 @@ Only the 12B pair approaches separation, and its lower bound is zero to four
 decimal places. I first read that as a knife-edge and called it a tie.
 
 The synthesis half changed my mind: on a different task and a different fixture,
-the same pair is **+0.0088 [+0.0015, +0.0164]**, which does separate. Two
-independent measurements both land positive, so the 12B QAT build is doing
-something real. The other three are ties on both tasks.
+the same pair is **+0.0088 [+0.0015, +0.0164]**, which does separate. Both land
+positive, so the 12B QAT build is doing something real. The other three are ties
+on both tasks.
 
 QAT is still worth taking on all four. It is faster on every model measured, and
 at 26B it decides whether the model fits the card at all.
@@ -206,8 +196,8 @@ Every run is scored twice: 1,001-note fact extraction, and a frozen 1,000-case
 synthesis fixture.
 
 Both halves are resampled the same way. Extraction uses the series' 20,000
-replicates, synthesis its own 5,000, both at seed `20260809`, and the 42 pairs
-measured on both tasks can be compared directly.
+replicates, synthesis its own 5,000, both at seed `20260809`, and the 44 pairs
+measured on both tasks compare directly.
 
 | model | task | Q1 | Q2 | Q4 | Q6 | Q8 |
 |---|---|---:|---:|---:|---:|---:|
@@ -227,27 +217,24 @@ positives counted against you, so a model emitting 7,609 tokens of loosely
 grounded output is punished hard. Synthesis rewards producing complete,
 well-formed output, and a verbose model still produces that.
 
-It is worth being exact about how far this goes, because the tempting claim is
-stronger than the evidence. No pair separates in opposite directions on the two
-tasks. Of the 42 pairs measured on both, seven separate on extraction alone,
-three on synthesis alone, seven separate on both and agree in direction, and 25
+The tempting claim here is stronger than the evidence. No pair separates in
+opposite directions on the two tasks: of the 44 measured on both, seven separate
+on extraction alone, three on synthesis alone, seven on both and agree, and 27
 resolve on neither.
 
-So the tasks do not contradict each other. They disagree about magnitude, by
+The tasks do not contradict each other. They disagree about magnitude, by
 roughly an order of magnitude: the same weight change that moves extraction by
 0.036 moves synthesis by 0.004.
 
-The practical form of that is narrower than "score the task you run", and more
-useful. Synthesis is the less discriminating benchmark here. If you pick a
-quantization on synthesis scores you will call most of the ladder a tie, because
-on synthesis most of it is.
+That is narrower than "score the task you run", and more useful. Synthesis is
+the less discriminating benchmark. Pick a quantization on synthesis scores and
+you will call most of the ladder a tie, because on synthesis most of it is.
 
 ## Throughput: falls with width, predictably, until capacity intervenes
 
 Throughput carries no intervals because it does not need them: each figure is
 the median of roughly 1,003 generations with under 2% spread, on fixed hardware.
-These are measurements, not estimates. Within a model, generation throughput
-tracks memory bandwidth closely:
+Within a model, generation throughput tracks memory bandwidth closely:
 
 | model | Q4 | Q6 | Q8 | BF16 |
 |---|---:|---:|---:|---:|
@@ -278,15 +265,14 @@ of experts move to the CPU, which is the entire difference.
 - The offloaded throughput figures are a lower bound. All six expert-offload
   runs used memory mapping, and llama.cpp warns at load that
   `tensor overrides to CPU are used with mmap enabled - consider using
-  --no-mmap`. That warning was not acted on. It affects speed only, so accuracy
-  is untouched, and the capacity finding's direction is safe, because the
-  resident model won while the offloaded side was handicapped. The magnitudes are
-  upper bounds on the cost.
+  --no-mmap`. That warning was not acted on. It costs speed only, so the
+  capacity finding's direction is safe: the resident model won while the
+  offloaded side ran handicapped. The magnitudes are upper bounds.
 - The offloaded runs left VRAM unused. The tuner capped itself at 14,200 MiB
   of roughly 15,600 usable, so those runs are perhaps 10–15% slower than the
   hardware allows. The cap stayed because changing it mid-campaign would have
   given one ladder two serving budgets.
-- One corpus lineage. Every extraction figure shares corpus v5. A second
+- One corpus lineage. Every extraction figure shares corpus v5, and a second
   independently built corpus remains the gate for stronger claims.
 - LFM2.5 differs in two ways at once. LiquidAI publishes no dynamic UD
   builds and no draft model, so those ladders run stock K-quants without
@@ -294,9 +280,8 @@ of experts move to the CPU, which is the entire difference.
   like-for-like ranking against gemma-4.
 - One card. Everything is an RTX 5080 with roughly 15.6 GiB usable. The
   capacity thresholds move with the hardware even though the mechanism does not.
-- One bit was measured once. Qwen3.6-35B-A3B is the only model in the set
-  publishing a one-bit build, so the Q1 result rests on a single model
-  and a single imatrix quantization method.
+- One bit was measured once. Qwen3.6-35B-A3B is the only model here publishing a
+  one-bit build, so the Q1 result rests on one model and one imatrix method.
 
 ## What to do, and which parts rest on a null
 
@@ -304,32 +289,28 @@ of experts move to the CPU, which is the entire difference.
 3.3x on one model and 8x across a ladder, more than any accuracy difference
 measured anywhere in this campaign.
 
-**Run a mixture of experts at the lowest width that still fits.** Two bits cost 26B-A4B three
-and a half points; one bit cost Qwen under four. Both stayed card-resident and
-ran three to eight times faster than their own higher-width rungs. The cost is
-real rather than nil, and it is ordered: on Qwen, Q4 beats Q2 by +0.0194 and Q1
-by +0.0377, both separating. You are buying speed with accuracy at a known
-exchange rate, not getting it free.
+**Run a mixture of experts at the lowest width that still fits.** Two bits cost
+26B-A4B three and a half points; one bit cost Qwen under four, and both stayed
+card-resident at three to eight times the speed of their own higher rungs. The
+cost is real and ordered, though: on Qwen, Q4 beats Q2 by +0.0194 and Q1 by
++0.0377, both separating. You buy the speed at a known exchange rate.
 
 **Never take a dense model below four bits without measuring it.** The 12B lost
 more than half its accuracy at two bits and hid it behind a healthy tokens per
 second.
 
 **Use the QAT build at the width it ships for, and never quantize it further.**
-At four bits this is mostly a null: three of the four pairs are ties on both
-tasks, so take those for speed and fit rather than accuracy. The 12B is the
-exception, positive on both tasks and separating on synthesis. The two-bit half
-is no null at all: −0.3511 and −0.2982, both clearing zero by a wide margin on
-two independent models.
+At four bits this is mostly a null: three of the four pairs tie on both tasks, so
+take those for speed and fit. The 12B is the exception, positive on both tasks
+and separating on synthesis. The two-bit half is no null at all: −0.3511 and
+−0.2982, both clearing zero by a wide margin.
 
-**Check throughput rather than accuracy above four bits.** This rests on a *null*: twenty-five of
-the thirty comparisons in that region do not separate, and the five that do point
-in three different directions. The speed differences, by contrast, are measured
-and large. Choosing on the thing that resolved rather than the thing that did not
-is the point. The exception is a model with a demonstrated peak, and E4B at six
-bits is the only one here that has one.
+**Check throughput rather than accuracy above four bits.** This rests on a
+*null*: twenty-five of the thirty comparisons there do not separate, and the five
+that do point in three directions. The speed differences are measured and large.
+The exception is a model with a demonstrated peak, and E4B at six bits is the
+only one here that has one.
 
 **Never pick a quantization on the easier of two benchmarks.** Synthesis never
 contradicted extraction, but it resolved far less: the same weight change that
-moves extraction by 0.036 moves synthesis by 0.004. Score on the task that can
-tell your candidates apart, or you will call the whole ladder a tie.
+moves extraction by 0.036 moves synthesis by 0.004.
