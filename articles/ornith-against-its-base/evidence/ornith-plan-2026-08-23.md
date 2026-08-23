@@ -69,9 +69,18 @@ fixture, as the quantization campaign was.
 
 ## Registered expectation
 
-**We expect the finetunes not to beat their bases on this work.** That is
-written here, before any run produced a figure, so that whichever way the
-intervals fall the reading was not chosen afterwards to fit them.
+**We expect a finetune not to shift measurably from its base in either
+direction on this work.** Not merely that it fails to win: that it lands close
+enough to its base that most of these comparisons do not separate at all.
+Post-training moves behaviour, and these tasks ask for facts a base model
+already has and output a base model can already format.
+
+That is written here before any run produced a figure, so that whichever way
+the intervals fall the reading was not chosen afterwards to fit them.
+
+Stated this way the prediction is falsifiable and symmetric. **A large shift in
+either direction contradicts it**, and a large loss is as much a surprise as a
+large win.
 
 Recording a prior cuts both ways and the discipline has to be symmetric:
 
@@ -83,6 +92,20 @@ Recording a prior cuts both ways and the discipline has to be symmetric:
   hunt for a defect until it goes away. A separating result gets the same
   scrutiny a null gets and no more: check output health, check the pair is
   matched, then report it.
+
+If a large shift does appear, the first question is whether the finetune changed
+what the model knows or what it emits. This harness separates those already,
+because `score.json` records `output_health` alongside the score:
+`json_parse_rate`, `schema_rate` and the completion-token distribution. A
+finetune that stops producing parseable output scores badly on extraction
+without having lost any knowledge, and that reads as a large shift unless the
+health fields are checked beside it.
+
+That check has earned its place twice in this series. It is what identified two
+NVFP4 conversions as broken rather than merely worse, one failing JSON parsing
+on 29% of notes and another emitting 33 tokens a note against 369 for its
+sibling. It is also what characterised the two-bit QAT collapse as instability
+rather than degradation: one model went quiet, the other would not stop.
 
 The failure mode this guards against is real and has already happened once in
 this series. In the quantization work a QAT pair was called a tie, and a second
