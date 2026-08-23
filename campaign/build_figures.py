@@ -78,10 +78,17 @@ def table_html(headers, rows, aligns=None) -> str:
     return f"<table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>"
 
 
-def delta_chart(rows, label_w=250, zero_at=0.0, span=0.45, aria="") -> str:
+def delta_chart(rows, label_w=250, zero_at=0.0, span=0.45, aria="",
+                ticks=(-0.4, -0.3, -0.2, -0.1, 0.0, 0.1), places=1) -> str:
     """Horizontal deltas with 95% interval whiskers, zero ruled.
 
     rows: (label, delta, lo, hi, series)
+
+    `ticks` and `span` set the scale together. The default pair is sized for
+    the collapses -- a third of an F1 point -- and squashes a figure whose
+    largest effect is four hundredths into a smear on the zero rule, which is
+    the opposite of what such a figure is for. A comparison set that resolves
+    finely passes its own.
     """
     left, right = label_w, W - 60
     height = 30 + len(rows) * 30
@@ -92,7 +99,7 @@ def delta_chart(rows, label_w=250, zero_at=0.0, span=0.45, aria="") -> str:
         f'<svg class="sg-chart" viewBox="0 0 {W} {height + 40}" '
         f'preserveAspectRatio="xMidYMid meet" role="img" aria-label="{esc(aria)}">'
     ]
-    for tick in (-0.4, -0.3, -0.2, -0.1, 0.0, 0.1):
+    for tick in ticks:
         cls = "sg-chart__rule" if tick == 0 else "sg-chart__grid"
         parts.append(
             f'<line class="{cls}" x1="{x(tick):.1f}" x2="{x(tick):.1f}" y1="14" y2="{height}"/>')
@@ -100,7 +107,7 @@ def delta_chart(rows, label_w=250, zero_at=0.0, span=0.45, aria="") -> str:
         # minus. An SVG tick reading "-0.4-0.3-0.2" with ASCII hyphens runs
         # together and reads as one token; U+2212 is what every published
         # figure in this series uses.
-        text = "no change" if tick == 0 else signed(tick, 1)
+        text = "no change" if tick == 0 else signed(tick, places)
         parts.append(
             f'<text class="sg-chart__value" x="{x(tick):.1f}" y="{height + 18}" '
             f'text-anchor="middle" opacity=".7">{text}</text>')
@@ -409,6 +416,62 @@ def main() -> int:
         "measured anywhere in this campaign, and the two models fail in "
         "opposite directions: one stops producing output, the other will not "
         "stop."))
+
+    # 3b. Above four bits. Five of thirty separate and they point three ways,
+    # which is a shape a reader cannot get from a column of signed numbers: the
+    # eye has to see the intervals sitting either side of the rule. The two
+    # largest models are carried underneath as nulls for contrast, so the
+    # figure shows what "does not separate" looks like next to what does.
+    #
+    # This one sets its own scale. Every effect here is inside four hundredths
+    # of an F1 point, and the campaign default -- sized for a dense model
+    # losing a third of its accuracy -- renders all seven as a smear on the
+    # zero rule.
+    above = [
+        ("LFM2.5-8B-A1B: Q8 − Q4", "LFM2.5-8B-A1B, Q8 − Q4",
+         "lfm25-8b-a1b.base.q4", "lfm25-8b-a1b.base.q8", "1"),
+        ("LFM2.5-2.6B: Q8 − Q4", "LFM2.5-2.6B, Q8 − Q4",
+         "lfm25-2.6b.base.q4", "lfm25-2.6b.base.q8", "1"),
+        ("gemma-4 E4B: BF16 − Q6", "gemma-4 E4B, BF16 − Q6",
+         "gemma4-e4b.base.q6", "gemma4-e4b.base.bf16", "1"),
+        ("gemma-4 E4B: Q8 − Q6", "gemma-4 E4B, Q8 − Q6",
+         "gemma4-e4b.base.q6", "gemma4-e4b.base.q8", "1"),
+        ("gemma-4 E4B: Q6 − Q4", "gemma-4 E4B, Q6 − Q4",
+         "gemma4-e4b.base.q4", "gemma4-e4b.base.q6", "1"),
+        ("gemma-4 26B-A4B: Q8 − Q4", "gemma-4 26B-A4B, Q8 − Q4",
+         "gemma4-26b-a4b.base.q4", "gemma4-26b-a4b.base.q8", "2"),
+        ("Qwen3.6 35B-A3B: Q8 − Q4", "Qwen3.6 35B-A3B, Q8 − Q4",
+         "qwen36-35b-a3b.base.q4", "qwen36-35b-a3b.base.q8", "2"),
+    ]
+    rows = []
+    trows = []
+    for chart_label, table_label, base, comp, series in above:
+        d, lo, hi = pair(base, comp)
+        rows.append((chart_label, d, lo, hi, series))
+        trows.append([table_label, fmt_delta(d), fmt_range(lo, hi),
+                      verdict(base, comp)])
+    tbl = table_html(
+        ["comparison", "delta", "95% range", "verdict"],
+        trows,
+        ["left", "right", "left", "left"])
+    out.append(figure(
+        "fig-above-four-bits",
+        "above four bits",
+        delta_chart(
+            rows,
+            span=0.08,
+            ticks=(-0.06, -0.04, -0.02, 0.0, 0.02, 0.04, 0.06),
+            places=2,
+            aria="Accuracy change for every comparison that separates at four "
+                 "bits and above, with two nulls for contrast"),
+        tbl,
+        "Five comparisons separate above four bits and none by much: the "
+        "widest is under four hundredths of an F1 point. They also point three "
+        "ways. LFM2.5-8B-A1B improves with width and its dense sibling gets "
+        "worse with width, same publisher and same quant family; gemma-4 E4B "
+        "peaks at six bits, beating four, eight and full precision. The bottom "
+        "two are the largest models in the campaign, and their intervals "
+        "straddle the rule, which is what a null looks like beside a result."))
 
     # 4 and 5. The two ladders, accuracy and speed, each as a chart of spans
     # with the full matrix in the Numbers tab. Accuracy was previously not in
