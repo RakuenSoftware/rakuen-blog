@@ -67,6 +67,28 @@ fixture, as the quantization campaign was.
 | `ornith15-9b.base.q4` | ornith-ai/Ornith-1.5-9B-GGUF, Q4_K_M file | none |
 | `ornith15-35b-a3b.base.q4` | ornith-ai/Ornith-1.5-35B-A3B-GGUF, Q4_K_M file | none |
 
+## Registered expectation
+
+**We expect the finetunes not to beat their bases on this work.** That is
+written here, before any run produced a figure, so that whichever way the
+intervals fall the reading was not chosen afterwards to fit them.
+
+Recording a prior cuts both ways and the discipline has to be symmetric:
+
+- A null confirms the expectation, which is exactly when it is easiest to stop
+  looking. A null still has to be a measured null with an interval, not an
+  absence of evidence. If a comparison is indistinguishable, the article says
+  1,001 notes could not tell them apart, not that the finetune is no better.
+- A win contradicts the expectation, which is exactly when it is tempting to
+  hunt for a defect until it goes away. A separating result gets the same
+  scrutiny a null gets and no more: check output health, check the pair is
+  matched, then report it.
+
+The failure mode this guards against is real and has already happened once in
+this series. In the quantization work a QAT pair was called a tie, and a second
+task later separated it; the correction came from measuring the other half, not
+from re-reading the first.
+
 ## What this can and cannot support
 
 - It can say whether a given Ornith build extracts facts or writes syntheses
