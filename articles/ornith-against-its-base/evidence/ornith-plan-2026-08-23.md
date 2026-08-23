@@ -43,8 +43,27 @@ The series rule is multi-token prediction on wherever the publisher provides a
 draft, and off wherever they do not. That is applied here without exception.
 
 The existing Qwen3.6 baseline was served **with** the ggml-org MTP draft
-`mtp-Qwen3.6-35B-A3B-Q4_0.gguf`. Ornith-1.5-35B-A3B publishes no draft, and
-neither does any 9B model in this study, so those run without one.
+`mtp-Qwen3.6-35B-A3B-Q4_0.gguf`. Ornith-1.5-35B-A3B publishes no draft.
+
+**No 9B model in this study can speculate on this build**, which was checked
+rather than assumed after the base probed at 133 tok/s against 213 for the
+larger gemma-4 12B. Two MTP shapes exist and only one of them works here:
+
+- A *separate draft model*, passed with `-hfd`. This is what the gemma and
+  qwen36 runs use, and it is why the 12B is faster than a model half its size.
+- MTP layers *baked into the model*. `unsloth/Qwen3.5-9B-MTP-GGUF` ships these
+  and this llama.cpp build discards them at load: `model has unused tensor
+  blk.32.nextn.eh_proj.weight -- ignoring`, repeated for every nextn tensor. It
+  serves at 133.11 tok/s against 133.6 for the ordinary build, so the MTP file
+  is a larger download for no speedup.
+
+protoLabsAI publishes a separate head for both Ornith 9B models
+(`mtp-head/mtp-Ornith-1.0-9B-head-Q8_0.gguf`), but it fails to load as a draft:
+`common_speculative_init_result: failed to load draft model`.
+
+So both halves of the 9B pair run without speculation, which leaves the pair
+matched. 133 tok/s is what a 9B dense at four bits does on this card unassisted,
+and the comparison is unaffected.
 
 Speculation does not change what a model outputs, so every accuracy comparison
 here is unaffected by it. Throughput is affected, and the article says so: the
