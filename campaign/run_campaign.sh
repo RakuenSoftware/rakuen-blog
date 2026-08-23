@@ -42,7 +42,7 @@ while IFS=$'\t' read -r order label model train width target draft est_gib ctk c
 
   LABEL="$label" MODEL="$model" TRAIN="$train" WIDTH="$width" \
   TARGET="$target" DRAFT="$draft" EST_GIB="$est_gib" ROOT="$ROOT" OUT="$OUT" \
-  CTK="${ctk:-f16}" CTV="${ctv:-f16}" \
+  CTK="${ctk:-f16}" CTV="${ctv:-f16}" REASONING="${REASONING:-}" \
     bash "$ROOT/run_arm.sh" 2>&1 | tee -a "$LOG"
   # Branch on run_arm.sh's status, NOT the pipeline's -- tee would mask it.
   rc=${PIPESTATUS[0]}
