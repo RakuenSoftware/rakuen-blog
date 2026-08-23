@@ -104,10 +104,80 @@ def check(fid, getter, places, what):
     return bad, checked
 
 
+def detail_check(fid, columns, what):
+    """Gate a per-model detail table whose columns are different measures."""
+    pane = numbers_pane(fid)
+    if pane is None:
+        print(f"MISSING FIGURE: {fid}")
+        return 1, 0
+    bad = checked = 0
+    for display, model in ROWS.items():
+        cells = pane.get(display)
+        if cells is None:
+            continue
+        if len(cells) != len(columns):
+            print(f"BAD {what} {display}: {len(cells)} cells, expected {len(columns)}")
+            bad += 1
+            continue
+        for cell, (getter, places) in zip(cells, columns):
+            actual = getter(f"{model}.base.q4")
+            checked += 1
+            if actual is None:
+                print(f"BAD {what} {display}: article {cell}, evidence none")
+                bad += 1
+            elif f"{float(actual):.{places}f}" != cell:
+                print(f"BAD {what} {display}: article {cell} vs evidence {actual}")
+                bad += 1
+    return bad, checked
+
+
+def ex(label, *path):
+    a = arms.get(label)
+    if not a:
+        return None
+    node = a["extraction"]
+    for k in path:
+        node = (node or {}).get(k)
+    return node
+
+
+def sy(label, key):
+    a = arms.get(label)
+    if not a:
+        return None
+    s = a.get("synthesis") or {}
+    return (s.get("overall") or s).get(key)
+
+
 bad, checked = check("fig-throughput-ladder", tps, 1, "throughput")
 b2, c2 = check("fig-accuracy-ladder", f1, 4, "accuracy")
 bad += b2
 checked += c2
+
+b3, c3 = detail_check("fig-accuracy-detail", [
+    (lambda l: ex(l, "strict", "precision"), 4),
+    (lambda l: ex(l, "strict", "recall"), 4),
+    (lambda l: ex(l, "strict", "f1"), 4),
+    (lambda l: ex(l, "lenient", "f1"), 4),
+    (lambda l: ex(l, "relation_agnostic", "f1"), 4),
+    (lambda l: (ex(l, "fabrication", "fabrication_rate") or 0), 4),
+], "accuracy-detail")
+bad += b3
+checked += c3
+
+b4, c4 = detail_check("fig-synthesis-detail", [
+    (lambda l: sy(l, "content_f1"), 4),
+    (lambda l: sy(l, "required_field_recall"), 4),
+    (lambda l: sy(l, "schema_valid_rate"), 4),
+    (lambda l: sy(l, "empty_rate"), 4),
+    (lambda l: sy(l, "truncated_rate"), 4),
+], "synthesis-detail")
+bad += b4
+checked += c4
+
+b5, c5 = check("fig-synthesis-ladder", lambda l: sy(l, "content_f1"), 4, "synthesis-ladder")
+bad += b5
+checked += c5
 
 # The QAT speed table is still hand-written markdown in the prose.
 for base, qat, model in [("479.0", "564.9", "gemma4-e2b"),
