@@ -38,6 +38,14 @@ def esc(s: object) -> str:
     return html.escape(str(s), quote=True)
 
 
+MINUS_SIGN = "\u2212"
+
+
+def signed(v: float, places: int) -> str:
+    """Signed number with a typographic minus, as the rest of the series uses."""
+    return f"+{v:.{places}f}" if v >= 0 else f"{MINUS_SIGN}{abs(v):.{places}f}"
+
+
 def figure(fid: str, title: str, svg: str, table: str, caption: str) -> str:
     """One sg-figure block: chart pane, numbers pane, caption."""
     return (
@@ -88,7 +96,11 @@ def delta_chart(rows, label_w=250, zero_at=0.0, span=0.45, aria="") -> str:
         cls = "sg-chart__rule" if tick == 0 else "sg-chart__grid"
         parts.append(
             f'<line class="{cls}" x1="{x(tick):.1f}" x2="{x(tick):.1f}" y1="14" y2="{height}"/>')
-        text = "no change" if tick == 0 else f"{tick:+.1f}"
+        # The markdown tables and the rest of the series use a typographic
+        # minus. An SVG tick reading "-0.4-0.3-0.2" with ASCII hyphens runs
+        # together and reads as one token; U+2212 is what every published
+        # figure in this series uses.
+        text = "no change" if tick == 0 else signed(tick, 1)
         parts.append(
             f'<text class="sg-chart__value" x="{x(tick):.1f}" y="{height + 18}" '
             f'text-anchor="middle" opacity=".7">{text}</text>')
@@ -108,7 +120,8 @@ def delta_chart(rows, label_w=250, zero_at=0.0, span=0.45, aria="") -> str:
             f'<circle class="sg-chart__mark sg-chart__mark--{series} sg-chart__ring" '
             f'cx="{x(delta):.1f}" cy="{y}" r="4"/>')
         parts.append(
-            f'<text class="sg-chart__value" x="{right + 8}" y="{y + 4}">{delta:+.4f}</text>')
+            f'<text class="sg-chart__value" x="{right + 8}" y="{y + 4}">'
+            f'{signed(delta, 4)}</text>')
     parts.append(
         f'<text class="sg-chart__axis" x="{(left + right) / 2:.0f}" y="{height + 36}" '
         f'text-anchor="middle">STRICT F1 CHANGE, WITH 95% RANGE</text>')
