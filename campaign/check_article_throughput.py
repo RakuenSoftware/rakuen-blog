@@ -1,10 +1,19 @@
-"""Check every tokens-per-second figure in the article against the evidence.
+#!/usr/bin/env python3
+"""Check every tokens-per-second and F1 figure in the article against evidence.
 
-check_article_intervals.py covers intervals only. The throughput table is the
-largest block of numbers in the article and nothing validated it, which is the
-same gap that let completion-token stats go null while the prose still quoted
-them.
+check_article_intervals.py covers intervals only. The two ladder matrices are
+the largest blocks of numbers in the article and nothing validated them, which
+is the same gap that let completion-token stats go null while the prose still
+quoted them.
+
+Both ladders now live inside generated sg-figure blocks rather than as
+hand-maintained markdown, so this reads the Numbers pane of each figure. That is
+the pane a reader checks the chart against, so it is the one worth gating.
 """
+
+from __future__ import annotations
+
+import html
 import json
 import re
 from pathlib import Path
@@ -18,14 +27,6 @@ EV = ROOT / ("articles/which-quant-beats-how-many-bits/evidence/"
 arms = {k: v for k, v in json.loads(EV.read_text()).items()
         if not k.startswith("_")}
 
-
-def tps(label):
-    a = arms.get(label)
-    if not a:
-        return None
-    return ((a.get("throughput") or {}).get("generation_tok_per_s") or {}).get("median")
-
-
 ROWS = {
     "gemma-4 E2B": "gemma4-e2b",
     "gemma-4 E4B": "gemma4-e4b",
@@ -37,45 +38,78 @@ ROWS = {
 }
 WIDTHS = ["q1", "q2", "q4", "q6", "q8", "bf16"]
 
+FIG = re.compile(r'<figure class="sg-figure">.*?</figure>', re.S)
+ROW = re.compile(r"<tr>(.*?)</tr>", re.S)
+CELL = re.compile(r"<t[dh][^>]*>(.*?)</t[dh]>", re.S)
+
 full = ART.read_text()
 
-# Row labels repeat across tables, so scope the search to the throughput table
-# by its header. Matching on label alone finds the sub-four-bit table first.
-start = full.index("| model | Q1 | Q2 | Q4 | Q6 | Q8 | BF16 |")
-end = full.index("\n\n", start)
-text = full[start:end]
-bad = 0
-checked = 0
 
-for display, model in ROWS.items():
-    m = re.search(r"^\| " + re.escape(display) + r" \|(.+)\|$", text, re.M)
-    if not m:
-        print(f"MISSING ROW: {display}")
-        bad += 1
-        continue
-    cells = [c.strip() for c in m.group(1).split("|")]
-    if len(cells) != len(WIDTHS):
-        print(f"{display}: {len(cells)} cells, expected {len(WIDTHS)}")
-        bad += 1
-        continue
-    for cell, width in zip(cells, WIDTHS):
-        actual = tps(f"{model}.base.{width}")
-        checked += 1
-        if cell == "not run":
-            if actual is not None:
-                print(f"BAD {display} {width}: article says 'not run', "
-                      f"evidence has {actual}")
+def tps(label):
+    a = arms.get(label)
+    if not a:
+        return None
+    return ((a.get("throughput") or {}).get("generation_tok_per_s") or {}).get("median")
+
+
+def f1(label):
+    a = arms.get(label)
+    return a["extraction"]["strict"]["f1"] if a else None
+
+
+def numbers_pane(fid):
+    """The Numbers-tab table of one figure, as {row label: [cells]}."""
+    block = next((m.group(0) for m in FIG.finditer(full) if f'name="{fid}"' in m.group(0)), None)
+    if block is None:
+        return None
+    out = {}
+    for r in ROW.finditer(block):
+        cells = [html.unescape(re.sub(r"<[^>]+>", "", c)).strip()
+                 for c in CELL.findall(r.group(1))]
+        if cells:
+            out[cells[0]] = cells[1:]
+    return out
+
+
+def check(fid, getter, places, what):
+    pane = numbers_pane(fid)
+    if pane is None:
+        print(f"MISSING FIGURE: {fid}")
+        return 1, 0
+    bad = checked = 0
+    for display, model in ROWS.items():
+        cells = pane.get(display)
+        if cells is None:
+            print(f"BAD {what}: no row for {display}")
+            bad += 1
+            continue
+        if len(cells) != len(WIDTHS):
+            print(f"BAD {what} {display}: {len(cells)} cells, expected {len(WIDTHS)}")
+            bad += 1
+            continue
+        for cell, width in zip(cells, WIDTHS):
+            actual = getter(f"{model}.base.{width}")
+            checked += 1
+            if cell == "not run":
+                if actual is not None:
+                    print(f"BAD {what} {display} {width}: 'not run' but evidence has {actual}")
+                    bad += 1
+                continue
+            if actual is None:
+                print(f"BAD {what} {display} {width}: article {cell}, evidence none")
                 bad += 1
-            continue
-        if actual is None:
-            print(f"BAD {display} {width}: article says {cell}, evidence has none")
-            bad += 1
-            continue
-        if f"{float(actual):.1f}" != cell:
-            print(f"BAD {display} {width}: article {cell} vs evidence {actual}")
-            bad += 1
+            elif f"{float(actual):.{places}f}" != cell:
+                print(f"BAD {what} {display} {width}: article {cell} vs evidence {actual}")
+                bad += 1
+    return bad, checked
 
-# QAT throughput claims in prose.
+
+bad, checked = check("fig-throughput-ladder", tps, 1, "throughput")
+b2, c2 = check("fig-accuracy-ladder", f1, 4, "accuracy")
+bad += b2
+checked += c2
+
+# The QAT speed table is still hand-written markdown in the prose.
 for base, qat, model in [("479.0", "564.9", "gemma4-e2b"),
                          ("341.7", "418.9", "gemma4-e4b"),
                          ("213.1", "257.1", "gemma4-12b"),
@@ -84,11 +118,11 @@ for base, qat, model in [("479.0", "564.9", "gemma4-e2b"),
         actual = tps(label)
         checked += 1
         if actual is None or f"{float(actual):.1f}" != value:
-            print(f"BAD {label}: article {value} vs evidence {actual}")
+            print(f"BAD qat-speed {label}: article {value} vs evidence {actual}")
             bad += 1
         if value not in full:
-            print(f"BAD {label}: {value} not present in article text")
+            print(f"BAD qat-speed {label}: {value} absent from the article")
             bad += 1
 
-print(f"\nchecked {checked} throughput figures, {bad} wrong")
+print(f"\nchecked {checked} figures, {bad} wrong")
 raise SystemExit(1 if bad else 0)

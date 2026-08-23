@@ -129,6 +129,64 @@ def delta_chart(rows, label_w=250, zero_at=0.0, span=0.45, aria="") -> str:
     return "".join(parts)
 
 
+def range_chart(rows, unit, lo_axis, hi_axis, label_w=210, aria="",
+                places=1) -> str:
+    """One span per row, from lo to hi, with a marker at a named rung.
+
+    rows: (label, lo, hi, mark, series)
+
+    A ladder is a matrix and a matrix does not fit a bar chart, but the two
+    questions a reader has about a ladder are both about its span: how far does
+    this model move across its widths, and where does four bits sit in that
+    move. A short span says the ladder is flat, which is the accuracy finding; a
+    long one says it is not, which is the throughput finding. The full matrix
+    lives in the Numbers tab beside it.
+    """
+    left, right = label_w, W - 118
+    span = (hi_axis - lo_axis) or 1.0
+    height = 24 + len(rows) * 27
+
+    def x(v):
+        return left + (v - lo_axis) / span * (right - left)
+
+    parts = [
+        f'<svg class="sg-chart" viewBox="0 0 {W} {height + 34}" '
+        f'preserveAspectRatio="xMidYMid meet" role="img" aria-label="{esc(aria)}">'
+    ]
+    for frac in (0.0, 0.25, 0.5, 0.75, 1.0):
+        tick = lo_axis + frac * span
+        gx = x(tick)
+        parts.append(
+            f'<line class="sg-chart__grid" x1="{gx:.1f}" x2="{gx:.1f}" '
+            f'y1="12" y2="{height}"/>')
+        parts.append(
+            f'<text class="sg-chart__value" x="{gx:.1f}" y="{height + 16}" '
+            f'text-anchor="middle" opacity=".7">{tick:.{places}f}</text>')
+
+    for i, (label, lo, hi, mark, series) in enumerate(rows):
+        y = 26 + i * 27
+        parts.append(
+            f'<text class="sg-chart__label" x="{left - 12}" y="{y + 4}" '
+            f'text-anchor="end" font-size="11">{esc(label)}</text>')
+        parts.append(
+            f'<rect class="sg-chart__mark sg-chart__mark--{series}" '
+            f'x="{x(lo):.1f}" y="{y - 4.5}" '
+            f'width="{max(x(hi) - x(lo), 2):.1f}" height="9" rx="4"/>')
+        if mark is not None:
+            parts.append(
+                f'<circle class="sg-chart__mark sg-chart__ring" '
+                f'cx="{x(mark):.1f}" cy="{y}" r="3.5"/>')
+        parts.append(
+            f'<text class="sg-chart__value" x="{right + 8}" y="{y + 4}">'
+            f'{lo:.{places}f}\u2013{hi:.{places}f}</text>')
+
+    parts.append(
+        f'<text class="sg-chart__axis" x="{(left + right) / 2:.0f}" '
+        f'y="{height + 30}" text-anchor="middle">{esc(unit)}</text>')
+    parts.append("</svg>")
+    return "".join(parts)
+
+
 def bar_chart(rows, unit, label_w=210, aria="") -> str:
     """Horizontal bars from zero. rows: (label, value, series)"""
     left, right = label_w, W - 90
@@ -345,6 +403,73 @@ def main() -> int:
         "measured anywhere in this campaign, and the two models fail in "
         "opposite directions: one stops producing output, the other will not "
         "stop."))
+
+    # 4 and 5. The two ladders, accuracy and speed, each as a chart of spans
+    # with the full matrix in the Numbers tab. Accuracy was previously not in
+    # the article at all: the compression pass removed its point-estimate table
+    # and left the ladders described only in prose, so a reader could read the
+    # whole piece without ever seeing what any model actually scored.
+    LADDER = [
+        ("gemma-4 E2B", "gemma4-e2b"),
+        ("gemma-4 E4B", "gemma4-e4b"),
+        ("gemma-4 12B", "gemma4-12b"),
+        ("gemma-4 26B-A4B", "gemma4-26b-a4b"),
+        ("LFM2.5-2.6B", "lfm25-2.6b"),
+        ("LFM2.5-8B-A1B", "lfm25-8b-a1b"),
+        ("Qwen3.6 35B-A3B", "qwen36-35b-a3b"),
+    ]
+    WIDTHS = [("Q1", "q1"), ("Q2", "q2"), ("Q4", "q4"),
+              ("Q6", "q6"), ("Q8", "q8"), ("BF16", "bf16")]
+
+    def ladder_figure(fid, getter, unit, places, aria, caption, series_of):
+        rows, trows = [], []
+        for display, model in LADDER:
+            cells, values = [], []
+            for _, w in WIDTHS:
+                label = f"{model}.base.{w}"
+                v = getter(label) if label in arms else None
+                if v is None:
+                    cells.append("not run")
+                else:
+                    cells.append(f"{v:.{places}f}")
+                    values.append(v)
+            if not values:
+                continue
+            q4 = getter(f"{model}.base.q4") if f"{model}.base.q4" in arms else None
+            rows.append((display, min(values), max(values), q4,
+                         series_of(min(values), max(values))))
+            trows.append([display] + cells)
+
+        lo = min(r[1] for r in rows)
+        hi = max(r[2] for r in rows)
+        pad = (hi - lo) * 0.06
+        return figure(
+            fid, fid,
+            range_chart(rows, unit, lo - pad, hi + pad, aria=aria, places=places),
+            table_html(["model"] + [d for d, _ in WIDTHS], trows),
+            caption)
+
+    out.append(ladder_figure(
+        "fig-accuracy-ladder",
+        lambda label: arm(label)["extraction"]["strict"]["f1"],
+        "STRICT F1, EXTRACTION", 4,
+        "Strict F1 across bit widths, per model",
+        "The span each model covers across every width it was run at, with four "
+        "bits marked. Most spans are short: the ladders are close to flat, which "
+        "is why so few of these comparisons separate. The two that are not short "
+        "are the models with a sub-four-bit rung that collapsed.",
+        lambda lo, hi: "1" if hi - lo > 0.15 else "2"))
+
+    out.append(ladder_figure(
+        "fig-throughput-ladder",
+        gen,
+        "GENERATION TOKENS PER SECOND", 1,
+        "Generation throughput across bit widths, per model",
+        "The same ladders measured for speed, with four bits marked. These spans "
+        "are not short. The two widest belong to the mixtures whose larger rungs "
+        "no longer fit the card, where the cost is offload rather than "
+        "arithmetic.",
+        lambda lo, hi: "1" if hi - lo > 200 else "2"))
 
     print("\n\n".join(out))
     return 0
