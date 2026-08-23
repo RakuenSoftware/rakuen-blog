@@ -56,7 +56,7 @@ website.
 | [the-corpus-is-the-experiment](articles/the-corpus-is-the-experiment/) | ready | figure map, shared results tree |
 | [the-parallelism-limit-was-never-vram](articles/the-parallelism-limit-was-never-vram/) | ready | figure map, shared results tree |
 | [synthesis-model-selection](articles/synthesis-model-selection/) | yes | nine-model paired GPU matrix, Qwen3.8 follow-up complete |
-| [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | held | v1 is thin against the 2026-08-16 campaign; v2 draft complete on evidence, 37 runs on both tasks with paired intervals, awaiting review |
+| [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | yes | 37 runs on both tasks, paired intervals on each; first of the quantization series |
 | [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | retired | headline published as `one-call-one-turn`; surviving finding moved to `the-harness-measured-itself` |
 | [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |
 | [the-model-decides-when-to-think](articles/the-model-decides-when-to-think/) | investigation | four rerunnable scripts; no article written yet |

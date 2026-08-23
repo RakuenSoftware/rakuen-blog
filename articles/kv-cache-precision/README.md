@@ -5,6 +5,11 @@
 **Not an article yet. A recorded measurement and a design for the campaign that
 would become one.**
 
+Intended as the second piece in the quantization series that begins with
+[which-quant-beats-how-many-bits](../which-quant-beats-how-many-bits/), which is
+published and which deliberately holds the key-value cache at f16 so that this
+axis stays answerable on its own.
+
 What exists is a single-point study: one model, one weight format, one context
 length, four cache configurations, extraction task only. It supports a narrow
 but real finding, recorded below. It does not support a piece about KV cache
