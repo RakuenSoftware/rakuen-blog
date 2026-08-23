@@ -47,9 +47,17 @@ try_n() {
   done
   sleep 3
 
-  local args=(-hf "$TARGET" --host 127.0.0.1 --port "$PORT" -c "$CTX"
-              -np 1 --cache-ram 1024 --no-webui --no-mmproj -ngl 99
-              -ctk "$CTK" -ctv "$CTV" -ncmoe "$n")
+  # Same repo#file handling as run_arm.sh. Without it the tuner probes a target
+  # the server cannot load and reports "does not fit" for a file that fits.
+  local args=()
+  if [ "${TARGET%%#*}" != "$TARGET" ]; then
+    args+=(-hf "${TARGET%%#*}" -hff "${TARGET#*#}")
+  else
+    args+=(-hf "$TARGET")
+  fi
+  args+=(--host 127.0.0.1 --port "$PORT" -c "$CTX"
+         -np 1 --cache-ram 1024 --no-webui --no-mmproj -ngl 99
+         -ctk "$CTK" -ctv "$CTV" -ncmoe "$n")
   if [ -n "$DRAFT" ]; then
     args+=(-hfd "$DRAFT" --spec-draft-n-max 3 --spec-draft-n-min 1
            -ctkd "$CTK" -ctvd "$CTV")

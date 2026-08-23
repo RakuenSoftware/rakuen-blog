@@ -1,150 +1,100 @@
 # Figure provenance and reporting record
 
-## In progress: the two-task quant ladder, from 2026-08-16
+Every measurement in the article comes from the 2026-08-16 campaign: 37 runs,
+seven models, one RTX 5080, each run scored on 1,001-note fact extraction and on
+a 1,000-case synthesis fixture.
 
-A campaign extending this article past its published scope is running and is
-**not yet reflected in the article body**. Nothing below the horizontal rule
-depends on it.
+The earlier draft of this article measured a different, smaller set (bit-width
+ladders on four small dense models, plus SmolLM3 and 10,000-note ladders). None
+of that is cited in the article now. Its provenance map is reachable through git
+history at this path, and its raw artifacts are retained under the shared series
+evidence base described at the end of this file.
 
-| document | contents |
+## Vendored evidence
+
+| file | contents |
 |---|---|
-| `moe-ladder-plan-2026-08-16.md` | the registered plan, written before any arm ran: the arm matrix, the publisher and availability findings that shaped it, the slow-arm rule, and why the campaign is not parallelised |
-| `moe-ladder-measurement-log-2026-08-16.md` | every defect found while executing it, what each would have corrupted, which runs were discarded, and the results standing so far with their paired intervals |
-| `campaign/` (repository root) | `arms.tsv`, the runners, the bootstrap wrapper and the bundle push, all of which are the executable form of the plan |
+| `campaign-results/arms-2026-08-22.json` | all 37 runs: extraction scores, synthesis summary, throughput distribution, VRAM and offload state, completion-token stats |
+| `campaign-results/extraction-pairs-2026-08-22.json` | 45 paired bootstrap comparisons, seed `20260809`, 20,000 replicates, one comparison per process |
+| `campaign-results/extraction-pairs-2026-08-22.raw.txt` | the scorer's own output for each of those comparisons, unparsed |
+| `campaign-results/synthesis-pairs-2026-08-22.json` | 44 paired comparisons on mean content F1, seed `20260809`, 5,000 replicates |
+| `moe-ladder-plan-2026-08-16.md` | the plan, registered before any run started |
+| `moe-ladder-measurement-log-2026-08-16.md` | eleven defects, two discarded campaigns, and what each fault would have corrupted |
 
-Raw artifacts live on the benchmark host at `/opt/campaign/results/<label>/`
-(extraction: `arm.json`, `score.json`, `pred.jsonl`, `throughput.json`,
-`device.txt`, `server.log`) and `/opt/campaign/results-synthesis/<label>/`
-(synthesis: `summary_<label>.json`, `raw_<label>.jsonl`, hardware record). They
-are not yet vendored into this repository; that happens when the campaign
-completes and the article is revised.
+Replicate counts differ by task on purpose. Each matches the published series it
+belongs to, so an interval here is comparable to earlier work on the same task
+and only roughly comparable across the two.
 
-What this campaign adds that the published article does not have: bit-width
-ladders on mixture-of-expert models and above 12B, a second task scored on the
-same arms, Q2 and Q1 rungs, QAT arms beside their non-QAT rungs at the same
-width, a KV-cache precision sweep, and same-card throughput for every rung.
+## Where each claim comes from
 
----
-
-
-Paths below are relative to the shared series evidence base at
-`articles/local-llm-fact-extraction-head-to-head/evidence/raw/`.
-
-## Bit-width ladders
-
-| comparison | artifacts |
+| claim in the article | source |
 |---|---|
-| gemma-4 E2B Q4, Q6 and Q8 | `results/v8-baseline/E2B.UD-Q{4,6,8}_K_XL.mtp.score.json` |
-| gemma-4 E4B Q4, Q6 and Q8 | `results/v8-baseline/E4B.UD-Q{4,6,8}_K_XL.mtp.score.json` |
-| SmolLM3 Q4 and Q8 | `results/newcomers-1k/SmolLM3-3B.*.score.json` |
-| LFM2.5-2.6B Q4, Q6 and Q8 | `results/lfm25-2.6b/LFM2.5-2.6B.*.score.json` |
-| 10,000-note E2B ladder, 0.6246, 0.6344, 0.6329 | `results/10k-sharded/E2B.UD-Q{4,6,8}_K_XL.10k.score.json` |
-| 10,000-note E4B ladder, 0.6301, 0.6452, 0.6337 | `results/10k-sharded/E4B.UD-Q{4,6,8}_K_XL.10k.score.json` |
+| 45 extraction comparisons, 15 separate; 44 synthesis, 10 separate | the two pair files; counted by `separates` |
+| every sub-four-bit rung against its own Q4, six rows | `extraction-pairs`, baseline `<model>.base.q4` |
+| dense mean 0.153, mixture mean 0.031, worst dense 9.5x worst mixture | computed from those six rows |
+| Qwen3.6-35B-A3B at one bit scores 0.6817 | `arms`, `qwen36-35b-a3b.base.q1.extraction.strict.f1` |
+| 12B emits 7,609 tokens per note against 958 | `arms`, `completion_tokens.median`, computed by the scorer over the 1,001 scored notes |
+| QAT Q2 minus QAT Q4: −0.4330 and −0.3341 | `extraction-pairs`, baseline `<model>.qat.q4` |
+| QAT Q2 minus non-QAT Q2: −0.3511 and −0.2982 | `extraction-pairs`, baseline `<model>.base.q2` |
+| 12B QAT Q4 separates on synthesis, +0.0088 | `synthesis-pairs`, `gemma4-12b.qat.q4` against `.base.q4` |
+| E2B 65 tokens against 520, E4B 611 against 297 | `arms`, `completion_tokens.median` for the four QAT and non-QAT Q2 runs |
+| 26B-A4B Q4 is 16,222 MiB, 600 MiB too large | `arms`, `offload` field for `gemma4-26b-a4b.base.q4` |
+| 3.3x throughput between 26B QAT Q4 and non-QAT Q4 | `arms`, `throughput.generation_tok_per_s.median`, 359.59 against 109.92 |
+| Qwen 319.6 against 39.4 tok/s, 29 layers offloaded | `arms`, same field plus `offload_mode` |
+| LFM2.5-8B-A1B 510.5, 433.2, 364.9, 66.9 | `arms`, same field across its four widths |
+| five separations at four bits and above | `extraction-pairs`, filtered to rungs Q4 and up |
+| 26B and Qwen Q8 minus Q4 nulls | `extraction-pairs` |
+| synthesis moves 0.004 where extraction moves 0.036 | 12B Q2 rows in each pair file |
 
-The 10k ladder figures were corrected on 2026-08-11. The article previously gave
-the E4B ladder as 0.6324, 0.6450 and 0.6321, which are the **quarantined**
-`--cache-ram 8192` originals under
-`results/10k-sharded/quarantine/E4B-10k-cacheram8192-20260804T0041Z/`. Those arms
-were re-taken at `--cache-ram 1024` so both families share one results-affecting
-cache value, and only the re-taken runs carry a ladder comparison. The quarantined
-files are retained, not deleted; `MEASUREMENT_LOG.md` records the re-run and its
-per-arm deltas of −0.0023, +0.0002 and +0.0016. The direction of the finding is
-unchanged: both ladders peak at Q6.
+`campaign/check_article_intervals.py` enforces the table above for intervals: it
+fails if the article prints a 95% range that no pair file reports, in either
+direction. Figures are generated from the same evidence by
+`campaign/build_figures.py` and installed by `campaign/install_figures.py`, so a
+chart cannot state a number the bootstrap did not produce.
 
-All four gemma quants come from the matched `results/v8-baseline/` campaign. An
-earlier version of this map paired Q6 and Q8 from `v8-baseline` against Q4 from
-`results/v5-rerun-gguf/`. Those are different run campaigns and do not carry a
-quant verdict; `quant-clarification-2026-08-09.md` records the correction and
-the superseded pairing is retained there.
+## Single-sourced and out-of-campaign
 
-All paired ranges were produced by `harness/harness/bootstrap_ci.py`, resampling
-notes with seed `20260809` and 20,000 replicates, one comparison per process. The
-scorer draws the individual-run and paired intervals from one random stream, so a
-third `--pred` argument moves a paired endpoint even at the same seed; the
-one-pair-per-invocation values in `quant-clarification-2026-08-09.md` are the
-published ones. The LFM inverse-ladder claim was withdrawn after its range crossed
-zero.
+- **The earlier E4B six-bit result**, +0.0245 [+0.0091, +0.0405], is the one
+  interval in the article not produced by this campaign. It comes from the
+  earlier draft's ladder on different hardware and is cited as independent
+  reproduction of the current +0.0235 [+0.0068, +0.0403]. It is exempted by name
+  in `check_article_intervals.py`.
+- **One bit was measured once**, on Qwen3.6-35B-A3B, the only model in the set
+  publishing a one-bit build.
+- **The architecture comparison rests on six points**, three dense and three
+  mixture, and gemma-4 12B dominates the dense mean.
+- **Offloaded throughput figures are lower bounds.** All six expert-offload runs
+  used memory mapping against llama.cpp's load-time warning. This costs speed
+  only, so the direction of the capacity finding is safe and its magnitudes are
+  upper bounds on the cost.
+- **Completion-token medians come from the scorer**, over the 1,001 scored
+  notes. The server log counts requests instead, which includes warm-ups and
+  retries and gives a different median; the two must not be mixed.
+- **Two runs predated the throughput instrumentation.** `lfm25-2.6b` at Q4 and Q6
+  carried only a single warmed probe in `arm.json`; both distributions were
+  recovered from their retained server logs by `campaign/throughput.py`, 1,003
+  samples each.
 
-All five rows were recomputed from the prediction files on 2026-08-11 and
-reproduce exactly, including both `significant` verdicts. That recomputation was
-only possible after the pinned scorer ontology under
-`articles/local-llm-fact-extraction-head-to-head/evidence/src/` was restored; see
-that folder's README for why the pin is version-specific.
+## Shared series artifacts
 
-## QAT and packing
+Raw artifacts for the whole series live under
+`articles/local-llm-fact-extraction-head-to-head/evidence/raw/`:
 
-| figure | artifact |
+| directory | contents |
 |---|---|
-| E2B and E4B QAT pairs | `results/qat-vs-ud/*.score.json` |
-| 12B QAT and non-QAT | `results/vast/gemma-4-12B-it.qat-UD-Q4_K_XL.live.score.json`; `results/ct140/gemma-4-12B-it.UD-Q4_K_XL.5080.score.json` |
-| 31B QAT and non-QAT | `results/ct140/gemma-4-31B-it.qat-UD-Q4_K_XL.xtx.score.json`; `results/vast/gemma-4-31B-it.UD-Q4_K_XL.live.score.json` |
-| 26B unsloth dynamic and google q4_0 | `results/ct140/gemma-4-26B-A4B.qat-unsloth-UDQ4.5080.score.json`; `results/vast/gemma-4-26B-A4B.qat-google-q4_0.mtp.live.score.json` |
-| 12B same-host speed probe | `results/ct140/qat_speed.log`; supporting acceptance counters in the matching prediction files |
-| speculative acceptance table | the six prediction files mapped in `articles/speculative-decoding-was-free/evidence/figures.md` |
-| model file and resident-memory sizes | server startup logs and `ARTICLE_NOTES.md`; several sizes are single-sourced because no dedicated size artifact was retained |
+| `results/` | every prediction file, score file and run log produced by the benchmark |
+| `corpus/` | corpus v5, the gold sets at 1,001, 3,002 and 10,000 notes |
+| `harness/` | the runner, scorer, bootstrap and orchestration scripts |
+| `ARTICLE_NOTES.md` | the running findings ledger |
+| `MEASUREMENT_LOG.md` | the defect log, including every withdrawn claim |
 
-## The 31B same-card rerun, completed 2026-08-12
+Campaign raw artifacts remain on the benchmark host at
+`/opt/campaign/results/<label>/` and `/opt/campaign/results-synthesis/<label>/`.
+What the article depends on is vendored above; the host copies are the fuller
+record, including server logs.
 
-| figure | artifact |
-|---|---|
-| 31B QAT 0.6867 at 3,002 notes | `results/mid3k-rerun-20260811/gemma-4-31B-it.qat.mid3k.score.json` |
-| 31B non-QAT 0.6857 at 3,002 notes | `results/mid3k-rerun-20260811/gemma-4-31B-it.nonqat.mid3k.score.json` |
-| +0.0009, −0.0064 to +0.0085, indistinguishable | recomputed with seed `20260809`, the seed every other interval in the series uses |
+## Reporting record
 
-Both halves on one RX 7900 XTX, 3,002 notes, concurrency 1, speculation active on
-every row. `results/mid3k-rerun-20260811/PROVENANCE.md` carries the full
-collection record, the artifact integrity checks and the registered prediction
-quoted verbatim.
-
-The registered prediction called the half-width and missed the effect. It said
-0.0072 and the run gave 0.0073, conditional on the point estimate holding, and
-the point estimate fell from +0.0108 to +0.0009. The condition was stated in
-advance, which is what makes the answer clean rather than arguable.
-
-This supersedes the 1,001-note 31B row, which paired CT140 against a rented host.
-That row is kept in the article beside the new one because the comparison between
-them is the finding: the difference was mostly the hardware.
-
-## The 12B half was never completed
-
-`harness/harness/mid3k_pairs.sh` registers a 12B pair on the 5080. It has no
-prediction or score file anywhere on this machine, searched 2026-08-12.
-
-Its log under `results/mid3k/` records two `START` lines four seconds apart, at
-10:55:09Z and 10:55:13Z on 2026-08-10, from two overlapping launcher invocations
-that would have contended for port 8300 and the card. After that, nothing: no
-`DONE`, no `FAIL`, no stop reason.
-
-Stated precisely, it is not a run that was attempted and failed to finish. It is
-a run started twice and abandoned without recording an outcome. Nothing here
-supersedes the 12B row.
-
-`results/mid3k/` holds those launch logs and is left untouched. The similarly
-named `results/qat-mid-3k/` is an earlier, completed E2B/E4B prediction set used
-by the reasoning and subset analyses.
-
-## Reporting inventory and disposition
-
-- **Five bit-width comparisons:** kept. Two clear their paired range, SmolLM3
-  Q8-over-Q4 and gemma-4-E4B Q6-over-Q8, and they point opposite ways on width.
-  The gemma Q4 rows were repaired to their matched `v8-baseline` runs; the four
-  interval endpoints that moved under one-pair-per-process scoring were updated
-  with them, and no verdict changed side of zero.
-- **Eight historical E2B signs:** kept as a sign test with shared-lineage
-  dependence stated against it.
-- **Four QAT size comparisons:** kept. Only E2B supports an accuracy benefit.
-- **26B packing comparison:** kept but downgraded from a recommendation because
-  the pair crossed hardware and the calibration bound nearly covers its lower
-  edge.
-- **Same-host 12B throughput probe:** kept. The tensor-type explanation remains
-  unverified.
-- **Floor correction:** kept. Failed rows bound the possible repair below the
-  experiment's noise.
-- **31B same-card rerun:** completed 2026-08-12 and supersedes the 1,001-note
-  cross-machine row. The QAT difference at 31B is indistinguishable from zero
-  once both halves run on one card.
-- **12B same-card rerun and the second corpus:** remain open and are not
-  described as completed evidence.
-
-No interview or external benchmark carries a material conclusion. Model identities
-and parameter counts come from the recorded run configuration.
+This article reports first-party measurement only. There are no external sources,
+interviews or vendor claims in it, so there is no right-of-reply obligation
+outstanding.

@@ -25,12 +25,12 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ART = ROOT / "articles/which-quant-beats-how-many-bits/article/which-quant-beats-how-many-bits.v2-draft.md"
+ART = ROOT / "articles/which-quant-beats-how-many-bits/article/which-quant-beats-how-many-bits.md"
 EVID = ROOT / "articles/which-quant-beats-how-many-bits/evidence/campaign-results"
 
 # Intervals that are deliberately not from this campaign's pair sweep.
 ALLOWED_FOREIGN = {
-    (0.0091, 0.0405): "v1 of this article, different hardware and campaign",
+    (0.0091, 0.0405): "earlier campaign, different hardware; not from this sweep",
 }
 
 INTERVAL = re.compile(r"\[\s*([+-]?\d*\.\d+)\s*,\s*([+-]?\d*\.\d+)\s*\]")

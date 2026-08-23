@@ -3,7 +3,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7626,
+      "mean": 4975.1,
+      "median": 7609
+    },
     "draft": "unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -247,7 +251,18 @@
     "offload": "vram 5986MiB vs weights 4445MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 1,
+      "in_seed_ontology": 0.99,
+      "json_parse_ok": 304,
+      "json_parse_rate": 0.3037,
+      "malformed_facts": 2,
+      "notes": 1001,
+      "predicted_triples": 201,
+      "schema_ok": 921,
+      "schema_rate": 0.9201
+    },
     "server_rss_mib": 1495,
     "speculation": true,
     "synthesis": {
@@ -406,7 +421,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7623,
+      "mean": 1740.2,
+      "median": 958
+    },
     "draft": "unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -650,7 +669,18 @@
     "offload": "vram 8566MiB vs weights 7025MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 0,
+      "in_seed_ontology": 0.8861,
+      "json_parse_ok": 903,
+      "json_parse_rate": 0.9021,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 1027,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 1613,
     "speculation": true,
     "synthesis": {
@@ -809,7 +839,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7624,
+      "mean": 1668.3,
+      "median": 976
+    },
     "draft": "unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -1053,7 +1087,18 @@
     "offload": "vram 11730MiB vs weights 10190MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 0,
+      "in_seed_ontology": 0.8976,
+      "json_parse_ok": 931,
+      "json_parse_rate": 0.9301,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 1094,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 1975,
     "speculation": true,
     "synthesis": {
@@ -1212,7 +1257,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7622,
+      "mean": 1540.8,
+      "median": 933
+    },
     "draft": "unsloth/gemma-4-12b-it-GGUF:MTP/mtp-gemma-4-12b-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -1456,7 +1505,18 @@
     "offload": "vram 14546MiB vs weights 13005MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 0,
+      "in_seed_ontology": 0.8976,
+      "json_parse_ok": 948,
+      "json_parse_rate": 0.9471,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 1103,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 1982,
     "speculation": true,
     "synthesis": {
@@ -1615,7 +1675,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7622,
+      "mean": 1570.2,
+      "median": 895
+    },
     "draft": "unsloth/gemma-4-12B-it-qat-GGUF:MTP/mtp-gemma-4-12B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -1859,7 +1923,18 @@
     "offload": "vram 7744MiB vs weights 6405MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 3,
+      "in_seed_ontology": 0.8948,
+      "json_parse_ok": 930,
+      "json_parse_rate": 0.9291,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 1027,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 1365,
     "speculation": true,
     "synthesis": {
@@ -2018,7 +2093,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7621,
+      "mean": 1871.5,
+      "median": 988
+    },
     "draft": "unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -2262,7 +2341,18 @@
     "offload": "vram 11416MiB vs weights 10058MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 4,
+      "in_seed_ontology": 0.8662,
+      "json_parse_ok": 920,
+      "json_parse_rate": 0.9191,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 942,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 1452,
     "speculation": true,
     "synthesis": {
@@ -2421,7 +2511,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7624,
+      "mean": 1422.8,
+      "median": 851
+    },
     "draft": "unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -2665,7 +2759,18 @@
     "offload": "vram 14166MiB vs weights 16222MiB",
     "offload_mode": "moe-experts-on-cpu-first-8-layers",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 7,
+      "in_seed_ontology": 0.8749,
+      "json_parse_ok": 977,
+      "json_parse_rate": 0.976,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 1023,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 5791,
     "speculation": true,
     "synthesis": {
@@ -2824,7 +2929,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7622,
+      "mean": 1469.7,
+      "median": 917
+    },
     "draft": "unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -3068,7 +3177,18 @@
     "offload": "vram 14102MiB vs weights 22216MiB",
     "offload_mode": "moe-experts-on-cpu-first-15-layers",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 10,
+      "in_seed_ontology": 0.8514,
+      "json_parse_ok": 987,
+      "json_parse_rate": 0.986,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 1077,
+      "schema_ok": 1000,
+      "schema_rate": 0.999
+    },
     "server_rss_mib": 12365,
     "speculation": true,
     "synthesis": {
@@ -3227,7 +3347,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7622,
+      "mean": 1490.5,
+      "median": 900
+    },
     "draft": "unsloth/gemma-4-26B-A4B-it-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -3471,7 +3595,18 @@
     "offload": "vram 13516MiB vs weights 26355MiB",
     "offload_mode": "moe-experts-on-cpu-first-19-layers",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 6,
+      "in_seed_ontology": 0.8528,
+      "json_parse_ok": 983,
+      "json_parse_rate": 0.982,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 1060,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 17449,
     "speculation": true,
     "synthesis": {
@@ -3630,7 +3765,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7623,
+      "mean": 1529.0,
+      "median": 825
+    },
     "draft": "unsloth/gemma-4-26B-A4B-it-qat-GGUF:MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -3874,7 +4013,18 @@
     "offload": "vram 14746MiB vs weights 13588MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 4,
+      "in_seed_ontology": 0.9017,
+      "json_parse_ok": 958,
+      "json_parse_rate": 0.957,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 966,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 1233,
     "speculation": true,
     "synthesis": {
@@ -4033,7 +4183,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 1369,
+      "mean": 533.6,
+      "median": 514
+    },
     "draft": "unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -4277,7 +4431,18 @@
     "offload": "vram 4984MiB vs weights 8879MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 1,
+      "in_seed_ontology": 0.9707,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 13,
+      "notes": 1001,
+      "predicted_triples": 921,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 6030,
     "speculation": true,
     "synthesis": {
@@ -4436,7 +4601,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 1331,
+      "mean": 526.4,
+      "median": 520
+    },
     "draft": "unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -4680,7 +4849,18 @@
     "offload": "vram 1618MiB vs weights 2292MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 74,
+      "in_seed_ontology": 0.9376,
+      "json_parse_ok": 987,
+      "json_parse_rate": 0.986,
+      "malformed_facts": 22,
+      "notes": 1001,
+      "predicted_triples": 898,
+      "schema_ok": 989,
+      "schema_rate": 0.988
+    },
     "server_rss_mib": 2255,
     "speculation": true,
     "synthesis": {
@@ -4839,7 +5019,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 1343,
+      "mean": 486.9,
+      "median": 464
+    },
     "draft": "unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -5083,7 +5267,18 @@
     "offload": "vram 2082MiB vs weights 3036MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 5,
+      "in_seed_ontology": 0.9795,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 9,
+      "notes": 1001,
+      "predicted_triples": 926,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 2575,
     "speculation": true,
     "synthesis": {
@@ -5242,7 +5437,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 1150,
+      "mean": 515.9,
+      "median": 506
+    },
     "draft": "unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -5486,7 +5685,18 @@
     "offload": "vram 2698MiB vs weights 4491MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 8,
+      "in_seed_ontology": 0.9785,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 12,
+      "notes": 1001,
+      "predicted_triples": 929,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 3567,
     "speculation": true,
     "synthesis": {
@@ -5645,7 +5855,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 1234,
+      "mean": 519.9,
+      "median": 503
+    },
     "draft": "unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -5889,7 +6103,18 @@
     "offload": "vram 3244MiB vs weights 5038MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 5,
+      "in_seed_ontology": 0.974,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 13,
+      "notes": 1001,
+      "predicted_triples": 922,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 3567,
     "speculation": true,
     "synthesis": {
@@ -6048,7 +6273,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7611,
+      "mean": 87.3,
+      "median": 65
+    },
     "draft": "unsloth/gemma-4-E2B-it-qat-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -6292,7 +6521,18 @@
     "offload": "vram 960MiB vs weights 2084MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 279,
+      "in_seed_ontology": 0.3383,
+      "json_parse_ok": 997,
+      "json_parse_rate": 0.996,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 1005,
+      "schema_ok": 997,
+      "schema_rate": 0.996
+    },
     "server_rss_mib": 2823,
     "speculation": true,
     "synthesis": {
@@ -6451,7 +6691,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 1526,
+      "mean": 483.9,
+      "median": 465
+    },
     "draft": "unsloth/gemma-4-E2B-it-qat-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -6695,7 +6939,18 @@
     "offload": "vram 1788MiB vs weights 2498MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 22,
+      "in_seed_ontology": 0.9338,
+      "json_parse_ok": 986,
+      "json_parse_rate": 0.985,
+      "malformed_facts": 6,
+      "notes": 1001,
+      "predicted_triples": 937,
+      "schema_ok": 986,
+      "schema_rate": 0.985
+    },
     "server_rss_mib": 2198,
     "speculation": true,
     "synthesis": {
@@ -6854,7 +7109,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 1161,
+      "mean": 376.3,
+      "median": 352
+    },
     "draft": "unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -7098,7 +7357,18 @@
     "offload": "vram 9664MiB vs weights 14355MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 17,
+      "in_seed_ontology": 0.8701,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 12,
+      "notes": 1001,
+      "predicted_triples": 993,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 7442,
     "speculation": true,
     "synthesis": {
@@ -7257,7 +7527,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 1725,
+      "mean": 332.0,
+      "median": 297
+    },
     "draft": "unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -7501,7 +7775,18 @@
     "offload": "vram 2758MiB vs weights 3583MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 12,
+      "in_seed_ontology": 0.9013,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 6,
+      "notes": 1001,
+      "predicted_triples": 851,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 2657,
     "speculation": true,
     "synthesis": {
@@ -7660,7 +7945,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 1083,
+      "mean": 378.0,
+      "median": 369
+    },
     "draft": "unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -7904,7 +8193,18 @@
     "offload": "vram 3726MiB vs weights 4888MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 8,
+      "in_seed_ontology": 0.8811,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 14,
+      "notes": 1001,
+      "predicted_triples": 1009,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 3075,
     "speculation": true,
     "synthesis": {
@@ -8063,7 +8363,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 1047,
+      "mean": 319.6,
+      "median": 324
+    },
     "draft": "unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -8307,7 +8611,18 @@
     "offload": "vram 4942MiB vs weights 7112MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 60,
+      "in_seed_ontology": 0.8803,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 6,
+      "notes": 1001,
+      "predicted_triples": 994,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 4321,
     "speculation": true,
     "synthesis": {
@@ -8466,7 +8781,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 1242,
+      "mean": 376.2,
+      "median": 351
+    },
     "draft": "unsloth/gemma-4-E4B-it-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -8710,7 +9029,18 @@
     "offload": "vram 6138MiB vs weights 8307MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 20,
+      "in_seed_ontology": 0.8729,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 10,
+      "notes": 1001,
+      "predicted_triples": 1007,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 4320,
     "speculation": true,
     "synthesis": {
@@ -8869,7 +9199,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7608,
+      "mean": 664.1,
+      "median": 611
+    },
     "draft": "unsloth/gemma-4-E4B-it-qat-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -9113,7 +9447,18 @@
     "offload": "vram 2860MiB vs weights 3070MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 75,
+      "in_seed_ontology": 0.6031,
+      "json_parse_ok": 787,
+      "json_parse_rate": 0.7862,
+      "malformed_facts": 1,
+      "notes": 1001,
+      "predicted_triples": 650,
+      "schema_ok": 788,
+      "schema_rate": 0.7872
+    },
     "server_rss_mib": 1595,
     "speculation": true,
     "synthesis": {
@@ -9272,7 +9617,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 1206,
+      "mean": 412.7,
+      "median": 400
+    },
     "draft": "unsloth/gemma-4-E4B-it-qat-GGUF:MTP/mtp-gemma-4-E4B-it-Q8_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -9516,7 +9865,18 @@
     "offload": "vram 3156MiB vs weights 4020MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 38,
+      "in_seed_ontology": 0.8826,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 13,
+      "notes": 1001,
+      "predicted_triples": 1031,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 2601,
     "speculation": true,
     "synthesis": {
@@ -9675,7 +10035,11 @@
     "architecture": "dense",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7626,
+      "mean": 1280.3,
+      "median": 1018
+    },
     "draft": null,
     "extraction": {
       "alias_folding": true,
@@ -9919,7 +10283,18 @@
     "offload": "vram 5660MiB vs weights 5152MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 9,
+      "in_seed_ontology": 0.8988,
+      "json_parse_ok": 1000,
+      "json_parse_rate": 0.999,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 998,
+      "schema_ok": 996,
+      "schema_rate": 0.995
+    },
     "server_rss_mib": 979,
     "speculation": false,
     "synthesis": {
@@ -10078,7 +10453,11 @@
     "architecture": "dense",
     "cache_type_k": null,
     "cache_type_v": null,
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7041,
+      "mean": 1329.8,
+      "median": 1037
+    },
     "draft": null,
     "extraction": {
       "alias_folding": true,
@@ -10322,7 +10701,18 @@
     "offload": "vram 2104MiB vs weights 1596MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 11,
+      "in_seed_ontology": 0.8935,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 5,
+      "notes": 1001,
+      "predicted_triples": 948,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 674,
     "speculation": false,
     "synthesis": {
@@ -10481,7 +10871,11 @@
     "architecture": "dense",
     "cache_type_k": null,
     "cache_type_v": null,
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 6713,
+      "mean": 1360.6,
+      "median": 1028
+    },
     "draft": null,
     "extraction": {
       "alias_folding": true,
@@ -10725,7 +11119,18 @@
     "offload": "vram 2626MiB vs weights 2118MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 6,
+      "in_seed_ontology": 0.9029,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 4,
+      "notes": 1001,
+      "predicted_triples": 968,
+      "schema_ok": 992,
+      "schema_rate": 0.991
+    },
     "server_rss_mib": 676,
     "speculation": false,
     "synthesis": {
@@ -10884,7 +11289,11 @@
     "architecture": "dense",
     "cache_type_k": null,
     "cache_type_v": null,
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 5980,
+      "mean": 1322.9,
+      "median": 1000
+    },
     "draft": null,
     "extraction": {
       "alias_folding": true,
@@ -11128,7 +11537,18 @@
     "offload": "vram 3248MiB vs weights 2741MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 5,
+      "in_seed_ontology": 0.8968,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 1,
+      "notes": 1001,
+      "predicted_triples": 1008,
+      "schema_ok": 999,
+      "schema_rate": 0.998
+    },
     "server_rss_mib": 737,
     "speculation": false,
     "synthesis": {
@@ -11287,7 +11707,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 3460,
+      "mean": 801.2,
+      "median": 690
+    },
     "draft": null,
     "extraction": {
       "alias_folding": true,
@@ -11531,7 +11955,18 @@
     "offload": "vram 14142MiB vs weights 16162MiB",
     "offload_mode": "moe-experts-on-cpu-first-6-layers",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 351,
+      "in_seed_ontology": 0.7988,
+      "json_parse_ok": 992,
+      "json_parse_rate": 0.991,
+      "malformed_facts": 21,
+      "notes": 1001,
+      "predicted_triples": 805,
+      "schema_ok": 992,
+      "schema_rate": 0.991
+    },
     "server_rss_mib": 13837,
     "speculation": false,
     "synthesis": {
@@ -11690,7 +12125,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7461,
+      "mean": 822.7,
+      "median": 675
+    },
     "draft": null,
     "extraction": {
       "alias_folding": true,
@@ -11934,7 +12373,18 @@
     "offload": "vram 5372MiB vs weights 4916MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 303,
+      "in_seed_ontology": 0.8242,
+      "json_parse_ok": 977,
+      "json_parse_rate": 0.976,
+      "malformed_facts": 20,
+      "notes": 1001,
+      "predicted_triples": 711,
+      "schema_ok": 977,
+      "schema_rate": 0.976
+    },
     "server_rss_mib": 695,
     "speculation": false,
     "synthesis": {
@@ -12093,7 +12543,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 3743,
+      "mean": 842.7,
+      "median": 725
+    },
     "draft": null,
     "extraction": {
       "alias_folding": true,
@@ -12337,7 +12791,18 @@
     "offload": "vram 7092MiB vs weights 6637MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 214,
+      "in_seed_ontology": 0.8199,
+      "json_parse_ok": 990,
+      "json_parse_rate": 0.989,
+      "malformed_facts": 22,
+      "notes": 1001,
+      "predicted_triples": 794,
+      "schema_ok": 989,
+      "schema_rate": 0.988
+    },
     "server_rss_mib": 697,
     "speculation": false,
     "synthesis": {
@@ -12496,7 +12961,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7622,
+      "mean": 833.9,
+      "median": 709
+    },
     "draft": null,
     "extraction": {
       "alias_folding": true,
@@ -12740,7 +13209,18 @@
     "offload": "vram 9048MiB vs weights 8592MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 336,
+      "in_seed_ontology": 0.8081,
+      "json_parse_ok": 994,
+      "json_parse_rate": 0.993,
+      "malformed_facts": 26,
+      "notes": 1001,
+      "predicted_triples": 813,
+      "schema_ok": 996,
+      "schema_rate": 0.995
+    },
     "server_rss_mib": 757,
     "speculation": false,
     "synthesis": {
@@ -12899,7 +13379,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7648,
+      "mean": 1475.7,
+      "median": 1207
+    },
     "draft": "ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -13143,7 +13627,18 @@
     "offload": "vram 10918MiB vs weights 9582MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 47,
+      "in_seed_ontology": 0.8867,
+      "json_parse_ok": 952,
+      "json_parse_rate": 0.951,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 980,
+      "schema_ok": 992,
+      "schema_rate": 0.991
+    },
     "server_rss_mib": 1224,
     "speculation": true,
     "synthesis": {
@@ -13302,7 +13797,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 7644,
+      "mean": 1237.6,
+      "median": 1206
+    },
     "draft": "ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -13546,7 +14045,18 @@
     "offload": "vram 12996MiB vs weights 11721MiB",
     "offload_mode": "full-gpu",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 13,
+      "in_seed_ontology": 0.8696,
+      "json_parse_ok": 998,
+      "json_parse_rate": 0.997,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 997,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 1284,
     "speculation": true,
     "synthesis": {
@@ -13705,7 +14215,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 3380,
+      "mean": 1131.9,
+      "median": 1121
+    },
     "draft": "ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -13949,7 +14463,18 @@
     "offload": "vram 13806MiB vs weights 21324MiB",
     "offload_mode": "moe-experts-on-cpu-first-19-layers",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 16,
+      "in_seed_ontology": 0.8762,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 1,
+      "notes": 1001,
+      "predicted_triples": 977,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 11103,
     "speculation": true,
     "synthesis": {
@@ -14108,7 +14633,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 3603,
+      "mean": 1132.3,
+      "median": 1130
+    },
     "draft": "ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -14352,7 +14881,18 @@
     "offload": "vram 13840MiB vs weights 30368MiB",
     "offload_mode": "moe-experts-on-cpu-first-26-layers",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 12,
+      "in_seed_ontology": 0.8792,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 0,
+      "notes": 1001,
+      "predicted_triples": 985,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 20570,
     "speculation": true,
     "synthesis": {
@@ -14511,7 +15051,11 @@
     "architecture": "moe",
     "cache_type_k": "f16",
     "cache_type_v": "f16",
-    "completion_tokens": null,
+    "completion_tokens": {
+      "max": 3203,
+      "mean": 1160.6,
+      "median": 1165
+    },
     "draft": "ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf",
     "extraction": {
       "alias_folding": true,
@@ -14755,7 +15299,18 @@
     "offload": "vram 13872MiB vs weights 36669MiB",
     "offload_mode": "moe-experts-on-cpu-first-29-layers",
     "outcome": "COMPLETE",
-    "output_health": null,
+    "output_health": {
+      "catch_all_relations": 0,
+      "dropped_by_conf_floor": 18,
+      "in_seed_ontology": 0.8873,
+      "json_parse_ok": 1001,
+      "json_parse_rate": 1.0,
+      "malformed_facts": 1,
+      "notes": 1001,
+      "predicted_triples": 967,
+      "schema_ok": 1001,
+      "schema_rate": 1.0
+    },
     "server_rss_mib": 26978,
     "speculation": true,
     "synthesis": {
