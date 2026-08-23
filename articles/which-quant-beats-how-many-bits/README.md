@@ -4,10 +4,14 @@ A one-bit 35B mixture-of-experts loses four points; a two-bit 12B dense model lo
 
 ## Status
 
-Held pending review. Not a publication candidate and this README does not claim
-otherwise, so `tools/publish.py` does not offer it and the voice gate's default
-sweep does not discover it. It passes that gate when pointed at it directly, or
-by slug.
+Published. Live at
+[rakuensoftware.com/blog/which-quant-beats-how-many-bits](https://rakuensoftware.com/blog/which-quant-beats-how-many-bits).
+The decision is the entry in `articles/PUBLISHED`; this line records it rather
+than making it.
+
+First of a series measuring quantization on one card. This piece varies weight
+width and holds the key-value cache at f16; the cache is its own axis and is
+recorded separately under `articles/kv-cache-precision/`.
 
 An earlier draft of this article, at the same path and reachable through git
 history, was gated and provenance-complete on 2026-08-09 and rested on too

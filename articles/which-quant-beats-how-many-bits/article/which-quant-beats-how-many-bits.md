@@ -4,7 +4,6 @@ date: 2026-08-22
 author: Rakuen Software
 tags: [quantization, local-models, benchmarks, aimee]
 excerpt: "Thirty-seven runs, seven models, two tasks, one RTX 5080. Thirty of forty-five accuracy comparisons did not separate. The ones that did are almost all below four bits, where dense models pay roughly five times what mixtures pay and a quantization-aware build is the worst thing you can touch. Speed moved far more than accuracy, and it moved on whether the file fit."
-draft: true
 ---
 
 *Rakuen builds aimee, the system measured here. Every figure below is traceable
@@ -22,6 +21,11 @@ that resolved anywhere in the campaign is **0.038**.
 
 Bit width mostly did not decide accuracy. It decided two things: what happens to
 a dense model below four bits, and how fast the model runs.
+
+This is the first of a series measuring quantization on one card. It varies the
+weights and holds the key-value cache fixed at f16 throughout, because the cache
+is a separate axis and mixing the two would leave neither answerable. That axis
+is measured on its own and is where the series goes next.
 
 ## System under test
 
