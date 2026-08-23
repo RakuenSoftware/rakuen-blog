@@ -165,27 +165,6 @@ SRV_ARGS+=(--host 127.0.0.1 --port "$PORT" -c "$CTX"
           -np 1 --cache-ram 1024 --no-webui --no-mmproj -ngl 99
           -ctk "$CTK" -ctv "$CTV")
 
-# REASONING=off adds --reasoning off. Default is unset, which leaves every run
-# in this repository's published campaigns byte-for-byte as it was measured.
-#
-# WHY IT IS OPT-IN. The synthesis controller has always forced reasoning off,
-# because a model that reasons past its token budget records finish_reason
-# length with empty content and that reads as a bad model rather than a bad
-# flag. Extraction never needed it: gemma emits a median of 958 tokens a note,
-# LFM 1,037, and Qwen3.6-35B-A3B 1,121 at a parse rate of 1.0, so none of them
-# were reasoning at length.
-#
-# Qwen3.5-9B is the first model here that does. Asked for one note's triples it
-# runs to the 8,000-token cap; with --reasoning off the same request answers in
-# 108. That is 74x the work for the same answer, and at 1,001 notes it is the
-# difference between forty minutes and ten hours.
-#
-# It is opt-in rather than default because turning it on globally would silently
-# change what a re-run of any published arm measures.
-if [ "${REASONING:-}" = "off" ]; then
-  SRV_ARGS+=(--reasoning off)
-fi
-
 OFFLOAD_MODE=full-gpu
 if [ "$ARCH" = "moe" ]; then
   FITS=$(python3 -c "print(1 if float('${EST_GIB:-0}') <= float('$VRAM_BUDGET_GIB') else 0)")

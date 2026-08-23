@@ -94,7 +94,3 @@ order	label	model	train	width	target	draft	est_gib	ctk	ctv
 45	lfm25-2.6b.base.nvfp4	lfm25-2.6b	base	nvfp4	WhiskyAKM/LFM2.5-2.6B-NVFP4-GGUF#lfm2.5-2.6b-nvfp4.gguf	-	1.6	f16	f16
 46	qwen36-35b-a3b.base.nvfp4	qwen36-35b-a3b	base	nvfp4	FreedomAISVR/Qwen3.6-35B-A3B-NVFP4-GGUF#qwen3.6-35b-a3b-nvfp4.gguf	ggml-org/Qwen3.6-35B-A3B-GGUF:mtp-Qwen3.6-35B-A3B-Q4_0.gguf	18.4	f16	f16
 47	gemma4-e2b.qat.nvfp4-whisky	gemma4-e2b	qat	nvfp4	WhiskyAKM/Gemma-4-E2B-it-qat-NVFP4-GGUF#gemma-4-E2B-it-qat-nvfp4.gguf	unsloth/gemma-4-E2B-it-GGUF:MTP/mtp-gemma-4-E2B-it-Q8_0.gguf	3.2	f16	f16
-48	qwen35-9b.base.q4	qwen35-9b	base	q4	unsloth/Qwen3.5-9B-GGUF:UD-Q4_K_XL	-	5.6	f16	f16
-49	ornith10-9b.base.q4	ornith10-9b	base	q4	unsloth/Ornith-1.0-9B-GGUF:UD-Q4_K_XL	-	5.6	f16	f16
-50	ornith15-9b.base.q4	ornith15-9b	base	q4	ornith-ai/Ornith-1.5-9B-GGUF#Ornith-1.5-9B-Q4_K_M.gguf	-	5.3	f16	f16
-51	ornith15-35b-a3b.base.q4	ornith15-35b-a3b	base	q4	ornith-ai/Ornith-1.5-35B-A3B-GGUF#Ornith-1.5-35B-Q4_K_M.gguf	-	20.3	f16	f16
