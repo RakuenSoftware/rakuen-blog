@@ -113,8 +113,8 @@ per run, under 2% spread:
 | Qwen3.6 35B-A3B | 324.0 | 319.6 | 85.2 | 50.7 | 39.4 | not run |
 
 Within a model that stays on the card, throughput tracks byte count. LFM2.5-2.6B
-is the clean case: weights grow 1,596 to 2,118 to 2,741 MiB and throughput falls
-372.3 to 302.5 to 252.2, tracking to within 8%.
+is the clean case: its weights grow 1,596 to 2,118 to 2,741 MiB across Q4 to Q8
+and its row above falls in step, tracking to within 8%.
 
 That regularity holds only while the model fits, and the two largest mixtures
 break it. Both rows fall off a cliff between Q2 and Q4, in the wrong direction
@@ -127,14 +127,20 @@ is **600 MiB too large**, so some experts compute on the CPU, and throughput
 differs by **3.3x** from the QAT build that fits. Accuracy between them is
 indistinguishable.
 
-LFM2.5-8B-A1B shows the same break on a small model. It falls gently from 510.5
-to 364.9 across Q4 to Q8, all card-resident, then drops to 66.9 at BF16 when six
-layers of experts move off. That last step is 5.5x, against 1.4x for the three
-steps before it combined.
+LFM2.5-8B-A1B shows the same break on a small model. Its Q4 to Q8 rungs are all
+card-resident and fall gently, then BF16 spills six layers of experts off the
+card. That last step costs **5.5x**, against 1.4x for the three before it
+combined.
 
-QAT is faster at four bits on every model that publishes it: 564.9 against 479.0
-on E2B, 418.9 against 341.7 on E4B, 257.1 against 213.1 on the 12B, and 359.6
-against 109.9 on the 26B where it is also the difference between fitting and not.
+QAT is faster at four bits on every model that publishes it, and on the 26B it
+is also the difference between fitting and not:
+
+| model | non-QAT Q4 | QAT Q4 |
+|---|---:|---:|
+| gemma-4 E2B | 479.0 | 564.9 |
+| gemma-4 E4B | 341.7 | 418.9 |
+| gemma-4 12B | 213.1 | 257.1 |
+| gemma-4 26B-A4B | 109.9 | 359.6 |
 
 On a fixed card the useful question is not which bit width is most accurate. It
 is which bit width still fits.
@@ -142,7 +148,8 @@ is which bit width still fits.
 ## Four bits and up: five of thirty separate, and they disagree
 
 Pairing every rung against every other gives thirty comparisons at four bits and
-above, across seven ladders. Five separate, none by much:
+above, across seven ladders. Five separate, none by much, and the two largest
+models are shown underneath them for contrast:
 
 | comparison | delta | 95% range |
 |---|---:|---|
@@ -151,15 +158,14 @@ above, across seven ladders. Five separate, none by much:
 | gemma-4 E4B, BF16 − Q6 | −0.0242 | [−0.0409, −0.0080] |
 | gemma-4 E4B, Q8 − Q6 | −0.0235 | [−0.0403, −0.0068] |
 | gemma-4 E4B, Q6 − Q4 | +0.0210 | [+0.0034, +0.0386] |
+| gemma-4 26B-A4B, Q8 − Q4 | −0.0028 | [−0.0170, +0.0115] |
+| Qwen3.6 35B-A3B, Q8 − Q4 | +0.0061 | [−0.0084, +0.0210] |
 
 They also disagree. gemma-4 E4B peaks at six bits, beating Q4, Q8 and full
-precision, and it is the best-established result here: an earlier campaign on
-different hardware measured the same pair at +0.0245 [+0.0091, +0.0405].
+precision, which makes it the best-established result here: an earlier campaign
+on different hardware measured the same pair at +0.0245 [+0.0091, +0.0405].
 LFM2.5-8B-A1B improves with width, and its dense sibling LFM2.5-2.6B gets worse
 with width, same publisher and same quant family.
-
-On the two largest models nothing separates: 26B-A4B Q8 minus Q4 is −0.0028
-[−0.0170, +0.0115], Qwen Q8 minus Q4 is +0.0061 [−0.0084, +0.0210].
 
 Full precision bought nothing measurable. BF16 beat no model's best quantized
 rung and on E4B it lost, but three of those four comparisons are nulls and the
