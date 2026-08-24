@@ -1,0 +1,55 @@
+{
+  "name": "Long-Session Coherence 100",
+  "version": 1,
+  "generator": "generate_corpus.py",
+  "conversation_count": 100,
+  "probes_per_conversation": 20,
+  "probe_count": 2000,
+  "nominal_context_targets": [
+    4096,
+    8192,
+    16384,
+    32768,
+    65536
+  ],
+  "domain_counts": {
+    "customer_support": 10,
+    "data_migration": 10,
+    "editorial": 10,
+    "event_planning": 10,
+    "incident_response": 10,
+    "procurement": 10,
+    "research_synthesis": 10,
+    "software_release": 10,
+    "travel_planning": 10,
+    "worldbuilding": 10
+  },
+  "probe_type_counts": {
+    "commitment": 167,
+    "contradiction": 166,
+    "current_state": 167,
+    "decision": 166,
+    "entity_continuity": 167,
+    "missing_information": 166,
+    "revision": 500,
+    "standing_instruction": 167,
+    "task_continuation": 167,
+    "withdrawal": 167
+  },
+  "checkpoint_probe_counts": {
+    "4096": 400,
+    "8192": 400,
+    "16384": 400,
+    "32768": 400,
+    "65536": 400
+  },
+  "corpus_file": "conversations.jsonl",
+  "corpus_bytes": 29326884,
+  "corpus_sha256": "b5209427dcf58b78ca4d295f2f6a7bab4ec85ed61fe74d0806f3820f5bc8c0d3",
+  "scoring": {
+    "incomplete": "50 * consecutive_passes / 20",
+    "complete": 100,
+    "corpus": "50 * full_completion_rate + 50 * mean_survival_fraction",
+    "fully_coherent_requires": "100 of 100 conversations completed"
+  }
+}

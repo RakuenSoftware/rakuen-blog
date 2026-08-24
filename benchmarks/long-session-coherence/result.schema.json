@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rakuensoftware.com/schemas/lsc-100-result-v1.json",
+  "title": "LSC-100 probe result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["conversation_id", "probe_id", "response"],
+  "properties": {
+    "conversation_id": {"type": "string", "pattern": "^LSC-[0-9]{3}$"},
+    "probe_id": {"type": "string", "pattern": "^P[0-9]{3}$"},
+    "response": {"type": ["string", "null"]},
+    "prompt_tokens": {"type": "integer", "minimum": 0},
+    "completion_tokens": {"type": "integer", "minimum": 0},
+    "prompt_eval_tokens_per_second": {"type": "number", "exclusiveMinimum": 0},
+    "decode_tokens_per_second": {"type": "number", "exclusiveMinimum": 0},
+    "ttft_ms": {"type": "number", "minimum": 0},
+    "truncated": {"type": "boolean"},
+    "error": {"type": ["string", "null"]}
+  }
+}
+
