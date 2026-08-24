@@ -78,10 +78,8 @@ nothing well-understood will do.
 None of which is imposed on anyone. The rule across the system is almost
 unlimited customisation over sensible, boring defaults, and the defaults are
 the half we are opinionated about. The store, the embedder, the model, the
-thresholds in the next article: all of them move. What the defaults buy is that
-somebody who changes nothing still gets a system whose failures have names, and
-the third article covers why changing them does not cost the guarantees the
-other two rest on.
+thresholds: all of them move. What the defaults buy is that somebody who
+changes nothing still gets a system whose failures have names.
 
 All of it answers to one goal, and the series makes more sense with that stated
 plainly at the front: an AI system that is auditable, governable, and will not
@@ -189,8 +187,10 @@ to hear only one of them.
 
 ## Six loops, and what each one was observed doing on a real stack
 
-The stack: `aimee-kb` and `aimee-server` on PostgreSQL 17, with every granted
-module attached, 7 on the KB and 17 on the server. Same order as above.
+The stack: one `aimee-kb` and one `aimee-server` on PostgreSQL 17, with every
+granted module attached, 7 on the KB and 17 on the server. A deployment runs one
+shared KB behind many per-user servers; a single pair is what the loops were
+measured against. Same order as above.
 
 - **The eval suite.** Two independent failed jobs sharing a prompt collapsed to
   one quarantined candidate and one admitted task file. A second scan left the
@@ -217,15 +217,48 @@ learning loops, 13 and 0 for module liveness. Both are proved against the bug.
 Deleting the KB registration turns them red at 25 of 28 and 9 of 13, and the
 failures are the original symptom.
 
+## No unit test could have caught it
+
 That last sentence is doing more work than it looks. Turning these on meant
 standing both services up on a real database, because the unit suite could not
 be trusted for it, and four pieces turned out to have been placed where they
-could not reach their own data. One of them answered `200` to every signal it
-refused. No unit test could have caught any of them, because every test
-registers its own provider and so can never observe that production does not.
-The [architecture
-piece](https://rakuensoftware.com/blog/everything-crosses-one-transport) covers
-that class of defect and the check that now catches it.
+could not reach their own data. The two halves are not symmetrical: `aimee-kb`
+is the control plane and is shared, one knowledge base behind every enrolled
+user, while an `aimee-server` belongs to a single user and is where that user's
+work runs. The boundary between them is enforced by the compiler rather than by
+convention, and code can land on the side that cannot reach the data it needs.
+
+One was worse than the rest. The learning router's signal classifier was
+registered in the daemon and not in the KB, so signal capture through the KB
+refused every signal while the route answered 200:
+
+```
+WARN  learning: signal classification unavailable; refusing signal type=mark_rule
+POST /v1/actions/learning.propose_signal -> 200
+      {"status":"error","message":"failed to record learning signal"}
+```
+
+No unit test could have caught it. Every test registers its own provider, so a
+test that supplies the pointer it is about to exercise can never observe that
+production does not supply it. That is a property of the test itself, which is
+why more of them would not help.
+
+A lint check now derives, for every seam an adapter registers, which daemons
+build the file owning the pointer, and demands a registration in each. It
+carries its own unit tests in the same target so it cannot pass vacuously, one
+of which deletes the real registration line and asserts the check reports it.
+It exits non-zero when zero seam and daemon pairs resolve, which is how a guard
+quietly stops guarding.
+
+The same wall exists on the database side. The unit suite runs against an
+in-memory sqlite shim, and sqlite accepts SQL that Postgres rejects, which is
+how a two-hop neighbour query that Postgres treats as a syntax error survived
+with tests passing over it.
+
+If your system builds one source tree into more than one binary, a registered
+function pointer is a deployment fact, so derive the check from what actually
+builds. And any gate that can be absent needs three answers, because a gate
+that cannot say `unavailable` will say `open`, which the next section is about.
 
 ## Endogeneity accounting gates the loop feeding on its own output
 
@@ -249,8 +282,8 @@ able to tell a measured control from an absent one.
 
 ## Memory is what self-learning is made of
 
-This is the load-bearing claim, and it is easy to state weakly. The weak
-version is that the loops need somewhere durable to write, so memory is a
+This is the claim the article stands on, and it is easy to state weakly. The
+weak version is that the loops need somewhere durable to write, so memory is a
 prerequisite. That is true and it is not the point.
 
 The point is that there is no separate thing called learning that uses memory
@@ -292,7 +325,7 @@ it backwards.
 A self-learning loop is not difficult to design. Read the failed jobs, dedupe
 on a signature, write a task file, admit it to the suite. Run an arm with a
 capability removed and compare. Write down what you tried and read it back next
-time. Each of those is an afternoon's honest thinking and then ordinary work.
+time. Each of those is an afternoon's thinking and then ordinary work.
 The six in this release came out of one proposal.
 
 Getting the memory right was the bad part, and the genuinely hard piece inside
@@ -339,8 +372,8 @@ and a deliberate one. If it is not measured it is not known. Two conditions
 come with it.
 
 A benchmark has to show what a part does to the system and not only what it
-does on its own, because only the first tells you whether the part earns its
-place. And it has to accurately reflect the thing it claims to be measuring,
+does on its own, because only the first tells you whether the part is worth
+keeping. And it has to accurately reflect the thing it claims to be measuring,
 which is harder than it sounds and is what several of these articles are about
 on their own. A number that is precise about the wrong workload is worse than
 no number, because it gets believed.
@@ -355,56 +388,11 @@ What a corpus has to look like [before any of the numbers mean
 anything](https://rakuensoftware.com/blog/the-corpus-is-the-experiment). A
 reranker we [measured and
 deleted](https://rakuensoftware.com/blog/we-measured-our-reranker-and-deleted-it)
-once it stopped earning its place. Not one of those articles is about learning,
+once it stopped paying for itself. Not one of those articles is about learning,
 and all of them are about whether what reaches the model is any good.
 
 That campaign is what turned the memory from something to hope about into
 something to build on.
-
-## No unit test could have caught it
-
-One thing that went wrong shipping this is worth the space, because of what it
-says about where the tests were not looking.
-
-The control plane and the execution half run as two services, which is [the
-third article's
-subject](https://rakuensoftware.com/blog/everything-crosses-one-transport). That
-boundary is enforced by the compiler rather than by convention, and it produces
-its own failure mode: code can be placed on the side that cannot reach its own
-data. Four pieces of this work had landed that way, and one of them was worse.
-The learning router's signal classifier was registered in the daemon and not in
-the KB, so signal capture through the KB refused every signal while the route
-answered 200:
-
-```
-WARN  learning: signal classification unavailable; refusing signal type=mark_rule
-POST /v1/actions/learning.propose_signal -> 200
-      {"status":"error","message":"failed to record learning signal"}
-```
-
-No unit test could have caught it. Every test registers its own provider, so a
-test that supplies the pointer it is about to exercise can never observe that
-production does not supply it. That is a property of the test itself, which is
-why more of them would not help.
-
-A lint check now derives, for every seam an adapter registers, which daemons
-build the file owning the pointer, and demands a registration in each. It
-carries its own unit tests in the same target so it cannot pass vacuously, one
-of which deletes the real registration line and asserts the check reports it.
-It exits non-zero when zero seam and daemon pairs resolve, which is how a guard
-quietly stops guarding.
-
-The same wall exists on the database side. The unit suite runs against an
-in-memory sqlite shim, and sqlite accepts SQL that Postgres rejects, which is
-how a two-hop neighbour query that Postgres treats as a syntax error survived
-with tests passing over it.
-
-The general lesson is the one worth taking away. If your system builds one
-source tree into more than one binary, a registered function pointer is a
-deployment fact, so derive the check from what actually builds. And any gate
-that can be absent needs three answers, because a gate that cannot say
-`unavailable` will say `open`. The endogeneity gate reports it for exactly that
-reason.
 
 ## Learning like this has to live in the harness
 
@@ -480,7 +468,7 @@ confirmed that. Aimee's model-neutrality is measured elsewhere in this series,
 on extraction and synthesis, and that is a different claim about a different
 subsystem.
 
-## Two loops answered honestly
+## Two loops came back with nothing, which is the answer
 
 The backlog probe resolved nothing, because the seeded gaps really are
 uncovered. Leaving them open is the right answer and it means that pass has not
@@ -502,7 +490,7 @@ they are not part of what the measurements above cover.
 If you are building the same thing, the useful part of this is the order, and
 it is not the interesting order. Isolation first, then an audit record that
 cannot be switched off, then memory good enough to be worth writing to, and the
-loops last. Six of them came out of one proposal and each was an afternoon of
-honest thinking. Everything underneath them took the rest of the release. Build
+loops last. Six of them came out of one proposal and each was an afternoon.
+Everything underneath them took the rest of the release. Build
 it the other way round and the loops will work, right up until one of them
 learns something you cannot trace, revert, or switch off.

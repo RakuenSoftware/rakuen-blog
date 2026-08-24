@@ -29,7 +29,7 @@ own severity, so it carries no incentive an artifact would need to check. A
 vast.ai billing line could be produced and would corroborate a figure nobody has
 reason to dispute.
 
-No date is given because none is load-bearing. The claim is that this happened
+No date is given because nothing turns on one. The claim is that this happened
 during testing, before the 0.4.0 isolation work, which the article states.
 
 The model is unspecified deliberately. Nothing about the account depends on
@@ -73,6 +73,7 @@ Nothing above is a vector-search measurement.
 | figure in article | source | note |
 |---|---|---|
 | 7 modules on the KB, 17 on the server | `PROD`, `PR` | every module each daemon is granted and has a binary for |
+| one shared `aimee-kb` behind many per-user `aimee-server` instances; the loops were measured against a single pair | author, corroborated by `docs/DEPLOYMENT.md` and `docs/SECURITY.md` on `testing` | **Corrected 2026-08-24.** Earlier drafts described the two services without their multiplicity, which reads as one-for-one. DEPLOYMENT.md: "Server and one KB are declared together... The one-KB Compose files are deployment profiles, not the fleet limit." SECURITY.md carries per-user write grants and KB-signed user identity. Shared with part three |
 | second scan left the observation count at 2 | `S0S1` | seeded `agent_jobs` with two failures and one control |
 | `no_rescue` costing 1.000 over 3 paired tasks; `no_retry` no measured effect | `S2S6` | seeded ablation grid |
 | `resolved 0 of 5 considered (budget 5)` | `PROD` | |

@@ -73,7 +73,7 @@ contend for. Every client here has its own private queue pair, mapped into its
 own address space, and cannot see or map anyone else's. Nothing is shared and
 nothing contends.
 
-What it is, described honestly, is a broker-mediated message router whose
+What it is, described plainly, is a broker-mediated message router whose
 transport medium is shared-memory ring buffers. The host is the part that
 matters: it moves frames between clients, orders them, and routes them by
 pattern under credit-based flow control. Shared memory is how frames move. The
@@ -486,9 +486,9 @@ pointed at this problem: the system reduces its own need to reach out by
 remembering what reaching out told it. Security boundaries usually age the other
 way, with the needs growing while the restriction stays where it was put.
 
-The measurement campaign in the first article is load-bearing here for the same
-reason. If recall is thin or wrong, this design is a cage around a model that
-cannot do its job, and the honest response would be to open the network back
+The measurement campaign in the first article is what this rests on, for the
+same reason. If recall is thin or wrong, this design is a cage around a model
+that cannot do its job, and the honest response would be to open the network back
 up.
 
 The verification is what stops this being a Docker flag. Every start and resume
@@ -687,8 +687,8 @@ kind that was lost. An event held for a producer that has since died is emitted
 as `producer_reaped` **to the tap only**, because there is nowhere left to
 deliver it and the loss is recorded anyway. Even the degenerate case has a
 backstop: if the reserve carved out for control events is itself full, a sticky
-`control_lost` flag is set. The comment in the routing code is the honest
-summary of the intent, and it is the design rule for the whole file: never
+`control_lost` flag is set. The comment in the routing code is the summary of
+the intent, and it is the design rule for the whole file: never
 silently.
 
 In 0.4.0 metrics and logging run directly off that tap, and the record goes
@@ -768,6 +768,12 @@ memory, the graph, the gates, the policy and the WORM evidence chain, and it is
 built against DB2, the shared PostgreSQL store. `aimee-server` is where work
 happens. The daemon builds with `-DAIMEE_DB2_DISABLED`.
 
+They are not deployed one for one, and the asymmetry matters for everything
+below. One KB stands behind every enrolled user. A server belongs to a single
+user and holds that user's work and that user's machine. So the two halves are
+not two copies of a similar risk: the execution half is many small blast radii,
+one per user, and the control plane is one large one.
+
 Control plane and execution on separate processes is a standard shape. What
 falls out of it here is the part worth pointing at.
 
@@ -817,8 +823,8 @@ The capabilities are split the other way too, and that is what makes neither
 half worth taking on its own.
 
 `aimee-server` is the half that can act, and what it can act on is the machine
-it runs on. Compromise it and the blast radius is that host: not the estate,
-and it stops there.
+it runs on. Compromise it and the blast radius is that host and that user: not
+the estate, not anybody else's work, and it stops there.
 
 The control plane is where everything worth having lives, and it is not inert.
 It authenticates, it answers OIDC, it makes authorization decisions, it curates
@@ -886,19 +892,21 @@ The boundary is real in the other direction too, and enforced by the compiler
 and not by convention, which produces its own failure mode: code can be placed
 on the side that cannot reach its own data. Four pieces of the self-learning
 work had landed that way, and the [first
-article](https://rakuensoftware.com/blog/aimee-recursive-self-learning) carries what that
-cost and the check that catches it now. That is the bill for the split and it is
-worth paying. A boundary strong enough that two halves can check each other is
-strong enough to strand code on the wrong side of it, and a boundary that could
-not do the first would not have done the second either. What it buys is that no
-single process holds both the activity and the record of it.
+article](https://rakuensoftware.com/blog/aimee-recursive-self-learning) carries
+what that cost and the check that catches it now. That is the bill for the
+split and it is worth paying. A boundary strong enough that two halves can
+check each other is strong enough to strand code on the wrong side of it, and a
+boundary that could not do the first would not have done the second either.
+What it buys is that no single process holds both the activity and the record
+of it.
 
-Line those up and see what each compromise actually yields. Take the server and
-you get one machine and an agent that has forgotten everything, still narrating
-into a service you do not hold. Take the control plane and you get the memory,
-the ledger, an auth surface, a read-only git key, and whatever plugins the
-operator chose to install there. What you do not get is a way to make anything
-happen that nobody asked for, because you cannot reach out from there. Neither
-of those is an agent. Assembling one means holding both at once, keeping their
+Line those up and see what each compromise actually yields. Take a server and
+you get one user's machine and an agent that has forgotten everything, still
+narrating into a service you do not hold. Take the control plane and you get
+every enrolled user's memory, the ledger, an auth surface, a read-only git key,
+and whatever plugins the operator chose to install there. That is the bigger
+prize by a distance. What you do not get is a way to make anything happen that
+nobody asked for, because you cannot reach out from there. Neither of those is
+an agent. Assembling one means holding both at once, keeping their
 stories consistent with each other, and keeping both consistent with whatever
 left the building before you arrived.
