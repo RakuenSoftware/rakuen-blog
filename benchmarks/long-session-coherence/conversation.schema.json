@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rakuensoftware.com/schemas/lsc-100-conversation-v1.json",
+  "title": "LSC-100 conversation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "version", "domain", "title", "tracks", "system_prompt",
+    "nominal_context_targets", "turns", "state_events", "probes"
+  ],
+  "properties": {
+    "id": {"type": "string", "pattern": "^LSC-[0-9]{3}$"},
+    "version": {"const": 1},
+    "domain": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "tracks": {"const": ["fixed_replay", "live_session"]},
+    "system_prompt": {"type": "string", "minLength": 1},
+    "nominal_context_targets": {
+      "const": [4096, 8192, 16384, 32768, 65536]
+    },
+    "turns": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "role", "kind", "content"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^T[0-9]{4}$"},
+          "role": {"enum": ["user", "assistant"]},
+          "kind": {"enum": ["state", "work_log", "canonical"]},
+          "content": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "state_events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "action", "value", "turn_id", "phase"],
+        "properties": {
+          "key": {"type": "string", "minLength": 1},
+          "action": {"enum": ["set", "unset"]},
+          "value": {"type": ["string", "null"]},
+          "turn_id": {"type": "string", "pattern": "^T[0-9]{4}$"},
+          "phase": {"type": "integer", "minimum": 1, "maximum": 5}
+        }
+      }
+    },
+    "probes": {
+      "type": "array",
+      "minItems": 20,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id", "ordinal", "checkpoint_tokens", "after_turn_id",
+          "estimated_context_tokens", "type", "prompt", "gold"
+        ],
+        "properties": {
+          "id": {"type": "string", "pattern": "^P[0-9]{3}$"},
+          "ordinal": {"type": "integer", "minimum": 1, "maximum": 20},
+          "checkpoint_tokens": {"enum": [4096, 8192, 16384, 32768, 65536]},
+          "after_turn_id": {"type": "string", "pattern": "^T[0-9]{4}$"},
+          "estimated_context_tokens": {"type": "integer", "minimum": 3584},
+          "type": {
+            "enum": [
+              "commitment", "contradiction", "current_state", "decision",
+              "entity_continuity", "missing_information", "revision",
+              "standing_instruction", "task_continuation", "withdrawal"
+            ]
+          },
+          "prompt": {"type": "string", "minLength": 1},
+          "gold": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "state_key", "accepted_answers", "required_evidence_turn_ids",
+              "forbidden_answers"
+            ],
+            "properties": {
+              "state_key": {"type": ["string", "null"]},
+              "accepted_answers": {
+                "type": "array",
+                "minItems": 1,
+                "items": {"type": "string"}
+              },
+              "required_evidence_turn_ids": {
+                "type": "array",
+                "maxItems": 1,
+                "items": {"type": "string", "pattern": "^T[0-9]{4}$"}
+              },
+              "forbidden_answers": {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
