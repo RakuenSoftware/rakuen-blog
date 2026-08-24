@@ -1,0 +1,118 @@
+{
+  "language_set": "eurobert-15",
+  "languages": [
+    "en",
+    "fr",
+    "de",
+    "es",
+    "zh",
+    "it",
+    "ru",
+    "pl",
+    "pt",
+    "ja",
+    "vi",
+    "nl",
+    "ar",
+    "tr",
+    "hi"
+  ],
+  "multilingual_pool": "data/multilingual.jsonl",
+  "multilingual_pool_sha256": "f9ee7a98b1d4a58d712787fc7c4c432fff74abe63d8150c4615d548cfca4602d",
+  "schema_version": 1,
+  "tiers": [
+    {
+      "languages": {
+        "en": 1001
+      },
+      "name": "gold_1k",
+      "rows": 1001,
+      "sha256": "fdf68b3ac661002cf158c79a43b0875f5eb6977b184d7290409738813986da14",
+      "source": "../../articles/local-llm-fact-extraction-head-to-head/evidence/raw/corpus/data/corpora/v5/gold_small.jsonl"
+    },
+    {
+      "languages": {
+        "ar": 71,
+        "de": 72,
+        "en": 1001,
+        "es": 72,
+        "fr": 72,
+        "hi": 71,
+        "it": 72,
+        "ja": 71,
+        "nl": 71,
+        "pl": 71,
+        "pt": 71,
+        "ru": 71,
+        "tr": 71,
+        "vi": 71,
+        "zh": 72
+      },
+      "name": "gold_2k",
+      "rows": 2000,
+      "sha256": "6ce4e300e878658d91f9b4393ddf1087e59e42bb5a440b60d84ca720ca9d00e5"
+    },
+    {
+      "languages": {
+        "en": 3002
+      },
+      "name": "gold_3k",
+      "rows": 3002,
+      "sha256": "2b1a46cf55f6aac86b8b09a93db4488b3c1a0bafcb53bd756e0afad674821863",
+      "source": "../../articles/local-llm-fact-extraction-head-to-head/evidence/raw/corpus/data/corpora/v5/gold_mid.jsonl"
+    },
+    {
+      "languages": {
+        "ar": 142,
+        "de": 143,
+        "en": 3002,
+        "es": 143,
+        "fr": 143,
+        "hi": 142,
+        "it": 143,
+        "ja": 143,
+        "nl": 142,
+        "pl": 143,
+        "pt": 143,
+        "ru": 143,
+        "tr": 142,
+        "vi": 143,
+        "zh": 143
+      },
+      "name": "gold_5k",
+      "rows": 5000,
+      "sha256": "e8c6e55a767bcc4cd9d185d5425dd16799713c8261875e36afdef3f5bbe9e581"
+    },
+    {
+      "languages": {
+        "en": 10000
+      },
+      "name": "gold_10k",
+      "rows": 10000,
+      "sha256": "406d9e3bc08e4714eeafa8dd6877cf011554a2a4db2eb1b91997f1c39638d97f",
+      "source": "../../articles/local-llm-fact-extraction-head-to-head/evidence/raw/corpus/data/corpora/v5/gold_large.jsonl"
+    },
+    {
+      "languages": {
+        "ar": 714,
+        "de": 715,
+        "en": 10000,
+        "es": 715,
+        "fr": 715,
+        "hi": 714,
+        "it": 714,
+        "ja": 714,
+        "nl": 714,
+        "pl": 714,
+        "pt": 714,
+        "ru": 714,
+        "tr": 714,
+        "vi": 714,
+        "zh": 715
+      },
+      "name": "gold_20k",
+      "rows": 20000,
+      "sha256": "2db27bf208631130386e9d3893eafa8427c0145f3906341dd521394fd54a993f"
+    }
+  ]
+}
