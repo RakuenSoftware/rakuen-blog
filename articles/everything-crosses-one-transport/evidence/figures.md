@@ -69,10 +69,18 @@ folder. All paths read from `testing` on 2026-08-24.
 **Corrected 2026-08-24.** The article described `aimee-kb` and `aimee-server` as
 a split without saying how many of each a deployment runs, which reads as one
 for one. One KB stands behind every enrolled user; a server belongs to a single
-user. That asymmetry is what makes the blast-radius comparison mean anything:
-compromising a server reaches one user's machine, and compromising the control
-plane reaches every enrolled user's memory. The article now says so where the
-split is introduced and again in the tally.
+user. The article now says so where the split is introduced and again in the
+tally.
+
+**Breadth is not capability, and an earlier revision of this correction
+conflated them.** It called the control plane "one large blast radius", which
+contradicts the article's own argument that the control plane cannot initiate,
+cannot execute and cannot reach out. The two halves are asymmetric on two axes
+that do not line up: the server is narrow in reach and is the half that can
+act; the control plane is broad in reach and cannot act. A compromised control
+plane reaches every enrolled user's memory and can lie about it, which is the
+same limit the article already states for a compromised memory module, at a
+larger scale. It is not a capability to make anything happen.
 
 Source: the author, corroborated by `docs/DEPLOYMENT.md` on `testing` ("Server
 and one KB are declared together", "The one-KB Compose files are deployment

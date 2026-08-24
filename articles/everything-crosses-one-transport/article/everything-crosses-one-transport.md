@@ -768,11 +768,13 @@ memory, the graph, the gates, the policy and the WORM evidence chain, and it is
 built against DB2, the shared PostgreSQL store. `aimee-server` is where work
 happens. The daemon builds with `-DAIMEE_DB2_DISABLED`.
 
-They are not deployed one for one, and the asymmetry matters for everything
-below. One KB stands behind every enrolled user. A server belongs to a single
-user and holds that user's work and that user's machine. So the two halves are
-not two copies of a similar risk: the execution half is many small blast radii,
-one per user, and the control plane is one large one.
+They are not deployed one for one. One KB stands behind every enrolled user,
+and a server belongs to a single user and holds that user's work and that
+user's machine. The two halves are asymmetric on two axes, and the axes do not
+line up: the server is narrow in reach and is the half that can act, while the
+control plane is broad in reach and cannot act at all. Keep those apart when
+reading what follows. Breadth is not the same as capability, and the whole
+arrangement is built so that the half with one does not have the other.
 
 Control plane and execution on separate processes is a standard shape. What
 falls out of it here is the part worth pointing at.
@@ -904,9 +906,10 @@ Line those up and see what each compromise actually yields. Take a server and
 you get one user's machine and an agent that has forgotten everything, still
 narrating into a service you do not hold. Take the control plane and you get
 every enrolled user's memory, the ledger, an auth surface, a read-only git key,
-and whatever plugins the operator chose to install there. That is the bigger
-prize by a distance. What you do not get is a way to make anything happen that
-nobody asked for, because you cannot reach out from there. Neither of those is
-an agent. Assembling one means holding both at once, keeping their
+and whatever plugins the operator chose to install there. What you do not get
+is a way to make anything happen that nobody asked for, because you cannot
+reach out from there. It is the compromised memory module again at the scale of
+everyone: the worst of it is telling people something false about what they
+remembered, and a lie is still the extent of it. Neither of those is an agent. Assembling one means holding both at once, keeping their
 stories consistent with each other, and keeping both consistent with whatever
 left the building before you arrived.
