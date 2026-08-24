@@ -5,7 +5,7 @@ Every figure in
 and where it came from.
 
 Part three of three. The self-learning article is
-`articles/aimee-learning-is-on/`; the memory article is the second. Figures
+`articles/aimee-recursive-self-learning/`; the memory article is the second. Figures
 shared with those pieces are noted here and in theirs, so a number is not
 recorded twice as if independently sourced.
 
@@ -37,7 +37,7 @@ folder. All paths read from `testing` on 2026-08-24.
 | the cost stacks: one request crosses the transport many times, so per-hop cost is multiplied by hop count | author | the article names memory, the recall gate, the confidence band and governance as example hops. **No hop-count distribution is measured or published**, and none is claimed; the argument is about the shape rather than a figure |
 | the alternatives examined had significant tail latency, from collectors, slow-path syscalls, lock contention, allocation and scheduling | author | characterisation of an investigation, not a published benchmark. **No named system's tail behaviour is measured or cited**, and the article names no candidate in this passage |
 | a tail crossed once is survivable; a tail crossed many times per operation is not, because the chance of catching one rises with hop count | author | reasoning about the shape, not a measured distribution |
-| the committed ceiling is the promise; the observed number is evidence the promise is kept | `BASE`, `GATE` | the baseline file commits `ceiling_ns` and enforces it at merge; `observed_ns` is recorded alongside. The article's framing of which is load-bearing follows the file's own stated philosophy |
+| the committed ceiling is the promise; the observed number is evidence the promise is kept | `BASE`, `GATE` | the baseline file commits `ceiling_ns` and enforces it at merge; `observed_ns` is recorded alongside. The article's framing of which number carries the promise follows the file's own stated philosophy |
 | a conventional transport or ordinary IPC, at microseconds per hop, would not sustain a coherent system at that multiplier | author | comparative claim about transport classes, not a benchmark against any named implementation. No competing system is measured or named |
 | audit row publish 82 ns to the caller | `BASE` | `audit_bus_emit`, excluding the ledger write, which moves off the caller's thread |
 | ceilings of 2,000 ns and 5,000 ns, enforced as a merge gate | `BASE`, `GATE` | the gate builds and runs the benchmark and fails over the ceiling |
@@ -63,6 +63,34 @@ folder. All paths read from `testing` on 2026-08-24.
 | event kinds are carved from a module's principal ref as `4096 + ref*256 + stage` | `MODS` | |
 | a retired principal ref is never reissued | `MODS` | `retired_principal_refs` |
 | four pieces of the self-learning work placed where they could not reach their own data | `PROD`, `PR` | **shared** with part one, which carries the detail, the run log and the lint check. Moved there on 2026-08-24: this article states the split's cost and points to it. The rows this record previously carried for the incident moved with the prose |
+
+### The two-service multiplicity
+
+**Corrected 2026-08-24.** The article described `aimee-kb` and `aimee-server` as
+a split without saying how many of each a deployment runs, which reads as one
+for one. One KB stands behind every enrolled user; a server belongs to a single
+user. The article now says so where the split is introduced and again in the
+tally.
+
+**Breadth is not capability, and an earlier revision of this correction
+conflated them.** It called the control plane "one large blast radius", which
+contradicts the article's own argument that the control plane cannot initiate,
+cannot execute and cannot reach out. The two halves are asymmetric on two axes
+that do not line up: the server is narrow in reach and is the half that can
+act; the control plane is broad in reach and cannot act. A compromised control
+plane reaches every enrolled user's memory and can hand back memory that is
+wrong. That is the limit the article already states for a compromised memory
+module. It is not a capability to make anything happen.
+
+Source: the author, corroborated by `docs/DEPLOYMENT.md` on `testing` ("Server
+and one KB are declared together", "The one-KB Compose files are deployment
+profiles, not the fleet limit", and `KB_FLEET.md` for routing among several KB
+containers, which is not integrated in this checkout) and by `docs/SECURITY.md`,
+which carries per-user write grants and KB-signed user identity. Shared with
+part one.
+
+**No claim is made here about how many users one KB serves in practice**, and no
+deployment is measured. The claim is the shape, not a capacity figure.
 
 ## Author's statements, not documents
 
@@ -263,7 +291,7 @@ has been attempted against a live deployment, and no consumer configuration is
 specified or assumed. With no retaining consumer configured, this argument buys
 nothing — which is exactly what the runbook warns operators about.
 
-**The dependency argument** is the load-bearing half and it is checkable.
+**The dependency argument** is the half that carries the claim, and it is checkable.
 `aimee-server` builds with `-DAIMEE_DB2_DISABLED`, so memory, typed facts, the
 learning ledger, the endogeneity gate and the evidence chain are all KB-side and
 reachable only by request (`AIMEE_KB_API_URL`). This is the same boundary that
@@ -396,7 +424,7 @@ enforces event kinds at routing, not the module.
 from the design, not a red-team result, and nothing here has been through a
 third-party security review.
 
-The stated limit is load-bearing and should survive editing, and the article
+The stated limit does real work and should survive editing, and the article
 draws it along a specific line: a compromised module can **lie**, because
 answering is what it was granted to do, but it has no **access** outside its
 grant to compound the lie with. The claim is that compromise confers no

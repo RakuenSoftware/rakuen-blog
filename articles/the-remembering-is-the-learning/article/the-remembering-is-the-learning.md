@@ -8,7 +8,7 @@ excerpt: "A fact is born into a class, climbs to durable by being confirmed, exp
 ---
 
 *Rakuen builds aimee, the system written about here. Second of three: the
-[self-learning loops](https://rakuensoftware.com/blog/aimee-learning-is-on)
+[self-learning loops](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
 come first, the
 [architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
 third. Source read from `testing` on 24 August 2026; figures are traced in the
@@ -358,7 +358,7 @@ understood. The documentation is extensive and mostly written by people who
 were not selling anything. When it misbehaves, the shape of the misbehaviour
 has a name and a mailing list thread from 2015.
 
-The honest version of the reason is that the people who wrote aimee are the
+The real reason is that the people who wrote aimee are the
 people who get woken up by it, and we would rather be woken up by a mechanism
 we understand than by a faster one we do not. That is a judgement about which
 risk to carry, and if your operational situation is different then so is the
