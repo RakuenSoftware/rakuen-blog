@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "language_set": "eurobert-15",
+  "multilingual_pool": "data/multilingual.jsonl",
+  "output_dir": "generated/v1",
+  "tiers": [
+    {
+      "name": "2k",
+      "target_count": 2000,
+      "english_path": "../../articles/local-llm-fact-extraction-head-to-head/evidence/raw/corpus/data/corpora/v5/gold_small.jsonl",
+      "english_output": "gold_1k.jsonl",
+      "expanded_output": "gold_2k.jsonl"
+    },
+    {
+      "name": "5k",
+      "target_count": 5000,
+      "english_path": "../../articles/local-llm-fact-extraction-head-to-head/evidence/raw/corpus/data/corpora/v5/gold_mid.jsonl",
+      "english_output": "gold_3k.jsonl",
+      "expanded_output": "gold_5k.jsonl"
+    },
+    {
+      "name": "20k",
+      "target_count": 20000,
+      "english_path": "../../articles/local-llm-fact-extraction-head-to-head/evidence/raw/corpus/data/corpora/v5/gold_large.jsonl",
+      "english_output": "gold_10k.jsonl",
+      "expanded_output": "gold_20k.jsonl"
+    }
+  ]
+}
