@@ -15,6 +15,23 @@ packaged server binary rather than exposing its implementation source.
 
 Draft, 2026-08-20. Not publication-ready. One blocker remains, below.
 
+**Partly superseded, 2026-08-24.** The aimee mechanism sections were carried
+into [`the-remembering-is-the-learning`](../the-remembering-is-the-learning/),
+part two of the 0.4.0 series, re-verified against `testing` on 2026-08-24 and
+extended with material this article predates. That article makes no comparative
+claim and does not replace anything below.
+
+What is still only here, and is not superseded: the static source audit of
+sixteen repositories at pinned commits, the three raw collection artifacts, the
+editorial inventory, the per-claim source map, and the comparative thesis about
+authority on the default recall path.
+
+**Decided, 2026-08-24: the fourteen-project comparison stays unpublished.** It
+is not retired, and this folder, its evidence and its raw artifacts stay in
+place per `articles/AGENTS.md`. The right-of-reply blocker below is the reason
+it does not publish, and it travels with the comparison. Reopening the decision
+means completing right of reply first.
+
 ## Evidence
 
 No runtime measurement and no performance or accuracy claim about any system.
