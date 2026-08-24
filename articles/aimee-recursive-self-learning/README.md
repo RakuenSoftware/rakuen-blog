@@ -65,9 +65,10 @@ the two strong claims with what would settle them.
   0.4.0 release, so the reads already recorded are reads of 0.4.0 and there is no
   separate tag to pin to. The lint and suite counts the article carries are the
   latest.
-- **Temporal learning paths** are default-off today and intended default-on at
-  release. That is the one forward-looking claim in the piece, and it is a
-  statement about a future default rather than about a pin, so it stands as an
-  open item.
+- ~~Temporal learning paths are default-off today and intended default-on at
+  release.~~ **Closed, 2026-08-24.** PR #2841 promoted them to default-on after
+  the benchmark review the proposal required, so the piece's one forward-looking
+  claim is now a shipped fact. The loop figures predate the flip and the article
+  says so.
 - Keep the compressed containment summary consistent with part three if either
   changes.

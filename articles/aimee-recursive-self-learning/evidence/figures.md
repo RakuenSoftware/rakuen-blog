@@ -48,7 +48,7 @@ omission to look like discretion.
 | `PR` | PR #2835, merged to `testing` as `877e994c2f` | 2026-08-24 |
 | `ENDO` | `src/modules/learning/learning_endogeneity.c` on `testing` | read 2026-08-24 |
 | `TYPED` | PR #2824, typed facts in the recall walk and the scheduled lifecycle | merged 2026-08-20 |
-| `TEMP` | PR #2834, evidence-backed temporal learning loop | merged 2026-08-24 |
+| `TEMP` | PR #2834, evidence-backed temporal learning loop; PR #2841, promotion to default-on, read at `agent/temporal-assertion-learning-loop` | merged 2026-08-24 |
 
 ## Test environment for the live loop figures
 
@@ -93,13 +93,13 @@ Nothing above is a vector-search measurement.
 | confidence classes multiply a 0.80 semantic baseline: A 1.0, B 0.75, C 0.5 | `TYPED` | **shared** with the memory article, which carries the source detail |
 | typed facts were excluded from the graph walk, and separately the gravity table was dead at the fusion call site, which took the unknown default for every edge | `TYPED` | **shared** with the memory article. Two distinct defects; an earlier draft merged them into "co-occurrence at 0.45 drove recall" |
 | the co-occurrence upsert counted co-occurrence as re-assertion; weight normalisation rewrote confirmation counts | `TYPED` | **shared** with the memory article |
-| temporal learning paths are default-off today | `TEMP` | promotion requires review of representative benchmark evidence |
+| temporal learning paths were default-off for the loop figures, and were promoted to default-on on 2026-08-24 | `TEMP` | **Updated 2026-08-24.** PR #2841 flips `kb_mining_failure_learning_enabled` from 0 to 1, and the proposal's state line becomes "implemented, validated, and promoted default-on after benchmark review". The article previously called this default-on at release, which was forward-looking; it is a shipped fact now. The loop figures predate the flip and are unaffected |
 
 ## Figures moved out in the split
 
 | figure | now recorded in |
 |---|---|
-| 134 ns dispatch, 82 ns audit publish, the ceilings and the merge gate | architecture |
+| 134 ns dispatch, 82 ns audit publish, the ceilings and the merge gate | architecture. No longer referenced here at all after the 2026-08-24 scope pass |
 | grants, principal refs, the supervised-process count, the capture tap | architecture |
 | the bus inventory, validation in both directions, the OIDC instance | architecture |
 | ~~the provider-registration lint check and the sqlite-shim defects~~ | **returned to this article, 2026-08-24.** They moved out with the architecture split and came back with the prose: the incident is about the learning work, and its evidence was already recorded here. The architecture article keeps the split's cost and points here |
@@ -114,11 +114,14 @@ than restated here.
 **Trimmed 2026-08-24.** That summary had grown into a second account of the
 mechanism: `--network none`, the bind-mounted socket, grant semantics and the
 134 ns dispatch cost, all of which are the architecture article's to make. It
-now carries only what this article's argument needs, which is that execution and
-the hosted models are confined and that what anything may reach is enumerated
-before it runs. The 134 ns figure appeared twice in this article as a result and
-now appears once, in the section bounding the novelty claim, which is the only
-place here it does any work.
+now carries only what this article's argument needs, which is that nothing acts
+without crossing, and that execution and the hosted models are confined.
+
+**Cut further the same day.** A scope pass against this article's claim removed
+the standalone transport section, which explained the architecture's one novel
+piece at length in the article that does not make that argument. The novelty
+exception it existed to state is now one sentence in the opening, pointing at
+the third article. `134 ns` no longer appears in this article at all.
 
 ## The prior-art claim
 
