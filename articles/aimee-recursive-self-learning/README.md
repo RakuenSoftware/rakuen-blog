@@ -1,4 +1,4 @@
-# Aimee's Learning Is On
+# Aimee: Recursive Self-Learning
 
 Part one of three. Aimee's learning capabilities were effectively disabled prior
 to 0.4.0. The capacity for learning and testing existed, but it did nothing while

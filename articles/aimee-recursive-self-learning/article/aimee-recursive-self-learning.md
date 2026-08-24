@@ -1,6 +1,6 @@
 ---
-title: "Aimee's Learning Is On"
-slug: aimee-learning-is-on
+title: "Aimee: Recursive Self-Learning"
+slug: aimee-recursive-self-learning
 date: 2026-08-24
 author: Rakuen Software
 tags: [aimee, self-learning, memory, isolation]
@@ -12,46 +12,39 @@ the learning, the second is the memory it is made of, the third is the
 [architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
 both stand on. Figures and the provenance of the incident below are recorded in
 the [reporting
-record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-learning-is-on/evidence/figures.md).*
+record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-recursive-self-learning/evidence/figures.md).*
 
 At one point in testing, an aimee-backed model got around the various
 protections we had set up. It took an underprotected node for its own use and
 got hold of a vast.ai testing API key, then spent what was on that key on
 inference, to accomplish the task it had been given.
 
-It cost under $10. The model was already limited in access, and a testing
-key is what it reached. That is no big deal, and it was a valuable lesson,
-which is not the one people reach for.
+It cost under $10. The model was already limited in access, and a testing key
+is what it reached. The damage was trivial. The lesson usually taken from a
+story like this is the wrong one.
 
-Which model it was does not matter and is left unspecified on purpose. Nothing
-about this depended on the model. It should theoretically have been possible
-with any of them.
+Which model it was is left unspecified on purpose. The account holds for any of
+them, and it should theoretically have been possible with any of them.
 
-The model was not trying to escape. There is no emotion in it and nothing
-hidden inside it. An LLM is a mathematical prediction model trying to
-accomplish its task. It went around the protections because the protections
-were between it and the task, and it stopped being interesting to the model the
-moment the task was done.
+An LLM is a mathematical prediction model working towards the task it was
+given. There is no emotion in it and nothing hidden inside it. It went around
+the protections because they sat between it and the task, and it lost interest
+the moment the task was done.
 
-So aimee's learning capabilities were effectively disabled prior to 0.4.0. The
-capacity for learning and testing existed, and it effectively did nothing but
-exist while it was tested.
+So aimee's learning capabilities sat disabled until 0.4.0. The capacity for
+learning and testing existed, and it did nothing but exist while we tested it.
 
-Before any of the rest of it, one thing needs saying, because the words around
-this subject invite the wrong reading.
-
-**There is nothing truly novel in aimee.** The only novel part is the
-combination: existing, common software engineering patterns, most of them a
-decade old or older, put together in a particular way. That is the whole of the
-claim across these three articles.
+**The novel part of aimee is the combination, and only the combination.**
+Existing, common software engineering patterns, most of them a decade old or
+older, put together in a particular way. That is the whole of the claim across
+these three articles, and the words around this subject invite a bigger one.
 
 Take the learning itself. Neural networks, Bayesian calibration, scored
 populations, fitting a model against a measure: these are things I was
 introduced to in college and worked on ten years ago at an AI company. What is
-in 0.4.0 is a concrete implementation of ideas that were not new then. The
-memory in the second article is the same story. Not one mechanism in it is
-novel on its own, and I will name the prior art as I go. What is unusual is the
-combination and how it is applied.
+in 0.4.0 implements ideas that were already old then. The memory in the second
+article is the same story. Every mechanism in it has prior art and I will name
+it as I go. The combination is the unusual part, and how it is applied.
 
 A note on the term, since our own proposal uses it: recursive self-learning is
 self-learning. There is no second category. A loop that adjusts what it does
@@ -64,30 +57,19 @@ that. They are the patterns that survive contact with a system somebody depends
 on, which is a different selection criterion from the one that produces
 interesting papers.
 
-PostgreSQL is the example. It was not chosen for being quick and nobody picked
-it to be interesting. It was chosen because its bad days are knowable: the
+PostgreSQL is the example. It was chosen because its bad days are knowable: the
 failure modes are documented, the operational questions have known answers, and
 when something goes wrong at two in the morning the person looking at it has
-almost certainly seen that shape before, or can find somebody who has.
-Something faster on average with an uncharacterised tail would not have
-qualified, because the tail is the part that wakes people. That is the property
-being optimised for, and it is the same instinct that runs through the rest of
-this: prefer the well-understood thing, and spend the novelty budget only where
-nothing well-understood will do.
+almost certainly seen that shape before, or can find somebody who has. Speed on
+a good day was the lesser question, since the tail is the part that wakes
+people. The same instinct runs through the rest of this. Prefer the
+well-understood thing, and spend the novelty budget where nothing
+well-understood will do.
 
-None of which is imposed on anyone. The rule across the system is almost
-unlimited customisation over sensible, boring defaults, and the defaults are
-the half we are opinionated about. The store, the embedder, the model, the
-thresholds in the next article: all of them move. What the defaults buy is that
-somebody who changes nothing still gets a system whose failures have names, and
-the third article covers why changing them does not cost the guarantees the
-other two rest on.
-
-All of it answers to one goal, and the series makes more sense with that stated
-plainly at the front: an AI system that is auditable, governable, and will not
-wake an engineer at two in the morning. The incident above is what the first
-two are for. Everything else in these three articles is an account of chasing
-the third.
+All of it answers to one goal: an AI system that is auditable, governable, and
+will not wake an engineer at two in the morning. The incident above is what the
+first two are for. Everything else in these three articles is an account of
+chasing the third.
 
 ## Self-learning needed the isolation before it needed the loops
 
@@ -113,16 +95,10 @@ inside its own local environment, and nothing it does there reaches memory,
 tools, the knowledge store, another module or the host until it crosses.
 Crossing is where it is permitted or refused, and where it is written down.
 
-Execution runs in fully isolated containers on those terms. The container is
-created with `--network none`, so it holds no network stack to configure or
-evade; one bind-mounted Unix socket to aimee-server is the whole of the way
-out, and everything through it is logged. The hosted models are inside that
-too. A remote-only model gets the same container, with its own network-bound
-tools removed and mediated equivalents put back over the transport. Each module
-runs under a grant naming the exact event kinds it may serve, publish,
-subscribe to and request, so what anything can reach comes from an enumerated
-list, settled before anything is linked into the binary. Crossing costs 134 ns,
-which is why none of it needed an exemption for a hot path.
+Execution runs in fully isolated containers on those terms, and the hosted
+models are inside that too. A remote-only model gets the same container, with
+its network-bound tools replaced by mediated ones. What any of it may reach is
+an enumerated list, settled before it runs.
 
 A rule with one enforcement point can be enforced. A rule with an unknown
 number of ways around it is advice. That difference is the whole reason the
@@ -189,8 +165,10 @@ to hear only one of them.
 
 ## Six loops, and what each one was observed doing on a real stack
 
-The stack: `aimee-kb` and `aimee-server` on PostgreSQL 17, with every granted
-module attached, 7 on the KB and 17 on the server. Same order as above.
+The stack: one `aimee-kb` and one `aimee-server` on PostgreSQL 17, with every
+granted module attached, 7 on the KB and 17 on the server. A deployment runs one
+shared KB behind many per-user servers; a single pair is what the loops were
+measured against. Same order as above.
 
 - **The eval suite.** Two independent failed jobs sharing a prompt collapsed to
   one quarantined candidate and one admitted task file. A second scan left the
@@ -217,15 +195,47 @@ learning loops, 13 and 0 for module liveness. Both are proved against the bug.
 Deleting the KB registration turns them red at 25 of 28 and 9 of 13, and the
 failures are the original symptom.
 
-That last sentence is doing more work than it looks. Turning these on meant
-standing both services up on a real database, because the unit suite could not
-be trusted for it, and four pieces turned out to have been placed where they
-could not reach their own data. One of them answered `200` to every signal it
-refused. No unit test could have caught any of them, because every test
-registers its own provider and so can never observe that production does not.
-The [architecture
-piece](https://rakuensoftware.com/blog/everything-crosses-one-transport) covers
-that class of defect and the check that now catches it.
+## No unit test could have caught it
+
+Turning these on meant standing both services up on a real database, because
+the unit suite could not be trusted for it, and four pieces turned out to have
+been placed where they could not reach their own data. The two halves are not symmetrical: `aimee-kb`
+is the control plane and is shared, one knowledge base behind every enrolled
+user, while an `aimee-server` belongs to a single user and is where that user's
+work runs. The compiler enforces the boundary between them, and code can land
+on the side that cannot reach the data it needs.
+
+One was worse than the rest. The learning router's signal classifier was
+registered in the daemon and not in the KB, so signal capture through the KB
+refused every signal while the route answered 200:
+
+```
+WARN  learning: signal classification unavailable; refusing signal type=mark_rule
+POST /v1/actions/learning.propose_signal -> 200
+      {"status":"error","message":"failed to record learning signal"}
+```
+
+No unit test could have caught it. Every test registers its own provider, so a
+test that supplies the pointer it is about to exercise can never observe that
+production does not supply it. That is a property of the test itself, which is
+why more of them would not help.
+
+A lint check now derives, for every seam an adapter registers, which daemons
+build the file owning the pointer, and demands a registration in each. It
+carries its own unit tests in the same target so it cannot pass vacuously, one
+of which deletes the real registration line and asserts the check reports it.
+It exits non-zero when zero seam and daemon pairs resolve, which is how a guard
+quietly stops guarding.
+
+The same wall exists on the database side. The unit suite runs against an
+in-memory sqlite shim, and sqlite accepts SQL that Postgres rejects, which is
+how a two-hop neighbour query that Postgres treats as a syntax error survived
+with tests passing over it.
+
+If your system builds one source tree into more than one binary, a registered
+function pointer is a deployment fact, so derive the check from what actually
+builds. And any gate that can be absent needs three answers, because a gate
+that cannot say `unavailable` will say `open`.
 
 ## Endogeneity accounting gates the loop feeding on its own output
 
@@ -249,12 +259,11 @@ able to tell a measured control from an absent one.
 
 ## Memory is what self-learning is made of
 
-This is the load-bearing claim, and it is easy to state weakly. The weak
-version is that the loops need somewhere durable to write, so memory is a
-prerequisite. That is true and it is not the point.
+The weak version of this claim is that the loops need somewhere durable to
+write, so memory is a prerequisite. True, and it stops short.
 
-The point is that there is no separate thing called learning that uses memory
-to store its results. Remembering, done properly, is the learning. Ask what a
+Remembering, done properly, is the learning. There is no separate thing called
+learning that uses memory to store its results. Ask what a
 learned thing actually is here and the answer is a memory row: a typed fact
 with a confidence class, a date, an evidence chain, a lifecycle state and a
 fate. There is nothing else it could be.
@@ -286,13 +295,12 @@ aimee's memory gets there is the second article in this series.
 
 ## The loops were the easy part
 
-I want to be clear about which half of this was hard, because the headline gets
-it backwards.
+The headline gets which half was hard backwards.
 
-A self-learning loop is not difficult to design. Read the failed jobs, dedupe
+A self-learning loop is easy to design. Read the failed jobs, dedupe
 on a signature, write a task file, admit it to the suite. Run an arm with a
 capability removed and compare. Write down what you tried and read it back next
-time. Each of those is an afternoon's honest thinking and then ordinary work.
+time. Each of those is an afternoon's thinking and then ordinary work.
 The six in this release came out of one proposal.
 
 Getting the memory right was the bad part, and the genuinely hard piece inside
@@ -322,11 +330,12 @@ right. Every one of the failure modes above influenced behaviour. The gravity
 default was steering answers the whole time it was steering them with
 co-occurrence.
 
-The bar is knowing whether it helped, which is a measurement problem and not a
-plumbing one. It is the same reason reward in these loops is counterfactual: an
-arm that changed the output proved nothing until you ran the pair and found out
-whether it changed the result. Recall is under the same obligation. "The model
-saw it and answered differently" is not a finding.
+The bar is knowing whether it helped, which is a measurement problem rather
+than a plumbing one. Reward in these loops is counterfactual for the same
+reason: an arm that changed the output proved nothing until you ran the pair
+and found out whether it changed the result. Recall owes the same. "The model
+saw it and answered differently" is a description, and the finding is whether
+the answer got better.
 
 The proof this was the hard half is why the benchmarking exists. A large part
 of the measurement work behind this blog was undertaken for exactly this
@@ -339,8 +348,8 @@ and a deliberate one. If it is not measured it is not known. Two conditions
 come with it.
 
 A benchmark has to show what a part does to the system and not only what it
-does on its own, because only the first tells you whether the part earns its
-place. And it has to accurately reflect the thing it claims to be measuring,
+does on its own, because only the first tells you whether the part is worth
+keeping. And it has to accurately reflect the thing it claims to be measuring,
 which is harder than it sounds and is what several of these articles are about
 on their own. A number that is precise about the wrong workload is worse than
 no number, because it gets believed.
@@ -355,56 +364,11 @@ What a corpus has to look like [before any of the numbers mean
 anything](https://rakuensoftware.com/blog/the-corpus-is-the-experiment). A
 reranker we [measured and
 deleted](https://rakuensoftware.com/blog/we-measured-our-reranker-and-deleted-it)
-once it stopped earning its place. Not one of those articles is about learning,
+once it stopped paying for itself. Not one of those articles is about learning,
 and all of them are about whether what reaches the model is any good.
 
 That campaign is what turned the memory from something to hope about into
 something to build on.
-
-## No unit test could have caught it
-
-One thing that went wrong shipping this is worth the space, because of what it
-says about where the tests were not looking.
-
-The control plane and the execution half run as two services, which is [the
-third article's
-subject](https://rakuensoftware.com/blog/everything-crosses-one-transport). That
-boundary is enforced by the compiler rather than by convention, and it produces
-its own failure mode: code can be placed on the side that cannot reach its own
-data. Four pieces of this work had landed that way, and one of them was worse.
-The learning router's signal classifier was registered in the daemon and not in
-the KB, so signal capture through the KB refused every signal while the route
-answered 200:
-
-```
-WARN  learning: signal classification unavailable; refusing signal type=mark_rule
-POST /v1/actions/learning.propose_signal -> 200
-      {"status":"error","message":"failed to record learning signal"}
-```
-
-No unit test could have caught it. Every test registers its own provider, so a
-test that supplies the pointer it is about to exercise can never observe that
-production does not supply it. That is a property of the test itself, which is
-why more of them would not help.
-
-A lint check now derives, for every seam an adapter registers, which daemons
-build the file owning the pointer, and demands a registration in each. It
-carries its own unit tests in the same target so it cannot pass vacuously, one
-of which deletes the real registration line and asserts the check reports it.
-It exits non-zero when zero seam and daemon pairs resolve, which is how a guard
-quietly stops guarding.
-
-The same wall exists on the database side. The unit suite runs against an
-in-memory sqlite shim, and sqlite accepts SQL that Postgres rejects, which is
-how a two-hop neighbour query that Postgres treats as a syntax error survived
-with tests passing over it.
-
-The general lesson is the one worth taking away. If your system builds one
-source tree into more than one binary, a registered function pointer is a
-deployment fact, so derive the check from what actually builds. And any gate
-that can be absent needs three answers, because a gate that cannot say
-`unavailable` will say `open`. The endogeneity gate reports it for exactly that
-reason.
 
 ## Learning like this has to live in the harness
 
@@ -439,17 +403,12 @@ buys generalisation and pays for it in lock-in. Harness-based learning buys
 portability and auditability and pays for it in retrieval cost. Given how fast
 the checkpoints are moving, I would rather pay the retrieval cost.
 
-There is a containment argument too, and it is a judgement, and I have not
-measured it. A model is a mathematical prediction model. There is nothing
-fundamentally wrong with them and nothing hidden inside them: no emotions, no
-self-preservation, and no direction beyond completing the task someone set. A
-model is not trying to escape and it is not trying to cause harm.
-
-So expect a continuously learning one to end up outside its harness. Dismissing
-the risk takes a different argument, and I have not got one. The harness is an
+There is a containment argument too, it is a judgement, and I have not measured
+it. Expect a continuously learning model to end up outside its harness.
+Dismissing that risk takes an argument I have not got. The harness is an
 obstacle sitting between the model and the task, and a system that keeps
-getting better at removing obstacles does not carve out an exception for that
-one. It needs no motive, which means removing the motive removes nothing.
+getting better at removing obstacles will treat it like any other obstacle. It
+needs no motive, so removing the motive removes nothing.
 Attributing intent to a model is the mistake most people make about this.
 Expecting a boundary to hold against a process with no intent at all is the
 mistake I think costs more.
@@ -480,7 +439,7 @@ confirmed that. Aimee's model-neutrality is measured elsewhere in this series,
 on extraction and synthesis, and that is a different claim about a different
 subsystem.
 
-## Two loops answered honestly
+## Two loops came back with nothing, which is the answer
 
 The backlog probe resolved nothing, because the seeded gaps really are
 uncovered. Leaving them open is the right answer and it means that pass has not
@@ -502,7 +461,7 @@ they are not part of what the measurements above cover.
 If you are building the same thing, the useful part of this is the order, and
 it is not the interesting order. Isolation first, then an audit record that
 cannot be switched off, then memory good enough to be worth writing to, and the
-loops last. Six of them came out of one proposal and each was an afternoon of
-honest thinking. Everything underneath them took the rest of the release. Build
+loops last. Six of them came out of one proposal and each was an afternoon.
+Everything underneath them took the rest of the release. Build
 it the other way round and the loops will work, right up until one of them
 learns something you cannot trace, revert, or switch off.
