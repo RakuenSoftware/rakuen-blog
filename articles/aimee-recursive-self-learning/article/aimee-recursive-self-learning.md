@@ -403,15 +403,15 @@ layer came back with the default arm; the sampler answering at all is what was
 inert before, and arm selection under reward pressure is covered by unit tests
 only.
 
-One part of 0.4.0's learning work is not on yet. The temporal learning loop
-adds bitemporal assertion recall, requires exact evidence spans for derived
-claims, and materialises recurrence and recovery observations before a proposal
-is reviewed. Its retrieval, observation and typed-context paths are default-off
-today because they are still being tested, and turning them on takes a review
-of representative benchmark evidence on top of a config change.
+One part of 0.4.0's learning work landed after the measurements above. The
+temporal learning loop adds bitemporal assertion recall, requires exact evidence
+spans for derived claims, and materialises recurrence and recovery observations
+before a proposal is reviewed. Its retrieval, observation and typed-context
+paths ran default-off while it was being tested, and were promoted to default-on
+on 2026-08-24 after the benchmark review the promotion required.
 
-They will be default-on in the 0.4.0 release. Until that testing is finished,
-they are not part of what the measurements above cover.
+The loop figures above were recorded with those paths off, so they say nothing
+about the temporal loop either way.
 
 If you are building the same thing, the useful part of this is the order, and
 it is not the interesting order. Isolation first, then an audit record that

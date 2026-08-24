@@ -48,7 +48,7 @@ omission to look like discretion.
 | `PR` | PR #2835, merged to `testing` as `877e994c2f` | 2026-08-24 |
 | `ENDO` | `src/modules/learning/learning_endogeneity.c` on `testing` | read 2026-08-24 |
 | `TYPED` | PR #2824, typed facts in the recall walk and the scheduled lifecycle | merged 2026-08-20 |
-| `TEMP` | PR #2834, evidence-backed temporal learning loop | merged 2026-08-24 |
+| `TEMP` | PR #2834, evidence-backed temporal learning loop; PR #2841, promotion to default-on, read at `agent/temporal-assertion-learning-loop` | merged 2026-08-24 |
 
 ## Test environment for the live loop figures
 
@@ -93,7 +93,7 @@ Nothing above is a vector-search measurement.
 | confidence classes multiply a 0.80 semantic baseline: A 1.0, B 0.75, C 0.5 | `TYPED` | **shared** with the memory article, which carries the source detail |
 | typed facts were excluded from the graph walk, and separately the gravity table was dead at the fusion call site, which took the unknown default for every edge | `TYPED` | **shared** with the memory article. Two distinct defects; an earlier draft merged them into "co-occurrence at 0.45 drove recall" |
 | the co-occurrence upsert counted co-occurrence as re-assertion; weight normalisation rewrote confirmation counts | `TYPED` | **shared** with the memory article |
-| temporal learning paths are default-off today | `TEMP` | promotion requires review of representative benchmark evidence |
+| temporal learning paths were default-off for the loop figures, and were promoted to default-on on 2026-08-24 | `TEMP` | **Updated 2026-08-24.** PR #2841 flips `kb_mining_failure_learning_enabled` from 0 to 1, and the proposal's state line becomes "implemented, validated, and promoted default-on after benchmark review". The article previously called this default-on at release, which was forward-looking; it is a shipped fact now. The loop figures predate the flip and are unaffected |
 
 ## Figures moved out in the split
 
