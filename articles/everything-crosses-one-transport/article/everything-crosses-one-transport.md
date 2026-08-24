@@ -8,7 +8,7 @@ excerpt: "A language model does not need a new safety discipline invented for it
 ---
 
 *Rakuen builds aimee, the system written about here. Third of three: the
-[self-learning loops](https://rakuensoftware.com/blog/aimee-learning-is-on)
+[self-learning loops](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
 come first and the memory second. This one is the architecture both of those
 stand on. Figures are traced in the [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/everything-crosses-one-transport/evidence/figures.md).*
@@ -886,7 +886,7 @@ The boundary is real in the other direction too, and enforced by the compiler
 and not by convention, which produces its own failure mode: code can be placed
 on the side that cannot reach its own data. Four pieces of the self-learning
 work had landed that way, and the [first
-article](https://rakuensoftware.com/blog/aimee-learning-is-on) carries what that
+article](https://rakuensoftware.com/blog/aimee-recursive-self-learning) carries what that
 cost and the check that catches it now. That is the bill for the split and it is
 worth paying. A boundary strong enough that two halves can check each other is
 strong enough to strand code on the wrong side of it, and a boundary that could

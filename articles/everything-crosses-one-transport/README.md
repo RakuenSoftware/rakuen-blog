@@ -7,7 +7,7 @@ chokepoint is not worth attacking.
 
 ## The series
 
-1. **[Self-learning](../aimee-learning-is-on/)** — the loops exist and they
+1. **[Self-learning](../aimee-recursive-self-learning/)** — the loops exist and they
    work, and memory is what they are made of.
 2. **[Memory](../the-remembering-is-the-learning/)** — the machinery behind part
    one's central claim.

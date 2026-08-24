@@ -8,7 +8,7 @@ excerpt: "A fact is born into a class, climbs to durable by being confirmed, exp
 ---
 
 *Rakuen builds aimee, the system written about here. Second of three: the
-[self-learning loops](https://rakuensoftware.com/blog/aimee-learning-is-on)
+[self-learning loops](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
 come first, the
 [architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
 third. Source read from `testing` on 24 August 2026; figures are traced in the

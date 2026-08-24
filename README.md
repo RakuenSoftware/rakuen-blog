@@ -60,7 +60,7 @@ website.
 | [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | retired | headline published as `one-call-one-turn`; surviving finding moved to `the-harness-measured-itself` |
 | [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |
 | [the-model-decides-when-to-think](articles/the-model-decides-when-to-think/) | investigation | four rerunnable scripts; no article written yet |
-| [aimee-learning-is-on](articles/aimee-learning-is-on/) | draft | 0.4.0 series, part 1 of 3; validation reports in `aimee`, reporting record; lead incident is a first-party account |
+| [aimee-recursive-self-learning](articles/aimee-recursive-self-learning/) | draft | 0.4.0 series, part 1 of 3; validation reports in `aimee`, reporting record; lead incident is a first-party account |
 | [the-remembering-is-the-learning](articles/the-remembering-is-the-learning/) | draft | 0.4.0 series, part 2 of 3; aimee mechanism from `your-memory-has-no-authority-model` re-verified, plus the 0.4.0 lifecycle and seams |
 | [everything-crosses-one-transport](articles/everything-crosses-one-transport/) | draft | 0.4.0 series, part 3 of 3; bus baseline, grants and module docs in `aimee` |
 | [kv-cache-precision](articles/kv-cache-precision/) | investigation | four cache configurations on one model recorded; no article written yet |

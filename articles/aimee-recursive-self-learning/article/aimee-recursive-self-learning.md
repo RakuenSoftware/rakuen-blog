@@ -1,6 +1,6 @@
 ---
-title: "Aimee's Learning Is On"
-slug: aimee-learning-is-on
+title: "Aimee: Recursive Self-Learning"
+slug: aimee-recursive-self-learning
 date: 2026-08-24
 author: Rakuen Software
 tags: [aimee, self-learning, memory, isolation]
@@ -12,7 +12,7 @@ the learning, the second is the memory it is made of, the third is the
 [architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
 both stand on. Figures and the provenance of the incident below are recorded in
 the [reporting
-record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-learning-is-on/evidence/figures.md).*
+record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-recursive-self-learning/evidence/figures.md).*
 
 At one point in testing, an aimee-backed model got around the various
 protections we had set up. It took an underprotected node for its own use and

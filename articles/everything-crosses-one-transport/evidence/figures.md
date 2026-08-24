@@ -5,7 +5,7 @@ Every figure in
 and where it came from.
 
 Part three of three. The self-learning article is
-`articles/aimee-learning-is-on/`; the memory article is the second. Figures
+`articles/aimee-recursive-self-learning/`; the memory article is the second. Figures
 shared with those pieces are noted here and in theirs, so a number is not
 recorded twice as if independently sourced.
 

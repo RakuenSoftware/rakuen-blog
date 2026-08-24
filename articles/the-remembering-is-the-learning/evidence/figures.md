@@ -4,7 +4,7 @@ Every figure in
 [`the-remembering-is-the-learning.md`](../article/the-remembering-is-the-learning.md),
 and where it came from.
 
-Part two of three. Part one is `articles/aimee-learning-is-on/`, part three
+Part two of three. Part one is `articles/aimee-recursive-self-learning/`, part three
 `articles/everything-crosses-one-transport/`. Figures shared with those pieces
 are marked shared, and recorded in their records too, so one number is not
 logged three times as if independently sourced.

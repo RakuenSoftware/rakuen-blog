@@ -6,7 +6,7 @@ value still legible. Those are not storage features. They are what learning is.
 
 ## The series
 
-1. **[Self-learning](../aimee-learning-is-on/)** — the loops exist and
+1. **[Self-learning](../aimee-recursive-self-learning/)** — the loops exist and
    they work, and memory is what they are made of.
 2. **Memory** — this one. The machinery behind part one's central claim.
 3. **[Architecture](../everything-crosses-one-transport/)** — what parts one and

@@ -1,7 +1,7 @@
 # Reporting record and figure provenance
 
 Every figure in
-[`aimees-learning-is-on.md`](../article/aimees-learning-is-on.md), and where it
+[`aimee-recursive-self-learning.md`](../article/aimee-recursive-self-learning.md), and where it
 came from.
 
 Part one of three. The memory article is second, the
