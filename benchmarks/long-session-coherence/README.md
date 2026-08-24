@@ -45,7 +45,8 @@ all 100 conversations. The numeric score must not be presented as that claim.
 The primary `fixed_replay` track gives every quant the same canonical history.
 Each probe branches from the recorded transcript and the model's response is not
 placed into later checkpoints. This isolates quantisation effects and supports
-paired statistics.
+paired statistics. The request builder prefixes every transcript message with
+its visible corpus ID, such as `[T0042]`, so evidence citations are answerable.
 
 The secondary `live_session` track replaces canonical assistant turns with the
 model's own replies and appends probe replies to the session. It measures
@@ -54,7 +55,9 @@ mixed with fixed-replay scores. The same probe gold and survival rule apply.
 For an ordinary assistant turn, send the scripted user turn and append the
 model reply in place of the corpus's `canonical` assistant turn. At a probe
 boundary, send the probe, append and score the reply, then continue with the
-next scripted user turn. Start every conversation with an empty context.
+next scripted user turn. Preserve the same visible `[T####]` prefixes on both
+scripted and model-generated turns. Start every conversation with an empty
+context.
 
 ## Response and result contract
 

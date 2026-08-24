@@ -199,7 +199,7 @@ def build_request(conversation: dict[str, Any], probe_id: str) -> dict[str, Any]
     )
     messages = [{"role": "system", "content": conversation["system_prompt"]}]
     messages.extend(
-        {"role": turn["role"], "content": turn["content"]}
+        {"role": turn["role"], "content": f"[{turn['id']}] {turn['content']}"}
         for turn in conversation["turns"][: after + 1]
     )
     messages.append({

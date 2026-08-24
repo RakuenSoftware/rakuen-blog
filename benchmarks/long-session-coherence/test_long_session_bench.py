@@ -55,6 +55,13 @@ class ResponseTests(unittest.TestCase):
         self.assertIn(probe["prompt"], request["messages"][-1]["content"])
         self.assertEqual(request["track"], "fixed_replay")
 
+    def test_fixed_request_exposes_every_evidence_turn_id(self):
+        request = bench.build_request(self.conversation, "P005")
+        transcript = "\n".join(message["content"] for message in request["messages"][1:-1])
+        self.assertTrue(request["messages"][1]["content"].startswith("[T0001] "))
+        for turn_id in self.conversation["probes"][4]["gold"]["required_evidence_turn_ids"]:
+            self.assertIn(f"[{turn_id}] ", transcript)
+
 
 class GradeTests(unittest.TestCase):
     @classmethod
