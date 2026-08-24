@@ -111,16 +111,10 @@ inside its own local environment, and nothing it does there reaches memory,
 tools, the knowledge store, another module or the host until it crosses.
 Crossing is where it is permitted or refused, and where it is written down.
 
-Execution runs in fully isolated containers on those terms. The container is
-created with `--network none`, so it holds no network stack to configure or
-evade; one bind-mounted Unix socket to aimee-server is the whole of the way
-out, and everything through it is logged. The hosted models are inside that
-too. A remote-only model gets the same container, with its own network-bound
-tools removed and mediated equivalents put back over the transport. Each module
-runs under a grant naming the exact event kinds it may serve, publish,
-subscribe to and request, so what anything can reach comes from an enumerated
-list, settled before anything is linked into the binary. Crossing costs 134 ns,
-which is why none of it needed an exemption for a hot path.
+Execution runs in fully isolated containers on those terms, and the hosted
+models are inside that too. A remote-only model gets the same container, with
+its network-bound tools replaced by mediated ones. What any of it may reach is
+an enumerated list, settled before it runs.
 
 A rule with one enforcement point can be enforced. A rule with an unknown
 number of ways around it is advice. That difference is the whole reason the

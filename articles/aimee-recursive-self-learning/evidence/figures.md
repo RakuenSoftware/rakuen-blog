@@ -106,9 +106,19 @@ Nothing above is a vector-search measurement.
 | the evidence and lifecycle layer, the five memory seams, per-seam failure behaviour | memory |
 | write authority derived from authentication | memory |
 
-The article still refers to the containment property and to the 134 ns figure in
-its compressed summary, because its opening incident raises the question. Those
-sentences are sourced from the architecture record rather than restated here.
+The article still refers to the containment property, because its opening
+incident raises the question and a reader should not have to leave the piece to
+get the answer. Those sentences are sourced from the architecture record rather
+than restated here.
+
+**Trimmed 2026-08-24.** That summary had grown into a second account of the
+mechanism: `--network none`, the bind-mounted socket, grant semantics and the
+134 ns dispatch cost, all of which are the architecture article's to make. It
+now carries only what this article's argument needs, which is that execution and
+the hosted models are confined and that what anything may reach is enumerated
+before it runs. The 134 ns figure appeared twice in this article as a result and
+now appears once, in the section bounding the novelty claim, which is the only
+place here it does any work.
 
 ## The prior-art claim
 
