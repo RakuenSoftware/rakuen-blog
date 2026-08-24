@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rakuensoftware.com/schemas/lsc-100-run-config-v1.json",
+  "title": "LSC-100 paired run configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id", "track", "model", "base_weights", "quant", "tokenizer",
+    "chat_template_sha256", "runtime", "runtime_build", "context_size",
+    "kv_cache_type", "flash_attention", "temperature", "top_p", "seed",
+    "max_completion_tokens", "hardware"
+  ],
+  "properties": {
+    "run_id": {"type": "string", "minLength": 1},
+    "track": {"enum": ["fixed_replay", "live_session"]},
+    "model": {"type": "string", "minLength": 1},
+    "base_weights": {"type": "string", "minLength": 1},
+    "quant": {"type": "string", "minLength": 1},
+    "tokenizer": {"type": "string", "minLength": 1},
+    "chat_template_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "runtime": {"type": "string", "minLength": 1},
+    "runtime_build": {"type": "string", "minLength": 1},
+    "context_size": {"type": "integer", "minimum": 65536},
+    "kv_cache_type": {"type": "string", "minLength": 1},
+    "flash_attention": {"type": "boolean"},
+    "temperature": {"type": "number", "minimum": 0},
+    "top_p": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+    "seed": {"type": "integer"},
+    "max_completion_tokens": {"type": "integer", "minimum": 16},
+    "hardware": {"type": "string", "minLength": 1},
+    "notes": {"type": "string"}
+  }
+}
+
