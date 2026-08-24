@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "projects": {
+    "fr": {
+      "repository": "vuejs-translations/docs-fr",
+      "url": "https://github.com/vuejs-translations/docs-fr.git",
+      "commit": "a2f1595aae823186b3247271b10936ed73aa2f21",
+      "checkout": "fr"
+    },
+    "de": {
+      "repository": "vuejs-translations/docs-de",
+      "url": "https://github.com/vuejs-translations/docs-de.git",
+      "commit": "40470759c490037468e79331a2c0569c7ed94b25",
+      "checkout": "de"
+    },
+    "es": {
+      "repository": "python/python-docs-es",
+      "url": "https://github.com/python/python-docs-es.git",
+      "commit": "31d012018a13de91fc5fe07cbab447cc16f4978d",
+      "checkout": "es"
+    },
+    "zh": {
+      "repository": "vuejs-translations/docs-zh-cn",
+      "url": "https://github.com/vuejs-translations/docs-zh-cn.git",
+      "commit": "cfb9e9c56f112964021f9f5246bd1e65a6b15088",
+      "checkout": "zh"
+    },
+    "it": {
+      "repository": "vuejs-translations/docs-it",
+      "url": "https://github.com/vuejs-translations/docs-it.git",
+      "commit": "cc1661807615bd413591d584764fdad9efb35028",
+      "checkout": "it"
+    },
+    "ru": {
+      "repository": "vuejs-translations/docs-ru",
+      "url": "https://github.com/vuejs-translations/docs-ru.git",
+      "commit": "655420e7943409e0c2aa15203a1f92961c2c5534",
+      "checkout": "ru"
+    },
+    "pl": {
+      "repository": "vuejs-translations/docs-pl",
+      "url": "https://github.com/vuejs-translations/docs-pl.git",
+      "commit": "ff7fd98d96b1f07b0f7d8c033264924dcb550277",
+      "checkout": "pl"
+    },
+    "pt": {
+      "repository": "vuejs-translations/docs-pt",
+      "url": "https://github.com/vuejs-translations/docs-pt.git",
+      "commit": "782d14bbeb375e1877f02a0562e7d89644b89021",
+      "checkout": "pt"
+    },
+    "ja": {
+      "repository": "vuejs-translations/docs-ja",
+      "url": "https://github.com/vuejs-translations/docs-ja.git",
+      "commit": "c627102bfabf8bc5ecaa6eb763b965a0a5d43a5b",
+      "checkout": "ja"
+    },
+    "vi": {
+      "repository": "vuejs-translations/docs-vi",
+      "url": "https://github.com/vuejs-translations/docs-vi.git",
+      "commit": "0969e056b75945999b3c6c0156fdaaee74989150",
+      "checkout": "vi"
+    },
+    "nl": {
+      "repository": "django/django",
+      "url": "https://github.com/django/django.git",
+      "commit": "0b40210e4808937a7c0922e8b7502bff4752faa3",
+      "checkout": "django",
+      "locale_evidence": "django/conf/locale/nl/LC_MESSAGES/django.po"
+    },
+    "ar": {
+      "repository": "vuejs-translations/docs-ar",
+      "url": "https://github.com/vuejs-translations/docs-ar.git",
+      "commit": "dc6cc19d1eff4855b46d6f35f5e882b6b70e2ed2",
+      "checkout": "ar"
+    },
+    "tr": {
+      "repository": "python/python-docs-tr",
+      "url": "https://github.com/python/python-docs-tr.git",
+      "commit": "caa8b1e08b8534a1e1344a82889fc6c820768a91",
+      "checkout": "tr"
+    },
+    "hi": {
+      "repository": "django/django",
+      "url": "https://github.com/django/django.git",
+      "commit": "0b40210e4808937a7c0922e8b7502bff4752faa3",
+      "checkout": "django",
+      "locale_evidence": "django/conf/locale/hi/LC_MESSAGES/django.po"
+    }
+  }
+}
