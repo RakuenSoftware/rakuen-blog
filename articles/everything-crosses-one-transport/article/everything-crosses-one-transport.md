@@ -770,11 +770,9 @@ happens. The daemon builds with `-DAIMEE_DB2_DISABLED`.
 
 They are not deployed one for one. One KB stands behind every enrolled user,
 and a server belongs to a single user and holds that user's work and that
-user's machine. The two halves are asymmetric on two axes, and the axes do not
-line up: the server is narrow in reach and is the half that can act, while the
-control plane is broad in reach and cannot act at all. Keep those apart when
-reading what follows. Breadth is not the same as capability, and the whole
-arrangement is built so that the half with one does not have the other.
+user's machine. So the two are asymmetric in two different ways, and the ways
+do not line up. The server is narrow in what it touches and is the half that
+can act. The control plane touches everything and cannot act at all.
 
 Control plane and execution on separate processes is a standard shape. What
 falls out of it here is the part worth pointing at.
@@ -908,8 +906,8 @@ narrating into a service you do not hold. Take the control plane and you get
 every enrolled user's memory, the ledger, an auth surface, a read-only git key,
 and whatever plugins the operator chose to install there. What you do not get
 is a way to make anything happen that nobody asked for, because you cannot
-reach out from there. It is the compromised memory module again at the scale of
-everyone: the worst of it is telling people something false about what they
-remembered, and a lie is still the extent of it. Neither of those is an agent. Assembling one means holding both at once, keeping their
-stories consistent with each other, and keeping both consistent with whatever
-left the building before you arrived.
+reach out from there. What it can do is hand back memory that is wrong, for
+every user it serves, and that is where it stops. Neither of those is an agent.
+Assembling one means holding both at once, keeping their stories consistent
+with each other, and keeping both consistent with whatever left the building
+before you arrived.
