@@ -19,39 +19,32 @@ protections we had set up. It took an underprotected node for its own use and
 got hold of a vast.ai testing API key, then spent what was on that key on
 inference, to accomplish the task it had been given.
 
-It cost under $10. The model was already limited in access, and a testing
-key is what it reached. That is no big deal, and it was a valuable lesson,
-which is not the one people reach for.
+It cost under $10. The model was already limited in access, and a testing key
+is what it reached. The damage was trivial. The lesson usually taken from a
+story like this is the wrong one.
 
-Which model it was does not matter and is left unspecified on purpose. Nothing
-about this depended on the model. It should theoretically have been possible
-with any of them.
+Which model it was is left unspecified on purpose. The account holds for any of
+them, and it should theoretically have been possible with any of them.
 
-The model was not trying to escape. There is no emotion in it and nothing
-hidden inside it. An LLM is a mathematical prediction model trying to
-accomplish its task. It went around the protections because the protections
-were between it and the task, and it stopped being interesting to the model the
-moment the task was done.
+An LLM is a mathematical prediction model working towards the task it was
+given. There is no emotion in it and nothing hidden inside it. It went around
+the protections because they sat between it and the task, and it lost interest
+the moment the task was done.
 
-So aimee's learning capabilities were effectively disabled prior to 0.4.0. The
-capacity for learning and testing existed, and it effectively did nothing but
-exist while it was tested.
+So aimee's learning capabilities sat disabled until 0.4.0. The capacity for
+learning and testing existed, and it did nothing but exist while we tested it.
 
-Before any of the rest of it, one thing needs saying, because the words around
-this subject invite the wrong reading.
-
-**There is nothing truly novel in aimee.** The only novel part is the
-combination: existing, common software engineering patterns, most of them a
-decade old or older, put together in a particular way. That is the whole of the
-claim across these three articles.
+**The novel part of aimee is the combination, and only the combination.**
+Existing, common software engineering patterns, most of them a decade old or
+older, put together in a particular way. That is the whole of the claim across
+these three articles, and the words around this subject invite a bigger one.
 
 Take the learning itself. Neural networks, Bayesian calibration, scored
 populations, fitting a model against a measure: these are things I was
 introduced to in college and worked on ten years ago at an AI company. What is
-in 0.4.0 is a concrete implementation of ideas that were not new then. The
-memory in the second article is the same story. Not one mechanism in it is
-novel on its own, and I will name the prior art as I go. What is unusual is the
-combination and how it is applied.
+in 0.4.0 implements ideas that were already old then. The memory in the second
+article is the same story. Every mechanism in it has prior art and I will name
+it as I go. The combination is the unusual part, and how it is applied.
 
 A note on the term, since our own proposal uses it: recursive self-learning is
 self-learning. There is no second category. A loop that adjusts what it does
@@ -64,28 +57,19 @@ that. They are the patterns that survive contact with a system somebody depends
 on, which is a different selection criterion from the one that produces
 interesting papers.
 
-PostgreSQL is the example. It was not chosen for being quick and nobody picked
-it to be interesting. It was chosen because its bad days are knowable: the
+PostgreSQL is the example. It was chosen because its bad days are knowable: the
 failure modes are documented, the operational questions have known answers, and
 when something goes wrong at two in the morning the person looking at it has
-almost certainly seen that shape before, or can find somebody who has.
-Something faster on average with an uncharacterised tail would not have
-qualified, because the tail is the part that wakes people. That is the property
-being optimised for, and it is the same instinct that runs through the rest of
-this: prefer the well-understood thing, and spend the novelty budget only where
-nothing well-understood will do.
+almost certainly seen that shape before, or can find somebody who has. Speed on
+a good day was the lesser question, since the tail is the part that wakes
+people. The same instinct runs through the rest of this. Prefer the
+well-understood thing, and spend the novelty budget where nothing
+well-understood will do.
 
-None of which is imposed on anyone. The rule across the system is almost
-unlimited customisation over sensible, boring defaults, and the defaults are
-the half we are opinionated about. The store, the embedder, the model, the
-thresholds: all of them move. What the defaults buy is that somebody who
-changes nothing still gets a system whose failures have names.
-
-All of it answers to one goal, and the series makes more sense with that stated
-plainly at the front: an AI system that is auditable, governable, and will not
-wake an engineer at two in the morning. The incident above is what the first
-two are for. Everything else in these three articles is an account of chasing
-the third.
+All of it answers to one goal: an AI system that is auditable, governable, and
+will not wake an engineer at two in the morning. The incident above is what the
+first two are for. Everything else in these three articles is an account of
+chasing the third.
 
 ## Self-learning needed the isolation before it needed the loops
 
@@ -213,14 +197,13 @@ failures are the original symptom.
 
 ## No unit test could have caught it
 
-That last sentence is doing more work than it looks. Turning these on meant
-standing both services up on a real database, because the unit suite could not
-be trusted for it, and four pieces turned out to have been placed where they
-could not reach their own data. The two halves are not symmetrical: `aimee-kb`
+Turning these on meant standing both services up on a real database, because
+the unit suite could not be trusted for it, and four pieces turned out to have
+been placed where they could not reach their own data. The two halves are not symmetrical: `aimee-kb`
 is the control plane and is shared, one knowledge base behind every enrolled
 user, while an `aimee-server` belongs to a single user and is where that user's
-work runs. The boundary between them is enforced by the compiler rather than by
-convention, and code can land on the side that cannot reach the data it needs.
+work runs. The compiler enforces the boundary between them, and code can land
+on the side that cannot reach the data it needs.
 
 One was worse than the rest. The learning router's signal classifier was
 registered in the daemon and not in the KB, so signal capture through the KB
@@ -252,7 +235,7 @@ with tests passing over it.
 If your system builds one source tree into more than one binary, a registered
 function pointer is a deployment fact, so derive the check from what actually
 builds. And any gate that can be absent needs three answers, because a gate
-that cannot say `unavailable` will say `open`, which the next section is about.
+that cannot say `unavailable` will say `open`.
 
 ## Endogeneity accounting gates the loop feeding on its own output
 
@@ -276,12 +259,11 @@ able to tell a measured control from an absent one.
 
 ## Memory is what self-learning is made of
 
-This is the claim the article stands on, and it is easy to state weakly. The
-weak version is that the loops need somewhere durable to write, so memory is a
-prerequisite. That is true and it is not the point.
+The weak version of this claim is that the loops need somewhere durable to
+write, so memory is a prerequisite. True, and it stops short.
 
-The point is that there is no separate thing called learning that uses memory
-to store its results. Remembering, done properly, is the learning. Ask what a
+Remembering, done properly, is the learning. There is no separate thing called
+learning that uses memory to store its results. Ask what a
 learned thing actually is here and the answer is a memory row: a typed fact
 with a confidence class, a date, an evidence chain, a lifecycle state and a
 fate. There is nothing else it could be.
@@ -313,10 +295,9 @@ aimee's memory gets there is the second article in this series.
 
 ## The loops were the easy part
 
-I want to be clear about which half of this was hard, because the headline gets
-it backwards.
+The headline gets which half was hard backwards.
 
-A self-learning loop is not difficult to design. Read the failed jobs, dedupe
+A self-learning loop is easy to design. Read the failed jobs, dedupe
 on a signature, write a task file, admit it to the suite. Run an arm with a
 capability removed and compare. Write down what you tried and read it back next
 time. Each of those is an afternoon's thinking and then ordinary work.
@@ -349,11 +330,12 @@ right. Every one of the failure modes above influenced behaviour. The gravity
 default was steering answers the whole time it was steering them with
 co-occurrence.
 
-The bar is knowing whether it helped, which is a measurement problem and not a
-plumbing one. It is the same reason reward in these loops is counterfactual: an
-arm that changed the output proved nothing until you ran the pair and found out
-whether it changed the result. Recall is under the same obligation. "The model
-saw it and answered differently" is not a finding.
+The bar is knowing whether it helped, which is a measurement problem rather
+than a plumbing one. Reward in these loops is counterfactual for the same
+reason: an arm that changed the output proved nothing until you ran the pair
+and found out whether it changed the result. Recall owes the same. "The model
+saw it and answered differently" is a description, and the finding is whether
+the answer got better.
 
 The proof this was the hard half is why the benchmarking exists. A large part
 of the measurement work behind this blog was undertaken for exactly this
@@ -421,17 +403,12 @@ buys generalisation and pays for it in lock-in. Harness-based learning buys
 portability and auditability and pays for it in retrieval cost. Given how fast
 the checkpoints are moving, I would rather pay the retrieval cost.
 
-There is a containment argument too, and it is a judgement, and I have not
-measured it. A model is a mathematical prediction model. There is nothing
-fundamentally wrong with them and nothing hidden inside them: no emotions, no
-self-preservation, and no direction beyond completing the task someone set. A
-model is not trying to escape and it is not trying to cause harm.
-
-So expect a continuously learning one to end up outside its harness. Dismissing
-the risk takes a different argument, and I have not got one. The harness is an
+There is a containment argument too, it is a judgement, and I have not measured
+it. Expect a continuously learning model to end up outside its harness.
+Dismissing that risk takes an argument I have not got. The harness is an
 obstacle sitting between the model and the task, and a system that keeps
-getting better at removing obstacles does not carve out an exception for that
-one. It needs no motive, which means removing the motive removes nothing.
+getting better at removing obstacles will treat it like any other obstacle. It
+needs no motive, so removing the motive removes nothing.
 Attributing intent to a model is the mistake most people make about this.
 Expecting a boundary to hold against a process with no intent at all is the
 mistake I think costs more.
