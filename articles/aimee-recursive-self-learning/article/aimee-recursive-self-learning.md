@@ -36,7 +36,10 @@ learning and testing existed, and it did nothing but exist while we tested it.
 
 **The novel part of aimee is the combination, and only the combination.**
 Existing, common software engineering patterns, most of them a decade old or
-older, put together in a particular way. That is the whole of the claim across
+older, put together in a particular way. The single exception is the transport
+everything crosses, which is the [third
+article's](https://rakuensoftware.com/blog/everything-crosses-one-transport)
+argument and is no part of the learning. That is the whole of the claim across
 these three articles, and the words around this subject invite a bigger one.
 
 Take the learning itself. Neural networks, Bayesian calibration, scored
@@ -87,22 +90,16 @@ model does, and exact control over what it can touch. A better rule about what
 the model should not do buys nothing.
 
 0.4.0's architecture provides exactly that, and it is [its own
-article](https://rakuensoftware.com/blog/everything-crosses-one-transport). The
-short version is one property: nothing in aimee can do anything without
-crossing a single transport. The model crosses it, every module crosses it, and
-so does every subsystem that predates the design. Anything can do what it likes
-inside its own local environment, and nothing it does there reaches memory,
-tools, the knowledge store, another module or the host until it crosses.
-Crossing is where it is permitted or refused, and where it is written down.
-
-Execution runs in fully isolated containers on those terms, and the hosted
-models are inside that too. A remote-only model gets the same container, with
-its network-bound tools replaced by mediated ones. What any of it may reach is
-an enumerated list, settled before it runs.
+article](https://rakuensoftware.com/blog/everything-crosses-one-transport). One
+property is the whole of what matters here: nothing in aimee can do anything
+without crossing a single transport, where it is permitted or refused and
+written down. Execution runs in isolated containers on those terms, hosted
+models included.
 
 A rule with one enforcement point can be enforced. A rule with an unknown
 number of ways around it is advice. That difference is the whole reason the
-loops could be turned on at all.
+loops could be turned on at all. The architecture that bought it was hard work
+and nothing in it is new, and people tend to hear only one of those.
 
 The other half of the answer was to stop treating the need as illegitimate. The
 need was real. The model took that node because it had to run tests somewhere
@@ -144,24 +141,6 @@ other end:
 The last two are the loop closing on itself. The gates are fitted from what
 happened after previous commits, and the instructions the system operates under
 are sampled and scored like anything else it measures.
-
-## The one different piece is the transport, and it is not the learning part
-
-The transport the modules talk over is the only part of this architecture I
-would call novel, and it is also what makes the rest of it possible. It carries
-request and reply with typed capability errors and cancellation over
-shared-memory rings, with no socket and no per-event syscall, at a dispatch
-cost with a 134 ns ceiling, which bounds the worst case. That bound is why
-everything in the system could be made to cross one place, and every guarantee
-in these three articles is downstream of it. Without it there is no version of
-the loops above that I would have been willing to switch on.
-
-Even that is four known lineages put in one place, and it gets [its own
-article](https://rakuensoftware.com/blog/everything-crosses-one-transport).
-
-The architecture that made the loops safe to switch on, and the work around it,
-were hard. Nothing in it is new. Those two things are both true and people tend
-to hear only one of them.
 
 ## Six loops, and what each one was observed doing on a real stack
 
@@ -337,38 +316,14 @@ and found out whether it changed the result. Recall owes the same. "The model
 saw it and answered differently" is a description, and the finding is whether
 the answer got better.
 
-The proof this was the hard half is why the benchmarking exists. A large part
-of the measurement work behind this blog was undertaken for exactly this
-purpose: to establish that the memory is good enough to build on, and to be
-able to show it. It reads as a series of separate investigations and it was one
-job.
-
-Benchmarks carry more weight here than they usually do, and that is a position
-and a deliberate one. If it is not measured it is not known. Two conditions
-come with it.
-
-A benchmark has to show what a part does to the system and not only what it
-does on its own, because only the first tells you whether the part is worth
-keeping. And it has to accurately reflect the thing it claims to be measuring,
-which is harder than it sounds and is what several of these articles are about
-on their own. A number that is precise about the wrong workload is worse than
-no number, because it gets believed.
-
-Both of those answer to a third that nobody publishes and that decides
-everything else: what will not get somebody a support call at two in the
-morning. Every measurement behind this series is a proxy for that one.
-
-Which models can extract facts worth storing [at
-all](https://rakuensoftware.com/blog/local-llm-fact-extraction-head-to-head).
-What a corpus has to look like [before any of the numbers mean
-anything](https://rakuensoftware.com/blog/the-corpus-is-the-experiment). A
-reranker we [measured and
-deleted](https://rakuensoftware.com/blog/we-measured-our-reranker-and-deleted-it)
-once it stopped paying for itself. Not one of those articles is about learning,
-and all of them are about whether what reaches the model is any good.
-
-That campaign is what turned the memory from something to hope about into
-something to build on.
+Proving the memory was good enough to build on is why the benchmarking exists.
+A large part of the measurement work behind this blog was that one job, run as
+[fact extraction](https://rakuensoftware.com/blog/local-llm-fact-extraction-head-to-head),
+[corpus design](https://rakuensoftware.com/blog/the-corpus-is-the-experiment)
+and a [reranker we
+deleted](https://rakuensoftware.com/blog/we-measured-our-reranker-and-deleted-it),
+and it reads as separate investigations. That campaign is what turned the
+memory from something to hope about into something to build on.
 
 ## Learning like this has to live in the harness
 
