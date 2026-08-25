@@ -233,3 +233,24 @@ pgvector 0.8.0, pg_trgm 1.6 and Python 3.13.5 on pvetest; command
 result **46 passed, 0 failed**. Those environment details remain here because
 they belong to the measurement, although the article no longer discusses a
 storage backend.
+
+## Narrative restoration inventory, 2026-08-25
+
+PR review found that the 1,502-word rewrite reported the result but no longer
+carried the original story from incident to containment to learning. The
+article now runs 3,127 words against the original 4,313. No raw evidence was
+removed or rewritten.
+
+| narrative segment | restored treatment | claim boundary |
+|---|---|---|
+| test-node and API-key incident | **Restored as the lead** | under-$10 observation and accumulated route retained; causation remains an inference without the cold-start ablation |
+| why isolation preceded learning | **Restored** | governed bus coverage and documented delegate containment are stated separately |
+| six loop definitions | **Restored** | terminology shortened; no novelty claim |
+| live observation per loop | **Restored in sequence** | current 46/0 target supersedes old per-suite counts and old S4/S6 observations |
+| S6 use-after-free | **Retained** | live non-default `brief` selection and focused regression test |
+| deployment graph failure | **Restored** | provider omission, misleading HTTP 200 body and non-vacuous build check retained; backend-specific adjacent defect remains outside prose |
+| endogeneity gate | **Restored** | 75% of four, 0% of 25, closed/open admission and `unavailable` retained |
+| memory as the learned state | **Restored** | witness validation updated with live, negative-control and restart results; backend names remain outside prose |
+| why the loops were easier than memory | **Restored in compressed form** | memory failure examples remain factual; benchmarking-series purpose stays omitted |
+| harness versus weight learning | **Restored as an engineering trade-off** | cross-model operation remains by construction and is not claimed as measured |
+| falsifiability and valid no-op outcomes | **Restored** | closure is established; six-loop efficacy remains open |

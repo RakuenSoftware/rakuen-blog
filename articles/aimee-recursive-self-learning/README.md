@@ -54,6 +54,12 @@ Rewritten on 2026-08-25 against `testing` at `6bcc87e`. The new six-loop target
 supersedes the older per-suite counts for the article's current result: 46
 passed, 0 failed.
 
+Revised in PR review on 2026-08-25 to restore the original narrative spine.
+The article now runs 3,127 words, down from 4,313. It retains the lead incident,
+the containment prerequisite, the six live observations, the deployment-graph
+failure, the endogeneity gate, the memory argument and the harness trade-off.
+The efficacy and cross-model limits remain adjacent to the claims they bound.
+
 ## Evidence
 
 First-party, in the public
