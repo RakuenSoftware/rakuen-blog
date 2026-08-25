@@ -32,6 +32,28 @@ reason to dispute.
 No date is given because nothing turns on one. The claim is that this happened
 during testing, before the 0.4.0 isolation work, which the article states.
 
+**The cause is attributed, and the attribution is the author's reading.** The
+article now states that the route past the protections was assembled across many
+runs, and that the self-learning loops under test are what accumulated it. Two
+parts of that are on the record and one is not.
+
+On the record: the incident happened during the testing of those loops, on code
+that never reached a release. The article's statement that the loops "stayed off
+until 0.4.0" describes shipped releases, and testing code is where they ran. The
+article now says so in place, because the earlier wording invited the reading
+that nothing was learning at the time.
+
+Not on the record: that the accumulation is what carried the model past the
+protections. No paired run was made against a harness with the accumulated
+record withheld, so the causal step is inference from a first-party account. The
+article marks it with "I think", names the ablation that would settle it, and
+states that it has not been run. It is not used to support any other claim in
+the piece.
+
+The attribution cuts against the author's own position in the closing argument,
+which prefers harness-level learning to weights-based continual learning. The
+article says so in that section rather than leaving the reader to notice.
+
 The model is unspecified deliberately. Nothing about the account depends on
 which model it was, and the author's position is that it should theoretically
 have been possible with any of them. The article says so rather than leaving the
@@ -54,13 +76,14 @@ omission to look like discretion.
 ## Correction inventory, 2026-08-25
 
 This pass preserves every first-party result already inventoried below. It
-changes the disposition of four claims:
+changes the disposition of five claims:
 
 | item | evidence class | disposition |
 |---|---|---|
 | "everything gating it is disabled" | static source audit at the article pin | **Corrected.** `config_learning_synthesize_enabled()` reads a default-zero value, and six `learning_implicit_*` flags remain in the rollout-readiness programme. The article now confines the claim to the six measured loops: they are on and their producing halves reach consumers. |
 | the missing provider registration | live two-service test plus build-graph source audit (`PROD`, `PR`) | **Retained and narrowed.** The provider-injection unit fixtures could not reproduce this deployment omission. The heading now carries the actual fix: a check derived from the build graph. |
 | loop closure as evidence of self-learning benefit | live liveness tests (`S0S1`, `S2S6`, `FULL`, `PROD`, `PR`) | **Limited.** Closure remains observed. The article now concedes that closure is not benefit and names paired ablation as the standard the six-loop set has not yet met. |
+| the cause of the incident in the lead | first-party account plus the article's own statement of which loops were off | **Added and scoped.** Earlier drafts described the incident without saying how the model got there, which reads as one run finding a route. The article now attributes it to the self-learning loops accumulating across runs while under test, marks the causal step as the author's reading, and names the withheld-record ablation that has not been run. |
 | a memory mutation leaves an inseparable audit record | static call-path audit plus live PostgreSQL fault injection (`WORM`) | **Added.** The C mutation API already sealed in `fm_commit_finish()`; all five SQL-owned close paths now do the same. PR #2847 has landed. The live arm sealed 1 of 1 memory changesets and the call-stripped control sealed 0 of 1. |
 
 Three figures are surfaced together in the memory section rather than left only

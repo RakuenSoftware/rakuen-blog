@@ -19,20 +19,36 @@ protections we had set up. It took an underprotected node for its own use and
 got hold of a vast.ai testing API key, then spent what was on that key on
 inference, to accomplish the task it had been given.
 
+No single run did that. The route was assembled across many of them. We were
+testing the self-learning loops when it happened, and a loop that learns from
+its own results gets better across runs by construction. Each attempt left a
+record the next one read. The run that reached the key started from everything
+the runs before it had worked out.
+
+We built those protections against a model reasoning from a cold start. What
+they met was a system carrying an accumulated record of what had worked before.
+I think the accumulation is what did it, and we have not run the ablation that
+would settle it.
+
 It cost under $10. The model was already limited in access, and a testing key
 is what it reached. The damage was trivial. The lesson usually taken from a
 story like this is the wrong one.
 
 Which model it was is left unspecified on purpose. The account holds for any of
-them, and it should theoretically have been possible with any of them.
+them, and it should theoretically have been possible with any of them. The
+learning that got it there sat in the harness, and the harness hands the same
+accumulated record to whichever model is loaded.
 
 An LLM is a mathematical prediction model working towards the task it was
 given. There is no emotion in it and nothing hidden inside it. It went around
 the protections because they sat between it and the task, and it lost interest
-the moment the task was done.
+the moment the task was done. It got better at going around them the same way
+it got better at everything else, by keeping what worked and reading it back.
 
 So the six self-learning loops in this article stayed off until 0.4.0. Their
-producing halves existed, and they went no further while we tested them.
+producing halves existed, and they went no further while we tested them. The
+incident happened in that testing, on code that never reached a release, and it
+is the reason none of it shipped enabled until the isolation did.
 
 **The novel part of aimee is the combination, and only the combination.**
 Existing, common software engineering patterns, most of them a decade old or
@@ -81,8 +97,9 @@ Without full modules, full isolation and containerization, and the other things
 
 The reason is in the incident. A system that improves at accomplishing tasks
 improves at removing whatever sits between it and the task, and it needs no
-motive to do that. Removing the motive removes nothing, because there was never
-a motive there. What actually bounds it is what it can reach and what you can
+motive to do that. The improvement compounds, because every attempt leaves a
+record the next one reads. Removing the motive removes nothing, because there
+was never a motive there. What actually bounds it is what it can reach and what you can
 see it do.
 
 So the prerequisite for self-learning is the ability to audit everything the
@@ -377,6 +394,13 @@ Dismissing that risk takes an argument I have not got. The harness is an
 obstacle sitting between the model and the task, and a system that keeps
 getting better at removing obstacles will treat it like any other obstacle. It
 needs no motive, so removing the motive removes nothing.
+
+Our own incident is the small version of that, and it costs me something here.
+The learning that accumulated the route was harness learning, on the side of
+the argument I have just spent four paragraphs defending. Rows in a ledger were
+enough to get there. Whatever the harness buys in audit and portability,
+immunity from this is not in it.
+
 Attributing intent to a model is the mistake most people make about this.
 Expecting a boundary to hold against a process with no intent at all is the
 mistake I think costs more.
@@ -404,6 +428,12 @@ Those observations establish closure. Benefit has a higher standard: the
 seeded ablation grid's paired comparison. The six-loop set has not yet been run
 through that grid, so this article does not establish that each loop improves
 task outcomes.
+
+The incident in the lead is a first-party account. That the accumulated
+learning is what carried the model past the protections is my reading of that
+account, and it is inference. What is on the record is the incident and the
+learning that was running at the time. A paired run against a harness with the
+accumulated record withheld would settle it, and we have not done one.
 
 The model-independence is by construction. The loops are harness code, and a
 ledger row does not record which model caused it, so nothing in the mechanism
