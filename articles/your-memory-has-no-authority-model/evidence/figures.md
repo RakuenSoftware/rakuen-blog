@@ -9,6 +9,34 @@ makes no performance or accuracy claim about any system. Source was read on 20
 and 21 August 2026 at the commits pinned in
 [`source-audit-2026-08-20.md`](source-audit-2026-08-20.md).
 
+## Overtaken since the pin, recorded 2026-08-25
+
+The rows below are correct at `1d36f8c1` and are not amended. Two of them no
+longer describe aimee as it stands, found while checking part two of the 0.4.0
+series against `958af1c5`.
+
+- **`auto-promotion sweep, catch-all exclusion`** and **`auto-promote default
+  on, threshold 3`**: commit `4e8c8fabc3` (2026-08-21, PR #2831) removed the
+  count-based sweep at `kb_curator_drain.c:843-870` along with its in-code
+  `other`/`unknown`/`misc`/`unspecified` skip. Activating a provisional
+  relation is now an authenticated decision recorded to the fact-graph ledger
+  with actor and transport identity, and the observation count only orders the
+  pending review queue. The actor is a credential rather than necessarily a
+  person, so the path can still be driven autonomously. The
+  threshold macro survives but is dead.
+- **`one score with fourteen named parts`**: the cited range
+  `memory_core_search_b.c:248-340` no longer contains
+  `memory_compute_score_parts()`. Counting the terms summed into
+  `parts->total`, that function had twelve at this pin and has thirteen at
+  `958af1c5`, where an `outcome` term was added. Fourteen counts the populated
+  non-total fields of `memory_score_parts_t`, which is a different rule and was
+  not stated here.
+
+Both are traced in full in
+[`the-remembering-is-the-learning/evidence/figures.md`](../../the-remembering-is-the-learning/evidence/figures.md).
+Reopening this draft means re-verifying these sections, not trusting the rows
+below.
+
 ## `aimee` source citations
 
 The `aimee` source map is pinned to `origin/testing` at

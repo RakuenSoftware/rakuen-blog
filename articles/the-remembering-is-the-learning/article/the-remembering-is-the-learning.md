@@ -106,7 +106,7 @@ the world. Transaction time records when the system believed it. "What was true
 last year" and "what did you believe last week" become different questions with
 different answers, which is the difference between a memory and a log.
 
-## The vocabulary itself is learned, and slowly
+## The vocabulary is learned, and every addition is signed
 
 Facts are triples, and each kind of relationship declares what may sit on
 either end. Employment joins a person to an organisation; an address joins a
@@ -118,16 +118,36 @@ Seventeen relationships ship with the system so a fresh install can validate
 before it has learned anything. The live set sits in a table the running system
 can extend, with cardinality and endpoint rules on each relation.
 
-A relation nothing has seen enters as speculation, and the sighting is counted.
-A sighting registers only after its fact commits, so failed writes do not raise
-a candidate's standing and a rejected relation keeps that verdict. Three
-committed sightings let the maintenance pass promote the relation. Catch-alls
-such as `misc` never qualify, because they cannot later reconcile to anything
-specific.
+A relation nothing has seen enters as speculation. Facts using it still commit,
+as Class C, and the sighting is counted. A sighting registers only after its
+fact commits, so failed writes do not raise a candidate's standing and a
+rejected relation keeps that verdict.
+
+What the count buys is position in a review queue, not entry to the vocabulary.
+Activating a relation is an authenticated decision, written to the ledger with
+the actor and the transport identity on the row, however often extraction saw
+it. That is a change. Three committed sightings used to promote a relation on
+their own, and this release replaced the counter with a decision that has to be
+signed, on the stated grounds that activating a predicate is not something
+recurrence should settle.
+
+Note what that does and does not require. The actor is a credential, not
+necessarily a person. Point an automation holding one at the queue and the
+vocabulary grows by itself again, which is a legitimate way to run this and the
+one I would expect a mature deployment to choose. What the design refuses is
+not autonomy. It is an activation nobody is named for. Evidence sets the
+queue's priority, something signs, and the ledger records which.
+
+Catch-alls such as `misc` are excluded by an instruction in the extractor's
+prompt. The code guard that used to drop them went out with the counter it
+guarded, and a prompt is a weaker thing than a check. Whatever works the queue
+inherits that job, and an automation approving on a count alone is back to
+where the old sweep was, minus the guard.
 
 A person can also teach a domain from its documentation before any evidence has
-accumulated. That is the human path into the vocabulary, and it is deliberate:
-the slow evidential path is the default, and there is a second door.
+accumulated. That door and the queue differ in bulk rather than in kind: a
+whole vocabulary at once from a document, or one relation at a time as evidence
+raises it.
 
 ## Identity comes before storage, and a bad guess is reversible
 
@@ -153,12 +173,16 @@ relation and authority class of each edge.
 The graph adds memories that both lexical and vector search missed. A question
 can share no words with its answer if an entity connects the two.
 
-One fourteen-part score ranks the result: lexical and dense match, graph and
-code proximity, confidence, evidence, time, query intent. A typed fact, a
-conversation from March and a function edited last week compete on one scale.
-Reserved slots keep summaries and facts from being crowded out. The winners
-pull in neighbouring turns, and then scope removes anything the caller cannot
-see.
+One score of thirteen summed parts ranks the result: lexical match and
+coverage, dense match, entity overlap, time, evidence, state, salience,
+surprise, graph proximity, PageRank, query intent and recorded outcome. Code
+proximity is that graph term relabelled when the path ran through a code node.
+Confidence is filled in after ranking, for display rather than for position. A
+typed fact, a conversation from March and a function edited last week compete
+on one scale. Lane floors keep summaries and facts from being crowded out when
+they are switched on, which is a configuration question rather than something
+recall does on its own. The winners pull in neighbouring turns, and then scope
+removes anything the caller cannot see.
 
 The weights are fitted from feature rows and recorded retrieval outcomes. A new
 ranking model lands as a proposal until a benchmark gate promotes it.
@@ -182,11 +206,13 @@ workspaces.
 
 A recall carries the caller's active project and workspace. Active-project
 memory takes the first visibility band, the workspace the second, shared or
-global memory the third. Anything else scores zero. The database query receives
-that ranking as parameters, because a filter applied afterwards leaks through
-timing and through which candidates reached the scorer at all. A stable sort
-preserves relevance inside each band, so the caller gets the best match they
-may see with no signal that a stronger hidden one exists.
+global memory the third. Anything else scores zero. The query receives both
+halves as bound parameters. The band is an ordering term, and a matching
+predicate in the same statement's filter drops the rest before anything is
+ranked. A filter applied afterwards leaks through timing and through which
+candidates reached the scorer at all. A stable sort preserves relevance inside
+each band, so the caller gets the best match they may see with no signal that a
+stronger hidden one exists.
 
 Underneath runs a second axis: how settled a memory is. Five functional tiers,
 from Experience through Observation, World and Mental Models to Patterns. Raw
@@ -210,17 +236,19 @@ either leaking or forgetting.
 
 The design goal is refinement under use. Something one engineer established can
 climb out of its original scope after independent work corroborates it, and
-nobody has to file or curate anything.
+nobody has to file or curate anything. That is the goal. Two of the three
+mechanisms under it sit behind their own switches.
 
-Three is the default threshold in three places, and the units differ. A durable
-fact seen in three distinct sessions can become a pattern. An entity
-corroborated by three distinct sources can move out of local scope. A novel
-relation joins the vocabulary after three committed sightings.
+Three was the default threshold in three places, and the units differed. Two of
+them still run on a count. A durable fact seen in three distinct sessions can
+become a pattern, and that pass runs inside the maintenance cycle. An entity
+corroborated by three distinct sources can move one step up the scope lattice,
+and its own header records that pass as off by default.
 
-That last counter does not record distinct sources. One participant can repeat
-a relation to the threshold. The fact still enters as speculation, but
-vocabulary promotion is weaker evidence than the other two paths, and it is
-worth knowing which of the three you are looking at.
+The third is gone. A novel relation used to join the vocabulary on three
+committed sightings, and the count now orders a review queue instead. Of the
+three thresholds this article started with, one is automatic, one is available
+and off, and one has become a decision that carries a name.
 
 Months later, somebody who never spoke to the first engineer can receive an
 answer carrying what that work established. That is the loop closing on a
@@ -312,8 +340,9 @@ retired and purged, with a bounded blast-radius preview before and a
 content-free purge receipt after. Derived memories declare what they were
 derived from, so staleness propagates and a rederivation queue picks them up.
 Recall explanations are persisted and scoped, carrying lane, contribution,
-gate, staleness and provenance. The ledger writes 10,000 events in 5.397 s at
-812 bytes an event.
+gate, staleness and provenance. One run of the bounded-growth benchmark, on an
+idle test container, put the ledger at 812 bytes an event. That is what a kept
+event costs, measured once. What it costs under load is not a number we have.
 
 What makes a learned thing a thing at all is an identity, a date, an evidence
 chain, a fate, and a delete. The first article argued that none of the loops
@@ -375,8 +404,8 @@ the criterion above belongs to us and to our situation.
 ## Slow on purpose, and thin in two named places
 
 The discipline is not free and some of it is slow on purpose. A novel relation
-needs three committed sightings before it joins the vocabulary. A memory climbs
-tiers on evidence. An operator approval gates policy.
+waits for a signed approval. A memory climbs tiers on evidence. An operator
+approval gates policy.
 
 I will defend the slowness, and the reason is not caution in the abstract.
 
@@ -399,12 +428,13 @@ because something happened without it.
 
 Two limits worth stating plainly. The extractor's endpoint check catches
 invented endpoints and does not catch a false relation between two names that
-are genuinely present in the note. And the vocabulary-promotion counter does
-not require distinct sources, so one determined participant can reach that
-threshold alone.
+are genuinely present in the note. And the bar against catch-all predicates is
+now an instruction in a prompt rather than a check in code, so what stops a
+`misc` reaching the review queue is a model following an instruction.
 
-Both are known, both are narrower than the guarantees around them, and neither
-is fixed by anything in this release.
+Both are known and both are narrower than the guarantees around them. The
+first is unfixed in this release. The second this release created, by removing
+the check and keeping the requirement.
 
 If you are building memory for a model to use, settle what a learned thing is
 before settling where to put it. An identity, a date, an evidence chain, a fate
