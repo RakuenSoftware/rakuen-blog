@@ -4,7 +4,7 @@ slug: aimee-recursive-self-learning
 date: 2026-08-24
 author: Rakuen Software
 tags: [aimee, self-learning, memory, isolation]
-excerpt: "Aimee's learning capabilities were effectively disabled prior to 0.4.0. The capacity existed and did nothing while it was tested. With 0.4.0 self-learning is fully enabled, everything gating it is disabled, and aimee self-learns."
+excerpt: "Before 0.4.0, Aimee's self-learning machinery produced signals that did not close into outcomes. In 0.4.0 all six loops are on and closed, and the gates that held those loops off are gone."
 ---
 
 *Rakuen builds aimee, the system written about here. First of three: this one is
@@ -31,8 +31,8 @@ given. There is no emotion in it and nothing hidden inside it. It went around
 the protections because they sat between it and the task, and it lost interest
 the moment the task was done.
 
-So aimee's learning capabilities sat disabled until 0.4.0. The capacity for
-learning and testing existed, and it did nothing but exist while we tested it.
+So the six self-learning loops in this article stayed off until 0.4.0. Their
+producing halves existed, and they went no further while we tested them.
 
 **The novel part of aimee is the combination, and only the combination.**
 Existing, common software engineering patterns, most of them a decade old or
@@ -114,7 +114,7 @@ requirement nobody had written down.
 
 ## With 0.4.0, the self-learning is on
 
-Everything gating it is disabled, and aimee self-learns.
+All six loops are on, and every producing half now reaches its consumer.
 
 Self-learning has existed in aimee as early as the 0.1.x releases, technically.
 This is a different beast. The earlier thing learned content: which
@@ -174,15 +174,15 @@ learning loops, 13 and 0 for module liveness. Both are proved against the bug.
 Deleting the KB registration turns them red at 25 of 28 and 9 of 13, and the
 failures are the original symptom.
 
-## No unit test could have caught it
+## The build graph caught the missing provider registration
 
-Turning these on meant standing both services up on a real database, because
-the unit suite could not be trusted for it, and four pieces turned out to have
-been placed where they could not reach their own data. The two halves are not symmetrical: `aimee-kb`
-is the control plane and is shared, one knowledge base behind every enrolled
-user, while an `aimee-server` belongs to a single user and is where that user's
-work runs. The compiler enforces the boundary between them, and code can land
-on the side that cannot reach the data it needs.
+Turning these on required both services on a real database. Four pieces turned
+out to have been placed where they could not reach their own data. The two
+halves are not symmetrical: `aimee-kb` is the shared control plane, one
+knowledge base behind every enrolled user, while an `aimee-server` belongs to
+one user and is where that user's work runs. The compiler enforces the boundary
+between them, and code can land on the side that cannot reach the data it
+needs.
 
 One was worse than the rest. The learning router's signal classifier was
 registered in the daemon and not in the KB, so signal capture through the KB
@@ -194,10 +194,10 @@ POST /v1/actions/learning.propose_signal -> 200
       {"status":"error","message":"failed to record learning signal"}
 ```
 
-No unit test could have caught it. Every test registers its own provider, so a
-test that supplies the pointer it is about to exercise can never observe that
-production does not supply it. That is a property of the test itself, which is
-why more of them would not help.
+The provider-injection unit tests could not catch this deployment failure.
+Every test registers its own provider, so a test that supplies the pointer it
+is about to exercise can never observe that production does not supply it. That
+is a property of the fixture, which is why more of those tests would not help.
 
 A lint check now derives, for every seam an adapter registers, which daemons
 build the file owning the pointer, and demands a registration in each. It
@@ -247,6 +247,12 @@ learned thing actually is here and the answer is a memory row: a typed fact
 with a confidence class, a date, an evidence chain, a lifecycle state and a
 fate. There is nothing else it could be.
 
+Every closed memory changeset also leaves a hash-chained WORM row inside the
+same PostgreSQL transaction. The C mutation path seals in
+`fm_commit_finish()`; the five SQL-owned close paths seal through a narrow
+definer that reads the actor, authority, operation and status from the
+changeset. If the seal fails, the memory write rolls back.
+
 Watch the verbs. A fact enters as Class C speculation. It keeps being
 confirmed, so the lifecycle promotes it to durable. That is learning, and it is
 a scheduled memory operation. No loop decided anything. A speculation that
@@ -254,9 +260,8 @@ stops being confirmed expires. That is forgetting, and it is the same
 machinery. A later assertion contradicts an earlier one on a single-valued
 relation and supersedes it, with the old value still legible. That is
 correction. The recall walk then weights what it traverses by confidence class,
-A at 1.0 through C at 0.5, which is the learned model being applied to the next
-turn. None of those is a caller reaching into a store. They are the store's own
-behaviour over time.
+which is the learned model being applied to the next turn. None of those is a
+caller reaching into a store. They are the store's own behaviour over time.
 
 So the six loops are memory operating on its own contents, and on the record of
 its own use. Calling them six features built on a database misses what they
@@ -265,6 +270,14 @@ eval suite growing from failure is memory noticing that a failure signature
 recurred. Approach-level negative knowledge is memory of what was already
 tried. Post-commit regret is memory revising its opinion of an earlier memory.
 The endogeneity ratio is memory asking where its own contents came from.
+
+Three observed values make those rows concrete:
+
+| memory result | value read back | consequence |
+|---|---|---|
+| recall confidence | a 0.80 semantic baseline multiplied by A at 1.0, B at 0.75 or C at 0.5 | lifecycle confidence changes the next recall |
+| proposal fate | proposal 8001 became `superseded`, then an operator verdict made it `contradicted` | a later event revises an earlier record without erasing it |
+| changeset audit | 1 of 1 live memory changesets carried a WORM row; stripping the five SQL seal calls produced 0 of 1 | the audit row comes from the seal and shares the memory transaction |
 
 "Add self-learning" was never a feature anyone could have shipped on its own.
 It is what a memory system does once it is good enough: typed, classed, dated,
@@ -386,6 +399,11 @@ first one's fate without being asked. The endogeneity ratio reflects a ledger
 that exists. A policy arm the build declares comes back from the sampler. Each
 of those is a row you can go and read, or a file you can go and look for, and
 one of them missing on a real stack settles it against me.
+
+Those observations establish closure. Benefit has a higher standard: the
+seeded ablation grid's paired comparison. The six-loop set has not yet been run
+through that grid, so this article does not establish that each loop improves
+task outcomes.
 
 The model-independence is by construction. The loops are harness code, and a
 ledger row does not record which model caused it, so nothing in the mechanism
