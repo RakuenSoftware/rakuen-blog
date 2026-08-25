@@ -26,6 +26,20 @@ sixteen repositories at pinned commits, the three raw collection artifacts, the
 editorial inventory, the per-claim source map, and the comparative thesis about
 authority on the default recall path.
 
+**Overtaken in one place, 2026-08-25.** Commit `4e8c8fabc3` on aimee `testing`
+(2026-08-21, PR #2831) removed count-based ontology promotion. Three passages
+here describe it as live: "Three committed sightings let the maintenance pass
+promote the relation", the three-thresholds paragraph, and "need three
+committed sightings to promote their relation" under what the design costs.
+Those were accurate at this article's pin `1d36f8c1` and are not amended, per
+the append-only rule in `articles/AGENTS.md`. Anyone reopening this draft
+re-verifies that section first. The mechanism as it stands now, a review queue
+ordered by observation count with activation as an authenticated decision by a
+credentialed actor that may be an automation, is
+reported in
+[`the-remembering-is-the-learning`](../the-remembering-is-the-learning/), whose
+record carries the full trace.
+
 **Decided, 2026-08-24: the fourteen-project comparison stays unpublished.** It
 is not retired, and this folder, its evidence and its raw artifacts stay in
 place per `articles/AGENTS.md`. The right-of-reply blocker below is the reason
