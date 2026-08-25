@@ -55,7 +55,7 @@ Corrected on 2026-08-25: the blanket claim that every learning gate was disabled
 was false. The article now scopes that statement to the six measured loops,
 names the build-graph check that caught the provider omission, separates loop
 closure from measured benefit, and surfaces the memory audit result. The audit
-sentence depends on Aimee PR #2847 landing before this article does.
+sentence's dependency landed in Aimee PR #2847 on 2026-08-25.
 
 ## Evidence
 

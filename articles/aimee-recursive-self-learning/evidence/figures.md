@@ -49,7 +49,7 @@ omission to look like discretion.
 | `ENDO` | `src/modules/learning/learning_endogeneity.c` on `testing` | read 2026-08-24 |
 | `TYPED` | PR #2824, typed facts in the recall walk and the scheduled lifecycle | merged 2026-08-20 |
 | `TEMP` | PR #2834, evidence-backed temporal learning loop; PR #2841, promotion to default-on, read at `agent/temporal-assertion-learning-loop` | merged 2026-08-24 |
-| `WORM` | [PR #2847](https://github.com/RakuenSoftware/aimee/pull/2847), `docs/validation/memory-changeset-worm-seal-2026-08-25.md` | run 2026-08-25; publication depends on the PR landing |
+| `WORM` | [PR #2847](https://github.com/RakuenSoftware/aimee/pull/2847), `docs/validation/memory-changeset-worm-seal-2026-08-25.md` | merged 2026-08-25 as `ace897e7a3` |
 
 ## Correction inventory, 2026-08-25
 
@@ -61,7 +61,7 @@ changes the disposition of four claims:
 | "everything gating it is disabled" | static source audit at the article pin | **Corrected.** `config_learning_synthesize_enabled()` reads a default-zero value, and six `learning_implicit_*` flags remain in the rollout-readiness programme. The article now confines the claim to the six measured loops: they are on and their producing halves reach consumers. |
 | the missing provider registration | live two-service test plus build-graph source audit (`PROD`, `PR`) | **Retained and narrowed.** The provider-injection unit fixtures could not reproduce this deployment omission. The heading now carries the actual fix: a check derived from the build graph. |
 | loop closure as evidence of self-learning benefit | live liveness tests (`S0S1`, `S2S6`, `FULL`, `PROD`, `PR`) | **Limited.** Closure remains observed. The article now concedes that closure is not benefit and names paired ablation as the standard the six-loop set has not yet met. |
-| a memory mutation leaves an inseparable audit record | static call-path audit plus live PostgreSQL fault injection (`WORM`) | **Added, conditional on PR #2847 landing.** The C mutation API already sealed in `fm_commit_finish()`; all five SQL-owned close paths now do the same. The live arm sealed 1 of 1 memory changesets and the call-stripped control sealed 0 of 1. |
+| a memory mutation leaves an inseparable audit record | static call-path audit plus live PostgreSQL fault injection (`WORM`) | **Added.** The C mutation API already sealed in `fm_commit_finish()`; all five SQL-owned close paths now do the same. PR #2847 has landed. The live arm sealed 1 of 1 memory changesets and the call-stripped control sealed 0 of 1. |
 
 Three figures are surfaced together in the memory section rather than left only
 in this ledger: the confidence multiplier, proposal 8001's two observed fates,
