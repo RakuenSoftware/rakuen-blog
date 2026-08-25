@@ -1,9 +1,9 @@
 # Aimee: Recursive Self-Learning
 
-Part one of three. Aimee's learning capabilities were effectively disabled prior
-to 0.4.0. The capacity for learning and testing existed, but it did nothing while
-it was tested. With 0.4.0 self-learning is fully enabled, everything gating it is
-disabled, and aimee self-learns.
+Part one of three. Before 0.4.0, Aimee's self-learning machinery produced
+signals that did not close into outcomes. In 0.4.0 all six loops are on and
+closed, and the gates that held those loops off are gone. Unrelated learning
+synthesis and implicit-signal flags remain outside that claim.
 
 ## The series
 
@@ -26,9 +26,9 @@ Three things are claimed here and nothing beyond them:
 3. the memory exists to support them.
 
 No claim is made about improvement, outcomes, or the quality of what is learned
-over time. Drafts kept reintroducing disclaimers against that fourth claim; it
-was never being made, and defending against it implies otherwise. If a rewrite
-adds one back, cut it.
+over time. The falsification section now states that boundary once and names the
+paired ablation grid as the missing standard. Keep it there; repeating the
+disclaimer elsewhere would imply a claim the article does not make.
 
 **Nor is novelty claimed.** A system that improves its own improvement process
 is an old idea, and the article says so in its own section rather than leaving a
@@ -50,6 +50,12 @@ the learning work, and this article's record already held its evidence. Part
 three keeps the split's cost and points here. It retains a compressed containment summary, because the
 opening incident raises that question and a reader should not have to leave the
 piece to get the answer.
+
+Corrected on 2026-08-25: the blanket claim that every learning gate was disabled
+was false. The article now scopes that statement to the six measured loops,
+names the build-graph check that caught the provider omission, separates loop
+closure from measured benefit, and surfaces the memory audit result. The audit
+sentence's dependency landed in Aimee PR #2847 on 2026-08-25.
 
 ## Evidence
 
