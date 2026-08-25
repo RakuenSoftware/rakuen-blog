@@ -49,6 +49,24 @@ omission to look like discretion.
 | `ENDO` | `src/modules/learning/learning_endogeneity.c` on `testing` | read 2026-08-24 |
 | `TYPED` | PR #2824, typed facts in the recall walk and the scheduled lifecycle | merged 2026-08-20 |
 | `TEMP` | PR #2834, evidence-backed temporal learning loop; PR #2841, promotion to default-on, read at `agent/temporal-assertion-learning-loop` | merged 2026-08-24 |
+| `WORM` | [PR #2847](https://github.com/RakuenSoftware/aimee/pull/2847), `docs/validation/memory-changeset-worm-seal-2026-08-25.md` | run 2026-08-25; publication depends on the PR landing |
+
+## Correction inventory, 2026-08-25
+
+This pass preserves every first-party result already inventoried below. It
+changes the disposition of four claims:
+
+| item | evidence class | disposition |
+|---|---|---|
+| "everything gating it is disabled" | static source audit at the article pin | **Corrected.** `config_learning_synthesize_enabled()` reads a default-zero value, and six `learning_implicit_*` flags remain in the rollout-readiness programme. The article now confines the claim to the six measured loops: they are on and their producing halves reach consumers. |
+| the missing provider registration | live two-service test plus build-graph source audit (`PROD`, `PR`) | **Retained and narrowed.** The provider-injection unit fixtures could not reproduce this deployment omission. The heading now carries the actual fix: a check derived from the build graph. |
+| loop closure as evidence of self-learning benefit | live liveness tests (`S0S1`, `S2S6`, `FULL`, `PROD`, `PR`) | **Limited.** Closure remains observed. The article now concedes that closure is not benefit and names paired ablation as the standard the six-loop set has not yet met. |
+| a memory mutation leaves an inseparable audit record | static call-path audit plus live PostgreSQL fault injection (`WORM`) | **Added, conditional on PR #2847 landing.** The C mutation API already sealed in `fm_commit_finish()`; all five SQL-owned close paths now do the same. The live arm sealed 1 of 1 memory changesets and the call-stripped control sealed 0 of 1. |
+
+Three figures are surfaced together in the memory section rather than left only
+in this ledger: the confidence multiplier, proposal 8001's two observed fates,
+and the live WORM seal/control counts. Their original entries and sources remain
+below.
 
 ## Test environment for the live loop figures
 
@@ -94,6 +112,7 @@ Nothing above is a vector-search measurement.
 | typed facts were excluded from the graph walk, and separately the gravity table was dead at the fusion call site, which took the unknown default for every edge | `TYPED` | **shared** with the memory article. Two distinct defects; an earlier draft merged them into "co-occurrence at 0.45 drove recall" |
 | the co-occurrence upsert counted co-occurrence as re-assertion; weight normalisation rewrote confirmation counts | `TYPED` | **shared** with the memory article |
 | temporal learning paths were default-off for the loop figures, and were promoted to default-on on 2026-08-24 | `TEMP` | **Updated 2026-08-24.** PR #2841 flips `kb_mining_failure_learning_enabled` from 0 to 1, and the proposal's state line becomes "implemented, validated, and promoted default-on after benchmark review". The article previously called this default-on at release, which was forward-looking; it is a shipped fact now. The loop figures predate the flip and are unaffected |
+| memory changeset WORM seal: 1 of 1 live, 0 of 1 with the five SQL seal calls stripped | `WORM` | PostgreSQL 17.11, pgvector 0.8.0, pg_trgm 1.6 on pvetest; the negative control distinguishes the seal from an unrelated audit row |
 
 ## Figures moved out in the split
 
@@ -140,7 +159,7 @@ figures in this article depend on the prior-art paragraph being right.
 
 | claim | note |
 |---|---|
-| they will be default-on in the 0.4.0 release | forward-looking statement of intent; recheck at the tag |
+| ~~they will be default-on in the 0.4.0 release~~ | **Superseded 2026-08-24.** The six measured loops and the temporal loop are shipped on; this does not make unrelated learning synthesis and implicit-signal flags default-on. See the correction inventory above. |
 | the loops came out of one proposal, the memory took a measurement campaign | author, and this blog |
 | the benchmarking series was undertaken to establish that the memory is good enough to build on | statement of intent behind the published series; the articles are the artifact |
 
