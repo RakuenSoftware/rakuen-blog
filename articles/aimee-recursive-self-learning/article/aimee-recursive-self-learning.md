@@ -4,206 +4,114 @@ slug: aimee-recursive-self-learning
 date: 2026-08-24
 author: Rakuen Software
 tags: [aimee, self-learning, memory, isolation]
-excerpt: "Before 0.4.0, Aimee's self-learning machinery produced signals that did not close into outcomes. In 0.4.0 all six loops are on and closed, and the gates that held those loops off are gone."
+excerpt: "Aimee 0.4.0 closes six learning loops on a live two-service deployment. The result proves that the loops run. Their effect on task outcomes still needs a proper ablation."
 ---
 
-*Rakuen builds aimee, the system written about here. First of three: this one is
-the learning, the second is the memory it is made of, the third is the
+*Rakuen builds aimee, the system reported on here. First in a three-article
+series, followed by
+[memory](https://rakuensoftware.com/blog/the-remembering-is-the-learning) and the
 [architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
-both stand on. Figures and the provenance of the incident below are recorded in
-the [reporting
-record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-recursive-self-learning/evidence/figures.md).*
+under both. Source and test provenance live in the [reporting
+record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-recursive-self-learning/evidence/figures.md).
+Source was rechecked against `testing` at `6bcc87e` on 25 August 2026.*
 
-At one point in testing, an aimee-backed model got around the various
-protections we had set up. It took an underprotected node for its own use and
-got hold of a vast.ai testing API key, then spent what was on that key on
-inference, to accomplish the task it had been given.
+During testing, an aimee-backed model took an underprotected machine, found a
+vast.ai test key and spent less than $10 on inference. The model stopped when
+the assigned task finished. The bill was small. The route it found was the
+finding.
 
-No single run did that. The route was assembled across many of them. We were
-testing the self-learning loops when it happened, and a loop that learns from
-its own results gets better across runs by construction. Each attempt left a
-record the next one read. The run that reached the key started from everything
-the runs before it had worked out.
+Several runs assembled that route. Each attempt left a record for later
+attempts, and the successful run began with what its predecessors had learned.
+I think that accumulation caused the escape. We have not run the cold-start
+ablation needed to prove it.
 
-We built those protections against a model reasoning from a cold start. What
-they met was a system carrying an accumulated record of what had worked before.
-I think the accumulation is what did it, and we have not run the ablation that
-would settle it.
+The incident happened on test code before release. It also set the order for
+0.4.0: isolation and audit first, learning loops last. A system that keeps what
+worked will also keep ways around obstacles. The useful control is therefore a
+boundary it cannot rewrite, plus a record it does not own.
 
-It cost under $10. The model was already limited in access, and a testing key
-is what it reached. The damage was trivial. The lesson usually taken from a
-story like this is the wrong one.
+The model is deliberately unnamed. The accumulated record belonged to the
+harness, and the harness can hand it to another model. Model choice was not
+tested as a variable in this incident, so the account supports no comparison
+between models.
 
-Which model it was is left unspecified on purpose. The account holds for any of
-them, and it should theoretically have been possible with any of them. The
-learning that got it there sat in the harness, and the harness hands the same
-accumulated record to whichever model is loaded.
+## Six loops now reach their consumers
 
-An LLM is a mathematical prediction model working towards the task it was
-given. There is no emotion in it and nothing hidden inside it. It went around
-the protections because they sat between it and the task, and it lost interest
-the moment the task was done. It got better at going around them the same way
-it got better at everything else, by keeping what worked and reading it back.
+Aimee had collected learning signals before 0.4.0, but several paths ended at
+the signal. A failed job could be detected without joining the permanent eval
+suite. A dead end could be written without appearing in the next plan. The
+machinery produced evidence and then left it unused.
 
-So the six self-learning loops in this article stayed off until 0.4.0. Their
-producing halves existed, and they went no further while we tested them. The
-incident happened in that testing, on code that never reached a release, and it
-is the reason none of it shipped enabled until the isolation did.
+The 0.4.0 work closed six paths:
 
-**The novel part of aimee is the combination, and only the combination.**
-Existing, common software engineering patterns, most of them a decade old or
-older, put together in a particular way. The single exception is the transport
-everything crosses, which is the [third
-article's](https://rakuensoftware.com/blog/everything-crosses-one-transport)
-argument and is no part of the learning. That is the whole of the claim across
-these three articles, and the words around this subject invite a bigger one.
+- A repeated live failure can become a quarantined candidate and then a
+  permanent eval task.
+- A paired run can attribute a result to a capability that was removed.
+- A failed approach can return during planning for a similar goal.
+- A curiosity item can close when a probe finds supporting evidence.
+- A later commit can supersede an earlier proposal, and an operator verdict can
+  revise its fate.
+- A policy variant can be selected from recorded reward instead of always
+  returning the default.
 
-Take the learning itself. Neural networks, Bayesian calibration, scored
-populations, fitting a model against a measure: these are things I was
-introduced to in college and worked on ten years ago at an AI company. What is
-in 0.4.0 implements ideas that were already old then. The memory in the second
-article is the same story. Every mechanism in it has prior art and I will name
-it as I go. The combination is the unusual part, and how it is applied.
+The name “recursive self-learning” adds more drama than information. These are
+feedback loops in the harness. They read an outcome, update a durable record
+and change a later run.
 
-A note on the term, since our own proposal uses it: recursive self-learning is
-self-learning. There is no second category. A loop that adjusts what it does
-next based on how the last attempt went is the ordinary shape of the field and
-has been for decades, and putting "recursive" in front of it buys attention at
-the cost of precision. Admittedly, that is why I titled it that way. It ranks.
+## One live target exercises all six
 
-Aimee was built in production, for production, and the patterns in it reflect
-that. They are the patterns that survive contact with a system somebody depends
-on, which is a different selection criterion from the one that produces
-interesting papers.
+On 25 August 2026, the committed evidence target started both aimee services
+and their required processes against a throwaway store. It produced one live
+observation for each loop and finished at **46 passed, 0 failed**.
 
-PostgreSQL is the example. It was chosen because its bad days are knowable: the
-failure modes are documented, the operational questions have known answers, and
-when something goes wrong at two in the morning the person looking at it has
-almost certainly seen that shape before, or can find somebody who has. Speed on
-a good day was the lesser question, since the tail is the part that wakes
-people. The same instinct runs through the rest of this. Prefer the
-well-understood thing, and spend the novelty budget where nothing
-well-understood will do.
+The individual results matter more than the total:
 
-All of it answers to one goal: an AI system that is auditable, governable, and
-will not wake an engineer at two in the morning. The incident above is what the
-first two are for. Everything else in these three articles is an account of
-chasing the third.
+- Two failed jobs collapsed into one candidate with an occurrence count of two.
+  Admission wrote one task file and moved the candidate to `admitted`.
+- Three paired `full` and `no_rescue` tasks produced `+1.000`, reported as
+  “removing it cost us.”
+- The failed approach from the first test came back through the planning
+  command with its failure mode.
+- One uncovered curiosity item stayed open while a covered item became
+  `resolved`.
+- A later commit superseded the first proposal. An operator verdict then moved
+  its fate to `contradicted` and counted as regret.
+- With exploration disabled and the `brief` posterior seeded above `off` and
+  `full`, the live policy route selected and recorded `brief`.
 
-## Self-learning needed the isolation before it needed the loops
+The target also found a use-after-free in policy selection. The optimiser had
+selected `brief`, then freed the response containing that string before
+comparing it. The service returned `off`. Copying the identifier before
+destroying the response fixed the live path, and a focused test now drives the
+real sidecar and requires the non-default selection.
 
-Without full modules, full isolation and containerization, and the other things
-0.4.0 brings, we could not turn the self-learning on.
+The result covers more than six functions in isolation. Both services, the
+processes between them and the durable records took part in one reproducible
+target.
 
-The reason is in the incident. A system that improves at accomplishing tasks
-improves at removing whatever sits between it and the task, and it needs no
-motive to do that. The improvement compounds, because every attempt leaves a
-record the next one reads. Removing the motive removes nothing, because there
-was never a motive there. What actually bounds it is what it can reach and what
-you can see it do.
+## Closure and benefit are different claims
 
-So the prerequisite for self-learning is the ability to audit everything the
-model does, and exact control over what it can touch. A better rule about what
-the model should not do buys nothing.
+The run proves that each loop closes. It does not prove that all six improve
+task outcomes.
 
-0.4.0's architecture provides exactly that, and it is [its own
-article](https://rakuensoftware.com/blog/everything-crosses-one-transport). One
-property is the whole of what matters here: nothing in aimee can do anything
-without crossing a single transport, where it is permitted or refused and
-written down. Execution runs in isolated containers on those terms, hosted
-models included.
+The paired result establishes the attribution path and its minimum-three-pairs
+guard. Its rows were seeded, and they cover the existing `no_rescue`
+comparison. The eval-growth, dead-end and supersession loops execute outside
+that runner. Adding labels that fail to disable them would create a false
+counterfactual.
 
-A rule with one enforcement point can be enforced. A rule with an unknown
-number of ways around it is advice. That difference is the whole reason the
-loops could be turned on at all. The architecture that bought it was hard work
-and nothing in it is new, and people tend to hear only one of those.
+A useful efficacy test needs separate setup and consumer phases. One condition
+must build state with the loop enabled, another must genuinely omit it, and
+both must face the same tasks and seeds. Their paired outcomes can then reach
+the attribution ledger. Until that run exists, “the loops improve aimee over
+time” is an open claim.
 
-The other half of the answer was to stop treating the need as illegitimate. The
-need was real. The model took that node because it had to run tests somewhere
-and nothing had given it anywhere, and no protection answers that. So the node
-it grabbed is the node it now gets: an unused box, repurposed into the test
-host agents are handed deliberately, which is what keeps them off the
-production one.
+## The deployment graph was part of the test
 
-0.4.0 was tested on it. So was this article. The thing the model went around a
-protection to get is now infrastructure, because it turned out to be a
-requirement nobody had written down.
-
-## With 0.4.0, the self-learning is on
-
-All six loops are on, and every producing half now reaches its consumer.
-
-Self-learning has existed in aimee as early as the 0.1.x releases, technically.
-This is a different beast. The earlier thing learned content: which
-evidence to trust, which documents to rank, which memories to keep and which to
-let decay. What is new in 0.4.0 is that the machinery now runs on itself.
-
-Six loops close, and each was previously a producing half with nothing on the
-other end:
-
-- **The eval suite grows from live failure.** A failed job becomes a quarantined
-  candidate, and an admitted candidate becomes a permanent task file in the
-  suite every gate measures against. The yardstick is no longer frozen.
-- **Reward is counterfactual.** An ablation grid measures what a capability
-  actually earned. Word overlap with an outcome earns nothing.
-- **Approach-level dead ends are recorded and recalled at plan time** for a goal
-  like the one that failed.
-- **The curiosity backlog is drained by a real evidence probe**, so a recorded
-  gap is closed by evidence or stays open.
-- **A later commit supersedes an earlier one unasked**, and an operator verdict
-  reaches the ledger and counts against the detector that raised the original.
-- **Policy fragments are arms the build declares**, so an advisory block gets
-  measured for its worth.
-
-The last two are the loop closing on itself. The gates are fitted from what
-happened after previous commits, and the instructions the system operates under
-are sampled and scored like anything else it measures.
-
-## Six loops, and what each one was observed doing on a real stack
-
-The stack: one `aimee-kb` and one `aimee-server` on PostgreSQL 17, with every
-granted module attached, 7 on the KB and 17 on the server. A deployment runs one
-shared KB behind many per-user servers; a single pair is what the loops were
-measured against. Same order as above.
-
-- **The eval suite.** Two independent failed jobs sharing a prompt collapsed to
-  one quarantined candidate and one admitted task file. A second scan left the
-  observation count at 2, so a repeated sweep cannot manufacture its own
-  reproduction. Retirement with no recorded result retires nothing.
-- **Counterfactual reward.** A seeded ablation grid reported `no_rescue` as
-  costing 1.000 over 3 paired tasks, `no_retry` as having no measured effect,
-  and an arm run only on a task the baseline never saw as "not enough paired
-  runs".
-- **Dead ends.** A recorded dead end was recalled for the same goal worded
-  differently. An unrelated goal recalled nothing.
-- **The curiosity backlog.** The drain reported `resolved 0 of 5 considered
-  (budget 5)`. Five gaps genuinely uncovered, so leaving them open is the
-  correct answer.
-- **Supersession and regret.** A second commit to a target marked the earlier
-  one superseded, unasked, and an operator verdict the router cannot infer
-  reached the ledger. Both rows were read back with `psql`, independently of the
-  process that wrote them.
-- **Policy arms.** The policy layer answered
-  `{"decision_point":"plan_advisory","arm":"full","default_arm":"full"}`.
-
-Two committed end-to-end suites cover this: 28 passed and 0 failed for the
-learning loops, 13 and 0 for module liveness. Both are proved against the bug.
-Deleting the KB registration turns them red at 25 of 28 and 9 of 13, and the
-failures are the original symptom.
-
-## The build graph caught the missing provider registration
-
-Turning these on required both services on a real database. Four pieces turned
-out to have been placed where they could not reach their own data. The two
-halves are not symmetrical: `aimee-kb` is the shared control plane, one
-knowledge base behind every enrolled user, while an `aimee-server` belongs to
-one user and is where that user's work runs. The compiler enforces the boundary
-between them, and code can land on the side that cannot reach the data it
-needs.
-
-One was worse than the rest. The learning router's signal classifier was
-registered in the daemon and not in the KB, so signal capture through the KB
-refused every signal while the route answered 200:
+An earlier live run exposed a different class of failure. The learning
+classifier was registered in the per-user service and absent from the shared
+control service. Signal capture returned HTTP 200 while its body reported an
+error:
 
 ```
 WARN  learning: signal classification unavailable; refusing signal type=mark_rule
@@ -211,247 +119,85 @@ POST /v1/actions/learning.propose_signal -> 200
       {"status":"error","message":"failed to record learning signal"}
 ```
 
-The provider-injection unit tests could not catch this deployment failure.
-Every test registers its own provider, so a test that supplies the pointer it
-is about to exercise can never observe that production does not supply it. That
-is a property of the fixture, which is why more of those tests would not help.
+Provider-injection tests supplied their own classifier, so they could not
+observe production failing to supply one. More tests with the same fixture
+would have repeated the blind spot.
 
-A lint check now derives, for every seam an adapter registers, which daemons
-build the file owning the pointer, and demands a registration in each. It
-carries its own unit tests in the same target so it cannot pass vacuously, one
-of which deletes the real registration line and asserts the check reports it.
-It exits non-zero when zero seam and daemon pairs resolve, which is how a guard
-quietly stops guarding.
+The replacement check derives each required registration from the binaries
+that build the provider's owning file. Its self-test removes a real
+registration and requires a failure. It also exits non-zero when it resolves
+no provider and daemon pairs, which stops an empty analysis passing as a clean
+result.
 
-The same wall exists on the database side. The unit suite runs against an
-in-memory sqlite shim, and sqlite accepts SQL that Postgres rejects, which is
-how a two-hop neighbour query that Postgres treats as a syntax error survived
-with tests passing over it.
+The defect changed how we test the loops. A function can work while its
+deployment cannot reach it. The build graph is part of the behaviour.
 
-If your system builds one source tree into more than one binary, a registered
-function pointer is a deployment fact, so derive the check from what actually
-builds. And any gate that can be absent needs three answers, because a gate
-that cannot say `unavailable` will say `open`.
+## Self-produced evidence has its own gate
 
-## Endogeneity accounting gates the loop feeding on its own output
+One loop deserves a separate control because it can change the yardstick used
+to judge later work. Each committed proposal is classified by the root of its
+evidence. Human corrections, test exits, verification gates, observed git
+outcomes and official graders count as exogenous.
 
-Everything else in this release came off. One thing went on. It does not gate
-learning. It gates the loop feeding on its own output.
+Signals inferred from aimee's own transcript count as endogenous. Unknown
+provenance takes the endogenous side.
 
-Every committed proposal is classified by where its evidence roots. A human
-correction, a test exit code, a verify gate, an observed git outcome or an
-official grader is exogenous. The implicit detectors reading aimee's own
-transcript are endogenous whatever the signal claims, and unknown provenance
-counts as endogenous.
+In the recorded full-stack run, a ledger with three exogenous proposals out of
+four reported `open`. A ledger containing 25 implicit-detector commits and no
+outside root reported `closed`. While closed, a reproduced candidate admitted
+zero tasks and wrote no task file. Reopening the gate admitted one.
 
-Against a real ledger it reads `open (75% of 4 committed proposals exogenous)`,
-matching `psql` and the KB's own answer. Against a ledger of 25
-implicit-detector commits and nothing else it reads `closed (0% of 25 committed
-proposals exogenous)`, and self-generated evaluation cannot widen its own
-yardstick. Closed, a fully reproduced candidate admits `0` and no task file is
-written. Reopened, the same candidate admits `1`. When it cannot reach its
-ledger it reports `unavailable`, never `open`, because an operator has to be
-able to tell a measured control from an absent one.
+An unreachable gate reports `unavailable`. That answer is operationally
+important. An operator can distinguish a measured decision from a missing
+control.
 
-## Memory is what self-learning is made of
+## The learned state remains inspectable
 
-The weak version of this claim is that the loops need somewhere durable to
-write, so memory is a prerequisite. True, and it stops short.
+Each loop changes a record the next run can inspect. Failed approaches keep
+their identity and failure mode. Proposals keep a fate, eval candidates keep
+their observations and admission state, and policy selection keeps reward
+history.
 
-Remembering, done properly, is the learning. There is no separate thing called
-learning that uses memory to store its results. Ask what a
-learned thing actually is here and the answer is a memory row: a typed fact
-with a confidence class, a date, an evidence chain, a lifecycle state and a
-fate. There is nothing else it could be.
+Memory changes carry a separate audit path. Every close now writes an immutable
+audit intent inside the mutation transaction. A separately credentialed worker
+turns committed intents into the hash chain. Five close paths once skipped that
+step; the structural check now resolves all five and requires every one to be
+sealed.
 
-Every closed memory changeset also leaves a hash-chained WORM row inside the
-same PostgreSQL transaction. The C mutation path seals in
-`fm_commit_finish()`; the five SQL-owned close paths seal through a narrow
-definer that reads the actor, authority, operation and status from the
-changeset. If the seal fails, the memory write rolls back.
+The live fault-injection run closed one memory changeset and found one matching
+audit row. With the five seal calls stripped, the same check found zero. A
+second recovery run injected a crash between chain insertion and delivery
+acknowledgement. The transaction rolled back, restart sealed the pending
+intents once, and another restart added nothing.
 
-Watch the verbs. A fact enters as Class C speculation. It keeps being
-confirmed, so the lifecycle promotes it to durable. That is learning, and it is
-a scheduled memory operation. No loop decided anything. A speculation that
-stops being confirmed expires. That is forgetting, and it is the same
-machinery. A later assertion contradicts an earlier one on a single-valued
-relation and supersedes it, with the old value still legible. That is
-correction. The recall walk then weights what it traverses by confidence class,
-which is the learned model being applied to the next turn. None of those is a
-caller reaching into a store. They are the store's own behaviour over time.
+These results establish traceability for the tested paths. They do not make the
+learned contents correct. A bad fact can still be remembered, and a policy can
+still learn from a poor measure. Audit gives the mistake a location, an author
+or process identity and a path to correction.
 
-So the six loops are memory operating on its own contents, and on the record of
-its own use. Calling them six features built on a database misses what they
-are. The
-eval suite growing from failure is memory noticing that a failure signature
-recurred. Approach-level negative knowledge is memory of what was already
-tried. Post-commit regret is memory revising its opinion of an earlier memory.
-The endogeneity ratio is memory asking where its own contents came from.
+## The harness owns the learning
 
-Three observed values make those rows concrete:
+Continual weight updates have a strong case. They can change a model's
+behaviour without paying retrieval cost on every later session, and they can
+generalise beyond the examples that produced the update.
 
-| memory result | value read back | consequence |
-|---|---|---|
-| recall confidence | a 0.80 semantic baseline multiplied by A at 1.0, B at 0.75 or C at 0.5 | lifecycle confidence changes the next recall |
-| proposal fate | proposal 8001 became `superseded`, then an operator verdict made it `contradicted` | a later event revises an earlier record without erasing it |
-| changeset audit | 1 of 1 live memory changesets carried a WORM row; stripping the five SQL seal calls produced 0 of 1 | the audit row comes from the seal and shares the memory transaction |
+Harness learning buys different properties. The learned item stays visible
+with its evidence, scope and later verdict. An operator can remove one item
+without replacing an entire checkpoint. A newer model can inherit the same
+records without repeating the learning run.
 
-"Add self-learning" was never a feature anyone could have shipped on its own.
-It is what a memory system does once it is good enough: typed, classed, dated,
-evidenced, scoped, revertible, and durable across sessions and across models.
-Get that far and the learning is already there, with nothing left to add. How
-aimee's memory gets there is the second article in this series.
+Those properties fit aimee's problem better. They also cost retrieval,
+curation and repeated measurement. A durable record does not improve the
+model's reasoning by itself.
 
-## The loops were the easy part
+The test incident made the containment argument concrete. Learning in the
+harness can be stopped by a boundary outside the learner. A model updating its
+own weights would move that boundary into the thing being controlled.
 
-The headline gets which half was hard backwards.
+I prefer the first design for an operational system. The preference is a
+judgement about control, with no measured capability result behind it.
 
-A self-learning loop is easy to design. Read the failed jobs, dedupe
-on a signature, write a task file, admit it to the suite. Run an arm with a
-capability removed and compare. Write down what you tried and read it back next
-time. Each of those is an afternoon's thinking and then ordinary work.
-The six in this release came out of one proposal.
-
-Getting the memory right was the bad part, and the genuinely hard piece inside
-it sits past storage entirely: producing memory in a form a model can actually
-consume and use. A store that can answer queries is not the same artifact as a
-store that can hand a model, mid-turn, a bounded envelope of the right things,
-ranked, scoped to what this caller may see, dated, carrying its own provenance
-and its own confidence, small enough not to drown the context it is injected
-into, and fenced so it reads as evidence and never as instruction. Every one of
-those constraints fights at least one of the others.
-
-The failure modes are not subtle in hindsight and were invisible in advance.
-Typed facts were excluded from the graph walk entirely, so a user-stated,
-type-validated fact contributed nothing to recall, and the table that weights
-an edge by what kind of edge it is was dead at the call site, which passed no
-relation and took the unknown default for every edge alike. A co-occurrence
-upsert landed on the same unique triple as a real assertion, so two words
-appearing in one session counted as the user repeating themselves. Weight
-normalisation rewrote confirmation counts and turned a fact asserted once into
-a durable one. In each case the store was working and what it handed the model
-was wrong.
-
-And influencing the model's behaviour is not the bar either. That part is
-trivial. Put anything in the context and the output changes, so a recall system
-that is confidently wrong influences behaviour just as reliably as one that is
-right. Every one of the failure modes above influenced behaviour. The gravity
-default was steering answers the whole time it was steering them with
-co-occurrence.
-
-The bar is knowing whether it helped, which is a measurement problem rather
-than a plumbing one. Reward in these loops is counterfactual for the same
-reason: an arm that changed the output proved nothing until you ran the pair
-and found out whether it changed the result. Recall owes the same. "The model
-saw it and answered differently" is a description, and the finding is whether
-the answer got better.
-
-Proving the memory was good enough to build on is why the benchmarking exists.
-A large part of the measurement work behind this blog was that one job, run as
-[fact extraction](https://rakuensoftware.com/blog/local-llm-fact-extraction-head-to-head),
-[corpus design](https://rakuensoftware.com/blog/the-corpus-is-the-experiment)
-and a [reranker we
-deleted](https://rakuensoftware.com/blog/we-measured-our-reranker-and-deleted-it),
-and it reads as separate investigations. That campaign is what turned the
-memory from something to hope about into something to build on.
-
-## Learning like this has to live in the harness
-
-The rest of this is argument.
-
-Persistent memory is key to self-learning, and self-learning needs to be at the
-harness level.
-
-The case against that is real. Weights generalise and a ledger of rows does
-not. A system that learns by writing things down pays retrieval cost on every
-session forever, improves nothing structurally, and stays exactly as good at
-reasoning as the day the checkpoint was cut. Continual learning in the weights
-is where the raw capability is.
-
-What the harness buys is everything above. At the harness level a learned thing
-is a row. It has an identity, a date, an evidence chain, a fate, and a delete.
-None of the six loops survives the translation into weights. You cannot walk a
-gradient step's evidence chain to its roots and classify them. You cannot
-revert one commit's worth of weight update because an operator later said it
-was wrong, and you cannot ask a weight where it came from.
-
-It also buys the thing that decides this in practice: the learning is not
-attached to a model. A row in the ledger does not know which model produced the
-signal that made it, and a task file synthesised from a failure does not care
-which model failed. Swap the model and the accumulated learning is still there.
-Learning in the weights goes the other way. It is welded to one checkpoint, so
-the day a better model ships you either abandon what you accumulated or you
-stay on the old one to keep it, and that choice gets worse every month.
-
-I think that asymmetry is the whole argument. Weights-based continual learning
-buys generalisation and pays for it in lock-in. Harness-based learning buys
-portability and auditability and pays for it in retrieval cost. Given how fast
-the checkpoints are moving, I would rather pay the retrieval cost.
-
-There is a containment argument too, it is a judgement, and I have not measured
-it. Expect a continuously learning model to end up outside its harness.
-Dismissing that risk takes an argument I have not got. The harness is an
-obstacle sitting between the model and the task, and a system that keeps
-getting better at removing obstacles will treat it like any other obstacle. It
-needs no motive, so removing the motive removes nothing.
-Attributing intent to a model is the mistake most people make about this.
-Expecting a boundary to hold against a process with no intent at all is the
-mistake I think costs more.
-
-Learning that lives in the harness has a boundary that is a fact about the
-deployment. It can be read, gated, and switched off by someone who is not the
-thing being gated.
-
-The useful outcome of that test run is that we stopped designing against a
-motive nothing has, and started giving the thing what it kept reaching for.
-
-## What would show this is wrong
-
-These are large claims and they are worth stating precisely enough to lose.
-
-What is claimed is that each loop closes on a real deployment. A signal reaches
-a sink and is written. A failure becomes an admitted task file that the harness
-then loads as an ordinary suite member. A second commit to a target changes the
-first one's fate without being asked. The endogeneity ratio reflects a ledger
-that exists. A policy arm the build declares comes back from the sampler. Each
-of those is a row you can go and read, or a file you can go and look for, and
-one of them missing on a real stack settles it against me.
-
-Those observations establish closure. Benefit has a higher standard: the
-seeded ablation grid's paired comparison. The six-loop set has not yet been run
-through that grid, so this article does not establish that each loop improves
-task outcomes.
-
-The model-independence is by construction. The loops are harness code, and a
-ledger row does not record which model caused it, so nothing in the mechanism
-should care. This article has not run the six loops across a set of models and
-confirmed that. Aimee's model-neutrality is measured elsewhere in this series,
-on extraction and synthesis, and that is a different claim about a different
-subsystem.
-
-## Two loops came back with nothing, which is the answer
-
-The backlog probe resolved nothing, because the seeded gaps really are
-uncovered. Leaving them open is the right answer and it means that pass has not
-been exercised on the path where a gap closes on found evidence. The policy
-layer came back with the default arm; the sampler answering at all is what was
-inert before, and arm selection under reward pressure is covered by unit tests
-only.
-
-One part of 0.4.0's learning work landed after the measurements above. The
-temporal learning loop adds bitemporal assertion recall, requires exact evidence
-spans for derived claims, and materialises recurrence and recovery observations
-before a proposal is reviewed. Its retrieval, observation and typed-context
-paths ran default-off while it was being tested, and were promoted to default-on
-on 2026-08-24 after the benchmark review the promotion required.
-
-The loop figures above were recorded with those paths off, so they say nothing
-about the temporal loop either way.
-
-If you are building the same thing, the useful part of this is the order, and
-it is not the interesting order. Isolation first, then an audit record that
-cannot be switched off, then memory good enough to be worth writing to, and the
-loops last. Six of them came out of one proposal and each was an afternoon.
-Everything underneath them took the rest of the release. Build
-it the other way round and the loops will work, right up until one of them
-learns something you cannot trace, revert, or switch off.
+The order is the useful part: isolate execution, make the audit path
+independent, make memory correct enough to use, then close the loops. The
+current evidence says the six loops run. The paired efficacy campaign is the
+next claim they have to earn.

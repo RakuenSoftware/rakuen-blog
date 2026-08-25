@@ -1,14 +1,13 @@
 # Aimee: Recursive Self-Learning
 
-Part one of three. Before 0.4.0, Aimee's self-learning machinery produced
-signals that did not close into outcomes. In 0.4.0 all six loops are on and
-closed, and the gates that held those loops off are gone. Unrelated learning
-synthesis and implicit-signal flags remain outside that claim.
+Part one of three. Aimee 0.4.0 closes six learning loops on a live two-service
+deployment. The 25 August evidence target produced one observation per loop and
+finished at 46 passed, 0 failed. Loop efficacy remains unmeasured.
 
 ## The series
 
-1. **Self-learning** — this one. The loops exist and they work, and
-   memory is what they are made of.
+1. **Self-learning** — this one. The loops close; their effect on task outcomes
+   still needs paired measurement.
 2. **[Memory](../the-remembering-is-the-learning/)** — the machinery behind this
    article's central claim.
 3. **[Architecture](../everything-crosses-one-transport/)** — what parts one and
@@ -19,22 +18,16 @@ every reporting record that uses them.
 
 ## The claim, and only the claim
 
-Three things are claimed here and nothing beyond them:
+Three things are claimed here:
 
-1. aimee self-learns;
-2. the self-learning loops exist;
-3. the memory exists to support them.
+1. six learning loops close on the tested deployment;
+2. the harness keeps their learned state;
+3. the state remains inspectable and auditable on the tested paths.
 
-No claim is made about improvement, outcomes, or the quality of what is learned
-over time. The falsification section now states that boundary once and names the
-paired ablation grid as the missing standard. Keep it there; repeating the
-disclaimer elsewhere would imply a claim the article does not make.
+No claim is made that all six loops improve outcomes over time. The article
+names the missing setup-and-consumer ablation needed to establish that.
 
-**Nor is novelty claimed.** A system that improves its own improvement process
-is an old idea, and the article says so in its own section rather than leaving a
-reader to assume otherwise. The distinction that matters: deflating the
-*technique* is accurate and belongs in the piece; deflating the *work* is not,
-and an earlier draft did that and was cut. Keep the first, refuse the second.
+Novelty is outside the claim.
 
 ## Status
 
@@ -57,6 +50,10 @@ names the build-graph check that caught the provider omission, separates loop
 closure from measured benefit, and surfaces the memory audit result. The audit
 sentence's dependency landed in Aimee PR #2847 on 2026-08-25.
 
+Rewritten on 2026-08-25 against `testing` at `6bcc87e`. The new six-loop target
+supersedes the older per-suite counts for the article's current result: 46
+passed, 0 failed.
+
 ## Evidence
 
 First-party, in the public
@@ -67,14 +64,9 @@ the two strong claims with what would settle them.
 
 ## Open items before publication
 
-- ~~Counts. Refresh at the 0.4.0 tag.~~ **Closed, 2026-08-24.** `testing` is the
-  0.4.0 release, so the reads already recorded are reads of 0.4.0 and there is no
-  separate tag to pin to. The lint and suite counts the article carries are the
-  latest.
-- ~~Temporal learning paths are default-off today and intended default-on at
-  release.~~ **Closed, 2026-08-24.** PR #2841 promoted them to default-on after
-  the benchmark review the proposal required, so the piece's one forward-looking
-  claim is now a shipped fact. The loop figures predate the flip and the article
-  says so.
+- ~~Counts. Refresh at the 0.4.0 tag.~~ **Closed, 2026-08-25.** The article
+  carries the reproducible six-loop target at 46 passed, 0 failed.
+- Temporal-learning rollout details remain in the reporting record and are
+  outside the article's six-loop claim.
 - Keep the compressed containment summary consistent with part three if either
   changes.

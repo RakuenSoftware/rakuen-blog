@@ -200,3 +200,36 @@ harness code and no ledger row records a producing model. **Not measured here:**
 the six loops have not been run across a set of models. Aimee's measured
 model-neutrality lives in other articles in this series and covers extraction
 and synthesis, not these loops.
+
+## Rewrite inventory, 2026-08-25
+
+The article was rewritten against `origin/testing` at `6bcc87e`. Existing
+reporting above remains in place. This table records the disposition of every
+first-party class used by the prior article.
+
+| prior reporting | evidence class | disposition |
+|---|---|---|
+| test-node and API-key incident, cost under $10, route assembled across runs | author observation | **Retained with limits.** The model stays unnamed, the cause is marked as the author's inference, and the missing cold-start ablation is stated beside it |
+| S1 candidate deduplication and task admission | live two-service test | **Retained and superseded by a newer run.** The 2026-08-25 evidence target observed two failures, one candidate and one admitted task |
+| S2 paired attribution at +1.000 over three tasks | live two-service test with seeded rows | **Retained.** The article says it proves plumbing and the three-pair guard, with no efficacy claim for the other loops |
+| S3 dead-end recall | live two-service test | **Retained** |
+| S4 `resolved 0 of 5` | live two-service test | **Superseded in prose.** The newer target observed one covered item resolve and one uncovered item remain open. The older result remains above |
+| S5 supersession and operator regret | live two-service test plus direct record readback | **Retained** |
+| S6 default `full` selection | live two-service test | **Superseded in prose.** The newer target forced and recorded non-default `brief`, and exposed the use-after-free described in the article |
+| 28/0 learning and 13/0 liveness suites, plus registration-deletion controls | committed end-to-end tests | **Preserved above and removed from prose.** The article carries the later unified target at **46 passed, 0 failed** |
+| missing provider registration, HTTP 200 error body and build-graph check | live deployment observation, run log and static source audit | **Retained and narrowed** |
+| sqlite-shim query discrepancy | runtime test plus source audit | **Removed from prose as adjacent to the provider finding. Preserved above** |
+| 75% of four exogenous, 0% of 25 exogenous, closed/open admission and `unavailable` | live full-stack test plus direct record readback | **Retained** |
+| confidence multipliers, graph-fusion defects, co-occurrence collision and confirmation rewrite | live test plus source audit | **Moved to part two.** Part one keeps only the auditability consequence |
+| temporal-learning rollout and defaults | static source audit and merged changes | **Removed from prose. Preserved above as release reporting outside the six-loop claim** |
+| changeset seal 1 of 1, stripped control 0 of 1, crash rollback and idempotent restart | live fault injection plus structural checks | **Retained and updated** from `docs/validation/memory-changeset-worm-seal-2026-08-25.md` |
+| prior-art survey and novelty framing | secondary historical review | **Removed from prose.** The article makes no novelty claim |
+| benchmarking-series purpose | author statement and linked articles | **Removed from prose as unnecessary to the six-loop finding** |
+
+The new live source is
+`docs/validation/learning-loop-evidence-2026-08-25.md`: PostgreSQL 17.11,
+pgvector 0.8.0, pg_trgm 1.6 and Python 3.13.5 on pvetest; command
+`AIMEE_TEST_PG_URL=postgresql:///postgres make -C src learning-loop-evidence`;
+result **46 passed, 0 failed**. Those environment details remain here because
+they belong to the measurement, although the article no longer discusses a
+storage backend.
