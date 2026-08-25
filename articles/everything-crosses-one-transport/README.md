@@ -7,8 +7,9 @@ that coverage.
 
 ## The series
 
-1. **[Self-learning](../aimee-recursive-self-learning/)** — the loops exist and they
-   work, and memory is what they are made of.
+1. **[Self-learning](../aimee-recursive-self-learning/)** — the loops close on
+   the tested deployment; their effect on outcomes still needs paired
+   measurement.
 2. **[Memory](../the-remembering-is-the-learning/)** — the machinery behind part
    one's central claim.
 3. **Architecture** — this one. What parts one and two stand on.
@@ -21,6 +22,12 @@ three times as if independently sourced.
 
 Draft, 2026-08-24. Not published. Source rechecked on 2026-08-25 at
 `6bcc87e`.
+
+Revised in PR review on 2026-08-25. The article now uses the original
+architecture narrative as its spine and runs 5,310 words, down from 9,236.
+The opening goal, transport lineage, language boundary, grants, delegate
+containment, tap, evidence chain and two-service split remain in sequence.
+Unsupported claims are qualified in place rather than removed with the story.
 
 Split out of the self-learning draft, where this material had grown to roughly a
 third of the piece while serving a claim that needed only part of it.
@@ -40,8 +47,9 @@ security argument.
 
 ## Deliberate omission
 
-The article's security claim ends at "detection and provenance, not prevention",
-with "at least for now" and no more.
+The article's security analysis stops at the controls that exist and their
+documented limits. It does not claim a penetration test, formal proof or
+independent security audit.
 
 Work beyond that exists in plan form and is **deliberately not described**,
 because it is not roadmapped and not tied to any public statement. A published

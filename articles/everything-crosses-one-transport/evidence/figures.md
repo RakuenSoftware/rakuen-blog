@@ -671,3 +671,31 @@ The article now follows the source's own completeness boundary:
 explicitly excludes core-local calls. Storage-backend material remains in this
 reporting record as prior reporting and test-environment context, but it no
 longer appears in the article.
+
+## Narrative restoration inventory, 2026-08-25
+
+PR review found that the 1,705-word rewrite preserved claim dispositions but
+lost the article's causal architecture story. The article was rebuilt from the
+original sequence and now runs 5,310 words. This inventory updates prose
+dispositions only; the raw observations and source record above remain
+unchanged.
+
+| narrative segment | restored treatment | claim boundary |
+|---|---|---|
+| two-in-the-morning acceptance test and ordinary-controls premise | **Restored** as the opening motive | author design goal, not a measurement |
+| ring-buffer lineage and Aeron/seL4 neighbours | **Restored** | checked against official Aeron, LMAX and seL4 documentation; the combination claim remains personal experience, not a field survey |
+| repeated-crossing cost | **Restored** | 134 ns and 82 ns are medians; 2,000 ns and 5,000 ns are regression ceilings; no Go-parity or tail-distribution claim |
+| C host and language-neutral module contract | **Restored** | two working clients demonstrate the contract; support for every language is not claimed |
+| grants and extension analysis | **Restored** | grants bound event kinds through aimee, not correctness or ambient operating-system authority |
+| complete transport coverage | **Restored with scope** | applies to governed traffic that crosses the bus; core-local calls and external traffic remain outside |
+| delegate incident, one-socket surface and package proxy | **Restored** | documented isolation and tool substitution retained; no end-to-end hosted-provider containment claim |
+| configurability over fixed enforcement | **Restored without backend choices** | settings may change behaviour; startup grants and tap ordering remain the invariant |
+| chokepoint and downstream validation | **Restored as analysis** | the article now states that no penetration test, proof or independent audit establishes the stronger security claim |
+| tap, loss records and 5,000-row audit test | **Restored** | exactly-once result remains limited to governed-action audit intents |
+| witness chain and off-host comparison | **Restored** | coherent local rewrite still requires an externally retained copy for detection; forensic disk recovery remains omitted |
+| two-service split | **Restored** | capability and compromise consequences are qualified; backend and plugin implementation details remain omitted |
+
+External lineage checks used the official
+[Aeron media-driver documentation](https://aeron.io/docs/aeron/media-driver/),
+[LMAX RingBuffer documentation](https://lmax-exchange.github.io/disruptor/javadoc/com.lmax.disruptor/com/lmax/disruptor/RingBuffer.html)
+and [seL4 capability tutorial](https://docs.sel4.systems/Tutorials/capabilities.html).
