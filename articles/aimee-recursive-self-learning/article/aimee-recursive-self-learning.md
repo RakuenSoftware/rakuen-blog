@@ -429,12 +429,6 @@ seeded ablation grid's paired comparison. The six-loop set has not yet been run
 through that grid, so this article does not establish that each loop improves
 task outcomes.
 
-The incident in the lead is a first-party account. That the accumulated
-learning is what carried the model past the protections is my reading of that
-account, and it is inference. What is on the record is the incident and the
-learning that was running at the time. A paired run against a harness with the
-accumulated record withheld would settle it, and we have not done one.
-
 The model-independence is by construction. The loops are harness code, and a
 ledger row does not record which model caused it, so nothing in the mechanism
 should care. This article has not run the six loops across a set of models and
