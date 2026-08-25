@@ -1,9 +1,9 @@
 # Everything Crosses One Transport
 
-Part three of three. Nothing in aimee can do anything without crossing one
-transport, which costs 134 ns and records what went through it. That is what
-makes governance a guarantee rather than a policy document, and it is why the
-chokepoint is not worth attacking.
+Part three of three. Each daemon routes supervised inter-module work through
+one typed transport. The measured dispatch figure is a 134 ns median; the
+enforced ceiling is 2,000 ns. Core-local calls and external traffic sit outside
+that coverage.
 
 ## The series
 
@@ -19,7 +19,8 @@ three times as if independently sourced.
 
 ## Status
 
-Draft, 2026-08-24. Not published.
+Draft, 2026-08-24. Not published. Source rechecked on 2026-08-25 at
+`6bcc87e`.
 
 Split out of the self-learning draft, where this material had grown to roughly a
 third of the piece while serving a claim that needed only part of it.
@@ -60,19 +61,12 @@ something ships.
   merge commit for PR 2839 itself. The delegate sole-egress section's
   description of its Go ownership and post-start verification as shipped now
   stands on the shipped code rather than on a statement about intent.
-- ~~The bus inventory is stated as complete.~~ **Checked, 2026-08-24**, against
-  `origin/testing` at `681306b977`. PAM and OIDC appear nowhere in
-  `src/core/event_bus/`, so the disclaimer holds. `policy` inside the bus is
-  only `BLOCK`/`SHED` backpressure, which the article already describes, not
-  authorization. One wrinkle worth keeping: mTLS lives in
-  `src/core/connection/`, not in the bus directory, so the article's "bus"
-  spans the module transport and the inter-instance connection. The claim is
-  accurate; a reader checking one directory will not find it. See the record.
+- ~~The bus inventory is stated as complete.~~ **Retired, 2026-08-25.** The
+  article now scopes the transport to supervised inter-module work and names
+  the core-local and external paths outside it.
 - ~~Decide whether the analysis-not-measurement limit should also be said in the
-  article body.~~ **Decided, 2026-08-24: no.** The security argument is analysis
-  and no penetration test or third-party audit stands behind it. That stays in
-  the reporting record, and the article continues to state its own losable form
-  in the body, which was judged enough.
+  article body.~~ **Closed, 2026-08-25.** The article states that no penetration
+  test or independent security audit supports the security analysis.
 - The self-learning article retains a compressed version of the containment
   argument, because its opening incident raises the question and a reader should
   not have to leave the piece to get the answer. Keep the two accounts

@@ -32,8 +32,8 @@ folder. All paths read from `testing` on 2026-08-24.
 
 | figure | source | note |
 |---|---|---|
-| per-event dispatch bounded to 134 ns | `BASE`, author | host enqueue through client dequeue, excluding module work; 16-byte inline payload, reference dev box, from `src/tests/bus_bench.c`. **Note for a checker:** the `observed_ns` field is 134 and its `description` in the JSON reads "Median over batched samples". The article characterises 134 as a bounded maximum on the author's statement. If the file's wording is the stale half, fix it there; the two should agree before publication |
-| crossing the bus costs about what a cgo call costs | author | engineering judgement, not a committed measurement. `bench/bus_baseline.json` deliberately commits no comparison against the in-process call: "how it compares to the old in-process call is not the budget". No cgo figure is published here, and none is needed for the claim as stated |
+| per-event dispatch measured at a 134 ns median | `BASE` | host enqueue through client dequeue, excluding module work; median over batched samples with a 16-byte inline payload on the reference dev box, from `src/tests/bus_bench.c`. **Corrected 2026-08-25:** the prior article called 134 ns a bounded maximum. The enforced ceiling is 2,000 ns |
+| comparison with a cgo call | author | **Withdrawn from the article, 2026-08-25.** `bench/bus_baseline.json` commits no comparison with an in-process call and says that comparison is outside its budget |
 | the cost stacks: one request crosses the transport many times, so per-hop cost is multiplied by hop count | author | the article names memory, the recall gate, the confidence band and governance as example hops. **No hop-count distribution is measured or published**, and none is claimed; the argument is about the shape rather than a figure |
 | the alternatives examined had significant tail latency, from collectors, slow-path syscalls, lock contention, allocation and scheduling | author | characterisation of an investigation, not a published benchmark. **No named system's tail behaviour is measured or cited**, and the article names no candidate in this passage |
 | a tail crossed once is survivable; a tail crossed many times per operation is not, because the chance of catching one rises with hop count | author | reasoning about the shape, not a measured distribution |
@@ -632,3 +632,42 @@ to do something not on that list.
 
 Whether the loops the architecture supports do anything useful, and the memory
 that self-learning is made of. Those are parts one and two.
+
+## Rewrite inventory, 2026-08-25
+
+The article was rewritten against `origin/testing` at `6bcc87e`. Existing
+reporting above remains in place. This table records the disposition of every
+first-party class used by the prior article.
+
+| prior reporting | evidence class | disposition |
+|---|---|---|
+| 134 ns dispatch and 82 ns audit figures | committed benchmark baseline | **Retained and corrected to medians.** The article carries the 2,000 ns and 5,000 ns enforced ceilings separately |
+| parity with a Go or cgo call | author judgement | **Removed.** No comparative measurement exists |
+| repeated-hop and tail-latency argument | author analysis | **Narrowed.** The article says only that several crossings may occur and states that no hop or tail distribution is published |
+| candidate transports and microsecond comparison | author investigation without artifacts | **Removed from prose. Preserved above** |
+| private queue pairs, one-time Unix attach, `memfd` and `SCM_RIGHTS` | static source and document audit | **Retained** |
+| shared arena and separately shipped process limits | static source and document audit | **Retained with the hostile-code limit beside it** |
+| C and Go clients, conformance tests and language choice | static source audit plus author account | **Narrowed.** The article claims two working clients and a language-neutral contract, not support for every language |
+| grants, attach identity and event-kind permissions | static source audit | **Retained with reach-versus-truth limits** |
+| supervised-process counts | static inventory | **Removed from prose because the count rots quickly. Preserved above** |
+| MCP and pluggy transport routing | pending proposal plus author statement | **Removed from prose.** No shipped claim remains |
+| sink selection, confidence and policy decisions crossing the transport | static source audit | **Subordinated to the scoped coverage claim** |
+| ordered tap, overflow and producer-reap records | static source audit | **Retained** |
+| 5,000 audit rows, exactly once, zero drops and shutdown drain | committed durability test | **Retained and scoped to governed-action audit rows** |
+| capture retention, replay and gap records | static source audit | **Retained with capture separated from the durable ledger** |
+| complete-bus inventory and “everything” coverage | author statement plus source audit | **Narrowed.** The article names seven core-local components and external network traffic outside the claim |
+| bus compromise, downstream validation and “not worth attacking” | security analysis | **Withdrawn.** The article treats the host as a concentrated risk and states that no penetration test or independent audit supports the analysis |
+| isolation-process capture argument | grant audit plus analysis | **Removed as overbroad.** The general grant limit remains |
+| delegate network isolation, credential absence, proxy mediation and post-start verification | shipped documentation, source audit and PR 2839 | **Retained and narrowed to documented behaviour** |
+| hosted-provider execution under network isolation | author statement and tool-list audit | **Removed because the reporting record identifies no end-to-end test** |
+| default and configurability passage, including storage choices | author statement and config audit | **Removed from prose.** Only the startup-loaded grant boundary remains |
+| WORM chain, transaction seal, fault injection and off-host limit | source audit plus live fault injection | **Retained and updated** from the 25 August worker validation |
+| two-service topology and provider-placement failure | deployment documents plus live test | **Retained briefly; detailed failure remains in part one** |
+| forensic recovery after deletion | general analysis without a recovery test | **Removed** |
+| security work beyond detection and provenance | unpublished plan | **Still omitted** |
+
+The article now follows the source's own completeness boundary:
+`docs/EVENT_BUS.md` says the durable coverage is “what crossed the bus,” and
+explicitly excludes core-local calls. Storage-backend material remains in this
+reporting record as prior reporting and test-environment context, but it no
+longer appears in the article.
