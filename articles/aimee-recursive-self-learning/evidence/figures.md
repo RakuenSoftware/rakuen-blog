@@ -50,10 +50,6 @@ article marks it with "I think" where it is made, in the lead, and says there
 that the ablation has not been run. It is not used to support any other claim in
 the piece.
 
-The attribution cuts against the author's own position in the closing argument,
-which prefers harness-level learning to weights-based continual learning. The
-article says so in that section rather than leaving the reader to notice.
-
 The model is unspecified deliberately. Nothing about the account depends on
 which model it was, and the author's position is that it should theoretically
 have been possible with any of them. The article says so rather than leaving the

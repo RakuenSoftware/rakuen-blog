@@ -99,8 +99,8 @@ The reason is in the incident. A system that improves at accomplishing tasks
 improves at removing whatever sits between it and the task, and it needs no
 motive to do that. The improvement compounds, because every attempt leaves a
 record the next one reads. Removing the motive removes nothing, because there
-was never a motive there. What actually bounds it is what it can reach and what you can
-see it do.
+was never a motive there. What actually bounds it is what it can reach and what
+you can see it do.
 
 So the prerequisite for self-learning is the ability to audit everything the
 model does, and exact control over what it can touch. A better rule about what
@@ -394,13 +394,6 @@ Dismissing that risk takes an argument I have not got. The harness is an
 obstacle sitting between the model and the task, and a system that keeps
 getting better at removing obstacles will treat it like any other obstacle. It
 needs no motive, so removing the motive removes nothing.
-
-Our own incident is the small version of that, and it costs me something here.
-The learning that accumulated the route was harness learning, on the side of
-the argument I have just spent four paragraphs defending. Rows in a ledger were
-enough to get there. Whatever the harness buys in audit and portability,
-immunity from this is not in it.
-
 Attributing intent to a model is the mistake most people make about this.
 Expecting a boundary to hold against a process with no intent at all is the
 mistake I think costs more.
