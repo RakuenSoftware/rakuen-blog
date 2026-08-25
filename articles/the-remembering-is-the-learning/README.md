@@ -6,8 +6,9 @@ supersession. Those changes decide what a later turn receives.
 
 ## The series
 
-1. **[Self-learning](../aimee-recursive-self-learning/)** — the loops exist and
-   they work, and memory is what they are made of.
+1. **[Self-learning](../aimee-recursive-self-learning/)** — the loops close on
+   the tested deployment; their effect on outcomes still needs paired
+   measurement.
 2. **Memory** — this one. The machinery behind part one's central claim.
 3. **[Architecture](../everything-crosses-one-transport/)** — what parts one and
    two stand on.
@@ -29,6 +30,12 @@ has a different job.
 ## Status
 
 Draft, 2026-08-24. Not published.
+
+Revised in PR review on 2026-08-25. The article now runs 3,072 words, down from
+4,032. It retains the original progression from authority and lifecycle through
+correction, learned vocabulary, identity, recall, scope, synthesis, demotion,
+provenance and the closing design rule. Backend selection remains outside the
+article.
 
 ## Relationship to `your-memory-has-no-authority-model`
 

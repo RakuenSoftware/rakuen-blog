@@ -4,257 +4,364 @@ slug: the-remembering-is-the-learning
 date: 2026-08-24
 author: Rakuen Software
 tags: [aimee, memory, knowledge-graph, ontology, authority]
-excerpt: "Aimee learns by changing durable, evidenced records. Promotion, expiry, supersession and outcome-weighted recall decide what a later turn receives."
+excerpt: "A fact is born into a class, climbs to durable by being confirmed, expires when it stops being confirmed, and is superseded with its old value still legible. Those are what learning is, and aimee's memory is where it happens."
 ---
 
-*Rakuen builds aimee, the system reported on here. Second in a three-article
-series, after the
+*Rakuen builds aimee, the system written about here. Second of three: the
 [self-learning loops](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
-and before the
-[architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport).
-Source was rechecked against `testing` at `6bcc87e` on 25 August 2026.
-Figures and source pins live in the [reporting
+come first, the
+[architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
+third. Source read from `testing` on 24 August 2026; figures are traced in the
+[reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-remembering-is-the-learning/evidence/figures.md).*
 
-The first article said that memory carries aimee's learning. Here is the
-mechanism.
+The first article in this series made a claim it did not fully show: that there
+is no separate thing called learning which uses memory to store its results.
+Remembering, done properly, is the learning.
 
-A later turn changes because a fact was promoted, expired, corrected, scoped or
-demoted after use. Each change remains inspectable. “Learning” names those
-changes and their effect on recall.
+This is the machinery that makes that true. Read it with the verbs in mind.
+Each of these looks like a storage feature and is doing something else.
 
-## Authority sets a fact's starting class
+## A fact is born into a class, and authority picks the class
 
-Every fact enters one of three confidence classes. The authenticated writer,
-the asserted authority and the write-gate verdict choose the class.
+Every fact enters in one of three classes. The asserted authority and the
+write-gate verdict choose it.
 
-A person asserting a recognised relation can create Class A evidence.
-Background extraction can reach Class B. A new relation or another unconfirmed
-claim begins in Class C.
+Say something yourself, through a relation the system understands, and the fact
+is Class A. It carries full confidence and is exempt from expiry. A background
+extraction can reach Class B. Novel relations and other unconfirmed claims
+begin in Class C.
 
-The extraction path passes model authority as a constant. It cannot claim the
-person's class from prompt text. Stored-note provenance comes from the
-authenticated writer and defaults to agent-authored when that attestation is
-absent.
+The extraction path has no route from model authority to Class A. The extractor
+passes model authority as a constant, so a fact-extraction prompt cannot claim
+the user's class. Stored-note provenance is stamped from the authenticated
+writer and defaults to agent-authored.
 
-The extractor also ignores confidence reported by the model. It commits a
-triple only when both endpoints appear in the source note. This blocks invented
-endpoints. A false relation between two names that are both present still
-passes that check.
+The extractor also ignores the model's self-reported confidence. It commits
+only when both endpoints occur in the source note. That catches invented
+endpoints. It does not catch a false relation drawn between two names that are
+both really there.
 
-Class affects later recall, so a wrong class changes behaviour. It determines
-how strongly the graph walk treats the edge.
+The class feeds the weight that the recall walk applies later. Getting a fact
+into the wrong class is not
+a bookkeeping error, it is teaching the system something with the wrong
+confidence.
 
-## Repetition can buy durability
+## Promotion is learning. Expiry is forgetting
 
-A scheduled maintenance pass promotes a repeatedly confirmed fact to durable.
-A speculative fact that receives no further confirmation reaches its expiry
-clock and stops matching current recall.
+A fact that keeps being confirmed is promoted to durable by a scheduled
+maintenance pass. A speculation that stops being confirmed runs out its clock
+and is stamped as no longer believed.
 
-The rule is narrow: repetition buys durability. It does not raise authority. A
-model inference can become durable while remaining Class B. A person asserting
-a relation the vocabulary has not admitted still produces Class C evidence,
-because the unsettled part is the relation itself.
+Nothing decided that. No loop reasoned about it. Those two passes are the
+system changing what it believes on the evidence, and they are ordinary memory
+operations on a schedule.
 
-Two defects show why the distinction matters. One maintenance job rewrote
-confirmation counts on semantic edges, moving one Class A fact from 1 to 20 and
-one Class C fact from 2 to 100. The lifecycle read those weights as
-confirmations, so unsupported facts could promote and speculative facts could
-avoid expiry.
+The rule that keeps it honest is that repetition buys durability, not
+authority. Reinforcement can make a model inference durable and it stays
+Class B. A new relation remains speculation even when a person asserted it,
+because the unsettled part is the vocabulary and personal authority cannot
+settle that.
 
-A second defect let a co-occurrence update hit the same unique triple as a
-direct assertion. Two names appearing in one session could count as another
-assertion. In both cases the write completed. The learned confidence was wrong.
+Getting this wrong is not hypothetical. Scheduling those two passes for the
+first time exposed a maintenance job that rewrote confirmation counts on
+semantic edges, taking a Class A fact from 1 to 20 and a Class C fact from 2 to
+100. Weight on those edges is a confirmation count and the lifecycle reads it
+as one, so that rewrite promoted things nothing had confirmed and stopped
+anything ever expiring: the two outcomes the lifecycle exists to
+prevent. A separate defect had co-occurrence upserts landing on the same unique
+triple as real assertions, so two words appearing in one session counted as
+somebody repeating themselves.
 
-## Correction keeps the prior value legible
+Both of those are learning defects wearing storage clothes. The store was
+working correctly the entire time.
 
-Each relation declares a correction policy. One policy supersedes the old
-value and writes the replacement beside it. Another retires the old value from
-current matching while retaining the row. A third refuses an unapproved
-rewrite.
+## Correction leaves the old value where it is
 
-Single-valued relations compare confidence classes before applying that policy.
-A Class B `works_for` write cannot displace a current Class A value or sit
-beside it as a second current value. A person can replace a model value. Equal
-classes use the relation's ordinary policy.
+Each relation carries its correction policy. Most supersede: stamp the old
+value and write the new one beside it. Some retire a stale value from matching
+while keeping its row. Others refuse quiet rewrites.
 
-Retraction treats authority in the request body as a ceiling. The transport
-must attest a person before the person-level path is available, and the memory
-service repeats the check against its authenticated actor. Model-composed
-context remains model authority even when it appears inside a user's turn. A
-request may lower its authority and cannot raise it.
+The ordinary commit path applies class ordering. If a model extracts a
+different object for a single-valued relation, the write compares the old and
+new classes first. A Class B `works_for` write cannot supersede a current Class
+A value.
 
-That rule closed four paths where a write could claim person-level authority
-for itself. One was typed-fact ingress called by a model-composed tool query.
-Before the fix, an agent could have used that route to retract a person's
-fact.
+It cannot sit beside it either, because a single-valued relation
+must not end up holding two current values. A user write can replace a model
+value. Equal-ranked writes fall back to the relation's ordinary policy.
 
-Retained facts carry valid time and transaction time. One answers when the fact
-held in the world. The other answers when the system believed it. Correction
-therefore preserves both the old claim and the period during which it was
-current.
+A person can still supersede a protected value, and the authority for that is
+derived. Retraction treats the request's authority as a ceiling: user authority
+is granted only when the transport attested a person, and the knowledge service
+repeats the check against its authenticated actor. Model-composed context-block
+text is forced to model authority even when the turn around it belongs to a
+user. A request body may lower its authority and never raise it.
 
-## New vocabulary waits for an attributable decision
+That last rule closed a real hole. Four places had let a write decide for
+itself that it spoke for the user, including a typed-fact ingress whose only
+caller is a tool whose query the model composes. An agent could have retracted
+the user's facts by writing "forget my email" into a query nobody asked for.
 
-Facts are triples. Each relation declares the allowed types at both ends and
-its cardinality. A relation connecting the wrong kinds of entity is refused
-before the semantic edge is written.
+The retained rows carry two clocks. Valid time records when the fact held in
+the world. Transaction time records when the system believed it. "What was true
+last year" and "what did you believe last week" become different questions with
+different answers, which is the difference between a memory and a log.
 
-The shipped vocabulary gives a fresh system enough relations to validate
-immediately. Extraction may also propose a new relation. Facts using it commit
-as Class C, and a sighting is counted only after the fact itself commits.
+## The vocabulary is learned, and every addition is signed
 
-The count orders a review queue. It cannot activate the relation. Activation
-requires an authenticated decision, and the ledger records the actor and
-transport identity.
+Facts are triples, and each kind of relationship declares what may sit on
+either end. Employment joins a person to an organisation; an address joins a
+device to an address. The write gate looks up the relation and checks both
+ends. If the model says the printer works for the kernel, the commit stops
+before a row is written.
 
-An automation can hold that credential and work the queue. The design requires
-attribution, not a person at a console. Evidence sets priority, something named
-signs, and the record shows which.
+A shipped vocabulary lets a fresh system validate before it has learned
+anything. The live set can grow, with cardinality and endpoint rules on each
+relation.
 
-The extractor prompt tells the model to avoid catch-all relations such as
-`misc`. The previous code guard disappeared when automatic count-based
-activation was removed. A prompt instruction is weaker than a check, so a
-catch-all can still reach the review queue. That remains a known limit.
+A relation nothing has seen enters as speculation. Facts using it still commit,
+as Class C, and the sighting is counted. A sighting registers only after its
+fact commits, so failed writes do not raise a candidate's standing and a
+rejected relation keeps that verdict.
 
-## Identity is resolved before the write
+What the count buys is position in a review queue, not entry to the vocabulary.
+Activating a relation is an authenticated decision, written to the ledger with
+the actor and the transport identity on the row, however often extraction saw
+it. That is a change. Three committed sightings used to promote a relation on
+their own, and this release replaced the counter with a decision that has to be
+signed, on the stated grounds that activating a predicate is not something
+recurrence should settle.
 
-Recall starts from entities named in the query. Splitting one person across
-several nodes loses paths that should connect.
+The actor is a credential, not necessarily a person. An automation holding that
+credential can work the queue, so the design does not require a person at a
+console.
 
-Aimee resolves the endpoints of a fact to canonical identities before storing
-the relation. Names point to those identities. Literal values such as an age or
-address take a separate path.
+What it refuses is an activation attributed to nobody. Evidence sets the
+queue's priority, something named signs, and the ledger records which identity
+made the decision.
 
-Completed merges are recorded and reversible. Ambiguous names enter a queue
-with bounded retries while write and recall continue. Reversibility matters
-because identity resolution is a learned judgement, and some judgements will
-be wrong.
+Catch-alls such as `misc` are excluded by an instruction in the extractor's
+prompt. The code guard that used to drop them went out with the counter it
+guarded, and a prompt is a weaker thing than a check. Whatever works the queue
+inherits that job, and an automation approving on a count alone is back to
+where the old sweep was, minus the guard.
 
-## Recall applies one learned score
+A person can also teach a domain from its documentation before any evidence has
+accumulated. That door and the queue differ in bulk rather than in kind: a
+whole vocabulary at once from a document, or one relation at a time as evidence
+raises it.
 
-Lexical and dense retrieval produce the first candidates. When graph fusion is
-enabled, the top twelve candidates supply up to forty-eight canonical entity
-seeds. Expansion collects their memories and follows direct neighbours.
+## Identity comes before storage, and a bad guess is reversible
 
-One score ranks the result from **13 summed terms**: lexical match, coverage,
+The graph walk starts from the entities a candidate mentions, so splitting one
+person across three nodes loses paths that should have been found.
+
+The ends of a fact are resolved to an identity before the fact is stored. Names
+point at that identity, never at other names. Values such as an address or an
+age bypass the identity register entirely.
+
+Every completed merge is recorded and reversible. A name with several plausible
+owners goes to a queue with bounded retries, and blocks neither write nor
+recall. That is deliberate and I would argue for it anywhere: learning that
+cannot be undone is not learning, it is damage.
+
+## One recall, one score, and that score is the learned model being applied
+
+Lexical matching and dense retrieval produce the first candidates. When graph
+fusion is enabled, the top twelve supply up to forty-eight canonical entities
+as seeds. Expansion collects the memories attached to each seed and follows
+direct neighbours using the relation and authority class of each edge.
+
+The graph adds memories that both lexical and vector search missed. A question
+can share no words with its answer if an entity connects the two.
+
+One score of thirteen summed parts ranks the result: lexical match, coverage,
 entity overlap, time, evidence, semantic match, state, query intent, salience,
 surprise, graph proximity, PageRank and recorded outcome. Code proximity is a
 label for the graph term when the path ran through code. Display confidence is
-filled after ranking and is not a fourteenth ranking term.
+filled after ranking and is not a fourteenth term.
 
-The weights are fitted from retrieval features and recorded outcomes. A new
-ranking model remains a proposal until it passes the benchmark gate. Applying
-those weights on every turn is the learned retrieval model in use.
+The weights are fitted from feature rows and recorded retrieval outcomes. A new
+ranking model lands as a proposal until a benchmark gate promotes it.
 
-Confidence class changes that graph expansion. A semantic edge begins at 0.80.
-Class A multiplies it by 1.0, Class B by 0.75 and Class C by 0.5.
+The weight vector records what the system has learned about which evidence to
+trust. Applying it on every turn is the learning operation.
 
-That path once had two separate defects. Typed facts never entered graph
-expansion. The fusion call also omitted the relation name, so every edge took
-the unknown-relation default of 0.45. The store held the facts, yet recall used
+Confidence class enters graph expansion. A semantic edge begins at 0.80. Class
+A multiplies it by 1.0, Class B by 0.75 and Class C by 0.5.
+
+That path once had two defects. Typed facts never entered graph expansion, and
+the fusion call omitted the relation name, so every edge took the
+unknown-relation default of 0.45. The memory held the facts while recall used
 neither their type nor their intended relation weight.
 
-## Scope filters before ranking
+## Scope ranks inside the query
 
-Memory shares one graph across work. Query-time scope decides which rows the
-caller may see.
+Memory shares one graph, and query-time scope separates projects and
+workspaces.
 
-Normal recall orders the active project first, its workspace second, and shared
-or global memory third. A caller requesting one exact scope adds a narrower
-band above those three. Rows outside the allowed bands are removed by a
-predicate inside the query, and stable sorting preserves relevance within each
-band.
+A recall carries the caller's active project and workspace. Normal recall puts
+the active project in the first visibility band, the workspace in the second,
+and shared or global memory in the third. A caller requesting one exact scope
+adds a narrower band above those three.
 
-Filtering inside the query avoids a signal from stronger hidden candidates
-reaching the scorer. Applying scope after retrieval would reveal information
-through timing and through which rows displaced visible ones.
+The query receives scope as bound parameters. A matching predicate removes
+other rows before ranking, and stable sorting preserves relevance inside each
+band. Filtering afterwards would leak through timing and through which hidden
+candidates reached the scorer.
 
-Scope and maturity are separate axes. Five functional tiers describe how
-settled an item is: Experience, Observation, World, Mental Models and Patterns.
-Experience occupies two internal levels with different promotion and expiry
-constants, so the implementation has six levels under five names.
+Underneath runs a second axis: how settled a memory is. Five functional tiers,
+from Experience through Observation, World and Mental Models to Patterns. Raw
+session logs and atomic actions are Experience; facts deduplicated out of them
+are Observation; slow-changing environment context is World; approved
+directives are Mental Models, injected at the highest prompt priority; and
+patterns synthesised across sessions are the top. A memory climbs that ladder
+through evidence, and a directive can require a recorded operator approval
+because it changes future work.
 
-A directive can require recorded operator approval because it changes later
-work at the highest prompt priority. Scope still decides where that directive
-may appear.
+Experience occupies two storage levels, which is worth knowing if you go
+looking at the rows: L0 and L1 carry different promotion and expiry constants
+and rank differently, and both answer to the same functional name. Five tiers,
+six levels.
 
-## Some knowledge can rise beyond one session
+Tier records how settled a memory is. Scope records where it may appear. Mixing
+the two causes a system to leak information or discard useful memory.
 
-Pattern synthesis runs inside the maintenance cycle. A durable fact seen in
-three distinct sessions can become a pattern when the other eligibility
-conditions hold.
+## What a team knows, distilled out of work nobody filed
 
-Entity-scope promotion uses a different count. Three distinct sources can move
-an entity one step up the scope lattice, but that pass sits behind its own
-configuration switch. The source header describes it as off by default.
+The design goal is refinement under use. Something one engineer established can
+climb out of its original scope after independent work corroborates it, and
+nobody has to file or curate anything. That is the goal. Two of the three
+mechanisms under it sit behind their own switches.
 
-Vocabulary growth takes the signed-review path described above. The three
-mechanisms therefore resolve to one maintenance rule, one gated scope rule and
-one attributable decision.
+Three was the default threshold in three places, and the units differed. Two of
+them still run on a count. A durable fact seen in three distinct sessions can
+become a pattern, and that pass runs inside the maintenance cycle. An entity
+corroborated by three distinct sources can move one step up the scope lattice,
+and its own header records that pass as off by default.
 
-The consequence is slow learning across sessions. Work established by one
-person can later help another after corroboration and scope promotion. The
-system also keeps the origin of that knowledge, which is what lets a later
-correction travel back through it.
+The third is gone. A novel relation used to join the vocabulary on three
+committed sightings, and the count now orders a review queue instead. Of the
+three thresholds this article started with, one is automatic, one is available
+and off, and one has become a decision that carries a name.
 
-## Outcomes can demote a memory
+Months later, somebody who never spoke to the first engineer can receive an
+answer carrying what that work established. That is the loop closing on a
+timescale no session can see.
 
-Recall records which memories were placed before the model. Later outcomes can
-mark them accepted, corrected, contradicted, rolled back or irrelevant.
+## Demotion reads outcomes
 
-Demotion reads a time-decayed window of attributed outcomes. Its contract
-excludes source tags, declared confidence, author id and retrieval frequency.
-A popular memory therefore gains no protection from being popular. Under a
-minimum number of outcomes, the scorer declines to judge.
+Each recall records which memories were placed in front of the model. Memories
+that shaped the answer receive an outcome: accepted, corrected, contradicted,
+rolled back, or beside the point.
 
-Contradictions keep both claims and their sources. Policy may choose a current
-value, while unresolved conflicts join a review backlog.
+Demotion reads a time-decayed window of those outcomes, and its contract admits
+attributed outcome evidence and nothing else. Source tags, declared confidence,
+author id and retrieval frequency are each excluded by name.
 
-Memory quality becomes an outcome claim here. Retrieval frequency describes
-use. Recorded outcomes describe what happened after use.
+So a frequently retrieved memory that keeps failing sinks. Independent sources
+asserting the same thing still count as corroboration, because retrieval
+frequency is a property of ranking while source count is evidence about the
+claim. Under a floor of recorded outcomes the scorer declines to judge at all,
+and says so.
 
-## Recalled text remains evidence
+This is the counterfactual discipline from the first article, arriving in the
+memory layer. What a memory is worth is what happened when it was used.
 
-The context returned to a model is fenced as untrusted evidence. It does not
-carry authorization and cannot become executable instruction merely by being
-remembered.
+Contradictions are not resolved by picking a winner. Both claims stay, linked,
+with their sources intact. Policy chooses the current value, and unresolved
+conflicts join a backlog beside stale facts and thinly covered topics.
 
-The fence establishes protocol semantics only. It prevents the memory path
-from granting authority by type. Models can still follow text they should have
-treated as evidence, which has to be tested at the behaviour level.
+## One bad write spreads, which is what the discipline is for
 
-## Every change leaves a correction path
+A wrong fact in an isolated fact store harms the queries that retrieve it. In a
+fused graph an edge changes what the walk reaches and what enters the ranking,
+including queries that mention neither endpoint. On a shared deployment, later
+sessions can carry it into pattern synthesis.
 
-Knowledge objects write into an append-only evidence ledger. Changesets group
-mutations for display, diff and compensating revert. Documents move through
-active, invalidated, retired and purged states. Derived memories name their
-sources so staleness can queue them for rederivation.
+A bad write spreads. That is the entire reason for the gate, the classes, the
+identity resolution and the reversible merge, and it is why those cost what
+they cost.
 
-Every close now submits an immutable audit intent in the same transaction as
-the mutation. A separately credentialed worker builds the hash chain from
-committed intents. The live test found one matching audit row for one closed
-memory changeset; removing the five seal calls reduced that to zero.
+## Recall hands back evidence
 
-Those mechanisms give a learned item an identity, evidence, time, scope and a
-fate. They make a specific mistake traceable and reversible. They do not prove
-the item is true, and they cannot recover information that was never recorded.
+What memory returns is fenced. Injected context is untrusted evidence, not
+authorization and not executable instruction.
 
-## The discipline is the product
+The fence marks recalled text as evidence rather than authorization. It does
+not prove a model will never follow a malicious instruction embedded in that
+text. Without the distinction, anything that got itself remembered would enter
+later turns in the same role as an instruction from the harness.
 
-The constraints cost time: a new relation waits for approval, and a memory
-climbs on evidence. A correction retains the record it superseded. Outcome
-demotion waits for enough outcomes to judge.
+## Every decision is answered somewhere with a name
 
-Fast, bad memory is the more expensive failure. It keeps returning plausible
-answers, and each bad edge can change what the graph reaches for unrelated
-queries. Later synthesis can spread the error further.
+The decisions around a memory write or recall have named providers. The caller
+does not quietly replace an unavailable answer with a permissive local one.
 
-Two thin places remain visible. Endpoint checks miss a false relation between
-names genuinely present in the note. Catch-all vocabulary is blocked by a
-prompt instruction instead of code before review.
+Failure behaviour depends on what is at risk. The write gate defers so the
+caller can retry. Extraction returns an error because an error and no facts are
+different answers. Privacy gates withhold, and the retraction pre-scan leaves a
+fact in place because an extra retained fact is recoverable while a mistaken
+deletion is not.
 
-Settle the shape of a learned item before optimising where it lives. Identity,
-evidence, time, scope and fate make later correction possible. Retrofitting
-them means guessing what old rows meant after the system may already have acted
-on them.
+This is where the architecture in part three meets the lifecycle in this
+article: the memory rules are only useful if an unavailable decision cannot
+masquerade as approval.
+
+## A learned thing has an identity, a date, and a delete
+
+Underneath all of the above, every knowledge object writes to one append-only
+evidence ledger, with transactional mutation guards and an authenticated actor
+on each row. Changes group into changesets that can be shown, diffed, previewed
+and reverted by compensation. Documents move through active, invalidated,
+retired and purged, with a bounded blast-radius preview before and a
+content-free purge receipt after.
+
+Derived memories declare what they were
+derived from, so staleness propagates and a rederivation queue picks them up.
+Recall explanations are persisted and scoped, carrying lane, contribution,
+gate, staleness and provenance.
+
+What makes a learned thing a thing at all is an identity, a date, an evidence
+chain, a fate, and a delete. The first article argued that none of the loops
+survives translation into model weights. This is the reason. You cannot walk a
+gradient step's evidence chain to its roots, and you cannot revert one commit's
+worth of weight update because someone later said it was wrong.
+
+## Slow on purpose, and thin in two named places
+
+The discipline is not free and some of it is slow on purpose. A novel relation
+waits for a signed approval. A memory climbs tiers on evidence. An operator
+approval gates policy.
+
+I will defend the slowness, and the reason is not caution in the abstract.
+
+A system with no memory is limited. A system with fast, bad memory is more
+dangerous because it is confidently wrong and stays that way. The
+failure does not announce itself as a failure: recall keeps answering, the
+answers keep sounding reasonable, and the wrong thing propagates into
+everything downstream that treats memory as settled.
+
+No memory costs capability. Bad memory learned quickly costs the ability to trust anything
+the system says, including the parts that were fine. Given the choice I would
+take the first one, and none of these thresholds exists to make that choice
+unnecessary.
+
+Two limits remain. The extractor's endpoint check catches
+invented endpoints and does not catch a false relation between two names that
+are genuinely present in the note. And the bar against catch-all predicates is
+now an instruction in a prompt rather than a check in code, so what stops a
+`misc` reaching the review queue is a model following an instruction.
+
+Both are known and both are narrower than the guarantees around them. The
+first is unfixed in this release. The second this release created, by removing
+the check and keeping the requirement.
+
+If you are building memory for a model to use, settle what a learned thing is
+before settling where to put it. An identity, a date, an evidence chain, a fate
+and a delete are the five fields that make every later correction possible, and
+they are cheap to write on the first day. Adding them afterwards means going
+back through rows that were stored without them, deciding what each one meant,
+and guessing at the provenance of anything already acted on. That is the
+expensive version, and it is the one most systems end up buying.

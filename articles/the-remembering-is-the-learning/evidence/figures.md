@@ -279,3 +279,28 @@ The rewrite adds no new runtime measurement. Its new work is a static recheck
 of the named symbols at `6bcc87e` and a disposition audit. Storage-backend
 details remain above where they identify old test conditions or preserve prior
 reporting. They no longer appear in the article.
+
+## Narrative restoration inventory, 2026-08-25
+
+PR review found that the 1,884-word rewrite retained the mechanism inventory
+but compressed the learning story too far. The article now runs 3,072 words
+against the original 4,032 and restores the original progression of belief over
+time.
+
+| narrative segment | restored treatment | claim boundary |
+|---|---|---|
+| authority chooses the initial confidence class | **Restored** | endpoint-presence check and false-relation limit remain adjacent |
+| promotion, expiry and the two confirmation defects | **Restored** | durability does not raise authority |
+| correction and derived retraction authority | **Restored** | request bodies may lower authority and cannot raise it |
+| learned vocabulary and attributable activation | **Restored** | sightings order review; they do not activate a relation; catch-all prompt limit remains explicit |
+| canonical identity and reversible merge | **Restored** | ambiguous names queue without blocking write or recall |
+| fused recall and thirteen-term score | **Restored** | top 12 and 48 seeds apply only when graph fusion is enabled; display confidence is not a score term |
+| confidence defect history | **Restored** | typed-fact exclusion and missing relation weight remain separate defects |
+| scope bands and maturity tiers | **Restored** | three normal bands plus optional exact-scope band; filter occurs inside the query |
+| cross-session synthesis | **Restored** | pattern synthesis, separately gated entity promotion and signed vocabulary review keep distinct conditions |
+| outcome-only demotion and contradiction backlog | **Restored** | minimum evidence may produce no judgement |
+| graph error propagation and evidence fencing | **Restored** | prompt fencing marks role but does not guarantee model behaviour |
+| named provider failure behaviour | **Restored briefly** | no backend or module inventory in prose |
+| evidence ledger and reversibility | **Restored** | the one-run 812-byte figure remains outside prose |
+| operational default discussion | **Still omitted** | no backend-selection or replacement-interface discussion in the article |
+| slow learning and two known limits | **Restored** | per-constraint production provenance remains omitted because it lacks individual records |
