@@ -30,6 +30,9 @@ has a different job.
 
 Draft, 2026-08-24. Not published.
 
+Revised on 2026-08-26 to carry the deployed self-learning checks and paired
+outcome study moved from part one.
+
 ## Relationship to `your-memory-has-no-authority-model`
 
 That article is a comparative piece: sixteen repositories read at pinned commits,
@@ -59,7 +62,8 @@ First-party. Mechanism read from source in the public
 the earlier article's audit at its own pin. The
 [reporting record](evidence/figures.md) carries the per-figure map, which
 sections were carried over versus newly reported, and the disposition of the
-earlier article.
+earlier article. The paired-study raw output remains preserved under part one's
+`evidence/raw/self-learning-efficacy-2026-08-26/` directory.
 
 ## Open items before publication
 
