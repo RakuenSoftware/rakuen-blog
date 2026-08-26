@@ -7,8 +7,8 @@ tags: [aimee, self-learning, memory, isolation]
 excerpt: "Aimee learns in the harness, where experience can be remembered, inspected and reversed. The same boundary that contains the agent also holds everything it has learned."
 ---
 
-*We build aimee, the system written about here. This is the first of three
-articles. It covers self-learning; the [second covers
+*Rakuen Software builds aimee, the system written about here. This is the first
+of three articles. It covers self-learning; the [second covers
 memory](https://rakuensoftware.com/blog/the-remembering-is-the-learning), and
 the third covers the
 [architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
@@ -255,8 +255,7 @@ whole system.
 
 To our knowledge, aimee is the only harness to have attempted this full shape
 and made it work. Building it took almost a year and involved many very senior
-engineers. It is the hardest system we have built. We helped build a major
-cloud; aimee was harder.
+engineers. It is the hardest system we have built.
 
 If an agent process leaves the harness, it loses everything the harness
 learned. It keeps only its current context and whatever access it found. Task
