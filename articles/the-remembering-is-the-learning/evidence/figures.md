@@ -304,3 +304,30 @@ time.
 | evidence ledger and reversibility | **Restored** | the one-run 812-byte figure remains outside prose |
 | operational default discussion | **Still omitted** | no backend-selection or replacement-interface discussion in the article |
 | slow learning and two known limits | **Restored** | per-constraint production provenance remains omitted because it lacks individual records |
+
+## Essay-structure revision, 2026-08-26
+
+The article now runs **2,930 words** against the original 3,649-word source.
+The revision preserves the original progression from authority class through
+promotion, expiry, correction, vocabulary, identity, recall, scope, synthesis,
+outcome-based demotion, evidence fencing and reversibility. The prose now treats
+those mechanisms as one argument about how a remembered fact changes over time,
+rather than as a subsystem inventory.
+
+No physical storage choice, replacement module or vector-database discussion
+appears in the article. The phrase “vector search” was also replaced with the
+mechanism already named in the preceding sentence, dense retrieval. Historical
+storage and test-environment references remain in this append-only reporting
+record only.
+
+The thirteen-term score, 12-candidate and 48-seed limits, confidence
+multipliers, authority ordering, signed vocabulary activation, query-time scope
+bands and five-functional-tier/six-level distinction remain unchanged from the
+source audit recorded above. “Benchmark gate” was changed to “evaluation gate”
+in prose because the gate's role in proposal promotion matters to the argument,
+while the benchmark machinery does not.
+
+The two thin places remain explicit: endpoint presence does not detect a false
+relation between genuine endpoints, and catch-all predicates are currently
+excluded by prompt instruction instead of a code check. No new runtime result
+or broader guarantee was added.

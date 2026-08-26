@@ -4,7 +4,7 @@ slug: the-remembering-is-the-learning
 date: 2026-08-24
 author: Rakuen Software
 tags: [aimee, memory, knowledge-graph, ontology, authority]
-excerpt: "A fact is born into a class, climbs to durable by being confirmed, expires when it stops being confirmed, and is superseded with its old value still legible. Those are what learning is, and aimee's memory is where it happens."
+excerpt: "Aimee learns by changing the standing of remembered facts: authority sets their starting class, evidence promotes or expires them, correction preserves their history, and recall applies the result."
 ---
 
 *Rakuen builds aimee, the system written about here. Second of three: the
@@ -15,12 +15,12 @@ third. Source read from `testing` on 24 August 2026; figures are traced in the
 [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-remembering-is-the-learning/evidence/figures.md).*
 
-The first article in this series made a claim it did not fully show: that there
-is no separate thing called learning which uses memory to store its results.
-Remembering, done properly, is the learning.
+The first article argued that learning in aimee lives in memory. This article
+follows the claim down to the facts themselves.
 
-This is the machinery that makes that true. Read it with the verbs in mind.
-Each of these looks like a storage feature and is doing something else.
+A remembered fact enters with authority and uncertainty. Evidence changes its
+standing. Time can weaken it, correction can supersede it, and recall decides
+how strongly it should shape the next turn. Those verbs describe the learning.
 
 ## A fact is born into a class, and authority picks the class
 
@@ -32,20 +32,17 @@ is Class A. It carries full confidence and is exempt from expiry. A background
 extraction can reach Class B. Novel relations and other unconfirmed claims
 begin in Class C.
 
-The extraction path has no route from model authority to Class A. The extractor
-passes model authority as a constant, so a fact-extraction prompt cannot claim
-the user's class. Stored-note provenance is stamped from the authenticated
-writer and defaults to agent-authored.
+The extraction path fixes model authority before the prompt runs. Text emitted
+by the model therefore cannot claim the user's class. Stored-note provenance
+comes from the authenticated writer and defaults to agent-authored.
 
 The extractor also ignores the model's self-reported confidence. It commits
 only when both endpoints occur in the source note. That catches invented
 endpoints. It does not catch a false relation drawn between two names that are
 both really there.
 
-The class feeds the weight that the recall walk applies later. Getting a fact
-into the wrong class is not
-a bookkeeping error, it is teaching the system something with the wrong
-confidence.
+The class feeds the weight applied during recall. A classification mistake
+teaches the system to trust a fact at the wrong level.
 
 ## Promotion is learning. Expiry is forgetting
 
@@ -53,9 +50,8 @@ A fact that keeps being confirmed is promoted to durable by a scheduled
 maintenance pass. A speculation that stops being confirmed runs out its clock
 and is stamped as no longer believed.
 
-Nothing decided that. No loop reasoned about it. Those two passes are the
-system changing what it believes on the evidence, and they are ordinary memory
-operations on a schedule.
+The scheduled passes change what the system believes according to accumulated
+evidence. They are ordinary memory maintenance and also the learning process.
 
 The rule that keeps it honest is that repetition buys durability, not
 authority. Reinforcement can make a model inference durable and it stays
@@ -73,8 +69,8 @@ prevent. A separate defect had co-occurrence upserts landing on the same unique
 triple as real assertions, so two words appearing in one session counted as
 somebody repeating themselves.
 
-Both of those are learning defects wearing storage clothes. The store was
-working correctly the entire time.
+Both defects appeared to be storage maintenance while changing what the system
+believed. Reads and writes continued to work throughout.
 
 ## Correction leaves the old value where it is
 
@@ -152,7 +148,7 @@ accumulated. That door and the queue differ in bulk rather than in kind: a
 whole vocabulary at once from a document, or one relation at a time as evidence
 raises it.
 
-## Identity comes before storage, and a bad guess is reversible
+## Identity comes before the fact, and a bad guess is reversible
 
 The graph walk starts from the entities a candidate mentions, so splitting one
 person across three nodes loses paths that should have been found.
@@ -162,31 +158,31 @@ point at that identity, never at other names. Values such as an address or an
 age bypass the identity register entirely.
 
 Every completed merge is recorded and reversible. A name with several plausible
-owners goes to a queue with bounded retries, and blocks neither write nor
-recall. That is deliberate and I would argue for it anywhere: learning that
-cannot be undone is not learning, it is damage.
+owners goes to a queue with bounded retries while writes and recall continue.
+Reversibility matters because identity resolution will sometimes be wrong, and
+an irreversible guess turns later evidence into damage control.
 
-## One recall, one score, and that score is the learned model being applied
+## Recall is where the learned model takes effect
 
 Lexical matching and dense retrieval produce the first candidates. When graph
 fusion is enabled, the top twelve supply up to forty-eight canonical entities
 as seeds. Expansion collects the memories attached to each seed and follows
 direct neighbours using the relation and authority class of each edge.
 
-The graph adds memories that both lexical and vector search missed. A question
+The graph adds memories that both lexical and dense retrieval missed. A question
 can share no words with its answer if an entity connects the two.
 
 One score of thirteen summed parts ranks the result: lexical match, coverage,
 entity overlap, time, evidence, semantic match, state, query intent, salience,
-surprise, graph proximity, PageRank and recorded outcome. Code proximity is a
-label for the graph term when the path ran through code. Display confidence is
-filled after ranking and is not a fourteenth term.
+surprise, graph proximity, PageRank and recorded outcome. Code proximity names
+the graph term when the path ran through code. Display confidence is filled
+after ranking and sits outside those thirteen terms.
 
 The weights are fitted from feature rows and recorded retrieval outcomes. A new
-ranking model lands as a proposal until a benchmark gate promotes it.
+ranking model remains a proposal until an evaluation gate promotes it.
 
-The weight vector records what the system has learned about which evidence to
-trust. Applying it on every turn is the learning operation.
+The ranking weights record what the system has learned about which evidence to
+trust. Applying them on every turn puts that learning to work.
 
 Confidence class enters graph expansion. A semantic edge begins at 0.80. Class
 A multiplies it by 1.0, Class B by 0.75 and Class C by 0.5.
@@ -231,9 +227,10 @@ the two causes a system to leak information or discard useful memory.
 ## What a team knows, distilled out of work nobody filed
 
 The design goal is refinement under use. Something one engineer established can
-climb out of its original scope after independent work corroborates it, and
-nobody has to file or curate anything. That is the goal. Two of the three
-mechanisms under it sit behind their own switches.
+climb out of its original scope after independent work corroborates it. Months
+of ordinary work can produce team knowledge without asking each person to file
+the lesson separately. Two of the three mechanisms remain behind their own
+switches.
 
 Three was the default threshold in three places, and the units differed. Two of
 them still run on a count. A durable fact seen in three distinct sessions can
@@ -247,8 +244,8 @@ three thresholds this article started with, one is automatic, one is available
 and off, and one has become a decision that carries a name.
 
 Months later, somebody who never spoke to the first engineer can receive an
-answer carrying what that work established. That is the loop closing on a
-timescale no session can see.
+answer carrying what that work established. The loop closes on a timescale no
+session can see.
 
 ## Demotion reads outcomes
 
@@ -266,38 +263,38 @@ frequency is a property of ranking while source count is evidence about the
 claim. Under a floor of recorded outcomes the scorer declines to judge at all,
 and says so.
 
-This is the counterfactual discipline from the first article, arriving in the
-memory layer. What a memory is worth is what happened when it was used.
+The counterfactual discipline from the first article reaches the memory layer
+here. A memory's value comes from what happened when it was used.
 
 Contradictions are not resolved by picking a winner. Both claims stay, linked,
 with their sources intact. Policy chooses the current value, and unresolved
 conflicts join a backlog beside stale facts and thinly covered topics.
 
-## One bad write spreads, which is what the discipline is for
+## One bad write spreads
 
-A wrong fact in an isolated fact store harms the queries that retrieve it. In a
-fused graph an edge changes what the walk reaches and what enters the ranking,
-including queries that mention neither endpoint. On a shared deployment, later
-sessions can carry it into pattern synthesis.
+A wrong fact on its own harms the queries that retrieve it. In a fused graph,
+an edge changes what the walk reaches and what enters the ranking, including
+queries that mention neither endpoint. On a shared deployment, later sessions
+can carry it into pattern synthesis.
 
-A bad write spreads. That is the entire reason for the gate, the classes, the
-identity resolution and the reversible merge, and it is why those cost what
-they cost.
+A bad write spreads. The gate, authority classes, identity resolution and
+reversible merge exist to limit that propagation.
 
-## Recall hands back evidence
+## Recall returns evidence
 
-What memory returns is fenced. Injected context is untrusted evidence, not
-authorization and not executable instruction.
+Memory returns recalled text inside an evidence fence. The harness assigns it
+the role of untrusted evidence, separate from authorization and executable
+instruction.
 
-The fence marks recalled text as evidence rather than authorization. It does
-not prove a model will never follow a malicious instruction embedded in that
-text. Without the distinction, anything that got itself remembered would enter
-later turns in the same role as an instruction from the harness.
+The fence cannot guarantee that a model will ignore every malicious instruction
+embedded in the text. It gives the model and the surrounding policy a clear
+distinction to enforce. Without that distinction, anything that got itself
+remembered would return in the same role as an instruction from the harness.
 
-## Every decision is answered somewhere with a name
+## Every decision has a named authority
 
-The decisions around a memory write or recall have named providers. The caller
-does not quietly replace an unavailable answer with a permissive local one.
+Named providers answer the decisions around a memory write or recall. The
+caller has no permissive local substitute for an unavailable answer.
 
 Failure behaviour depends on what is at risk. The write gate defers so the
 caller can retry. Extraction returns an error because an error and no facts are
@@ -305,9 +302,9 @@ different answers. Privacy gates withhold, and the retraction pre-scan leaves a
 fact in place because an extra retained fact is recoverable while a mistaken
 deletion is not.
 
-This is where the architecture in part three meets the lifecycle in this
-article: the memory rules are only useful if an unavailable decision cannot
-masquerade as approval.
+Here the architecture in part three meets the lifecycle in this article. Memory
+rules hold only when an unavailable decision remains distinguishable from
+approval.
 
 ## A learned thing has an identity, a date, and a delete
 
@@ -323,11 +320,11 @@ derived from, so staleness propagates and a rederivation queue picks them up.
 Recall explanations are persisted and scoped, carrying lane, contribution,
 gate, staleness and provenance.
 
-What makes a learned thing a thing at all is an identity, a date, an evidence
-chain, a fate, and a delete. The first article argued that none of the loops
-survives translation into model weights. This is the reason. You cannot walk a
-gradient step's evidence chain to its roots, and you cannot revert one commit's
-worth of weight update because someone later said it was wrong.
+A learned thing becomes manageable through an identity, date, evidence chain,
+fate and delete. The first article argued that the loops lose those properties
+when translated into model weights. A gradient step has no evidence chain to
+walk back to its roots, and one commit's worth of weight update cannot be
+reverted cleanly after an operator rejects it.
 
 ## Slow on purpose, and thin in two named places
 
@@ -335,18 +332,16 @@ The discipline is not free and some of it is slow on purpose. A novel relation
 waits for a signed approval. A memory climbs tiers on evidence. An operator
 approval gates policy.
 
-I will defend the slowness, and the reason is not caution in the abstract.
+The slowness protects the quality of what later turns will treat as knowledge.
 
-A system with no memory is limited. A system with fast, bad memory is more
-dangerous because it is confidently wrong and stays that way. The
-failure does not announce itself as a failure: recall keeps answering, the
-answers keep sounding reasonable, and the wrong thing propagates into
-everything downstream that treats memory as settled.
+A system without memory is limited. A system with fast, bad memory is
+confidently wrong and remains wrong. Recall keeps answering, the answers keep
+sounding reasonable, and the mistake propagates into everything downstream
+that treats memory as settled.
 
-No memory costs capability. Bad memory learned quickly costs the ability to trust anything
-the system says, including the parts that were fine. Given the choice I would
-take the first one, and none of these thresholds exists to make that choice
-unnecessary.
+Missing memory costs capability. Bad memory learned quickly costs trust in every
+answer, including the sound parts. A slower promotion path is cheaper than
+rebuilding that trust after the system has spread a falsehood.
 
 Two limits remain. The extractor's endpoint check catches
 invented endpoints and does not catch a false relation between two names that
@@ -354,14 +349,13 @@ are genuinely present in the note. And the bar against catch-all predicates is
 now an instruction in a prompt rather than a check in code, so what stops a
 `misc` reaching the review queue is a model following an instruction.
 
-Both are known and both are narrower than the guarantees around them. The
-first is unfixed in this release. The second this release created, by removing
-the check and keeping the requirement.
+Both limits are known. The endpoint check remains incomplete in this release.
+The prompt-only catch-all rule appeared when the code check was removed while
+the requirement remained.
 
-If you are building memory for a model to use, settle what a learned thing is
-before settling where to put it. An identity, a date, an evidence chain, a fate
-and a delete are the five fields that make every later correction possible, and
-they are cheap to write on the first day. Adding them afterwards means going
-back through rows that were stored without them, deciding what each one meant,
-and guessing at the provenance of anything already acted on. That is the
-expensive version, and it is the one most systems end up buying.
+If you are building memory for a model, settle what a learned thing is before
+settling where to put it. Identity, date, evidence chain, fate and delete make
+every later correction possible, and they are cheap to establish on the first
+day. Adding them later means reconstructing meaning and provenance for facts
+the system may already have used. The remembering becomes learning only when
+the system can also explain, revise and forget what it remembers.
