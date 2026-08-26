@@ -717,3 +717,39 @@ reporting. On an Intel i7-14700K, eight runs pinned to CPU 1 produced per-run
 p50 values of 119, 121, 119, 115, 121, 115, 115 and 115 ns. Each run timed
 5,000 emits; the median of those per-run medians is 117 ns. A separate 260 ns
 result was a single unpinned gate run and is not used as the reference value.
+
+## Essay restoration and cgo comparison, 2026-08-26
+
+Review identified a genre error in the previous rewrite: measurements had
+become the article's organising structure even though the article is an
+architecture essay. The prose now runs **5,086 words**. Its sequence is the
+two-in-the-morning design goal, the economics of one governed boundary, the
+language-neutral module contract, grants, delegate containment, ordered
+observation, durable evidence and the split between action and learned state.
+Timing figures remain only where they support the economic premise.
+
+The cgo comparison is restored after the author clarified the original claim.
+It compares the *cost class* of a bus dispatch with the language-specific
+crossing that a C host would otherwise pay to call Go; it does not claim an
+identical workload or exact parity. The controlled comparison used Go 1.24.4's
+official `BenchmarkCgoCall` on the same Intel i7-14700K as the audit reference:
+simple cases ran at roughly 38–102 ns and the eight-pointer case at 147–164 ns,
+bracketing the committed 134 ns bus-dispatch median. Source:
+[`src/cmd/cgo/internal/test/test.go`](https://github.com/golang/go/blob/go1.24.4/src/cmd/cgo/internal/test/test.go#L1122).
+
+The language-neutral consequence remains grounded in the existing C and
+pure-Go clients and their byte-level conformance tests. The pure-Go client uses
+the shared-memory protocol directly and contains no cgo. The article therefore
+claims that endpoints need to know the transport protocol, not the
+implementation language at the other end.
+
+The restored isolation example retains the reporting boundary recorded above.
+The sandbox grant serves four request kinds and has empty publish, subscribe
+and request lists. The article limits the consequence to governed bus reach and
+states separately that operating-system credentials, mounts and sockets require
+process isolation.
+
+The final causal-detail pass brings the article to **5,303 words**, within the
+review target around 5,500. It restores how local exceptions erode a system-wide
+guarantee and how one named decision provider joins the governed path. The
+earlier 5,086-word count records the state before that addition.
