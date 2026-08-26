@@ -6,22 +6,21 @@ value still legible. Those are not storage features. They are what learning is.
 
 ## The series
 
-1. **[Self-learning](../aimee-recursive-self-learning/)** — the loops exist and
-   they work, and memory is what they are made of.
-2. **Memory** — this one. The machinery behind part one's central claim.
-3. **[Architecture](../everything-crosses-one-transport/)** — what parts one and
-   two stand on.
+1. **[Self-learning](../aimee-recursive-self-learning/):** why isolation comes
+   before learning and what later work inherits.
+2. **Memory:** this one. How stored evidence becomes learning.
+3. **[Architecture](../everything-crosses-one-transport/):** the governed
+   boundary around both.
 
 Each article should be readable alone. Shared figures are marked as shared in
 every reporting record that uses them.
 
 ## Spine
 
-Written as the second panel: part one claims that remembering is the learning,
-and this shows the machinery that makes it true. Every mechanism is presented as
-a learning operation rather than a storage feature. Promotion is learning,
-expiry is forgetting, supersession is correction, and the recall score is the
-learned model being applied.
+Written to make the memory claim directly. Every mechanism is presented as a
+learning operation rather than a storage feature. Promotion is learning, expiry
+is forgetting, supersession is correction, and the recall score is the learned
+model being applied.
 
 That framing is the reason this is not the earlier memory article rewritten. It
 has a different job.
@@ -32,6 +31,10 @@ Draft, 2026-08-24. Not published.
 
 Revised on 2026-08-26 to carry the deployed self-learning checks and paired
 outcome study moved from part one.
+
+Revised again on 2026-08-26 to stand alone. The opening now gives the lifecycle
+details before stating the claim, and references to the other articles have been
+replaced with the facts needed in place.
 
 ## Relationship to `your-memory-has-no-authority-model`
 

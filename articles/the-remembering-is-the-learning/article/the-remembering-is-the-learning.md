@@ -7,20 +7,27 @@ tags: [aimee, memory, knowledge-graph, ontology, authority]
 excerpt: "A fact is born into a class, climbs to durable by being confirmed, expires when it stops being confirmed, and is superseded with its old value still legible. Those are what learning is, and aimee's memory is where it happens."
 ---
 
-*Rakuen builds aimee, the system written about here. Second of three: the
-[self-learning loops](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
-come first, the
+*Rakuen builds aimee, the system written about here. This is the memory article
+in a three-part series. [Self-learning](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
+covers what later work inherits, and the
 [architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
-third. Source read from `testing` on 24 August 2026; figures are traced in the
+covers the boundary around it. Source read from `testing` on 24 August 2026;
+figures are traced in the
 [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-remembering-is-the-learning/evidence/figures.md).*
 
-The first article in this series made a claim it did not fully show: that there
-is no separate thing called learning which uses memory to store its results.
-Remembering, done properly, is the learning.
+Aimee gives every learned thing an authority class, evidence chain, confidence,
+scope and lifecycle. Confirmation can make it durable. Missing support can
+expire it. A correction supersedes it without erasing the old value, and recall
+carries the result into later work.
 
-This is the machinery that makes that true. Read it with the verbs in mind.
-Each of these looks like a storage feature and is doing something else.
+Those operations are the claim: remembering, done properly, is the learning.
+Each apparent storage feature changes what the system can trust, retrieve or
+revise next. This article follows that machinery from admission through
+correction and recall.
+
+Two measurements bound that account. The first checks the deployed machinery;
+the second isolates whether a recalled failure changes a later choice.
 
 On 25 August 2026, we started both deployed services and their required
 processes. The target ran **46 checks** of the deployed self-learning system.
@@ -31,18 +38,22 @@ twice, holding the starting choices fixed. Without the learned failure record,
 12 succeeded. With it available, all 24 succeeded. On 24 new tasks with no
 matching history, both phases remained at 12 of 24.
 
-The fixed consumer isolates whether recalled failure changes a later choice.
-Model performance remains outside the study.
+The second measurement uses a fixed consumer. It isolates the learned record
+and does not measure model performance.
 
 ## A fact is born into a class, and authority picks the class
 
-Every fact enters in one of three classes. The asserted authority and the
-write-gate verdict choose it.
+Every fact enters in one of three classes:
 
-Say something yourself, through a relation the system understands, and the fact
-is Class A. It carries full confidence and is exempt from expiry. A background
-extraction can reach Class B. Novel relations and other unconfirmed claims
-begin in Class C.
+| class | what enters it | starting consequence |
+|---|---|---|
+| A | a direct statement through a relation the system understands | full confidence and no expiry |
+| B | a background extraction using established vocabulary | a model inference that evidence can reinforce or weaken |
+| C | a novel relation or another unconfirmed claim | speculation pending confirmation or review |
+
+The asserted authority and the write-gate verdict choose the class. That first
+decision sets the fact's starting confidence, lifecycle and later weight in
+recall.
 
 The extraction path has no route from model authority to Class A. The extractor
 passes model authority as a constant, so a fact-extraction prompt cannot claim
@@ -282,8 +293,8 @@ frequency is a property of ranking while source count is evidence about the
 claim. Under a floor of recorded outcomes the scorer declines to judge at all,
 and says so.
 
-This is the counterfactual discipline from the first article, arriving in the
-memory layer. What a memory is worth is what happened when it was used.
+Counterfactual discipline reaches the memory layer through those outcomes. What
+a memory is worth is what happened when it was used.
 
 Contradictions are not resolved by picking a winner. Both claims stay, linked,
 with their sources intact. Policy chooses the current value, and unresolved
@@ -357,10 +368,10 @@ idle test container, put the ledger at 812 bytes an event. That is what a kept
 event costs, measured once. What it costs under load is not a number we have.
 
 What makes a learned thing a thing at all is an identity, a date, an evidence
-chain, a fate, and a delete. The first article argued that none of the loops
-survives translation into model weights. This is the reason. You cannot walk a
-gradient step's evidence chain to its roots, and you cannot revert one commit's
-worth of weight update because someone later said it was wrong.
+chain, a fate, and a delete. Those properties explain why the harness keeps the
+learned history outside model weights. You cannot walk a gradient step's
+evidence chain to its roots, and you cannot revert one commit's worth of weight
+update because someone later said it was wrong.
 
 ## The default store is boring on purpose, and you can replace it
 
@@ -380,10 +391,9 @@ What we are unwilling to trade for that is the shape of the bad case. A store
 that wins on the median and can stall for ten seconds under conditions nobody
 has characterised is worth less to us than a slower one whose worst day is
 written down, because the ten seconds is what a person sits through and what
-somebody gets woken up about. This is not a claim that speed does not matter.
-It is a claim about which number decides, and it is the same rule the transport
-is held to in the third article, where the committed figure is a ceiling rather
-than an average.
+somebody gets woken up about. Speed still matters; the deciding number is the
+worst case. The transport uses the same rule and commits a ceiling instead of an
+average.
 
 A published best-case figure for a vector store is not the number we are asking
 for. The measurement itself is fine; the wrong end of the distribution was

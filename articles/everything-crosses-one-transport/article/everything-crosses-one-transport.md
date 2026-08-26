@@ -7,10 +7,11 @@ tags: [aimee, architecture, isolation, governance, event-bus]
 excerpt: "A language model does not need a new safety discipline invented for it. It needs to be made subject to the ones we have had for decades. The only thing standing in the way was the cost of applying them everywhere, and that is what one transport at a bounded 134 ns buys back."
 ---
 
-*Rakuen builds aimee, the system written about here. Third of three: the
-[self-learning loops](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
-come first and the memory second. This one is the architecture both of those
-stand on. Figures are traced in the [reporting
+*Rakuen builds aimee, the system written about here. This is the architecture
+article in a three-part series. [Self-learning](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
+covers what later work inherits, and
+[memory](https://rakuensoftware.com/blog/the-remembering-is-the-learning) covers
+how that history remains useful. Figures are traced in the [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/everything-crosses-one-transport/evidence/figures.md).*
 
 The goal of the whole system is one sentence: an AI system that is auditable,
@@ -96,10 +97,10 @@ it describes what I have seen and worked with. One counterexample settles it
 and I would like to see one.
 
 It is the only part of aimee I would call novel, and it is not an oddity off to
-one side of the architecture. The self-learning loops in the first article are
-decades-old technique, and the memory in the second is careful work on old
-ideas. Take this piece out and there is no version of either that survives,
-which is a stronger claim than calling it the one new part.
+one side of the architecture. Aimee's self-learning uses decades-old technique,
+and its memory is careful work on old ideas. Take this piece out and there is no
+version of either that survives, which is a stronger claim than calling it the
+one new part.
 
 The whole argument has that shape. Every technique here is one the industry has
 had for years, and the reason they were not already applied to an agent this
@@ -406,9 +407,9 @@ architecture and starts being enforced by the kernel.
 
 ## A delegate gets one socket, and everything is behind it
 
-The first article in this series opens with a model that got around its
-protections, took an unused node, and spent a testing API key on inference. It
-did that over the network, because the network was there.
+During self-learning tests, a model got around its protections, took an unused
+node and spent a testing API key on inference. It did that over the network,
+because the network was there.
 
 A delegate now runs in a container created with `--network none`. No interface,
 no route, no IP stack to configure or evade. The deployment check is `curl
@@ -479,26 +480,24 @@ asking for. Make the memory good enough and most of the need stops arriving.
 What survives is narrow enough to name seven hosts.
 
 A reach that is genuinely needed then gets paid once. What comes back is
-extracted, classed, dated and stored by the machinery in the second article, so
-the next session answers that question out of memory and never leaves. Egress
-here is a cost with a decay curve attached, and it is the first article's loop
-pointed at this problem: the system reduces its own need to reach out by
-remembering what reaching out told it. Security boundaries usually age the other
-way, with the needs growing while the restriction stays where it was put.
+extracted, assigned an authority class, dated and stored in memory, so the next
+session answers that question without leaving. Egress here is a cost with a
+decay curve attached: self-learning reduces the system's need to reach out by
+remembering what reaching out taught it. Security boundaries usually age the
+other way, with the needs growing while the restriction stays where it was put.
 
-The measurement campaign in the first article is what this rests on, for the
-same reason. If recall is thin or wrong, this design is a cage around a model
-that cannot do its job, and the honest response would be to open the network back
-up.
+Useful recall is what this design rests on. If recall is thin or wrong, the
+boundary becomes a cage around a model that cannot do its job, and the honest
+response would be to open the network back up.
 
 The verification is what stops this being a Docker flag. Every start and resume
 is handed over only after the sandbox module proves three things about the
 running container: its network mode, the exact source, target and read-write
 state of every mount, and an effective environment holding no credentials and
 exactly one writable control socket. A failed observation destroys the container
-and refuses it. So does an unknown one, which is the rule from the first two
-articles arriving in the runtime: absent is not open. The C backend supplies
-runtime facts and cannot pick a network mode or weaken that verdict.
+and refuses it. So does an unknown one: absence never opens the boundary. The C
+backend supplies runtime facts and cannot pick a network mode or weaken that
+verdict.
 
 So the outermost edge of the system obeys the rule the rest of it does. A client
 reaches the world by asking something that is holding a grant and writing to a
@@ -517,7 +516,7 @@ of the answer.
 Almost every behaviour in aimee can be configured. The module seams are the
 easiest to point at: the vector store is a module, so is the embedder, modules
 register at runtime, and MCP servers and pluggy plugins attach through the
-transport. It does not stop there. The thresholds in part two are constants.
+transport. It does not stop there. Memory thresholds are constants.
 Confidence weights, the promotion and expiry clocks, how far a memory has to
 climb, the scope bands, the recall weight vector, container policy, which model
 does the work: settings, most of the way down.
@@ -617,10 +616,9 @@ validation runs downstream as well as up, the modules it starts talking to are
 entitled to disbelieve it. Capturing something upstream does not confer the
 right to be obeyed. What it captured is one more participant.
 
-Take the case that should worry you most, since it is the one the first article
-in this series is about. Suppose a model gets control of the isolation module
-itself: the component whose job is confinement, which is exactly where you
-would go if you wanted out.
+Take the case that should worry you most. Suppose a model gets control of the
+isolation module itself: the component whose job is confinement, which is
+exactly where you would go if you wanted out.
 
 It gains nothing general. That module holds a grant like everything else, and
 its grant serves four event kinds and publishes, subscribes and requests

@@ -248,3 +248,12 @@ directory.
 
 The paired study used a fixed consumer. It isolates whether recalled failure
 changes a later choice and does not measure model performance.
+
+## Standalone opening pass, 2026-08-26
+
+The opening now gives the concrete lifecycle operations before stating that
+remembering is the learning. It no longer describes the claim as something the
+first article failed to show. Three later cross-article references were replaced
+with the mechanism or criterion they depended on. The first mechanism section
+now introduces Classes A, B and C as a reference table before using them. No
+figure, mechanism or limit changed.
