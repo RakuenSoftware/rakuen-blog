@@ -439,3 +439,29 @@ No raw artifact or first-party observation was removed. The article preserves
 the incident, all six loop mechanisms, the live-path use-after-free, the
 endogeneity gate, transactional witnesses, the memory failures, the
 weights-versus-harness tradeoff, and the valid no-op outcome.
+
+## Learning shared across model instances and users, 2026-08-26
+
+The harness section now carries the positive half of model independence.
+Weight learning belongs to the modified model artifact on which it occurred.
+Two copies of the same starting checkpoint that learn from different local work
+become two different learned artifacts; sharing their learning requires an
+explicit weight or adapter distribution and coordination mechanism. A provider
+update does not contain those local changes, and a different checkpoint cannot
+inherit them merely by being loaded. The article does not claim that modified
+weights are impossible to distribute. It distinguishes model deployment from
+one live learned record shared at recall time.
+
+Harness state is independent of both the checkpoint and the machine running a
+model. Task files and ledger rows do not encode the producing model, so several
+model instances can consume the same accumulated history even when their own
+answers differ. This is a construction claim. No cross-machine comparison of
+model outputs is introduced.
+
+The cross-user claim follows the deployment shape already recorded above and in
+part three: one shared knowledge service stands behind many per-user server
+instances. Sharing remains subject to memory scope. Project and workspace
+records stay inside their query-time visibility bands; records made shared or
+global can be recalled by another permitted user. The article claims shared
+learned state, not identical model outputs or unscoped access to another user's
+memory.
