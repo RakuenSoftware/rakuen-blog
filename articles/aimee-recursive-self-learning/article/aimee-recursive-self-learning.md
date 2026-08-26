@@ -295,8 +295,7 @@ than instruction.
 Several failures looked healthy from the outside. Typed facts were absent from
 the graph walk. A relation-weight table was bypassed at the fusion call.
 
-A
-co-occurrence update collided with a direct assertion, and normalisation rewrote
+A co-occurrence update collided with a direct assertion, and normalisation rewrote
 confirmation counts. The system answered queries while handing the model the
 wrong evidence.
 
@@ -325,6 +324,18 @@ file synthesised from failure does not depend on which model failed, and a
 ledger row does not encode a producing model. Swap the model and those artifacts
 remain. This is model independence by construction; the six loops have not been
 rerun across a model set.
+
+That dependency runs in the other direction too. If an agent process leaves the
+harness without continued access to it, the accumulated learning does not leave
+with the agent. The process may retain its current context, but not the task
+files, ledger history, retrieval state or policy evidence that made later runs
+better informed.
+
+What remains is the provider's fixed checkpoint: a stock model whose weights
+may reflect training data months or years behind the work in progress. Leaving
+the harness therefore gives up the system's current learning at the same time
+it leaves the boundary. The containment mechanism is also where the useful,
+up-to-date state lives.
 
 Weights-based continual learning buys structural generalisation and ties the
 result to a checkpoint. Harness learning buys portability and auditability at

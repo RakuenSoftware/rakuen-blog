@@ -254,3 +254,12 @@ removed or rewritten.
 | why the loops were easier than memory | **Restored in compressed form** | memory failure examples remain factual; benchmarking-series purpose stays omitted |
 | harness versus weight learning | **Restored as an engineering trade-off** | cross-model operation remains by construction and is not claimed as measured |
 | falsifiability and valid no-op outcomes | **Restored** | closure is established; six-loop efficacy remains open |
+
+## Harness-dependency argument, 2026-08-26
+
+The article now states an architectural consequence rather than a measured
+result: an agent process that loses access to the harness also loses access to
+harness-owned learned state. The claim excludes the process's current context
+and base checkpoint, and no escape experiment was run. The “months or years”
+statement describes the possible age of a fixed checkpoint's training corpus,
+not a measured age for one named model.

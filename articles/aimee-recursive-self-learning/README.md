@@ -55,10 +55,13 @@ supersedes the older per-suite counts for the article's current result: 46
 passed, 0 failed.
 
 Revised in PR review on 2026-08-25 to restore the original narrative spine.
-The article now runs 3,127 words, down from 4,313. It retains the lead incident,
+The article now runs 3,234 words, down from 4,313. It retains the lead incident,
 the containment prerequisite, the six live observations, the deployment-graph
 failure, the endogeneity gate, the memory argument and the harness trade-off.
-The efficacy and cross-model limits remain adjacent to the claims they bound.
+It also makes the harness dependency explicit: without continued harness access,
+an agent falls back to its checkpoint and current context rather than carrying
+the accumulated learned state with it. The efficacy and cross-model limits
+remain adjacent to the claims they bound.
 
 ## Evidence
 
