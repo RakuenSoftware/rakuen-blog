@@ -36,6 +36,11 @@ Revised again on 2026-08-26 to stand alone. The opening now gives the lifecycle
 details before stating the claim, and references to the other articles have been
 replaced with the facts needed in place.
 
+The opening now also includes the project-level description shared by all three
+articles: what aimee is, the operational problem it solves, and the role of
+self-learning memory from one user to a company, model and user scope, and
+governed execution.
+
 ## Relationship to `your-memory-has-no-authority-model`
 
 That article is a comparative piece: sixteen repositories read at pinned commits,

@@ -257,3 +257,11 @@ first article failed to show. Three later cross-article references were replaced
 with the mechanism or criterion they depended on. The first mechanism section
 now introduces Classes A, B and C as a reference table before using them. No
 figure, mechanism or limit changed.
+
+## Project orientation, 2026-08-26
+
+The opening project description records the author's 0.4.0 positioning: Aimee
+is available with cloud or local hosting and provides self-learning memory from
+one user to the models and users an entire company enrolls. The series' identity,
+scope, model-independence and audit arguments supply the mechanism behind that
+product description; it introduces no new measurement.

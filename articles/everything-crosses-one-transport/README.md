@@ -33,6 +33,11 @@ Revised on 2026-08-26 to stand alone. Cross-article references now state the
 incident, memory operation or failure rule needed at that point, while the
 series links remain optional context.
 
+The opening now also includes the project-level description shared by all three
+articles: what aimee is, the operational problem it solves, and the role of
+self-learning memory from one user to a company, model and user scope, and
+governed execution.
+
 ## Evidence
 
 First-party, in the public

@@ -16,6 +16,13 @@ figures are traced in the
 [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-remembering-is-the-learning/evidence/figures.md).*
 
+Aimee is a cloud-hosted or locally hosted self-learning AI harness that scales
+from one user to an entire company. It gives every model and user it serves
+access to one coherent memory, with identity and scope determining which parts
+each can retrieve. It learns from work as it happens and carries that experience
+into later sessions while keeping the learned history observable, auditable and
+reversible.
+
 Aimee gives every learned thing an authority class, evidence chain, confidence,
 scope and lifecycle. Confirmation can make it durable. Missing support can
 expire it. A correction supersedes it without erasing the old value, and recall

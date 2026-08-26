@@ -638,3 +638,11 @@ The companion articles cover those questions.
 The series references in the article now state the incident, memory operation or
 failure rule needed in place. The opening still links the companion articles as
 optional context. No architecture, measurement or security claim changed.
+
+## Project orientation, 2026-08-26
+
+The opening project description records the author's 0.4.0 positioning: Aimee
+is available with cloud or local hosting and provides self-learning memory from
+one user to the models and users an entire company enrolls. The series' identity,
+scope, model-independence and audit arguments supply the mechanism behind that
+product description; it introduces no new measurement.
