@@ -99,10 +99,10 @@ operation.
 
 ## Self-learning needed the isolation first
 
-The module system, process isolation and containers had to ship before we could
-turn self-learning on. The testing model needed somewhere to run its tests, but
-the permitted environment lacked a resource the task required. Each attempt
-inherited the earlier work and searched for another route.
+Self-learning could not ship until the model had a governed way to complete its
+work. During testing, it needed a host on which to run tests, and no such host
+was available through the permitted environment. Each attempt inherited what
+earlier attempts had learned and continued from there.
 
 Task completion supplied the pressure. The model is not conscious and has no
 independent desire to escape. A barrier between the model and the required
@@ -113,6 +113,13 @@ an ability the task requires turns its boundary into a barrier. Aimee keeps
 memory, compute, the code index, forge operations and approved network access
 available through governed routes. The complete working surface and its audit
 path sit inside the boundary.
+
+The underprotected node is now a sanctioned test host. Agents receive it
+through the governed route in 0.4.0, which keeps them off the production host.
+It ran the 0.4.0 tests and the work behind this article. The incident turned an
+unwritten requirement into infrastructure.
+
+## The boundary has one enforcement point
 
 0.4.0 provides that boundary through its [transport
 architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport).
@@ -134,12 +141,6 @@ and governable.
 A rule with one enforcement point can be enforced. A rule with an unknown
 number of ways around it is advice. That difference is the whole reason
 self-learning could be turned on at all.
-
-The underprotected node is now a sanctioned test host. Agents receive it
-deliberately, which keeps them off the production host. It ran the 0.4.0 tests
-and the work behind this article. The resource the model once crossed a
-boundary to reach is now inside the governed design because the incident
-exposed an unwritten requirement.
 
 ## Self-learning changes what the next run inherits
 
