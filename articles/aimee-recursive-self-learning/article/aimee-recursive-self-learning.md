@@ -182,13 +182,16 @@ the future confidence placed in its detector.
 
 On 25 August 2026, we started both deployed services and their required
 processes, then followed each producer into the state consumed by a later run.
-The target finished at **46 passed, 0 failed**.
+The target ran **46 checks** against those paths. All 46 passed.
 
-Two failed jobs became one candidate, which admission wrote into the permanent
-suite. Three paired tasks attributed a better outcome to the full capability
-set. A failed approach returned through the next planning call with its failure
-mode. One curiosity item resolved while another stayed open for lack of
-evidence.
+For the failure-admission check, we seeded two identical `agent_jobs` records
+with status `failed`. These were inputs to the test. Aimee combined them into
+one candidate with an occurrence count of two, then admission wrote it into the
+permanent suite.
+
+Three paired tasks attributed a better outcome to the full capability set. A
+failed approach returned through the next planning call with its failure mode.
+One curiosity item resolved while another stayed open for lack of evidence.
 
 A later commit superseded an earlier proposal, and an operator verdict changed
 its fate to `contradicted`. The policy route selected and recorded the seeded
