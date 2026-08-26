@@ -676,3 +676,19 @@ The section specifying fact classes, lifecycle operations and transactional
 witness behaviour has been removed from part one at author direction. Those
 details belong to part two. Their evidence remains in this reporting record;
 none of it supports the new paired-study figure.
+
+## Readability pass, 2026-08-26
+
+The article's section hierarchy, claims and evidence boundaries remain in
+place. The pass shortened transitions, replaced ambiguous pronouns and kept one
+subject in each paragraph. The list of memory implementation defects left part
+one; those defects remain in part two and in the figure inventory above. No
+measurement or raw artifact changed.
+
+## Project orientation, 2026-08-26
+
+The opening project description records the author's 0.4.0 positioning: Aimee
+is available with cloud or local hosting and provides self-learning memory from
+one user to the models and users an entire company enrolls. The article's
+identity, scope, model-independence and audit arguments supply the mechanism
+behind that product description; it introduces no new measurement.

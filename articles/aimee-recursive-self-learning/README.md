@@ -72,6 +72,16 @@ The same review balanced the section hierarchy. The containment context now has
 its own heading, the two short learning-state sections are one section, and
 model portability is separated from company-wide sharing.
 
+A readability pass on 2026-08-26 kept that hierarchy and the article's claims
+in place. It gave each paragraph one subject, replaced distant referents and
+moved the remaining memory-defect detail out of part one. Part two and the
+reporting record retain that detail.
+
+The opening now includes the project-level description shared by all three
+articles: what aimee is, the operational problem it solves, and the role of
+self-learning memory from one user to a company, model and user scope, and
+governed execution.
+
 ## Evidence
 
 First-party, in the public
