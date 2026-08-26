@@ -14,12 +14,12 @@ covers what later work inherits, and
 how that history remains useful. Figures are traced in the [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/everything-crosses-one-transport/evidence/figures.md).*
 
-Aimee is a server and harness for AI coding tools, available as a cloud service
-or a local deployment. It solves the loss of context between coding sessions
-while making the resulting agent cheaper to run and governable when it acts.
-Memory and a map of the code follow the user across tools, routine work can move
-to cheaper models, and execution stays behind guardrails the model cannot
-rewrite.
+Aimee is a cloud-hosted or locally hosted self-learning AI harness that scales
+from one user to an entire company. It gives every model and user it serves
+access to one coherent memory, with identity and scope determining which parts
+each can retrieve. It learns from work as it happens and carries that experience
+into later sessions while keeping the learned history observable, auditable and
+reversible.
 
 The goal of the whole system is one sentence: an AI system that is auditable,
 governable, and will not wake an engineer at two in the morning.

@@ -16,12 +16,12 @@ figures are traced in the
 [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-remembering-is-the-learning/evidence/figures.md).*
 
-Aimee is a server and harness for AI coding tools, available as a cloud service
-or a local deployment. It solves the loss of context between coding sessions
-while making the resulting agent cheaper to run and governable when it acts.
-Memory and a map of the code follow the user across tools, routine work can move
-to cheaper models, and execution stays behind guardrails the model cannot
-rewrite.
+Aimee is a cloud-hosted or locally hosted self-learning AI harness that scales
+from one user to an entire company. It gives every model and user it serves
+access to one coherent memory, with identity and scope determining which parts
+each can retrieve. It learns from work as it happens and carries that experience
+into later sessions while keeping the learned history observable, auditable and
+reversible.
 
 Aimee gives every learned thing an authority class, evidence chain, confidence,
 scope and lifecycle. Confirmation can make it durable. Missing support can

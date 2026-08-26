@@ -38,7 +38,8 @@ replaced with the facts needed in place.
 
 The opening now also includes the project-level description shared by all three
 articles: what aimee is, the operational problem it solves, and the role of
-memory, model routing and governed execution.
+self-learning memory from one user to a company, model and user scope, and
+governed execution.
 
 ## Relationship to `your-memory-has-no-authority-model`
 
