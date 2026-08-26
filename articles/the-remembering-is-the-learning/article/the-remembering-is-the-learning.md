@@ -22,6 +22,18 @@ Remembering, done properly, is the learning.
 This is the machinery that makes that true. Read it with the verbs in mind.
 Each of these looks like a storage feature and is doing something else.
 
+On 25 August 2026, we started both deployed services and their required
+processes. The target ran **46 checks** of the deployed self-learning system.
+All 46 passed.
+
+On 26 August, we ran 24 synthetic recovery tasks through the deployed system
+twice, holding the starting choices fixed. Without the learned failure record,
+12 succeeded. With it available, all 24 succeeded. On 24 new tasks with no
+matching history, both phases remained at 12 of 24.
+
+The fixed consumer isolates whether recalled failure changes a later choice.
+Model performance remains outside the study.
+
 ## A fact is born into a class, and authority picks the class
 
 Every fact enters in one of three classes. The asserted authority and the
