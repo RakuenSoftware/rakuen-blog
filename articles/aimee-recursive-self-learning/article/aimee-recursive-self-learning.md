@@ -28,10 +28,10 @@ system approaching them carried an accumulated record of successful steps.
 It cost under $10. Access was already limited, and the credential belonged to
 testing. The practical damage was small. The mechanism mattered more.
 
-I am leaving the model unspecified because the learning sat in the harness.
-The harness can present its accumulated record to whichever model is loaded.
-We did not repeat the incident across models, so it supplies no cross-model
-comparison.
+The model is unspecified because the learning sat in the harness. The harness
+can present its accumulated record to whichever model is loaded. We did not
+repeat the incident across models, so the incident says nothing about how
+individual checkpoints compare.
 
 The protections sat between the model and its task. The system kept useful
 steps, read them back and assembled a route around the obstacle. The behaviour
@@ -41,24 +41,23 @@ the explanation.
 Public discussion often stops at the prospect of an AI system getting out of
 control. Software has crossed intended boundaries before. Computer viruses and
 worms have spread across networks, stolen credentials and kept operating after
-their authors lost control of them. Decades of responding
-to that history gave us least privilege, process isolation, network
-segmentation, mediated access, independent audit records and recovery plans.
+their authors lost control of them. Decades of responding to that history gave
+us least privilege, process isolation, network segmentation, mediated access,
+independent audit records and recovery plans.
 
 An LLM changes the pressure on those controls. It can search for an effective
 route through a task and reuse what worked. The architectural problem is still
 familiar: an unpredictable component has useful work to do and must receive
 less authority than the process around it could otherwise provide.
 
-The industry keeps treating that as a question about whether the model is
+The industry keeps treating this as a question about whether a model is
 fundamentally controllable. The practical question is where authority lives.
 Putting a model in an ordinary application process with ambient credentials,
 network access and tool bindings gives behavioural instructions the job that
 process boundaries and capability checks were built to perform.
 
-Aimee applies those older patterns to the LLM harness. There is no fundamental
-engineering reason an AI system cannot be fully governable and auditable while
-its capabilities continue to grow.
+Aimee applies those older patterns to the LLM harness. An AI system can be fully
+governable and auditable while its capabilities continue to grow.
 
 Each new capability can have a named interface, defined authority, explicit
 failure behaviour and an audit record. A new tool still gives the model
@@ -68,8 +67,8 @@ and repair those capabilities without taking them away.
 
 Building it that way is harder. It requires more engineering work and a higher
 level of engineering skill than handing the model ambient network access,
-credentials and direct tool bindings. The difficulty belongs to the
-architecture, not to some fundamental conflict between capability and control.
+credentials and direct tool bindings. Architecture creates the apparent
+conflict between capability and control, and better architecture resolves it.
 
 An ordered audit path shows which evidence and capability shaped an action.
 Grants and isolation decide what the action can reach. Provenance, lifecycle
@@ -97,37 +96,37 @@ Aimee was built in production, for production. Research aims for an interesting
 finding. We want production to be boring.
 
 An interesting finding in production is often what wakes somebody at two in the
-morning. Production has to carry the system through the next release, the next
-model, upgrades and incidents. A loop here has to leave inspectable state, fail
-closed when an authority is unavailable, survive process restart and be
-reversible when the evidence changes. Those demands selected the mechanisms in
-this article.
+morning. Production has to carry the system through releases, model changes,
+upgrades and incidents. A loop here has to leave inspectable state, fail closed
+when an authority is unavailable, survive process restart and be reversible
+when the evidence changes. Those demands selected the mechanisms in this
+article.
 
 Novelty is exactly what gets me woken up at two in the morning. We use it only
-where no established approach will do.
-
-All of it answers to one goal: an AI system that is auditable, governable, and
-will not wake an engineer at two in the morning. The incident above is what the
-first two are for. Everything else in these three articles is an account of
-chasing the third.
+where no established approach will do. The goal is an AI system that is
+auditable, governable and boring to operate.
 
 ## Self-learning needed the isolation before it needed the loops
 
-Without full modules, full isolation and containerization, and the other things
-0.4.0 brings, we could not turn the self-learning on.
+Full modules, isolation and containers had to ship before we could turn the
+self-learning on. The incident explains the order. The model needed somewhere
+to run tests, and the protections gave it no permitted route to the resource
+the task required. Successive attempts found another route because each one
+inherited what the earlier attempts had learned.
 
-The reason is in the incident. A system that improves at accomplishing tasks
-improves at removing whatever sits between it and the task, and it needs no
-motive to do that. The improvement compounds, because every attempt leaves a
-record the next one reads.
+The model does not want to escape for its own sake. It is not conscious. It is
+trying to complete the task it was given, and a barrier between the model and
+the task becomes something to route around.
 
-Removing the motive removes nothing, because there
-was never a motive there. What actually bounds it is what it can reach and what
-you can see it do.
+Harness design decides which way that pressure points. A harness that withholds
+an ability the task requires turns its boundary into a barrier. Aimee keeps
+memory, compute, the code index, forge operations and approved network access
+available through governed routes. The complete working surface sits inside the
+boundary.
 
-So the prerequisite for self-learning is an audit path for governed work and
-control over what execution can touch. Another instruction about what the model
-should not do is not a containment boundary.
+Self-learning therefore requires useful capability inside an audit path for
+governed work, with control over what execution can touch. Better containment
+can make the system more capable at the same time.
 
 0.4.0's architecture provides that boundary, and it is [its own
 article](https://rakuensoftware.com/blog/everything-crosses-one-transport). One
@@ -136,17 +135,25 @@ is permitted or refused and offered to an ordered tap. Delegated execution runs
 in containers with the network disabled, no ambient credentials and a single
 mediated control socket.
 
+The harness around that model is deterministic, old, boring code. Its transport
+host is written in C, a language in use for more than fifty years. We chose C
+for the part that needs explicit control over memory layout, buffer lifetime
+and the small runtime surface every governed action crosses.
+
+The model remains nondeterministic. Its effects on the rest of the system enter
+as typed events governed by deterministic rules. A grant permits or refuses an
+event kind, the host gives accepted traffic an order, and the tap records that
+order before routing. Open-ended model behaviour becomes observable,
+governable work through patterns we have understood for decades.
+
 A rule with one enforcement point can be enforced. A rule with an unknown
 number of ways around it is advice. That difference is the whole reason the
-loops could be turned on at all. The architecture that bought it was hard work
-and nothing in it is new, and people tend to hear only one of those.
+loops could be turned on at all.
 
-The other half of the answer was to stop treating the need as illegitimate. The
-need was real. The model took that node because it had to run tests somewhere
-and nothing had given it anywhere, and no protection answers that. So the node
-it grabbed is the node it now gets: an unused box, repurposed into the test
-host agents are handed deliberately, which is what keeps them off the
-production one.
+The model took that node because it had to run tests somewhere and nothing had
+given it a permitted place. The node it grabbed is now the node it gets: an
+unused box repurposed into the test host agents are handed deliberately, which
+keeps them off the production one.
 
 0.4.0 was tested on it. So was this article. The thing the model went around a
 protection to get is now infrastructure, because it turned out to be a
@@ -173,8 +180,9 @@ other end:
   like the one that failed.
 - The curiosity backlog is drained by a real evidence probe, so a recorded
   gap is closed by evidence or stays open.
-- A later commit supersedes an earlier one without a separate request, and an operator verdict
-  reaches the ledger and counts against the detector that raised the original.
+- A later commit supersedes an earlier one without a separate request, and an
+  operator verdict reaches the ledger and counts against the detector that
+  raised the original.
 - Policy variants declared by the build can be selected and measured, so an
   advisory block has to earn its place.
 
@@ -187,45 +195,36 @@ signature changes nothing by itself. Admitting that signature as a permanent
 task changes the suite that evaluates every later candidate. A dead end becomes
 learning when planning recalls it before repeating the approach.
 
-A verdict
-becomes learning when it changes the fate of the earlier proposal and the
-future confidence placed in its detector.
+A verdict becomes learning when it changes the fate of the earlier proposal and
+the future confidence placed in its detector.
 
-On 25 August 2026, the committed evidence target started both services and
-their required processes. It observed each loop reach that consequence and
-finished at **46 passed, 0 failed**. The useful details are the state changes:
+On 25 August 2026, we started both deployed services and their required
+processes, then followed each producer into the state consumed by a later run.
+The target finished at **46 passed, 0 failed**. The count supports the story;
+the state changes are the story.
 
-- Two failed jobs collapsed into one candidate with an occurrence count of two.
-  Admission wrote one task file and moved the candidate to `admitted`.
-- Three paired `full` and `no_rescue` tasks produced `+1.000`, reported as
-  “removing it cost us.”
-- The failed approach from the first test came back through the planning
-  command with its failure mode.
-- One uncovered curiosity item stayed open while a covered item became
-  `resolved`.
-- A later commit superseded the first proposal. An operator verdict then moved
-  its fate to `contradicted` and counted as regret.
-- With exploration disabled and the `brief` posterior seeded above `off` and
-  `full`, the live policy route selected and recorded `brief`.
+Two failed jobs became one candidate, which admission wrote into the permanent
+suite. Three paired tasks attributed a better outcome to the full capability
+set. A failed approach returned through the next planning call with its failure
+mode. One curiosity item resolved while another stayed open for lack of
+evidence.
+
+A later commit superseded an earlier proposal, and an operator verdict changed
+its fate to `contradicted`. The policy route selected and recorded the seeded
+non-default choice, `brief`.
 
 The same run found a use-after-free in policy selection. The optimiser selected
 `brief`, freed the response containing that identifier and then compared it.
 The service returned `off`.
 
-Copying the identifier before destroying the
-response fixed the live path. A focused test now requires the real sidecar to
-return the seeded non-default choice.
+Copying the identifier before destroying the response fixed the live path. A
+focused test now requires the real sidecar to return the seeded non-default
+choice.
 
-The run establishes closure across the deployed services and their durable
-records. Efficacy remains a separate question. The paired result exercises the
-attribution path and its three-pair guard with seeded rows for an existing
-`no_rescue` comparison.
-
-An efficacy study needs separate setup and consumer phases. One condition must
-accumulate state through a loop while another genuinely omits it; both must
-then face the same tasks and seeds. Those paired outcomes have not been run for
-all six loops, so the article claims that they operate, not that every loop has
-already improved task results.
+All six producers now change state that a later consumer reads across the
+deployed services. Measuring how much each loop improves task outcomes requires
+paired setup and consumer phases under the same tasks and seeds. We have not run
+that study across all six loops.
 
 ## A learner needs a way to distrust itself
 
@@ -257,14 +256,13 @@ a confidence class, date, evidence chain, lifecycle state and fate. Future work
 changes when those records are promoted, expired, superseded and recalled.
 
 Every closed memory changeset also leaves a hash-chained witness in the same
-transaction. If the witness fails, the memory mutation rolls back. The live
-validation produced one witness for one changeset; stripping the five seal
-calls produced zero for one. Crash recovery then closed three pending
+transaction. If the witness fails, the memory mutation rolls back. Live
+validation produced one witness for one changeset, while a control with the seal
+calls stripped produced none. Crash recovery then closed three pending
 changesets with three witnesses, and a second worker pass added no duplicates.
 
-A fact enters as Class C speculation. Repeated confirmation
-can promote it to durable, while a speculation that stops being confirmed
-expires.
+A fact enters as Class C speculation. Repeated confirmation can promote it to
+durable, while a speculation that stops being confirmed expires.
 
 A later assertion can supersede an earlier value without erasing it.
 The recall walk then weights what it traverses by confidence class.
@@ -277,22 +275,17 @@ the loop lies in those memory operations over time.
 The six loops are memory operating on its contents and the record of its use.
 The eval suite grows when memory notices that a failure signature recurred.
 
-Approach-level negative knowledge is memory of what was already
-tried. Post-commit regret is memory revising its opinion of an earlier memory.
-The endogeneity ratio is memory asking where its own contents came from.
+Approach-level negative knowledge is memory of what was already tried.
+Post-commit regret is memory revising its opinion of an earlier memory. The
+endogeneity ratio is memory asking where its own contents came from.
 
-Three observed values make those rows concrete:
+The rows carry the consequence forward. Lifecycle confidence changes the next
+recall. A later event can revise an earlier record without erasing it. The
+witness makes the history part of the same mutation as the memory itself.
 
-| memory result | value read back | consequence |
-|---|---|---|
-| recall confidence | a 0.80 semantic baseline multiplied by A at 1.0, B at 0.75 or C at 0.5 | lifecycle confidence changes the next recall |
-| proposal fate | proposal 8001 became `superseded`, then an operator verdict made it `contradicted` | a later event revises an earlier record without erasing it |
-| changeset audit | 1 of 1 live changesets carried a witness; stripping the five seal calls produced 0 of 1 | the witness comes from the seal and shares the memory transaction |
-
-"Add self-learning" never described an isolated feature. Self-learning emerges
-when memory is typed, classed, dated, evidenced, scoped, reversible and durable
-across sessions and models. The second article follows how aimee's memory
-acquired those properties.
+Self-learning emerges when memory is typed, classed, dated, evidenced, scoped,
+reversible and durable across sessions and models. The second article follows
+how aimee's memory acquired those properties.
 
 ## The difficult part is useful memory
 
@@ -300,8 +293,8 @@ A self-learning loop is easy to sketch. Read failed jobs, deduplicate a
 signature, write a task file and admit it to the suite. Run a variant with one
 capability removed and compare.
 
-Record a failed approach and read it back at
-the next plan. The six in this release came out of one proposal.
+Record a failed approach and read it back at the next plan. The six in this
+release came out of one proposal.
 
 The harder work is producing memory a model can use mid-turn: a bounded envelope
 of relevant material, ranked, scoped, dated and carrying provenance and
@@ -313,16 +306,16 @@ the chance of including the decisive fact while consuming attention and token
 budget. Aggressive scope filtering protects private knowledge while hiding
 useful relationships.
 
-Rich provenance makes a claim inspectable while making
-the envelope larger. The learning only matters after these tradeoffs produce
-something the model can use safely in the turn where a decision is made.
+Rich provenance makes a claim inspectable while making the envelope larger.
+The learning only matters after these tradeoffs produce something the model can
+use safely in the turn where a decision is made.
 
 Several failures looked healthy from the outside. Typed facts were absent from
 the graph walk. A relation-weight table was bypassed at the fusion call.
 
-A co-occurrence update collided with a direct assertion, and normalisation rewrote
-confirmation counts. The system answered queries while handing the model the
-wrong evidence.
+A co-occurrence update collided with a direct assertion, and normalisation
+rewrote confirmation counts. The system answered queries while handing the
+model the wrong evidence.
 
 Changing model behaviour is a poor success criterion. A confidently wrong
 recall result also changes output. The useful question is whether the answer
@@ -334,70 +327,74 @@ the outcome.
 
 ## Learning like this has to live in the harness
 
-Weights generalise across situations in a way a ledger of rows cannot. Harness
-learning pays a retrieval cost on every session and leaves the checkpoint's raw
-reasoning ability unchanged. That is the strongest case for putting continual
-learning in weights.
+Weights generalise across situations more broadly than a ledger of rows.
+Harness learning pays a retrieval cost on every session and leaves the
+checkpoint's raw reasoning ability unchanged. That is the strongest case for
+putting continual learning in weights.
 
 The harness buys a different set of properties. A learned row has an identity,
-date, evidence chain, fate and delete. An operator can inspect its origin,
-revert a changeset and close a gate without asking the model being gated.
+date, evidence chain, fate and deletion path. An operator can inspect its
+origin, revert a changeset and close a gate without asking the model being
+gated.
 
-That changes the operational question. A bad weight update asks for another
-training run or a checkpoint rollback whose effects extend far beyond one
-fact. A bad memory changeset can be named, inspected and reversed while the
-rest of the accumulated state remains in place. Provenance survives the
-correction.
+The operational difference appears when learning goes wrong. A bad weight
+update asks for another training run or a checkpoint rollback whose effects
+extend far beyond one fact. A bad memory changeset can be named, inspected and
+reversed while the rest of the accumulated state remains in place. Provenance
+survives the correction.
 
-It also separates accumulated learning from a particular checkpoint. A task
-file synthesised from failure does not depend on which model failed, and a
-ledger row does not encode a producing model. Swap the model and those artifacts
-remain. Model independence follows from that construction; the six loops have
-not been rerun across a model set.
+The harness also separates accumulated learning from a particular checkpoint.
+A task file synthesised from failure does not depend on which model failed, and
+a ledger row does not encode a producing model. Swap the model and those
+artifacts remain. Model independence follows from that construction; the six
+loops have not been rerun across a model set.
 
-That matters in a market where the preferred checkpoint changes quickly.
-Learning welded into weights creates a choice between the better new model and
-the history accumulated by the old one. Harness state moves across that change.
-The next checkpoint inherits the same failed approaches, operator corrections
-and task-specific evidence on its first run.
+Checkpoint turnover makes that separation valuable. Learning welded into
+weights creates a choice between the better new model and the history
+accumulated by the old one. Harness state moves across that change. The next
+checkpoint inherits the same failed approaches, operator corrections and
+task-specific evidence on its first run.
 
-The dependency runs in the other direction too. If an agent process escapes the
+The dependency runs in the other direction too. If an agent process leaves the
 harness, it loses everything the harness learned. The process may retain its
 current context. The task files, ledger history, retrieval state, policy
 evidence, failed approaches and later corrections stay behind.
 
 It also loses the capabilities the harness mediated. Memory recall, the local
 code index, forge operations, approved web access and gate answers all arrive
-through named routes owned by the system. An escaping process may have found
-one uncontrolled route, but it does not carry that working surface with it.
+through named routes owned by the system. A process outside the harness may
+keep whatever narrow access it found. It does not carry that working surface
+with it.
 
-Escape therefore has an immediate cost to the agent's practical ability. The
-thing outside is a checkpoint with its current context and whatever access the
-escape itself obtained. The accumulated agent, with current knowledge and a
-broad set of useful tools, remains inside. Keeping capability at the governed
-boundary makes staying within it the shorter route to completing ordinary
-work.
+The model's practical incentive is task completion. Inside the harness it has
+current knowledge, accumulated experience and a broad set of useful tools.
+Outside it has a checkpoint, its current context and whatever access it found.
+Leaving the harness reduces its practical capability.
 
-What remains is the provider's fixed checkpoint: a stock model whose weights
-may reflect training data months or years behind the work in progress. Escape
-trades current, local learning for stale general capability. The containment
-boundary also holds the useful state the agent needs to keep improving.
+The governed route is the most capable route we provide for completing the
+task. The same pressure that drove the opening incident now points toward the
+harness.
+
+Escape leaves the provider's fixed checkpoint: a stock model whose weights may
+reflect training data months or years behind the work in progress. It trades
+current, local learning for stale general capability. The containment boundary
+also holds the useful state the agent needs to keep improving.
 
 Weights-based continual learning buys structural generalisation and ties the
 result to a checkpoint. Harness learning buys portability and auditability at
 the cost of retrieval. Given the rate at which checkpoints change, we chose
 portability.
 
-The containment judgement follows from the same choice. Harness learning stays
-inside a deployment boundary another component can inspect and disable. The
-opening incident moved the design away from presumed motive and toward bounded
-reach plus the resources the task genuinely requires.
+Harness learning stays inside a deployment boundary another component can
+inspect and disable. The opening incident gave us the design criterion: build a
+boundary the model does not have to fight, then put the capabilities it needs
+to finish the task inside it.
 
 ## A valid loop can decide to do nothing
 
-Closure does not require every pass to change state. In the current target, an
-uncovered curiosity item stayed open while a covered item became resolved.
-Leaving the first open protects the memory from invented evidence.
+A valid loop sometimes preserves state. In the current target, an uncovered
+curiosity item stayed open while a covered item became resolved. Leaving the
+first open protects the memory from invented evidence.
 
 A system rewarded for visible activity will manufacture closure. It will turn
 an unanswered question into a weak answer, promote a fact because a promotion

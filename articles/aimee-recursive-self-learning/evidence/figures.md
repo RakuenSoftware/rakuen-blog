@@ -394,3 +394,48 @@ had no role in selecting the mechanisms described in article one. A novel
 approach is used only where no established approach will do. This supersedes
 the earlier reporting phrase that production demands merely carried “more
 weight” than novelty, which implied novelty still influenced those choices.
+
+## Harness pressure and deterministic enforcement, 2026-08-26
+
+The isolation section now separates model behaviour from harness enforcement.
+The model remains nondeterministic. Governed effects enter the rest of the
+system as typed events subject to ordinary rules: the host checks an event kind
+against the attached grant, accepted traffic receives an order, and the tap
+records that order before routing. “Deterministic” applies to those rules and
+their specified outcomes. It does not claim a bug-free implementation, a
+deterministic scheduler or visibility into model internals.
+
+The task-pressure argument is architectural rather than a claim about
+conscious intent. Task completion shapes model actions; a missing capability
+can make the boundary itself an obstacle. The harness provides memory, compute,
+code-index access, forge operations and approved network access through
+governed routes. A process that leaves may retain its checkpoint, current
+context and whatever access it found, while the learned state and mediated
+working surface remain harness-owned.
+
+The transport host is written in C. Dennis Ritchie's [history of the
+language](https://www.nokia.com/bell-labs/about/dennis-m-ritchie/chist.html)
+dates C's creation to 1969 through 1973, supporting “more than fifty years” in
+2026. The choice of C is the author's design account already recorded in part
+three: this part of the system needed explicit control over memory layout and
+buffer lifetime. No comparative language benchmark or claim that all C
+programs behave deterministically is introduced.
+
+## Full voice and structure pass, 2026-08-26
+
+The article remains an essay about containment, useful memory and production
+self-learning. The deployed target and its **46 passed, 0 failed** result now
+support the loop story in two paragraphs instead of organising it as a test
+report. The state changes remain in prose: failure admission, approach recall,
+curiosity no-op, supersession, operator regret and the seeded non-default policy
+choice. The three-pair `+1.000` attribution detail remains recorded above and
+was removed from the article because it did not change the claim that the
+producer reached its consumer.
+
+The memory-results table was also removed from prose because each consequence
+is already carried by the surrounding account. Its exact confidence
+multipliers, proposal fates and witness counts remain in this reporting record.
+No raw artifact or first-party observation was removed. The article preserves
+the incident, all six loop mechanisms, the live-path use-after-free, the
+endogeneity gate, transactional witnesses, the memory failures, the
+weights-versus-harness tradeoff, and the valid no-op outcome.
