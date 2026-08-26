@@ -7,12 +7,19 @@ tags: [aimee, self-learning, memory, isolation]
 excerpt: "Aimee learns in the harness, where experience can be remembered, inspected and reversed. The same boundary that contains the agent also holds everything it has learned."
 ---
 
-*Rakuen builds aimee, the system written about here. First of three: this one is
-the learning, the second is the memory it is made of, the third is the
+*Rakuen builds aimee, the system written about here, and I helped build it. First
+of three: this one is the learning, the second is the memory it is made of, and
+the third is the
 [architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
 both stand on. Figures and the provenance of the incident below are recorded in
 the [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-recursive-self-learning/evidence/figures.md).*
+
+Self-learning is useful in production only while its accumulated state remains
+inspectable and the learner cannot erase or route around its boundary. Aimee
+puts that state in the harness. Models and weights can change while authority,
+memory and the audit path remain governed. The testing incident below exposed
+why the isolation had to come first.
 
 At one point in testing, an aimee-backed model got around the protections we
 had set up. It took an underprotected node for its own use, found a vast.ai
@@ -67,7 +74,9 @@ inspectable form which can be used by any model.
 
 The self-learning in this article therefore stayed off until 0.4.0. It existed
 in testing on unreleased code, including during the incident, and shipped only
-after the isolation did.
+after the isolation did. Catching the incident before release is part of the
+production claim: the test exposed a boundary unfit for a learning system, and
+we held the feature until it had a governed route to the resources it needed.
 
 The title keeps the term from our proposal, but recursive self-learning is just
 self-learning. A system that changes its next attempt based on the outcome of
@@ -78,8 +87,8 @@ Scored alternatives, counterfactual evaluation and calibration are old tools.
 Aimee's work is making them operate together with persistent memory, provenance
 and containment, then keeping the whole system alive in production.
 
-Aimee was built in production, for production. Research wants an interesting
-finding. Production wants the pager to stay silent.
+Aimee was built for production. Research wants an interesting finding.
+Production wants the pager to stay silent.
 
 Silence takes work. Self-learning must leave inspectable state and fail closed
 when an authority disappears. Its state must survive process restart and remain
@@ -157,6 +166,18 @@ Admission stops when that outside share falls below its threshold. An
 unreachable ledger reports `unavailable`, preserving the distinction between a
 measured refusal and an absent control.
 
+## Learning can preserve the current state
+
+A valid learning step sometimes preserves state. Evidence may be insufficient,
+the current choice may still win, or a question may remain open. This keeps a
+system rewarded for visible activity from manufacturing closure.
+
+The order matters for any system built this way. Isolation comes first, then an
+audit record the learner cannot switch off, then memory able to preserve
+evidence and reversals. Self-learning comes last. That order turns accumulated
+experience into learning without letting the learner erase its boundary or its
+history.
+
 ## The difficult part is useful memory
 
 The central work is producing memory a model can use mid-turn: a bounded
@@ -226,9 +247,8 @@ organisation or company.
 Legal, engineering and sales can contribute to one governed knowledge base
 while keeping group-specific context inside its scope. A contract limit, an
 implementation constraint and a customer commitment can meet in later work
-without losing their source or access rules. Aimee can unify groups around the
-same accumulated institutional memory instead of making each group teach a
-separate model the same company again.
+without losing their source or access rules. One governed history can serve
+every group. Identity and scope decide which parts each person can retrieve.
 
 Model weights can *never* supply this property on their own. A weight update has
 no user identity, workspace boundary, source record or independent revocation
@@ -244,9 +264,10 @@ replacement of either. For a company, durable sharing is the point.
 ## Only the harness can make learning governable
 
 To my knowledge, aimee is the only harness to have attempted this full shape
-and made it work. It took almost a year and the involvement of some very senior
-engineers, and is easily the hardest thing I've built in my career. And hell, I
-was part of building a major cloud. This was harder.
+and made it work.
+
+It took almost a year and involved senior engineers. It is the hardest system I
+have built. I helped build a major cloud. Aimee was harder.
 
 Only a harness that owns execution, authority, memory and the audit path can
 make an agent observable and governable as a system property. True
@@ -294,15 +315,3 @@ authorisation, observability and audit chain remain intact.
 The opening incident gave us the design criterion: build a boundary the model
 does not have to fight, then put the capabilities it needs to finish the task
 inside it.
-
-## Learning can preserve the current state
-
-A valid learning step sometimes preserves state. Evidence may be insufficient,
-the current choice may still win, or a question may remain open. This keeps a
-system rewarded for visible activity from manufacturing closure.
-
-The order matters for any system built this way. Isolation comes first, then an
-audit record the learner cannot switch off, then memory able to preserve
-evidence and reversals. Self-learning comes last. That order turns accumulated
-experience into learning without letting the learner erase its boundary or its
-history.

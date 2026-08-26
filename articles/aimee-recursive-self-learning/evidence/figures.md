@@ -592,16 +592,30 @@ removed; the split changes navigation and paragraph pressure only.
 
 ## Development effort statement, 2026-08-26
 
-At author direction, the article now states verbatim that the full harness took
-almost a year, involved some very senior engineers and is easily the hardest
-thing the author has built in their career. This is the author's first-party
-account of the development effort and personal judgement, not a result inferred
-from repository history or a comparative study.
+At author direction, the article initially stated that the full harness took
+almost a year, involved some very senior engineers and was easily the hardest
+thing the author had built. An editorial pass later that day shortened the same
+first-party account: it took almost a year, involved senior engineers and was the
+hardest system the author had built. The comparison with the major cloud the
+author helped build remains. The emphatic lead-in was removed.
 
-The author further states verbatim: “And hell, I was part of building a major
-cloud. This was harder.” “Major” and the relative difficulty are the author's
-characterisation; the cloud is deliberately unnamed and no independent scope or
-effort comparison is claimed.
+The development effort and relative difficulty remain the author's personal
+judgement, not a result inferred from repository history or a comparative study.
+The cloud is deliberately unnamed and no independent scope or effort comparison
+is claimed.
+
+## Editorial structure pass, 2026-08-26
+
+The lead now states the article's thesis before the testing incident and
+identifies the author as one of aimee's builders. The production passage now
+connects catching the incident before release with the decision to hold
+self-learning until its governed route existed.
+
+The sentence about teaching each group the same company was replaced with the
+identity-and-scope consequence it was meant to express. The valid no-change
+section moved beside the other account of what later runs inherit, leaving the
+harness section to close on the design criterion supplied by the incident. No
+measurement, mechanism or scope claim changed.
 
 ## Self-learning terminology and compression, 2026-08-26
 

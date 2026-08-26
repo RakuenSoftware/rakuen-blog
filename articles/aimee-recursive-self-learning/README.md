@@ -61,6 +61,12 @@ an agent falls back to its checkpoint and current context rather than carrying
 the accumulated learned state with it. The study and cross-model limits remain
 adjacent to the claims they bound.
 
+Revised on 2026-08-26 after editorial review. The lead now states the thesis and
+the author's role before introducing the testing incident. The production
+criterion is connected directly to holding self-learning until the isolation
+shipped, the organisation-sharing sentence is explicit about identity and scope,
+and the harness section now closes the article.
+
 ## Evidence
 
 First-party, in the public
