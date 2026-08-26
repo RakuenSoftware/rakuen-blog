@@ -28,16 +28,17 @@ and `my-benchmark-lied-to-me`, and takes the endpoint-versus-rung result from
 them they held eighteen sections, and all but seven restated a finding that
 another article in the series measures in more depth.
 
-It also carries two findings that lost their intended home. The parse-floor bound
-was routed to `which-quant-beats-how-many-bits`, which was subsequently held back
-for further testing, and the unwritten-field zero comes from
+It also carries two findings that once lost their intended home. The parse-floor
+bound was routed to `which-quant-beats-how-many-bits`, which later published
+after further testing, and the unwritten-field zero comes from
 `three-zeros-and-a-wrong-answer`, which is retired. Both are measurement-harness
 failures and belong with the rest.
 
-Every finding dropped in that merge is still published in the article that owns
-its evidence. The closing section names each one, so the checklist remains the
-entry point to the series without reprinting figures it did not produce. The
-title carries no count on purpose: the set has changed twice already.
+Three findings dropped in that merge are published in the articles that own
+their evidence. Four others remain in publication-ready articles, and one
+remains an investigation. The closing section links the published articles and
+points the rest to the reporting record. The title carries no count on purpose:
+the set has changed twice already.
 
 ## Evidence
 
