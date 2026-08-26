@@ -603,15 +603,15 @@ cloud. This was harder.” “Major” and the relative difficulty are the autho
 characterisation; the cloud is deliberately unnamed and no independent scope or
 effort comparison is claimed.
 
-## Loop-detail compression, 2026-08-26
+## Self-learning terminology and compression, 2026-08-26
 
-At author direction, the article now states the six-loop mechanism and deployed
-closure result without walking through every loop twice. The exact live
-observations, endogeneity ratios, admission controls and policy-selection
-use-after-free remain in this reporting record and in
+At author direction, the article calls the deployed capability self-learning
+and removes the numbered-loop specification. The exact live observations,
+endogeneity ratios, admission controls and policy-selection use-after-free
+remain in this reporting record and in
 `docs/validation/learning-loop-evidence-2026-08-25.md` in the aimee repository.
-The article retains the **46 checks**, the seeded failed-job clarification and
-the boundary between closure and unmeasured efficacy.
+The article retains the **46 checks** and the boundary between observed state
+change and unmeasured efficacy.
 
-The statement that the loops were easy to sketch has been removed. It was an
-authorial comparison, not a measured development-effort claim.
+The statement that the mechanisms were easy to sketch has also been removed.
+It was an authorial comparison, not a measured development-effort claim.
