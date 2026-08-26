@@ -390,12 +390,6 @@ inside a deployment boundary another component can inspect and disable. The
 opening incident moved the design away from presumed motive and toward bounded
 reach plus the resources the task genuinely requires.
 
-The evidence supports two narrower claims. Each loop closes on the live
-deployment, leaving an inspectable row, response or file. The accumulated state
-is model-independent by construction because the task files and ledger rows do
-not belong to a checkpoint. Cross-model loop runs and a full paired efficacy
-study remain future work.
-
 ## A valid loop can decide to do nothing
 
 Closure does not require every pass to change state. In the current target, an
