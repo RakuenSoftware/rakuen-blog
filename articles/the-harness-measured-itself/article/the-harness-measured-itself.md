@@ -175,17 +175,23 @@ sometimes. A field that is never serialised is always precisely nothing.
 - **Never let a measured constant enter source without its sample, interval and
   provenance.**
 
-The other measurement failures in this campaign are reported where their evidence
-lives. Startup time inside throughput, orphaned clients, rented-fleet accounting
-and timeout diagnoses are in `the-parallelism-limit-was-never-vram`. Sequence
-position, process count and self-reproduction are in `repeatable-is-not-identical`.
+Three related results already have published homes. Shared slots against
+speculation and self-reproduction under concurrency are in [Local LLMs:
+Speculative Decoding](https://rakuensoftware.com/blog/speculative-decoding-was-free).
+The bit-width ladder and quantization-aware training (QAT) deltas are in
+[Quantization Barely Mattered Until Two
+Bits](https://rakuensoftware.com/blog/which-quant-beats-how-many-bits). The 31B
+and 12B QAT tie and the recall-against-invention trade are in [Local LLMs:
+Fact Extraction Head to Head](https://rakuensoftware.com/blog/local-llm-fact-extraction-head-to-head).
 
-The suppressed reasoning pass and the withdrawn +0.084 constant are in
-`one-sentence-turned-the-reasoning-off`. The factless strata and the scorer's null
-categories are in `the-corpus-is-the-experiment`.
+The remaining campaign failures have no published article yet. Their evidence
+and destinations are recorded in the [figure provenance
+map](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-harness-measured-itself/evidence/figures.md).
+They cover startup time inside throughput, orphaned clients, rented-fleet
+accounting and timeout diagnoses; sequence position and process count; the
+suppressed reasoning pass and withdrawn +0.084 constant; and the factless strata
+and scorer's null categories.
 
-One result in this set is unexplained here. Gemma-4 E4B skips reasoning on 16% of
-rows, and the usual causes are absent. That thread continues in
-`the-model-decides-when-to-think`, which is recorded as an investigation rather
-than an article because the result that would have led it reversed sign on its
-only replication.
+The Gemma-4 E4B result remains an investigation. It skips reasoning on 16% of
+rows, and the usual causes are absent. Its only replication reversed the sign of
+the result that would have led the article, so the cause remains open.
