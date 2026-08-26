@@ -56,19 +56,28 @@ Putting a model in an ordinary application process with ambient credentials,
 network access and tool bindings gives behavioural instructions the job that
 process boundaries and capability checks were built to perform.
 
-Aimee applies those older patterns to the LLM harness. The same design also
-improves practical ability. Mediated tools give the model the capabilities its
-task requires through named routes. Memory preserves useful experience across
-runs and checkpoints.
+Aimee applies those older patterns to the LLM harness. Governability and
+auditability describe how capability enters the system, not how little the
+system is allowed to do.
 
-An ordered audit path shows which evidence and capability
-shaped an action, while grants and isolation decide what the action can reach.
+Give the model a new tool through a named route with a grant, typed failure and
+an audit record. The model gains a capability, while the operator gains the
+ability to observe it, revoke it and repair the path around it. Memory follows
+the same rule: better recall makes the model more capable, while provenance,
+lifecycle and reversal make the added capability maintainable.
 
-Capability and control can improve together. The harness gives the model better
-context and better tools while making governed actions observable,
-reconstructable from the record and bounded at their enforcement points.
-Aimee's techniques are familiar
-engineering practices assembled for a component that learns through use.
+The apparent tradeoff comes from using ambient authority as the easy way to add
+capability. A network socket, inherited credential or direct tool binding takes
+less work than a mediated provider with an explicit contract. The mediated
+version can increase capability, governability and auditability at the same
+time.
+
+It is harder.
+
+An ordered audit path shows which evidence and capability shaped an action.
+Grants and isolation decide what the action can reach. Aimee's techniques are
+familiar engineering practices assembled for a component that learns through
+use.
 
 The six loops in this article therefore stayed off until 0.4.0. Their producing
 halves existed while we tested them, with the consumers disabled. The incident

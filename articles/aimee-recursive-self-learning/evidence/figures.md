@@ -367,3 +367,14 @@ design criterion: inspectable state, fail-closed authority, restart survival
 and reversibility carry more weight than novelty or an isolated interesting
 result. It is an author statement about the system's development context, not a
 measured comparison with research systems.
+
+## Capability and governability argument, 2026-08-26
+
+The introduction now states the author's central design argument directly:
+governability and auditability govern how capability is added; they do not
+require a less capable system. Named routes, grants, typed failure and an audit
+record add engineering work while preserving the capability. Memory likewise
+increases practical ability while provenance, lifecycle and reversal keep the
+new state maintainable. This is an architectural argument grounded in the
+mechanisms reported across the series, not a measured comparison with an
+ambient-authority implementation.
