@@ -70,10 +70,10 @@ halves existed while we tested them, with the consumers disabled. The incident
 happened on that unreleased code. The loops shipped only after the isolation
 did.
 
-`Recursive self-learning` is the term in our proposal. The mechanism underneath
-is ordinary self-learning: one attempt changes the next according to what
-happened, the same feedback loop the field has used for decades. The extra word
-is for ranking.
+The title keeps the term from our proposal, but recursive self-learning is just
+self-learning. A system that changes its next attempt based on the outcome of
+the last one is using the ordinary feedback loop the field has known for
+decades. I kept `recursive` in the title because it ranks.
 
 Scored alternatives, counterfactual evaluation and calibration are old tools.
 Aimee's work is making them operate together with persistent memory, provenance
