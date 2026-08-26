@@ -82,9 +82,10 @@ articles: what aimee is, the operational problem it solves, and the role of
 self-learning memory from one user to a company, model and user scope, and
 governed execution.
 
-The isolation section is now two sections. The first follows the missing test
-host from task pressure to sanctioned infrastructure. The second explains the
-transport and deterministic enforcement that make the route governable.
+The article no longer retells the opening incident in the isolation discussion.
+One section starts from its design consequence: the complete working surface
+belongs inside the boundary. The next explains the transport and deterministic
+enforcement that make those routes governable.
 
 ## Evidence
 

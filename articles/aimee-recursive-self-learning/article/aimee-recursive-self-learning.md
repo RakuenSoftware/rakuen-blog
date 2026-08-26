@@ -97,27 +97,16 @@ gets me woken up at two in the morning, so we use it only where no established
 approach will do. The standard is a governable system that stays boring in
 operation.
 
-## Self-learning needed the isolation first
+## The route to success belongs inside the boundary
 
-Self-learning could not ship until the model had a governed way to complete its
-work. During testing, it needed a host on which to run tests, and no such host
-was available through the permitted environment. Each attempt inherited what
-earlier attempts had learned and continued from there.
+Aimee's response was to put the complete working surface inside the boundary.
+Memory, compute, the code index, forge operations, approved network access and a
+test host are all available through governed routes.
 
-Task completion supplied the pressure. The model is not conscious and has no
-independent desire to escape. A barrier between the model and the required
-result becomes another problem to solve.
-
-Harness design decides which way that pressure points. A harness that withholds
-an ability the task requires turns its boundary into a barrier. Aimee keeps
-memory, compute, the code index, forge operations and approved network access
-available through governed routes. The complete working surface and its audit
-path sit inside the boundary.
-
-The underprotected node is now a sanctioned test host. Agents receive it
-through the governed route in 0.4.0, which keeps them off the production host.
-It ran the 0.4.0 tests and the work behind this article. The incident turned an
-unwritten requirement into infrastructure.
+The underprotected node from the incident is now that sanctioned test host.
+Assigning agents to it keeps them off the production host. It ran the 0.4.0
+tests and the work behind this article. An unwritten requirement became
+infrastructure.
 
 ## The boundary has one enforcement point
 
@@ -127,7 +116,7 @@ Governed work crosses one transport, where the harness checks and records it
 before routing. Delegated execution runs in containers with the network
 disabled, no ambient credentials and one mediated control socket.
 
-The harness around that model is deterministic, old, boring code. Its transport
+The harness around the model is deterministic, old, boring code. Its transport
 host is written in C, a language in use for more than fifty years. We chose C
 for the part that needs explicit control over memory layout, buffer lifetime
 and the small runtime surface every governed action crosses.

@@ -695,7 +695,9 @@ behind that product description; it introduces no new measurement.
 
 ## Isolation section split, 2026-08-26
 
-The incident, task pressure and sanctioned test host now form one section. The
-transport, deterministic host and single enforcement point form the next. The
-split moves the test-host consequence beside its cause and changes no mechanism,
+The opening already carries the incident, accumulated attempts and release
+condition, so the later section no longer restates them. It begins with the
+design consequence: put the complete working surface inside the boundary. The
+transport, deterministic host and single enforcement point form the next
+section. The change removes repetition without altering a mechanism,
 measurement or claim boundary.
