@@ -7,8 +7,8 @@ tags: [aimee, self-learning, memory, isolation]
 excerpt: "Aimee learns in the harness, where experience can be remembered, inspected and reversed. The same boundary that contains the agent also holds everything it has learned."
 ---
 
-*Rakuen builds aimee, the system written about here, and I helped build it. This
-is the first of three articles. It covers self-learning; the [second covers
+*We build aimee, the system written about here. This is the first of three
+articles. It covers self-learning; the [second covers
 memory](https://rakuensoftware.com/blog/the-remembering-is-the-learning), and
 the third covers the
 [architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
@@ -92,7 +92,7 @@ conflict by placing useful capability inside the boundary.
 The learning method is ordinary feedback: the system changes its next attempt
 using the outcome of the last one. Scored alternatives, counterfactual
 evaluation and calibration are old tools. Aimee's work is making them operate
-together with persistent memory, provenance and containment. I kept `recursive`
+together with persistent memory, provenance and containment. We kept `recursive`
 in the title because it ranks.
 
 Aimee's operating standard is a silent pager. Self-learning must keep its state
@@ -101,7 +101,7 @@ authority disappears.
 
 Those production requirements selected the mechanisms in this article. We use
 novelty only when established approaches cannot do the job, because novelty is
-exactly what gets me woken up at two in the morning. The resulting system must
+exactly what gets us woken up at two in the morning. The resulting system must
 stay governable and boring in operation.
 
 ## The route to success belongs inside the boundary
@@ -253,10 +253,10 @@ changes to an independently verifiable record. The learner cannot switch off
 those mechanisms. Self-learning remains governable and observable across the
 whole system.
 
-To my knowledge, aimee is the only harness to have attempted this full shape
-and made it work. Building it took almost a year and involved senior engineers.
-It is the hardest system I have built. I helped build a major cloud; aimee was
-harder.
+To our knowledge, aimee is the only harness to have attempted this full shape
+and made it work. Building it took almost a year and involved many very senior
+engineers. It is the hardest system we have built. We helped build a major
+cloud; aimee was harder.
 
 If an agent process leaves the harness, it loses everything the harness
 learned. It keeps only its current context and whatever access it found. Task
