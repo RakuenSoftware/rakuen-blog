@@ -127,11 +127,10 @@ inline event from a producer ring to a subscriber ring on the reference host.
 Enqueuing a governed-action audit intent reports an **82 ns median**. Those are
 observations, not maximums.
 
-`bench/bus_baseline.json` also carries regression ceilings of **2,000 ns** for
-dispatch and **5,000 ns** for audit enqueue. The merge gate rebuilds and runs
-the benchmark, then rejects a result over those budgets. A regression ceiling
-is not a measured worst-case bound; it is a line the project has chosen not to
-cross.
+`bench/bus_baseline.json` sets a **1,000 ns regression ceiling** for both
+dispatch and audit enqueue. The merge gate rebuilds and runs each benchmark,
+then rejects a result over that budget. The ceiling is not a measured
+worst-case bound; it is the line the project has chosen not to cross.
 
 Per-crossing cost matters because an ordinary operation may cross several
 times. It can ask memory for recall, ask another component for confidence, pass

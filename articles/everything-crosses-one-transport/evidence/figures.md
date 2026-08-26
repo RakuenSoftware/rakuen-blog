@@ -699,3 +699,12 @@ External lineage checks used the official
 [Aeron media-driver documentation](https://aeron.io/docs/aeron/media-driver/),
 [LMAX RingBuffer documentation](https://lmax-exchange.github.io/disruptor/javadoc/com.lmax.disruptor/com/lmax/disruptor/RingBuffer.html)
 and [seL4 capability tutorial](https://docs.sel4.systems/Tutorials/capabilities.html).
+
+## Ceiling change, 2026-08-26
+
+The committed dispatch and governed-action audit-enqueue ceilings were both
+tightened to **1,000 ns** in `bench/bus_baseline.json`. The observed medians
+remain 134 ns and 82 ns. The older 2,000 ns and 5,000 ns values above are
+retained as historical reporting under the append-only evidence rule; they no
+longer describe the enforced gate. References to 5,000 governed-action audit
+rows describe the durability test size and remain current.

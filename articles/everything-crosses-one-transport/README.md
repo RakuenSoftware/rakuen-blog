@@ -1,9 +1,9 @@
 # Everything Crosses One Transport
 
 Part three of three. Each daemon routes supervised inter-module work through
-one typed transport. The measured dispatch figure is a 134 ns median; the
-enforced ceiling is 2,000 ns. Core-local calls and external traffic sit outside
-that coverage.
+one typed transport. The measured dispatch figure is a 134 ns median; dispatch
+and audit enqueue each have a 1,000 ns enforced ceiling. Core-local calls and
+external traffic sit outside that coverage.
 
 ## The series
 
