@@ -263,3 +263,82 @@ harness-owned learned state. The claim excludes the process's current context
 and base checkpoint, and no escape experiment was run. The “months or years”
 statement describes the possible age of a fixed checkpoint's training corpus,
 not a measured age for one named model.
+
+## Essay-structure revision, 2026-08-26
+
+The article now runs **3,256 words** against the original 4,379-word source.
+Review found that the previous revision still organised too much of the story
+around the evidence target. The new sequence begins with the accumulated-route
+incident, establishes isolation as the prerequisite, explains what changes when
+a producer closes into a loop, follows the deployment-topology failure, and
+then argues that learning belongs in memory and the harness. The 46/0 target is
+retained as support for loop closure rather than as the article's subject.
+
+The PostgreSQL-versus-test-substitute query discrepancy is restored because it
+belongs to the same topology lesson as the missing provider registration. It
+remains a runtime and source-audit finding already recorded above; no broader
+claim about database implementations is made in the prose.
+
+The harness-dependency claim is now stated in its strongest scoped form: an
+agent escaping the harness loses everything *the harness learned*. Current
+context and the provider checkpoint may remain with the process. Task files,
+ledger history, retrieval state, policy evidence, failed approaches and later
+corrections remain harness-owned. The argument compares that current local
+state with a fixed checkpoint whose training corpus may be months or years
+older; it makes no claim about the cutoff date of a named model.
+
+No new efficacy or cross-model result is introduced. Closure remains observed
+on the live two-service target, model independence remains by construction, and
+the paired efficacy study remains open.
+
+## Established containment patterns as the article's thesis, 2026-08-26
+
+The opening now makes the author's central argument explicit. AI systems are
+not the first software to cross intended boundaries, spread over networks or
+acquire credentials. The article names the engineering response at the level of
+stable, well-established practice: least privilege, process isolation, network
+segmentation, mediated access, independent audit records and recovery.
+
+The resulting aimee claim is scoped to the mechanisms reported across this
+series. Grants bound governed event kinds; delegate isolation removes ambient
+network and credential routes; mediated tools preserve required capability;
+the harness retains learned state; and the ordered tap plus durable evidence
+make governed actions observable and reconstructable from retained records.
+The article does not claim visibility into model internals, complete coverage
+of core-local or arbitrary external activity, or safety after total host
+compromise.
+
+The claim that capability and control can improve together is an architectural
+argument. Memory and mediated tools improve the model's practical working
+surface, while the same harness supplies provenance and enforcement points.
+No new performance, efficacy or security measurement is asserted by that
+passage.
+
+The thesis addition brings the article to **3,527 words**. The earlier 3,256
+word count remains above as the state before this review addition.
+
+The general malware-response framing was checked against [NIST SP 800-83 Rev.
+1](https://csrc.nist.gov/pubs/sp/800/83/r1/final), whose control families include
+access control, audit and accountability, contingency planning, incident
+response, system and communications protection, and system integrity. The
+article uses that history as design context, not as evidence that aimee has
+passed a malware-containment evaluation.
+
+## Harness capability loss, 2026-08-26
+
+The escape consequence now includes harness-mediated capabilities as well as
+learned state. The architecture record for part three documents the one-socket
+surface carrying memory, local code-index access, forge operations, mediated
+web access and gate decisions. A process without continued access to that
+socket cannot carry those capabilities with it.
+
+The claim is deliberately asymmetric. An escape may obtain whatever ambient
+route or host authority the exploit itself exposes; the article does not claim
+that the escaped process has no capability. It claims that the accumulated
+learning and named working surface remain harness-owned, making escape an
+immediate loss of the system that turned the checkpoint into the practical
+agent described here.
+
+The final article is **3,635 words**. The added words carry the established
+containment-pattern thesis and the immediate memory-and-capability cost of
+leaving the harness; they do not add a new measured result.
