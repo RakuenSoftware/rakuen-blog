@@ -93,15 +93,18 @@ the last one is using the ordinary feedback loop the field has known for
 decades. The word recursive adds emphasis, not a new technical category. I kept
 it in the title because it ranks.
 
-Aimee was built in production, for production. A research result can end with
-an interesting finding.
+Aimee was built in production, for production. Research aims for an interesting
+finding. We want production to be boring.
 
-Production carries the result into the next release,
-the next model, an upgrade, an incident and a support call at two in the
-morning. A loop here has to leave inspectable state, fail closed when an
-authority is unavailable, survive process restart and be reversible when the
-evidence changes. Those demands selected the mechanisms in this article more
-than novelty did.
+An interesting finding in production is often what wakes somebody at two in the
+morning. Production has to carry the system through the next release, the next
+model, upgrades and incidents. A loop here has to leave inspectable state, fail
+closed when an authority is unavailable, survive process restart and be
+reversible when the evidence changes. Those demands selected the mechanisms in
+this article.
+
+Novelty is exactly what gets me woken up at two in the morning. We use it only
+where no established approach will do.
 
 All of it answers to one goal: an AI system that is auditable, governable, and
 will not wake an engineer at two in the morning. The incident above is what the
