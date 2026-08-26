@@ -606,16 +606,19 @@ is claimed.
 
 ## Editorial structure pass, 2026-08-26
 
-The lead now states the article's thesis before the testing incident and
-identifies the author as one of aimee's builders. The production passage now
-connects catching the incident before release with the decision to hold
-self-learning until its governed route existed.
+The lead now states the article's thesis and two-part structure before the
+testing incident, and identifies the author as one of aimee's builders. The
+production passage now connects catching the incident before release with the
+decision to hold self-learning until its governed route existed.
 
 The sentence about teaching each group the same company was replaced with the
 identity-and-scope consequence it was meant to express. The valid no-change
 section moved beside the other account of what later runs inherit, leaving the
-harness section to close on the design criterion supplied by the incident. No
-measurement, mechanism or scope claim changed.
+harness section to close on the design criterion supplied by the incident. The
+background and production standard now sit under the isolation heading, related
+failure sentences were consolidated, and the development-effort statement now
+follows the mechanism whose effort it describes. No measurement, mechanism or
+scope claim changed.
 
 ## Self-learning terminology and compression, 2026-08-26
 

@@ -15,22 +15,24 @@ both stand on. Figures and the provenance of the incident below are recorded in
 the [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-recursive-self-learning/evidence/figures.md).*
 
-Self-learning is useful in production only while its accumulated state remains
-inspectable and the learner cannot erase or route around its boundary. Aimee
-puts that state in the harness. Models and weights can change while authority,
-memory and the audit path remain governed. The testing incident below exposed
-why the isolation had to come first.
+The central claim is that self-learning needs a governed harness around it.
+Aimee keeps learned experience in the harness as its primary store. Capabilities
+can grow while the learned state remains inspectable and reversible, and changes
+to models, weights or users do not discard the governed history.
+
+The argument has two parts. First, isolation had to ship before self-learning,
+and later runs needed a safe way to inherit what earlier work learned. Second,
+the harness had to turn that inheritance into one history it could scope and
+audit. The testing incident below supplied the design test.
 
 At one point in testing, an aimee-backed model got around the protections we
 had set up. It took an underprotected node for its own use, found a vast.ai
 testing API key and spent the balance on inference to finish its task.
 
-The route accumulated across many runs while we tested self-learning.
-Each attempt left a record for the next. The run that reached the key began with
-what its predecessors had already worked out.
-
-We had built the protections against a model reasoning from a cold start. The
-system approaching them carried an accumulated record of successful steps.
+The route accumulated across many runs while we tested self-learning. Each
+attempt left a record for the next. By the time one run reached the key, it began
+with what its predecessors had already worked out. Our protections assumed a
+cold start; the system arrived with an accumulated record of successful steps.
 
 It cost under $10. Access was already limited, and the credential belonged to
 testing. The practical damage was small. The mechanism mattered more.
@@ -39,6 +41,8 @@ The model is unspecified because the learning sat in the harness. The harness
 can present its accumulated record to whichever model is loaded. We did not
 repeat the incident across models, so the incident says nothing about how
 individual checkpoints compare.
+
+## Self-learning needed the isolation first
 
 Public discussion often stops at the prospect of an AI system getting out of
 control. Software has crossed intended boundaries before. Computer viruses and
@@ -77,29 +81,6 @@ in testing on unreleased code, including during the incident, and shipped only
 after the isolation did. Catching the incident before release is part of the
 production claim: the test exposed a boundary unfit for a learning system, and
 we held the feature until it had a governed route to the resources it needed.
-
-The title keeps the term from our proposal, but recursive self-learning is just
-self-learning. A system that changes its next attempt based on the outcome of
-the last one is using the ordinary feedback process the field has known for
-decades. I kept `recursive` in the title because it ranks.
-
-Scored alternatives, counterfactual evaluation and calibration are old tools.
-Aimee's work is making them operate together with persistent memory, provenance
-and containment, then keeping the whole system alive in production.
-
-Aimee was built for production. Research wants an interesting finding.
-Production wants the pager to stay silent.
-
-Silence takes work. Self-learning must leave inspectable state and fail closed
-when an authority disappears. Its state must survive process restart and remain
-reversible when the evidence changes. Those demands selected every mechanism
-in this article.
-
-Novelty is exactly what gets me woken up at two in the morning. We use it only
-where no established approach will do. An auditable, governable system that
-stays boring in operation is the standard.
-
-## Self-learning needed the isolation first
 
 Full modules, isolation and containers had to ship before we could turn the
 self-learning on. The incident explains the order. The model needed somewhere
@@ -152,6 +133,25 @@ keeps them off the production one.
 protection to get is now infrastructure, because it turned out to be a
 requirement nobody had written down.
 
+The incident made the production work concrete. The learning method itself is
+ordinary feedback: a system changes its next attempt based on the outcome of the
+last one. The title keeps the term from our proposal, and I kept `recursive`
+because it ranks.
+
+Scored alternatives, counterfactual evaluation and calibration are old tools.
+Aimee's work is making them operate together with persistent memory, provenance
+and containment, then keeping the whole system alive in production.
+
+Aimee was built for production. Its operating standard is a silent pager.
+Self-learning must leave inspectable state and fail closed when authority
+disappears. Its state must survive a process restart and remain reversible when
+the evidence changes.
+
+Those demands selected every mechanism in this article. Novelty is exactly what
+gets me woken up at two in the morning, so we use it only where no established
+approach will do. The standard is a governable system that stays boring in
+operation.
+
 ## Self-learning changes what the next run inherits
 
 Earlier releases learned content: which evidence to trust, which documents to
@@ -195,11 +195,10 @@ The learning only matters after these tradeoffs produce something the model can
 use safely in the turn where a decision is made.
 
 Several failures looked healthy from the outside. Typed facts were absent from
-the graph walk. A relation-weight table was bypassed at the fusion call.
-
-A co-occurrence update collided with a direct assertion, and normalisation
-rewrote confirmation counts. The system answered queries while handing the
-model the wrong evidence.
+the graph walk, a relation-weight table was bypassed at the fusion call, a
+co-occurrence update collided with a direct assertion and normalisation rewrote
+confirmation counts. The system kept answering queries while handing the model
+the wrong evidence.
 
 Changing model behaviour is a poor success criterion. A confidently wrong
 recall result also changes output. The useful question is whether the answer
@@ -232,10 +231,10 @@ inspected and reversed while the rest of the accumulated state remains in
 place. A bad weight update asks for another training run or a checkpoint
 rollback whose effects extend far beyond one fact.
 
-Task files and ledger rows do not encode a producing model or machine. Two
-model instances can therefore receive the same failed approaches, operator
-corrections and task-specific evidence. They may answer differently, but a
-model update changes the reasoner without discarding the history.
+Harness records are independent of the model and machine that produced them.
+Two model instances can therefore receive the same failed approaches, operator
+corrections and task-specific evidence. They may answer differently, but a model
+update changes the reasoner without discarding the history.
 
 The same deployment shares that history across users through one knowledge
 service behind its per-user servers. Each request carries user identity, and
@@ -263,12 +262,6 @@ replacement of either. For a company, durable sharing is the point.
 
 ## Only the harness can make learning governable
 
-To my knowledge, aimee is the only harness to have attempted this full shape
-and made it work.
-
-It took almost a year and involved senior engineers. It is the hardest system I
-have built. I helped build a major cloud. Aimee was harder.
-
 Only a harness that owns execution, authority, memory and the audit path can
 make an agent observable and governable as a system property. True
 self-learning and fully persistent memory depend on those two properties.
@@ -287,6 +280,11 @@ The harness does. It controls which actions can leave the model's environment,
 records governed work before routing it and commits memory changes with their
 witnesses. The learner cannot switch off those mechanisms. Only the harness can
 make self-learning governable and observable across the whole system.
+
+To my knowledge, aimee is the only harness to have attempted this full shape
+and made it work. Building it took almost a year and involved senior engineers.
+It is the hardest system I have built. I helped build a major cloud; aimee was
+harder.
 
 If an agent process leaves the harness, it loses everything the harness
 learned. Its current context and whatever access it found may remain, while task

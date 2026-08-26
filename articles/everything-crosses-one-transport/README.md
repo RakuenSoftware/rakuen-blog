@@ -7,11 +7,11 @@ chokepoint is not worth attacking.
 
 ## The series
 
-1. **[Self-learning](../aimee-recursive-self-learning/)** — the loops exist and they
-   work, and memory is what they are made of.
-2. **[Memory](../the-remembering-is-the-learning/)** — the machinery behind part
-   one's central claim.
-3. **Architecture** — this one. What parts one and two stand on.
+1. **[Self-learning](../aimee-recursive-self-learning/):** why isolation comes
+   before learning and what later work inherits.
+2. **[Memory](../the-remembering-is-the-learning/):** how stored evidence
+   becomes learning.
+3. **Architecture:** this one. The governed boundary around both.
 
 Each article should be readable alone. Shared figures are recorded in every
 reporting record that uses them, marked as shared, so one number is not logged
@@ -28,6 +28,10 @@ On 2026-08-24 the stranded-seam incident went back to part one for the same
 reason, in the other direction: the article keeps the two-service split's cost,
 which is its own claim, and points to part one for the incident, the run log and
 the lint check.
+
+Revised on 2026-08-26 to stand alone. Cross-article references now state the
+incident, memory operation or failure rule needed at that point, while the
+series links remain optional context.
 
 ## Evidence
 

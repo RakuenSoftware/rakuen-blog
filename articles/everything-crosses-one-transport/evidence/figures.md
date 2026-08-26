@@ -630,5 +630,11 @@ to do something not on that list.
 
 ## Not covered here
 
-Whether the loops the architecture supports do anything useful, and the memory
-that self-learning is made of. Those are parts one and two.
+Whether self-learning changes later outcomes, and the detailed memory lifecycle.
+The companion articles cover those questions.
+
+## Standalone article pass, 2026-08-26
+
+The series references in the article now state the incident, memory operation or
+failure rule needed in place. The opening still links the companion articles as
+optional context. No architecture, measurement or security claim changed.
