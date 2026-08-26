@@ -353,7 +353,9 @@ replacement of either. For a company, durable sharing is the point.
 ## Only the harness can make learning governable
 
 To my knowledge, aimee is the only harness to have attempted this full shape
-and made it work.
+and made it work. It took almost a year and the involvement of some very senior
+engineers, and is easily the hardest thing I've built in my career. And hell, I
+was part of building a major cloud. This was harder.
 
 Only a harness that owns execution, authority, memory and the audit path can
 make an agent observable and governable as a system property. True
