@@ -392,7 +392,13 @@ Weights-based continual learning buys structural generalisation and ties the
 result to one learned model. Harness learning buys portability, sharing and
 auditability at the cost of retrieval. Given the rate at which checkpoints
 change and the number of model instances and users the learning has to serve,
-we chose the harness.
+we chose the harness as the primary store.
+
+Aimee also supports both forms at once. The model serving a turn can change,
+its weights can change, or both can happen while harness learning continues.
+The delegate boundary sits outside the model, so model selection and
+weight-changing work pass through the same governed path. Its isolation,
+authorisation, observability and audit chain remain intact.
 
 The opening incident gave us the design criterion: build a boundary the model
 does not have to fight, then put the capabilities it needs to finish the task
