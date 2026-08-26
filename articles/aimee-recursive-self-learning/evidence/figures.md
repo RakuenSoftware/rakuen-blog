@@ -351,3 +351,10 @@ observed sequence: attempts left records, and the successful run began with the
 record accumulated by earlier runs. The reporting record continues to note
 that no ablation isolated accumulation from the other conditions. The article
 now runs **3,613 words**.
+
+## Deployment-topology section removed, 2026-08-26
+
+At author direction, the provider-registration failure, build-graph lint and
+SQL-fixture discrepancy no longer appear in article one. They remain preserved
+in this reporting record as implementation evidence, but they interrupt the
+essay's argument about containment, accumulated learning and the harness.

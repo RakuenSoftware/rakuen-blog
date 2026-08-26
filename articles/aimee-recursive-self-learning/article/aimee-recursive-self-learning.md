@@ -205,50 +205,6 @@ then face the same tasks and seeds. Those paired outcomes have not been run for
 all six loops, so the article claims that they operate, not that every loop has
 already improved task results.
 
-## The first failure lived in the deployment topology
-
-Turning the loops on required both services in their deployed shape. Four
-pieces had landed where they could not reach their own data. `aimee-kb` is the
-shared control plane behind enrolled users.
-
-An `aimee-server` belongs to one
-user and runs that user's work. The compiler enforces the boundary, which also
-means a source file can build successfully on the wrong side of it.
-
-One was worse than the rest. The learning router's signal classifier was
-registered in the daemon and not in the KB, so signal capture through the KB
-refused every signal while the route answered 200:
-
-```
-WARN  learning: signal classification unavailable; refusing signal type=mark_rule
-POST /v1/actions/learning.propose_signal -> 200
-      {"status":"error","message":"failed to record learning signal"}
-```
-
-The provider-injection unit tests could not expose this deployment failure.
-Each test registered its own provider before exercising it. The fixture
-supplied the exact fact missing from production, so another test with the same
-shape would repeat the blind spot.
-
-A lint check now derives, for every seam an adapter registers, which daemons
-build the file owning the pointer, and demands a registration in each. It
-carries its own unit tests in the same target so it cannot pass vacuously, one
-of which deletes the real registration line and asserts the check reports it.
-It exits non-zero when zero seam and daemon pairs resolve, which is how a guard
-quietly stops guarding.
-
-The database boundary exposed the same class of mistake from another angle.
-Unit tests used an in-memory SQL substitute that accepted a two-hop neighbour
-query rejected by PostgreSQL. The query looked healthy until it reached the
-database used in deployment. Both failures came from testing a convenient
-local shape while assuming the production topology would supply the same
-facts.
-
-In a source tree that produces several binaries, registration is a deployment
-fact. The check has to follow the build graph. A gate also needs three answers:
-open, closed and unavailable. Without the third, an absent control is easily
-mistaken for permission.
-
 ## A learner needs a way to distrust itself
 
 The isolation removed several old restrictions. One new gate appeared. It
