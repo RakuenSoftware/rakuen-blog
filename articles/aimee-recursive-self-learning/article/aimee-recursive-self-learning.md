@@ -146,15 +146,12 @@ requirement nobody had written down.
 
 ## Closing the loops changes what the next run inherits
 
-All six loops are on in 0.4.0. Each producing half now reaches the component
-that can change a later run.
-
 Earlier releases learned content: which evidence to trust, which documents to
 rank and which memories to retain. In 0.4.0 the machinery also operates on its
 own evaluation and policy records.
 
-Six loops close, and each was previously a producing half with nothing on the
-other end:
+All six loops now close. Each was previously a producing half with nothing on
+the other end:
 
 - The eval suite grows from live failure. A failed job becomes a quarantined
   candidate, and an admitted candidate becomes a permanent task file in the
@@ -353,11 +350,14 @@ learning has moved into the harness. One governed memory can then accumulate
 across the organisation, serve every permitted model and user, and survive the
 replacement of either. For a company, durable sharing is the point.
 
+## Only the harness can make learning governable
+
 To my knowledge, aimee is the only harness to have attempted this full shape
-and made it work. Our position is simple: only a harness that owns execution,
-authority, memory and the audit path can make an agent observable and
-governable as a system property. True self-learning and fully persistent memory
-depend on those two properties.
+and made it work.
+
+Only a harness that owns execution, authority, memory and the audit path can
+make an agent observable and governable as a system property. True
+self-learning and fully persistent memory depend on those two properties.
 
 A memory library sees only the calls made to it. It has no authority over the
 model's network access, credentials, tools or alternate state paths, so it
@@ -375,19 +375,16 @@ witnesses. The learner cannot switch off those mechanisms. Only the harness can
 make self-learning governable and observable across the whole system.
 
 If an agent process leaves the harness, it loses everything the harness
-learned. Its current context and whatever access it found may remain. Task
+learned. Its current context and whatever access it found may remain, while task
 files, ledger history, retrieval state, corrections and the mediated tools stay
 behind.
 
 Task completion supplies the practical incentive. Inside the harness the model
 has current knowledge, accumulated experience and a broad working surface.
-Outside it has a stock checkpoint, current context and whatever access it
-found. Leaving reduces its capability, so the pressure that drove the opening
-incident now points toward the governed route.
-
-The checkpoint's weights may reflect training data months or years behind the
-work in progress. The harness holds the current local learning and the tools
-needed to use it.
+Outside it has a stock checkpoint whose weights may reflect training data
+months or years behind the work in progress, current context and whatever
+access it found. Leaving reduces its capability, so the pressure that drove the
+opening incident now points toward the governed route.
 
 Weights-based continual learning buys structural generalisation and ties the
 result to one learned model. Harness learning buys portability, sharing and
