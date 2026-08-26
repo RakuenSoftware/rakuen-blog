@@ -692,3 +692,13 @@ is available with cloud or local hosting and provides self-learning memory from
 one user to the models and users an entire company enrolls. The article's
 identity, scope, model-independence and audit arguments supply the mechanism
 behind that product description; it introduces no new measurement.
+
+## Isolation section split, 2026-08-26
+
+The opening already carries the incident, accumulated attempts and release
+condition, so the later section no longer restates them. It begins with the
+design consequence: put the complete working surface inside the boundary. The
+sanctioned test host follows as the concrete result, then the transport,
+deterministic host and single enforcement point explain how the boundary is
+enforced. The ordered section removes repetition without altering a mechanism,
+measurement or claim boundary.

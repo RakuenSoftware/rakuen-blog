@@ -97,30 +97,24 @@ gets me woken up at two in the morning, so we use it only where no established
 approach will do. The standard is a governable system that stays boring in
 operation.
 
-## Self-learning needed the isolation first
+## The route to success belongs inside the boundary
 
-The module system, process isolation and containers had to ship before we could
-turn self-learning on. The testing model needed somewhere to run its tests, but
-the permitted environment lacked a resource the task required. Each attempt
-inherited the earlier work and searched for another route.
+Aimee's response was to put the complete working surface inside the boundary.
+Memory, compute, the code index, forge operations, approved network access and a
+test host are all available through governed routes.
 
-Task completion supplied the pressure. The model is not conscious and has no
-independent desire to escape. A barrier between the model and the required
-result becomes another problem to solve.
+The underprotected node from the incident is now that sanctioned test host.
+Assigning agents to it keeps them off the production host. It ran the 0.4.0
+tests and the work behind this article. An unwritten requirement became
+infrastructure.
 
-Harness design decides which way that pressure points. A harness that withholds
-an ability the task requires turns its boundary into a barrier. Aimee keeps
-memory, compute, the code index, forge operations and approved network access
-available through governed routes. The complete working surface and its audit
-path sit inside the boundary.
-
-0.4.0 provides that boundary through its [transport
+0.4.0 supplies the enforcement point through its [transport
 architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport).
 Governed work crosses one transport, where the harness checks and records it
 before routing. Delegated execution runs in containers with the network
 disabled, no ambient credentials and one mediated control socket.
 
-The harness around that model is deterministic, old, boring code. Its transport
+The harness around the model is deterministic, old, boring code. Its transport
 host is written in C, a language in use for more than fifty years. We chose C
 for the part that needs explicit control over memory layout, buffer lifetime
 and the small runtime surface every governed action crosses.
@@ -134,12 +128,6 @@ and governable.
 A rule with one enforcement point can be enforced. A rule with an unknown
 number of ways around it is advice. That difference is the whole reason
 self-learning could be turned on at all.
-
-The underprotected node is now a sanctioned test host. Agents receive it
-deliberately, which keeps them off the production host. It ran the 0.4.0 tests
-and the work behind this article. The resource the model once crossed a
-boundary to reach is now inside the governed design because the incident
-exposed an unwritten requirement.
 
 ## Self-learning changes what the next run inherits
 
