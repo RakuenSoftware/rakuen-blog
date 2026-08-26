@@ -75,21 +75,21 @@ self-learning. A system that changes its next attempt based on the outcome of
 the last one is using the ordinary feedback loop the field has known for
 decades. I kept `recursive` in the title because it ranks.
 
-Scored alternatives, counterfactual evaluation and calibration are established
-ideas too. Aimee combines them with memory, provenance and containment in
-production.
+Scored alternatives, counterfactual evaluation and calibration are old tools.
+Aimee's work is making them operate together with persistent memory, provenance
+and containment, then keeping the whole system alive in production.
 
-Aimee was built in production, for production. Research aims for an interesting
-finding. We want production to be boring.
+Aimee was built in production, for production. Research wants an interesting
+finding. Production wants the pager to stay silent.
 
-Production has to carry the system through releases, model changes, upgrades
-and incidents. A loop here has to leave inspectable state, fail closed when an
-authority is unavailable, survive process restart and be reversible when the
-evidence changes. Those demands selected the mechanisms in this article.
+Silence takes work. A loop must leave inspectable state and fail closed when an
+authority disappears. Its learning must survive process restart and remain
+reversible when the evidence changes. Those demands selected every mechanism
+in this article.
 
 Novelty is exactly what gets me woken up at two in the morning. We use it only
-where no established approach will do. The goal is an AI system that is
-auditable, governable and boring to operate.
+where no established approach will do. An auditable, governable system that
+stays boring in operation is the standard.
 
 ## Self-learning needed the isolation before it needed the loops
 
