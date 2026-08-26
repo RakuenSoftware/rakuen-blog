@@ -150,35 +150,12 @@ Earlier releases learned content: which evidence to trust, which documents to
 rank and which memories to retain. In 0.4.0 the machinery also operates on its
 own evaluation and policy records.
 
-All six loops now close. Each was previously a producing half with nothing on
-the other end:
+All six loops now close. Repeated failure can enter the evaluation suite and
+planning memory. Later outcomes can revise proposals, detector confidence and
+policy selection. Curiosity closes only when evidence supports it.
 
-- The eval suite grows from live failure. A failed job becomes a quarantined
-  candidate, and an admitted candidate becomes a permanent task file in the
-  suite every gate measures against. The yardstick is no longer frozen.
-- Reward is counterfactual. An ablation grid measures what a capability
-  actually earned. Word overlap with an outcome earns nothing.
-- Approach-level dead ends are recorded and recalled at plan time for a goal
-  like the one that failed.
-- The curiosity backlog is drained by a real evidence probe, so a recorded
-  gap is closed by evidence or stays open.
-- A later commit supersedes an earlier one without a separate request, and an
-  operator verdict reaches the ledger and counts against the detector that
-  raised the original.
-- Policy variants declared by the build can be selected and measured, so an
-  advisory block has to earn its place.
-
-The last two let the evaluator revise itself. Gates are fitted from what
-happened after previous commits. Instructions are selected and scored alongside
-the other choices the system measures.
-
-The difference between a producer and a loop is consequence. Writing a failure
-signature changes nothing by itself. Admitting that signature as a permanent
-task changes the suite that evaluates every later candidate. A dead end becomes
-learning when planning recalls it before repeating the approach.
-
-A verdict becomes learning when it changes the fate of the earlier proposal and
-the future confidence placed in its detector.
+Each path previously stopped after producing a record. It now reaches a
+consumer that changes later work.
 
 On 25 August 2026, we started both deployed services and their required
 processes, then followed each producer into the state consumed by a later run.
@@ -189,21 +166,9 @@ with status `failed`. These were inputs to the test. Aimee combined them into
 one candidate with an occurrence count of two, then admission wrote it into the
 permanent suite.
 
-Three paired tasks attributed a better outcome to the full capability set. A
-failed approach returned through the next planning call with its failure mode.
-One curiosity item resolved while another stayed open for lack of evidence.
-
-A later commit superseded an earlier proposal, and an operator verdict changed
-its fate to `contradicted`. The policy route selected and recorded the seeded
-non-default choice, `brief`.
-
-The same run found a use-after-free in policy selection. The optimiser selected
-`brief`, freed the response containing that identifier and then compared it.
-The service returned `off`.
-
-Copying the identifier before destroying the response fixed the live path. A
-focused test now requires the real sidecar to return the seeded non-default
-choice.
+The remaining checks followed attribution, dead-end recall, curiosity,
+supersession, operator regret and a non-default policy choice into their later
+consumers.
 
 The run establishes closure across all six. Measuring outcome improvement
 requires paired setup and consumer phases under the same tasks and seeds. We
@@ -211,25 +176,13 @@ have not run that study across all six loops.
 
 ## A learner needs a way to distrust itself
 
-The isolation removed several old restrictions. One new gate appeared. It
-controls the loop that feeds on aimee's own output.
+The loop that learns from aimee's own output has an additional gate. It
+classifies committed proposals by whether their evidence roots outside the
+system. Self-generated evaluation cannot widen its own yardstick.
 
-Every committed proposal is classified by where its evidence roots. A human
-correction, a test exit code, a verify gate, an observed git outcome or an
-official grader is exogenous. The implicit detectors reading aimee's own
-transcript are endogenous whatever the signal claims, and unknown provenance
-counts as endogenous.
-
-Against a real ledger it reads `open (75% of 4 committed proposals exogenous)`,
-matching a direct ledger read and the service's answer. Against a ledger of 25
-implicit-detector commits and nothing else it reads `closed (0% of 25 committed
-proposals exogenous)`. Self-generated evaluation cannot widen its own
-yardstick.
-
-Closed, a fully reproduced candidate admits `0` and no task file is
-written. Reopened, the same candidate admits `1`. When it cannot reach its
-ledger it reports `unavailable`, never `open`, because an operator has to be
-able to tell a measured control from an absent one.
+Admission stops when that outside share falls below its threshold. An
+unreachable ledger reports `unavailable`, preserving the distinction between a
+measured refusal and an absent control.
 
 ## Remembering is the learning
 
@@ -256,24 +209,13 @@ Weighted recall applies the learned state to the next turn. The intelligence of
 the loop lies in those memory operations over time.
 
 The six loops are memory operating on its contents and the record of its use.
-The eval suite grows when memory notices that a failure signature recurred.
-
-Approach-level negative knowledge is memory of what was already tried.
-Post-commit regret is memory revising its opinion of an earlier memory. The
-endogeneity ratio is memory asking where its own contents came from.
-
-Those memory operations are the learning. The second article follows how aimee
-built them.
+The second article follows how aimee built that memory.
 
 ## The difficult part is useful memory
 
-The six loops came out of one proposal because each is easy to sketch. Admit a
-failed job to the suite, compare a run with one capability removed, or recall a
-failed approach at the next plan.
-
-The harder work is producing memory a model can use mid-turn: a bounded envelope
-of relevant material, ranked, scoped, dated and carrying provenance and
-confidence. It must fit the context window and remain fenced as evidence
+The central work is producing memory a model can use mid-turn: a bounded
+envelope of relevant material, ranked, scoped, dated and carrying provenance
+and confidence. It must fit the context window and remain fenced as evidence
 instead of instruction.
 
 Those constraints pull against one another. More recalled material improves
@@ -409,18 +351,9 @@ inside it.
 
 ## A valid loop can decide to do nothing
 
-A valid loop sometimes preserves state. In the current target, an uncovered
-curiosity item stayed open while a covered item became resolved. Leaving the
-first open protects the memory from invented evidence.
-
-A system rewarded for visible activity will manufacture closure. It will turn
-an unanswered question into a weak answer, promote a fact because a promotion
-looks like progress or change policy because the loop is expected to choose
-something. A useful learner has a stable no-op: evidence was insufficient, the
-current choice still wins, or the question remains open.
-
-The policy loop supplied the opposite case: a seeded posterior had to select
-`brief` instead of preserving the default.
+A valid loop sometimes preserves state. Evidence may be insufficient, the
+current choice may still win, or a question may remain open. This keeps a
+system rewarded for visible activity from manufacturing closure.
 
 The order matters for any system built this way. Isolation comes first, then an
 audit record the learner cannot switch off, then memory able to preserve
