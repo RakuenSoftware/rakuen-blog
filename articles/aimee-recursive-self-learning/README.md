@@ -68,6 +68,10 @@ self-learning until the isolation shipped. The original section scopes remain,
 the organisation-sharing sentence is explicit about identity and scope, and the
 harness section closes the article.
 
+The same review balanced the section hierarchy. The containment context now has
+its own heading, the two short learning-state sections are one section, and
+model portability is separated from company-wide sharing.
+
 ## Evidence
 
 First-party, in the public
