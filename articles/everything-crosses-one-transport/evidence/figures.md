@@ -708,3 +708,12 @@ remain 134 ns and 82 ns. The older 2,000 ns and 5,000 ns values above are
 retained as historical reporting under the append-only evidence rule; they no
 longer describe the enforced gate. References to 5,000 governed-action audit
 rows describe the durability test size and remain current.
+
+## Audit-enqueue reference remeasurement, 2026-08-26
+
+The current controlled reference for governed-action audit enqueue is **117
+ns**, superseding the older 82 ns observation retained above as historical
+reporting. On an Intel i7-14700K, eight runs pinned to CPU 1 produced per-run
+p50 values of 119, 121, 119, 115, 121, 115, 115 and 115 ns. Each run timed
+5,000 emits; the median of those per-run medians is 117 ns. A separate 260 ns
+result was a single unpinned gate run and is not used as the reference value.

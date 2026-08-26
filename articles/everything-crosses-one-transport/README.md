@@ -24,7 +24,7 @@ Draft, 2026-08-24. Not published. Source rechecked on 2026-08-25 at
 `6bcc87e`.
 
 Revised in PR review on 2026-08-25. The article now uses the original
-architecture narrative as its spine and runs 5,310 words, down from 9,236.
+architecture narrative as its spine and runs 5,324 words, down from 9,236.
 The opening goal, transport lineage, language boundary, grants, delegate
 containment, tap, evidence chain and two-service split remain in sequence.
 Unsupported claims are qualified in place rather than removed with the story.

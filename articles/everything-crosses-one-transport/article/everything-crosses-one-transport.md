@@ -124,8 +124,9 @@ the coverage claim becomes a list of paths somebody remembered to instrument.
 
 The committed baseline reports a **134 ns median** for dispatching a 16-byte
 inline event from a producer ring to a subscriber ring on the reference host.
-Enqueuing a governed-action audit intent reports an **82 ns median**. Those are
-observations, not maximums.
+Enqueuing a governed-action audit intent reports a **117 ns controlled median**:
+the median of eight per-run medians, with each run timing 5,000 emits while
+pinned to one CPU. Those are observations, not maximums.
 
 `bench/bus_baseline.json` sets a **1,000 ns regression ceiling** for both
 dispatch and audit enqueue. The merge gate rebuilds and runs each benchmark,
