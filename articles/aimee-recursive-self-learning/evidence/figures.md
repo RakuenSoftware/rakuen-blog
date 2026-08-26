@@ -589,3 +589,11 @@ The light refinement removed a repeated announcement that all six loops close
 and folded the checkpoint-age consequence into the escape comparison. The
 article moved from **3,416 to 3,387 words**. No reporting or mechanism was
 removed; the split changes navigation and paragraph pressure only.
+
+## Development effort statement, 2026-08-26
+
+At author direction, the article now states verbatim that the full harness took
+almost a year, involved some very senior engineers and is easily the hardest
+thing the author has built in their career. This is the author's first-party
+account of the development effort and personal judgement, not a result inferred
+from repository history or a comparative study.
