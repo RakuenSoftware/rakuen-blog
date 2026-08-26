@@ -439,3 +439,80 @@ No raw artifact or first-party observation was removed. The article preserves
 the incident, all six loop mechanisms, the live-path use-after-free, the
 endogeneity gate, transactional witnesses, the memory failures, the
 weights-versus-harness tradeoff, and the valid no-op outcome.
+
+## Learning shared across model instances and users, 2026-08-26
+
+The harness section now carries the positive half of model independence.
+Weight learning belongs to the modified model artifact on which it occurred.
+Two copies of the same starting checkpoint that learn from different local work
+become two different learned artifacts; sharing their learning requires an
+explicit weight or adapter distribution and coordination mechanism. A provider
+update does not contain those local changes, and a different checkpoint cannot
+inherit them merely by being loaded. The article does not claim that modified
+weights are impossible to distribute. It distinguishes model deployment from
+one live learned record shared at recall time.
+
+Harness state is independent of both the checkpoint and the machine running a
+model. Task files and ledger rows do not encode the producing model, so several
+model instances can consume the same accumulated history even when their own
+answers differ. This is a construction claim. No cross-machine comparison of
+model outputs is introduced.
+
+The cross-user claim follows the deployment shape already recorded above and in
+part three: one shared knowledge service stands behind many per-user server
+instances. Sharing remains subject to memory scope. Project and workspace
+records stay inside their query-time visibility bands; records made shared or
+global can be recalled by another permitted user. The article claims shared
+learned state, not identical model outputs or unscoped access to another user's
+memory.
+
+## Local and institutional memory, 2026-08-26
+
+The article now follows cross-user sharing to its organisational consequence.
+Local memory remains attributable to the user and work that produced it. A
+workspace can provide a team-level view, while shared or global scope can make
+approved knowledge available across a wider organisation or company. The
+query-time scope mechanism and per-user identity remain the enforcement basis;
+the article does not claim that all memory is visible to every enrolled user.
+
+Legal, engineering and sales are illustrative groups, not a measured customer
+deployment. The stated benefit follows from the architecture: permitted users
+and model instances query one governed knowledge service, records retain source
+and scope, and shared records can cross group boundaries. “Unify” means those
+groups can work from a common accumulated record. It does not mean their local
+contexts, permissions or interpretations become identical.
+
+The uniqueness statement is the author's scoped claim about AI harnesses, not
+memory libraries or agent-development frameworks. The closest documentation
+reviewed included LangGraph namespaced stores, Letta shared memory blocks and
+Mem0 shared project memory. Those systems were excluded from the comparison
+because they do not occupy the harness category meant by the claim. No
+exhaustive census of AI harnesses exists here, so the article says “to my
+knowledge” and defines the full shape: local user memory, scoped shared
+institutional memory, model-independent consumption across machines, and
+changes that remain attributable and reversible.
+
+## Governability and observability require the harness, 2026-08-26
+
+The article now distinguishes the accuracy of a library's own log from the
+completeness and integrity of a system audit. A memory library can record the
+calls it receives. It does not, by itself, control the model's credentials,
+network routes, tools or alternate state paths, and therefore cannot establish
+that an absent record means an action did not happen. If an agent can bypass
+the library, the library cannot make the agent governable.
+
+The harness claim rests on mechanisms already reported in this article and
+part three. Grants constrain the governed event kinds a component can use; the
+host assigns accepted traffic an order; the tap records it before routing; and
+memory changesets commit with hash-chained witnesses. These properties do not
+prove that bugs or host compromise are impossible. They place enforcement and
+observation outside the learner's authority and make completeness a property
+of the governed path instead of a promise from the component being observed.
+
+An agent framework or memory library can participate in that design. Neither
+can supply the end-to-end property alone because neither category owns the
+model's complete execution and authority boundary. “True self-learning” and
+“fully persistent memory” state the author's engineering standard: outcomes
+change later behaviour through state whose access, provenance and reversal are
+independently governed and observed. They do not claim that an ungoverned
+memory cannot retain bytes or that a library cannot update a later prompt.
