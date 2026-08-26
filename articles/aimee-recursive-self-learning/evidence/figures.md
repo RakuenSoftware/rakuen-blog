@@ -684,3 +684,10 @@ place. The pass shortened transitions, replaced ambiguous pronouns and kept one
 subject in each paragraph. The list of memory implementation defects left part
 one; those defects remain in part two and in the figure inventory above. No
 measurement or raw artifact changed.
+
+## Project orientation, 2026-08-26
+
+The opening project description is condensed from the public Aimee README. Its
+statements about persistent context, model routing and execution guardrails are
+product capabilities rather than measurements introduced by this article. The
+cloud-or-local availability is the author's 0.4.0 launch statement.

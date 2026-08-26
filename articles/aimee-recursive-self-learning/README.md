@@ -77,6 +77,10 @@ in place. It gave each paragraph one subject, replaced distant referents and
 moved the remaining memory-defect detail out of part one. Part two and the
 reporting record retain that detail.
 
+The opening now includes the project-level description shared by all three
+articles: what aimee is, the operational problem it solves, and the role of
+memory, model routing and governed execution.
+
 ## Evidence
 
 First-party, in the public

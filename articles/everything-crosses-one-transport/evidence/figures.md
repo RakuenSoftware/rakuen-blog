@@ -638,3 +638,10 @@ The companion articles cover those questions.
 The series references in the article now state the incident, memory operation or
 failure rule needed in place. The opening still links the companion articles as
 optional context. No architecture, measurement or security claim changed.
+
+## Project orientation, 2026-08-26
+
+The opening project description is condensed from the public Aimee README. Its
+statements about persistent context, model routing and execution guardrails are
+product capabilities rather than measurements introduced by this article. The
+cloud-or-local availability is the author's 0.4.0 launch statement.
