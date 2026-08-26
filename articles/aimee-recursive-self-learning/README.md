@@ -1,13 +1,14 @@
 # Aimee: Recursive Self-Learning
 
-Part one of three. Aimee 0.4.0 closes six learning loops on a live two-service
-deployment. The 25 August evidence target produced one observation per loop and
-finished at 46 passed, 0 failed. Loop efficacy remains unmeasured.
+Part one of three. Aimee 0.4.0 self-learning changes state consumed by later
+work on a live two-service deployment. The 25 August evidence target finished
+at 46 passed, 0 failed. In a paired study on 26 August, 12 of 24 repeated tasks
+succeeded without the learned failure record, against 24 of 24 with it.
 
 ## The series
 
-1. **Self-learning** — this one. The loops close; their effect on task outcomes
-   still needs paired measurement.
+1. **Self-learning** — this one. The learned state changes later outcomes in a
+   controlled paired study.
 2. **[Memory](../the-remembering-is-the-learning/)** — the machinery behind this
    article's central claim.
 3. **[Architecture](../everything-crosses-one-transport/)** — what parts one and
@@ -18,14 +19,15 @@ every reporting record that uses them.
 
 ## The claim, and only the claim
 
-Three things are claimed here:
+Four things are claimed here:
 
-1. six learning loops close on the tested deployment;
-2. the harness keeps their learned state;
-3. the state remains inspectable and auditable on the tested paths.
+1. self-learning changes later state on the tested deployment;
+2. recalled failure changed later outcomes in the controlled paired study;
+3. the harness keeps the learned state;
+4. the state remains inspectable and auditable on the tested paths.
 
-No claim is made that all six loops improve outcomes over time. The article
-names the missing setup-and-consumer ablation needed to establish that.
+The outcome study used a fixed consumer to isolate the learned record. It is
+not a model benchmark or a measure of open-ended generalisation.
 
 Novelty is outside the claim.
 
@@ -33,7 +35,7 @@ Novelty is outside the claim.
 
 Draft, 2026-08-24. Not published.
 
-The recursive self-improvement loops merged to `testing` on 2026-08-24 as
+The recursive self-improvement work merged to `testing` on 2026-08-24 as
 `877e994c2f`. All the learning work described is in 0.4.0.
 
 Trimmed from a 5,200-word master draft when the architecture material was split
@@ -60,8 +62,8 @@ the containment prerequisite, the six live observations, the deployment-graph
 failure, the endogeneity gate, the memory argument and the harness trade-off.
 It also makes the harness dependency explicit: without continued harness access,
 an agent falls back to its checkpoint and current context rather than carrying
-the accumulated learned state with it. The efficacy and cross-model limits
-remain adjacent to the claims they bound.
+the accumulated learned state with it. The study and cross-model limits remain
+adjacent to the claims they bound.
 
 ## Evidence
 
@@ -69,13 +71,18 @@ First-party, in the public
 [aimee repository](https://github.com/RakuenSoftware/aimee). The
 [reporting record](evidence/figures.md) carries the per-figure map, the
 provenance of the lead incident, the figures that moved out in the split, and
-the two strong claims with what would settle them.
+the two strong claims with what would settle them. The paired-study raw output
+is preserved under `evidence/raw/self-learning-efficacy-2026-08-26/`.
 
 ## Open items before publication
 
 - ~~Counts. Refresh at the 0.4.0 tag.~~ **Closed, 2026-08-25.** The article
-  carries the reproducible six-loop target at 46 passed, 0 failed.
+  carries the reproducible self-learning target at 46 passed, 0 failed.
+- ~~Measure whether learned state changes later outcomes.~~ **Closed for the
+  controlled failed-approach case, 2026-08-26.** Two valid runs reproduced
+  12/24 without the learned record and 24/24 with it; novel controls stayed at
+  12/24. Open-ended model use remains outside that study.
 - Temporal-learning rollout details remain in the reporting record and are
-  outside the article's six-loop claim.
+  outside the article's self-learning claim.
 - Keep the compressed containment summary consistent with part three if either
   changes.

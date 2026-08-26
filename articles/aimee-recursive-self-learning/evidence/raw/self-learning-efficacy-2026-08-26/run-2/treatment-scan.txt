@@ -1,0 +1,2 @@
+scan: 48 observed
+  scanned 48 failed job(s), 0 correction signal(s); 0 refused for unsafe text

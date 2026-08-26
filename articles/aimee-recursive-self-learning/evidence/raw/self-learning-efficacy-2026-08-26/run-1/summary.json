@@ -1,0 +1,34 @@
+{
+  "commit": "ceea316ca12ad2f49ecc7ea9842e00701a6b7300",
+  "conditions": {
+    "control": "same failed jobs; synthesis withheld before consumer phase",
+    "treatment": "same failed jobs; production synthesis and approach recall enabled"
+  },
+  "generated_at": "2026-08-26T13:42:42.580870+00:00",
+  "host": "pvetest",
+  "paired_repeat": {
+    "control_only_success": 0,
+    "mcnemar_exact_two_sided_p": 0.00048828125,
+    "treatment_only_success": 12
+  },
+  "planner": "seeded first choice; switch only when production recall reports that choice failed",
+  "schema": "aimee-self-learning-efficacy-v1",
+  "scores": {
+    "novel_control": {
+      "passed": 12,
+      "total": 24
+    },
+    "novel_treatment": {
+      "passed": 12,
+      "total": 24
+    },
+    "repeat_control": {
+      "passed": 12,
+      "total": 24
+    },
+    "repeat_treatment": {
+      "passed": 24,
+      "total": 24
+    }
+  }
+}
