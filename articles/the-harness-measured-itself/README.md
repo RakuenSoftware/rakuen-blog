@@ -6,8 +6,21 @@ harness rather than the model.
 
 ## Status
 
-Publication-ready as of 2026-08-10. Not yet published. Every figure in the
+Published 2026-08-26. Publication-ready since 2026-08-10. Every figure in the
 article is accounted for in the local provenance map.
+
+**The truncation guard this article diagnoses was still unfixed at publication.**
+`run_llamacpp.py` compares `completion_tokens` with `max_tokens`, which is the
+defect named in "The parser and the guard each hid a working run", and the
+article's remedy — compare prompt plus completion against context size — had not
+been applied sixteen days later. The field reads `false` on every row of all 49
+arms in the campaigns since.
+
+The article does not claim the fix landed; its closing list is prescriptive. This
+note exists so the gap between the diagnosis date and the publication date cannot
+be read as the fix having happened. What it cost, and the correction work it
+forced, is the subject of the sequel and is recorded under
+`articles/ornith-against-its-base/evidence/the-guard-was-diagnosed-and-not-fixed-2026-08-26.md`.
 
 This article merges the two earlier compilations, `eight-ways-a-run-scores-fine-and-is-broken`
 and `my-benchmark-lied-to-me`, and takes the endpoint-versus-rung result from
