@@ -689,6 +689,6 @@ measurement or raw artifact changed.
 
 The opening project description records the author's 0.4.0 positioning: Aimee
 is available with cloud or local hosting and provides self-learning memory from
-one user to the models and users an entire company enrols. The article's
+one user to the models and users an entire company enrolls. The article's
 identity, scope, model-independence and audit arguments supply the mechanism
 behind that product description; it introduces no new measurement.
