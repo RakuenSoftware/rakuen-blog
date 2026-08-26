@@ -1,0 +1,54 @@
+
+=== deployed services
+  PASS  aimee-kb is serving
+  PASS  aimee-server is serving
+  PASS  the daemon store is serving
+
+=== control: failures occur, self-learning is withheld
+  PASS  state reset leaves no failed approaches
+  PASS  setup contains two failures for each repeated task
+  PASS  control exposes no recalled failures
+
+=== treatment: the same failures become negative knowledge
+  PASS  state reset leaves no failed approaches
+  PASS  setup contains two failures for each repeated task
+  PASS  treatment records one failed approach per repeated task
+  PASS  treatment retains both observations
+  PASS  treatment exposes one recalled failure per repeated task
+  PASS  treatment exposes no failure on novel tasks
+{
+  "commit": "ceea316ca12ad2f49ecc7ea9842e00701a6b7300",
+  "conditions": {
+    "control": "same failed jobs; synthesis withheld before consumer phase",
+    "treatment": "same failed jobs; production synthesis and approach recall enabled"
+  },
+  "generated_at": "2026-08-26T13:42:42.580870+00:00",
+  "host": "pvetest",
+  "paired_repeat": {
+    "control_only_success": 0,
+    "mcnemar_exact_two_sided_p": 0.00048828125,
+    "treatment_only_success": 12
+  },
+  "planner": "seeded first choice; switch only when production recall reports that choice failed",
+  "schema": "aimee-self-learning-efficacy-v1",
+  "scores": {
+    "novel_control": {
+      "passed": 12,
+      "total": 24
+    },
+    "novel_treatment": {
+      "passed": 12,
+      "total": 24
+    },
+    "repeat_control": {
+      "passed": 12,
+      "total": 24
+    },
+    "repeat_treatment": {
+      "passed": 24,
+      "total": 24
+    }
+  }
+}
+
+12 harness checks passed, 0 failed

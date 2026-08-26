@@ -153,9 +153,13 @@ On 25 August 2026, we started both deployed services and their required
 processes. The target ran **46 checks** of the deployed self-learning system.
 All 46 passed.
 
-The run establishes that the self-learning changes later system state.
-Measuring outcome improvement requires paired setup and consumer phases under
-the same tasks and seeds. We have not run that study across the full system.
+On 26 August, we ran 24 synthetic recovery tasks through the deployed system
+twice, holding the starting choices fixed. Without the learned failure record,
+12 succeeded. With it available, all 24 succeeded. On 24 new tasks with no
+matching history, both phases remained at 12 of 24.
+
+The fixed consumer isolates whether recalled failure changes a later choice.
+Model performance remains outside the study.
 
 ## A learner needs a way to distrust itself
 
@@ -166,33 +170,6 @@ system. Self-generated evaluation cannot widen its own yardstick.
 Admission stops when that outside share falls below its threshold. An
 unreachable ledger reports `unavailable`, preserving the distinction between a
 measured refusal and an absent control.
-
-## Remembering is the learning
-
-Self-learning needs durable state, but storage alone explains little. In this
-design, remembering is the learning. A learned thing becomes a typed fact with
-a confidence class, date, evidence chain, lifecycle state and fate. Future work
-changes when those records are promoted, expired, superseded and recalled.
-
-Every closed memory changeset also leaves a hash-chained witness in the same
-transaction. If the witness fails, the memory mutation rolls back. Live
-validation produced one witness for one changeset, while a control with the seal
-calls stripped produced none. Crash recovery then closed three pending
-changesets with three witnesses, and a second worker pass added no duplicates.
-
-A fact enters as Class C speculation. Repeated confirmation can promote it to
-durable, while a speculation that stops being confirmed expires.
-
-A later assertion can supersede an earlier value without erasing it.
-The recall walk then weights what it traverses by confidence class.
-
-Promotion is learning. Expiry is forgetting. Supersession is correction.
-
-Weighted recall applies the learned state to the next turn. The intelligence
-lies in those memory operations over time.
-
-Self-learning is memory operating on its contents and the record of its use.
-The second article follows how aimee built that memory.
 
 ## The difficult part is useful memory
 

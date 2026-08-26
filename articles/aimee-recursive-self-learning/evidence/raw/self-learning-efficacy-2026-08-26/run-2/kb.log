@@ -1,0 +1,421 @@
+2026-08-26T13:43:03Z INFO  vault.env: sealed 1 first-boot credential environment value(s)
+2026-08-26T13:43:03Z WARN  db2: embedder dim probe: no embed command configured; §2b probe disabled
+NOTICE:  identifier "kb_management_jwks_manifest_key_use_intent_generation_candidate_id_key" will be truncated to "kb_management_jwks_manifest_key_use_intent_generation_candidate"
+NOTICE:  identifier "kb_management_jwks_manifest_key_use_intent_generation_candidate_id_seal_epoch_key" will be truncated to "kb_management_jwks_manifest_key_use_intent_generation_candidate"
+NOTICE:  identifier "kb_management_jwks_manifest_key_use_generation_candidate_id_seal_epoch_key" will be truncated to "kb_management_jwks_manifest_key_use_generation_candidate_id_sea"
+NOTICE:  column "lifecycle_state" of relation "projects" already exists, skipping
+NOTICE:  column "current_generation" of relation "projects" already exists, skipping
+NOTICE:  constraint "files_project_id_path_key" of relation "files" does not exist, skipping
+NOTICE:  column "language" of relation "files" already exists, skipping
+NOTICE:  column "vendored" of relation "files" already exists, skipping
+NOTICE:  column "is_system" of relation "file_imports" already exists, skipping
+NOTICE:  column "line_end" of relation "terms" already exists, skipping
+NOTICE:  column "def_kind" of relation "terms" already exists, skipping
+NOTICE:  column "scope_type" of relation "memories" already exists, skipping
+NOTICE:  column "scope_value" of relation "memories" already exists, skipping
+NOTICE:  policy "p_memories_row_scope" for relation "memories" does not exist, skipping
+NOTICE:  policy "p_memory_rejections_row_scope" for relation "memory_rejection_tombstones" does not exist, skipping
+NOTICE:  trigger "memory_rejection_tombstone_guard" for relation "memories" does not exist, skipping
+NOTICE:  trigger "kb_audit_no_update" for relation "kb_audit_event" does not exist, skipping
+NOTICE:  trigger "kb_audit_no_delete" for relation "kb_audit_event" does not exist, skipping
+NOTICE:  trigger "kb_audit_no_truncate" for relation "kb_audit_event" does not exist, skipping
+NOTICE:  trigger "kb_audit_outbox_no_update" for relation "kb_audit_outbox" does not exist, skipping
+NOTICE:  trigger "kb_audit_outbox_no_delete" for relation "kb_audit_outbox" does not exist, skipping
+NOTICE:  trigger "kb_audit_outbox_no_truncate" for relation "kb_audit_outbox" does not exist, skipping
+NOTICE:  trigger "kb_audit_delivery_no_update" for relation "kb_audit_delivery" does not exist, skipping
+NOTICE:  trigger "kb_audit_delivery_no_delete" for relation "kb_audit_delivery" does not exist, skipping
+NOTICE:  trigger "kb_audit_delivery_no_truncate" for relation "kb_audit_delivery" does not exist, skipping
+NOTICE:  table "agent_outcomes" does not exist, skipping
+NOTICE:  column "scope_kind" of relation "interaction_event_embeddings" already exists, skipping
+NOTICE:  column "scope_id" of relation "interaction_event_embeddings" already exists, skipping
+NOTICE:  column "task_family" of relation "interaction_event_embeddings" already exists, skipping
+NOTICE:  column "action_sequence" of relation "interaction_event_embeddings" already exists, skipping
+NOTICE:  column "error_signature" of relation "interaction_event_embeddings" already exists, skipping
+NOTICE:  column "environment" of relation "interaction_event_embeddings" already exists, skipping
+NOTICE:  column "preconditions" of relation "interaction_event_embeddings" already exists, skipping
+NOTICE:  column "outcome" of relation "interaction_event_embeddings" already exists, skipping
+NOTICE:  column "recovery_action" of relation "interaction_event_embeddings" already exists, skipping
+NOTICE:  constraint "kb_async_jobs_document_id_fkey" of relation "kb_async_jobs" does not exist, skipping
+NOTICE:  column "next_attempt_at" of relation "kb_async_jobs" already exists, skipping
+NOTICE:  column "priority" of relation "kb_ingest_queue" already exists, skipping
+NOTICE:  constraint "kb_file_index_project_file_path_key" of relation "kb_file_index" does not exist, skipping
+NOTICE:  column "use_cases" of relation "memories" already exists, skipping
+NOTICE:  column "project" of relation "kb_doc_assets" already exists, skipping
+NOTICE:  column "content" of relation "kb_file_index" already exists, skipping
+NOTICE:  column "next_attempt_at" of relation "kb_code_unit_jobs" already exists, skipping
+NOTICE:  constraint "kb_code_unit_jobs_project_file_path_symbol_key" of relation "kb_code_unit_jobs" does not exist, skipping
+NOTICE:  column "is_exploration" of relation "bandit_decisions" already exists, skipping
+NOTICE:  pgvectorscale not available (extension "vectorscale" is not available), vector indexes use HNSW
+NOTICE:  column "artifact_id" of relation "curator_entity_vectors" already exists, skipping
+NOTICE:  column "body_hash" of relation "code_embeddings" already exists, skipping
+NOTICE:  index "idx_code_embeddings_node" does not exist, skipping
+NOTICE:  index "idx_code_embeddings_hash" does not exist, skipping
+NOTICE:  table "db3_backfill" does not exist, skipping
+NOTICE:  table "db3_delivery" does not exist, skipping
+NOTICE:  table "db3_outbox" does not exist, skipping
+NOTICE:  table "db3_provider" does not exist, skipping
+NOTICE:  table "db3_projection" does not exist, skipping
+NOTICE:  trigger "fact_rejection_tombstone_guard" for relation "entity_edges" does not exist, skipping
+NOTICE:  trigger "entity_edges_semantic_guard" for relation "entity_edges" does not exist, skipping
+NOTICE:  trigger "trg_lessons_ledger_immutable" for relation "lessons_outcome_ledger" does not exist, skipping
+NOTICE:  trigger "trg_lessons_ledger_no_truncate" for relation "lessons_outcome_ledger" does not exist, skipping
+NOTICE:  constraint "css_migration_units_project_unit_path_key" of relation "css_migration_units" does not exist, skipping
+NOTICE:  constraint "css_render_snapshots_project_unit_path_phase_key" of relation "css_render_snapshots" does not exist, skipping
+NOTICE:  policy "p_member_self" for relation "kb_team_membership" does not exist, skipping
+NOTICE:  policy "p_member_management_definer_read" for relation "kb_team_membership" does not exist, skipping
+NOTICE:  policy "p_member_management_definer_insert" for relation "kb_team_membership" does not exist, skipping
+NOTICE:  policy "p_projmember_self" for relation "kb_project_membership" does not exist, skipping
+NOTICE:  policy "p_admingrant_self" for relation "kb_admin_grant" does not exist, skipping
+NOTICE:  policy "p_team_member" for relation "kb_team" does not exist, skipping
+NOTICE:  policy "p_project_member" for relation "kb_project" does not exist, skipping
+NOTICE:  policy "p_documents_project" for relation "kb_documents" does not exist, skipping
+NOTICE:  policy "p_file_index_project" for relation "kb_file_index" does not exist, skipping
+NOTICE:  policy "p_documents_maintenance_write" for relation "kb_documents" does not exist, skipping
+NOTICE:  policy "p_file_index_maintenance_write" for relation "kb_file_index" does not exist, skipping
+NOTICE:  policy "p_embeddings_project" for relation "kb_embeddings" does not exist, skipping
+NOTICE:  policy "p_embeddings_maintenance_write" for relation "kb_embeddings" does not exist, skipping
+NOTICE:  policy "p_pdf_embeddings_project" for relation "kb_pdf_embeddings" does not exist, skipping
+NOTICE:  policy "p_pdf_embeddings_maintenance_write" for relation "kb_pdf_embeddings" does not exist, skipping
+NOTICE:  policy "p_doc_regions_project" for relation "kb_doc_regions" does not exist, skipping
+NOTICE:  policy "p_doc_regions_maintenance_write" for relation "kb_doc_regions" does not exist, skipping
+NOTICE:  policy "p_table_cells_project" for relation "kb_table_cells" does not exist, skipping
+NOTICE:  policy "p_table_cells_maintenance_write" for relation "kb_table_cells" does not exist, skipping
+NOTICE:  policy "p_doc_assets_project" for relation "kb_doc_assets" does not exist, skipping
+NOTICE:  policy "p_doc_assets_maintenance_write" for relation "kb_doc_assets" does not exist, skipping
+NOTICE:  policy "p_team_admin_write" for relation "kb_team" does not exist, skipping
+NOTICE:  policy "p_team_admin_mod" for relation "kb_team" does not exist, skipping
+NOTICE:  policy "p_team_admin_del" for relation "kb_team" does not exist, skipping
+NOTICE:  policy "p_project_admin_write" for relation "kb_project" does not exist, skipping
+NOTICE:  policy "p_project_admin_mod" for relation "kb_project" does not exist, skipping
+NOTICE:  policy "p_project_admin_del" for relation "kb_project" does not exist, skipping
+NOTICE:  policy "p_member_admin_write" for relation "kb_team_membership" does not exist, skipping
+NOTICE:  policy "p_member_admin_del" for relation "kb_team_membership" does not exist, skipping
+NOTICE:  policy "p_projmember_admin_write" for relation "kb_project_membership" does not exist, skipping
+NOTICE:  policy "p_projmember_admin_del" for relation "kb_project_membership" does not exist, skipping
+NOTICE:  policy "p_admingrant_admin_write" for relation "kb_admin_grant" does not exist, skipping
+NOTICE:  policy "p_admingrant_admin_mod" for relation "kb_admin_grant" does not exist, skipping
+NOTICE:  trigger "org_pricing_no_update" for relation "org_model_pricing" does not exist, skipping
+NOTICE:  trigger "org_pricing_no_delete" for relation "org_model_pricing" does not exist, skipping
+NOTICE:  trigger "org_pricing_no_truncate" for relation "org_model_pricing" does not exist, skipping
+NOTICE:  trigger "org_audit_project_team" for relation "org_token_audit" does not exist, skipping
+NOTICE:  trigger "org_audit_settle" for relation "org_token_audit" does not exist, skipping
+NOTICE:  trigger "org_audit_no_delete" for relation "org_token_audit" does not exist, skipping
+NOTICE:  trigger "org_audit_no_truncate" for relation "org_token_audit" does not exist, skipping
+NOTICE:  trigger "org_rollup_no_delete" for relation "org_spend_rollup" does not exist, skipping
+NOTICE:  trigger "org_rollup_no_truncate" for relation "org_spend_rollup" does not exist, skipping
+NOTICE:  policy "p_pricing_admin_read" for relation "org_model_pricing" does not exist, skipping
+NOTICE:  policy "p_pricing_cur_admin_read" for relation "org_model_pricing_current" does not exist, skipping
+NOTICE:  policy "p_audit_read" for relation "org_token_audit" does not exist, skipping
+NOTICE:  policy "p_rollup_read" for relation "org_spend_rollup" does not exist, skipping
+NOTICE:  policy "p_teamlead_self" for relation "kb_team_lead" does not exist, skipping
+NOTICE:  policy "p_teamlead_admin_write" for relation "kb_team_lead" does not exist, skipping
+NOTICE:  policy "p_teamlead_admin_mod" for relation "kb_team_lead" does not exist, skipping
+NOTICE:  policy "p_teamlead_admin_del" for relation "kb_team_lead" does not exist, skipping
+NOTICE:  policy "p_vault_secret_tenant_read" for relation "org_vault_secret" does not exist, skipping
+NOTICE:  policy "p_vault_secret_admin_read" for relation "org_vault_secret" does not exist, skipping
+NOTICE:  policy "p_vault_current_admin_read" for relation "org_vault_current" does not exist, skipping
+NOTICE:  policy "p_vault_salt_admin_read" for relation "org_vault_salt" does not exist, skipping
+NOTICE:  column "old_vendor_ref" of relation "org_vault_rotation" already exists, skipping
+NOTICE:  column "new_vendor_ref" of relation "org_vault_rotation" already exists, skipping
+NOTICE:  column "revoke_receipt" of relation "org_vault_rotation" already exists, skipping
+NOTICE:  column "failure_phase" of relation "org_vault_rotation" already exists, skipping
+NOTICE:  column "claim_owner" of relation "org_vault_rotation" already exists, skipping
+NOTICE:  column "claim_token" of relation "org_vault_rotation" already exists, skipping
+NOTICE:  column "claim_until" of relation "org_vault_rotation" already exists, skipping
+NOTICE:  policy "p_vault_rotation_read" for relation "org_vault_rotation" does not exist, skipping
+NOTICE:  function org_vault_rotation_get(pg_catalog.int8) does not exist, skipping
+NOTICE:  column "seal_epoch" of relation "org_vault_key_use_intent" already exists, skipping
+NOTICE:  function org_vault_key_use_admit(text,pg_catalog.int8,text,text,text,text,text,text,pg_catalog.int8,text,text,text,text,bytea) does not exist, skipping
+NOTICE:  column "failure_from_state" of relation "kb_vault_rewrap_operation" already exists, skipping
+NOTICE:  constraint "kb_vault_rewrap_operation_state_check" of relation "kb_vault_rewrap_operation" does not exist, skipping
+NOTICE:  constraint "kb_vault_rewrap_state_fields_check" of relation "kb_vault_rewrap_operation" does not exist, skipping
+NOTICE:  index "idx_kb_vault_rewrap_one_active" does not exist, skipping
+NOTICE:  constraint "kb_vault_control_last_opened_rewrap_fence_check" of relation "kb_vault_control" does not exist, skipping
+NOTICE:  trigger "kb_vault_open_event_no_update" for relation "kb_vault_open_event" does not exist, skipping
+NOTICE:  trigger "kb_vault_open_event_no_delete" for relation "kb_vault_open_event" does not exist, skipping
+NOTICE:  trigger "kb_vault_open_event_no_truncate" for relation "kb_vault_open_event" does not exist, skipping
+NOTICE:  constraint "kb_vault_rewrap_worm_event_kind_check" of relation "kb_vault_rewrap_worm" does not exist, skipping
+NOTICE:  constraint "kb_vault_rewrap_worm_check" of relation "kb_vault_rewrap_worm" does not exist, skipping
+NOTICE:  constraint "kb_vault_rewrap_worm_event_state_check" of relation "kb_vault_rewrap_worm" does not exist, skipping
+NOTICE:  trigger "kb_vault_rewrap_worm_no_update" for relation "kb_vault_rewrap_worm" does not exist, skipping
+NOTICE:  trigger "kb_vault_rewrap_worm_no_delete" for relation "kb_vault_rewrap_worm" does not exist, skipping
+NOTICE:  trigger "kb_vault_rewrap_worm_no_truncate" for relation "kb_vault_rewrap_worm" does not exist, skipping
+NOTICE:  function org_vault_rewrap_status(text) does not exist, skipping
+NOTICE:  function org_vault_rewrap_check_page(text,pg_catalog.int8,text,pg_catalog.int4) does not exist, skipping
+NOTICE:  function aimee_kb_vault_orchestrator_api.org_vault_rewrap_stage_finish(text,pg_catalog.int8) does not exist, skipping
+NOTICE:  function public.org_vault_rewrap_stage_finish(text,pg_catalog.int8) does not exist, skipping
+NOTICE:  trigger "kb_vault_witness_log_no_update" for relation "kb_vault_witness_log" does not exist, skipping
+NOTICE:  trigger "kb_vault_witness_log_no_delete" for relation "kb_vault_witness_log" does not exist, skipping
+NOTICE:  trigger "kb_vault_witness_log_no_truncate" for relation "kb_vault_witness_log" does not exist, skipping
+NOTICE:  trigger "kb_vault_witness_checkpoint_no_update" for relation "kb_vault_witness_checkpoint" does not exist, skipping
+NOTICE:  trigger "kb_vault_witness_checkpoint_no_delete" for relation "kb_vault_witness_checkpoint" does not exist, skipping
+NOTICE:  trigger "kb_vault_witness_checkpoint_no_truncate" for relation "kb_vault_witness_checkpoint" does not exist, skipping
+NOTICE:  policy "kb_vault_witness_shard_read" for relation "kb_vault_witness_shard" does not exist, skipping
+NOTICE:  policy "kb_vault_witness_log_read" for relation "kb_vault_witness_log" does not exist, skipping
+NOTICE:  policy "kb_vault_witness_checkpoint_read" for relation "kb_vault_witness_checkpoint" does not exist, skipping
+NOTICE:  policy "kb_vault_witness_emit_cursor_read" for relation "kb_vault_witness_emit_cursor" does not exist, skipping
+NOTICE:  column "bedrock_api" of relation "org_model_catalog" already exists, skipping
+NOTICE:  column "model_family" of relation "org_model_catalog" already exists, skipping
+NOTICE:  column "bedrock_target_type" of relation "org_model_catalog" already exists, skipping
+NOTICE:  column "aws_partition" of relation "org_model_catalog" already exists, skipping
+NOTICE:  column "aws_invoke_region" of relation "org_model_catalog" already exists, skipping
+NOTICE:  column "aws_account" of relation "org_model_catalog" already exists, skipping
+NOTICE:  column "aws_region_set" of relation "org_model_catalog" already exists, skipping
+NOTICE:  column "underlying_fm_arns" of relation "org_model_catalog" already exists, skipping
+NOTICE:  constraint "org_model_catalog_invoke_region_chk" of relation "org_model_catalog" does not exist, skipping
+NOTICE:  constraint "org_model_catalog_wire_check" of relation "org_model_catalog" does not exist, skipping
+NOTICE:  policy "p_catalog_admin_read" for relation "org_model_catalog" does not exist, skipping
+NOTICE:  policy "p_entitlement_tenant_read" for relation "org_model_entitlement" does not exist, skipping
+NOTICE:  policy "p_entitlement_admin_read" for relation "org_model_entitlement" does not exist, skipping
+NOTICE:  policy "p_budget_read" for relation "org_budget" does not exist, skipping
+NOTICE:  policy "p_budget_counter_read" for relation "org_budget_counter" does not exist, skipping
+NOTICE:  policy "p_budget_resv_read" for relation "org_budget_reservation" does not exist, skipping
+NOTICE:  policy "p_budget_alloc_read" for relation "org_budget_reservation_alloc" does not exist, skipping
+NOTICE:  policy "p_rate_policy_read" for relation "org_rate_policy" does not exist, skipping
+NOTICE:  policy "p_telemetry_read" for relation "org_telemetry" does not exist, skipping
+NOTICE:  policy "p_telemetry_allow_read" for relation "org_telemetry_allowlist" does not exist, skipping
+NOTICE:  trigger "trg_kb_enrollment_revocation_guard" for relation "kb_enrollments" does not exist, skipping
+NOTICE:  constraint "kb_server_registry_status_chk" of relation "kb_server_registry" does not exist, skipping
+NOTICE:  constraint "kb_write_tier_grant_server_team_fk" of relation "kb_write_tier_grant" does not exist, skipping
+NOTICE:  constraint "kb_server_registry_server_team_key" of relation "kb_server_registry" does not exist, skipping
+NOTICE:  policy "p_write_tier_grant_team_read" for relation "kb_write_tier_grant" does not exist, skipping
+NOTICE:  policy "p_write_tier_grant_admin_write" for relation "kb_write_tier_grant" does not exist, skipping
+NOTICE:  function kb_write_tier_grant_set_reporting(text,pg_catalog.int8,text,text,text) does not exist, skipping
+NOTICE:  policy "p_server_registry_team_read" for relation "kb_server_registry" does not exist, skipping
+NOTICE:  policy "p_server_registry_heartbeat_update" for relation "kb_server_registry" does not exist, skipping
+NOTICE:  function kb_server_registry_snapshot(pg_catalog.int8,text) does not exist, skipping
+NOTICE:  function kb_management_status_lookup(text,text,text,text,text) does not exist, skipping
+NOTICE:  function kb_management_action_checkpoint(text,text,text,text,text,text,text,pg_catalog.int8) does not exist, skipping
+NOTICE:  column "bootstrap_id" of relation "kb_management_status_key" already exists, skipping
+NOTICE:  column "public_key" of relation "kb_management_status_key" already exists, skipping
+NOTICE:  function kb_management_status_key_bootstrap_stage(text,text,text,bytea,bytea,bytea,bytea,bytea,bytea,bytea,bytea,bytea,bytea) does not exist, skipping
+NOTICE:  function kb_management_status_key_bootstrap_stage(text,text,text,bytea,bytea,bytea,bytea,bytea,bytea,bytea,bytea,bytea,bytea,bytea,bytea,bytea) does not exist, skipping
+NOTICE:  function kb_management_status_key_bootstrap_resume(text) does not exist, skipping
+NOTICE:  function kb_management_status_key_bootstrap_resume(text,text) does not exist, skipping
+NOTICE:  trigger "kb_management_status_key_use_no_update" for relation "kb_management_status_key_use_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_status_key_use_no_delete" for relation "kb_management_status_key_use_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_status_key_use_no_truncate" for relation "kb_management_status_key_use_intent" does not exist, skipping
+NOTICE:  function kb_management_status_key_candidate(text,pg_catalog.int8) does not exist, skipping
+NOTICE:  function kb_management_status_key_startup_status() does not exist, skipping
+NOTICE:  trigger "kb_management_token_root_no_update" for relation "kb_management_token_root" does not exist, skipping
+NOTICE:  trigger "kb_management_token_root_no_delete" for relation "kb_management_token_root" does not exist, skipping
+NOTICE:  trigger "kb_management_token_root_no_truncate" for relation "kb_management_token_root" does not exist, skipping
+NOTICE:  trigger "kb_management_jwks_publication_root_no_update" for relation "kb_management_jwks_publication_root" does not exist, skipping
+NOTICE:  trigger "kb_management_jwks_publication_root_no_delete" for relation "kb_management_jwks_publication_root" does not exist, skipping
+NOTICE:  trigger "kb_management_jwks_publication_root_no_truncate" for relation "kb_management_jwks_publication_root" does not exist, skipping
+NOTICE:  trigger "kb_management_token_root_secret_guard" for relation "org_vault_secret" does not exist, skipping
+NOTICE:  trigger "kb_management_token_root_secret_truncate_guard" for relation "org_vault_secret" does not exist, skipping
+NOTICE:  trigger "kb_management_token_root_current_guard" for relation "org_vault_current" does not exist, skipping
+NOTICE:  trigger "kb_management_token_root_current_truncate_guard" for relation "org_vault_current" does not exist, skipping
+NOTICE:  trigger "kb_management_token_root_rotation_guard" for relation "org_vault_rotation" does not exist, skipping
+NOTICE:  trigger "kb_management_token_root_rotation_truncate_guard" for relation "org_vault_rotation" does not exist, skipping
+NOTICE:  constraint "kb_management_jwks_manifest_key_use_intent_generation_candidate" of relation "kb_management_jwks_manifest_key_use_intent" does not exist, skipping
+NOTICE:  constraint "kb_management_jwks_manifest_key_use_generation_candidate_id_key" of relation "kb_management_jwks_manifest_key_use_intent" does not exist, skipping
+NOTICE:  constraint "kb_management_jwks_manifest_key_use_intent_generation_candidate" of relation "kb_management_jwks_manifest_key_use_intent" does not exist, skipping
+NOTICE:  constraint "kb_management_jwks_manifest_key_use_generation_candidate_id_sea" of relation "kb_management_jwks_manifest_key_use_intent" does not exist, skipping
+NOTICE:  constraint "kb_management_jwks_manifest_key_use_intent_generation_candidate" of relation "kb_management_jwks_manifest_key_use_intent" does not exist, skipping
+NOTICE:  constraint "kb_mgmt_jwks_use_epoch_uniq" of relation "kb_management_jwks_manifest_key_use_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_jwks_publication_candidate_guard" for relation "kb_management_jwks_publication_candidate" does not exist, skipping
+NOTICE:  trigger "kb_management_jwks_publication_generation_guard" for relation "kb_management_jwks_publication_generation" does not exist, skipping
+NOTICE:  trigger "kb_management_jwks_publication_registry_guard" for relation "kb_management_jwks_publication_registry" does not exist, skipping
+NOTICE:  trigger "kb_management_jwks_manifest_key_use_intent_insert_guard" for relation "kb_management_jwks_manifest_key_use_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_jwks_publication_candidate_truncate_guard" for relation "kb_management_jwks_publication_candidate" does not exist, skipping
+NOTICE:  trigger "kb_management_jwks_manifest_key_use_intent_update_guard" for relation "kb_management_jwks_manifest_key_use_intent" does not exist, skipping
+NOTICE:  constraint "kb_enrollments_authority_id_chk" of relation "kb_enrollments" does not exist, skipping
+NOTICE:  policy "kb_mi_grant_definer_only" for relation "kb_management_instance_grant" does not exist, skipping
+NOTICE:  policy "kb_mi_instance_definer_only" for relation "kb_management_instance" does not exist, skipping
+NOTICE:  policy "kb_mi_issue_definer_only" for relation "kb_management_instance_issue" does not exist, skipping
+NOTICE:  trigger "kb_mi_grant_update_guard" for relation "kb_management_instance_grant" does not exist, skipping
+NOTICE:  trigger "kb_mi_grant_delete_guard" for relation "kb_management_instance_grant" does not exist, skipping
+NOTICE:  trigger "kb_mi_grant_truncate_guard" for relation "kb_management_instance_grant" does not exist, skipping
+NOTICE:  trigger "kb_mi_instance_update_guard" for relation "kb_management_instance" does not exist, skipping
+NOTICE:  trigger "kb_mi_instance_delete_guard" for relation "kb_management_instance" does not exist, skipping
+NOTICE:  trigger "kb_mi_instance_truncate_guard" for relation "kb_management_instance" does not exist, skipping
+NOTICE:  trigger "kb_mi_issue_update_guard" for relation "kb_management_instance_issue" does not exist, skipping
+NOTICE:  trigger "kb_mi_issue_delete_guard" for relation "kb_management_instance_issue" does not exist, skipping
+NOTICE:  trigger "kb_mi_issue_truncate_guard" for relation "kb_management_instance_issue" does not exist, skipping
+NOTICE:  function kb_management_instance_begin_initial(text,text,text,text,text,text,text,text,text,text) does not exist, skipping
+NOTICE:  column "raw_prompt_tokens" of relation "org_egress_dispatch" already exists, skipping
+NOTICE:  column "raw_completion_tokens" of relation "org_egress_dispatch" already exists, skipping
+NOTICE:  column "raw_cache_read_tokens" of relation "org_egress_dispatch" already exists, skipping
+NOTICE:  column "raw_cache_write_tokens" of relation "org_egress_dispatch" already exists, skipping
+NOTICE:  column "overage_usd" of relation "org_egress_dispatch" already exists, skipping
+NOTICE:  trigger "org_egress_dispatch_guard" for relation "org_egress_dispatch" does not exist, skipping
+NOTICE:  trigger "org_egress_dispatch_no_delete" for relation "org_egress_dispatch" does not exist, skipping
+NOTICE:  trigger "org_egress_dispatch_no_truncate" for relation "org_egress_dispatch" does not exist, skipping
+NOTICE:  function org_egress_dispatch_settle(pg_catalog.int8,text,pg_catalog.int8,text,pg_catalog.int4,pg_catalog.int8,pg_catalog.int8,pg_catalog.int8,pg_catalog.int8,text) does not exist, skipping
+NOTICE:  policy "kb_management_read_intent_authority_only" for relation "kb_management_read_intent" does not exist, skipping
+NOTICE:  policy "kb_management_read_key_use_authority_only" for relation "kb_management_read_key_use" does not exist, skipping
+NOTICE:  trigger "kb_management_read_transition" for relation "kb_management_read_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_read_delete_guard" for relation "kb_management_read_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_read_key_use_worm" for relation "kb_management_read_key_use" does not exist, skipping
+NOTICE:  policy "kb_management_identity_intent_authority_only" for relation "kb_management_identity_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_identity_transition" for relation "kb_management_identity_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_identity_delete_guard" for relation "kb_management_identity_intent" does not exist, skipping
+NOTICE:  function kb_management_identity_login_context(pg_catalog.int8) does not exist, skipping
+NOTICE:  function kb_management_identity_intent_start(text,text,text,pg_catalog.int8,text,text,text,text,pg_catalog.int4,text) does not exist, skipping
+NOTICE:  column "kind" of relation "kb_management_action_intent" already exists, skipping
+NOTICE:  policy "kb_management_action_intent_owner_only" for relation "kb_management_action_intent" does not exist, skipping
+NOTICE:  policy "kb_management_token_intent_namespace_owner_only" for relation "kb_management_token_intent_namespace" does not exist, skipping
+NOTICE:  policy "kb_management_action_outcome_owner_only" for relation "kb_management_action_outcome" does not exist, skipping
+NOTICE:  trigger "kb_management_action_intent_update_guard" for relation "kb_management_action_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_action_intent_delete_guard" for relation "kb_management_action_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_action_intent_truncate_guard" for relation "kb_management_action_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_token_intent_namespace_update_guard" for relation "kb_management_token_intent_namespace" does not exist, skipping
+NOTICE:  trigger "kb_management_token_intent_namespace_truncate_guard" for relation "kb_management_token_intent_namespace" does not exist, skipping
+NOTICE:  trigger "kb_management_action_outcome_update_guard" for relation "kb_management_action_outcome" does not exist, skipping
+NOTICE:  trigger "kb_management_action_outcome_delete_guard" for relation "kb_management_action_outcome" does not exist, skipping
+NOTICE:  trigger "kb_management_action_outcome_truncate_guard" for relation "kb_management_action_outcome" does not exist, skipping
+NOTICE:  function kb_management_action_intent_start(text,text,pg_catalog.int8,text,text,text,text,text,pg_catalog.int4,text) does not exist, skipping
+NOTICE:  function kb_management_read_authority_claim(text,text,text,pg_catalog.int4) does not exist, skipping
+NOTICE:  function kb_management_action_outcome_append(text,text,text,pg_catalog.int4,text) does not exist, skipping
+NOTICE:  trigger "kb_management_token_key_use_intent_update_guard" for relation "kb_management_token_key_use_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_token_key_use_intent_truncate_guard" for relation "kb_management_token_key_use_intent" does not exist, skipping
+NOTICE:  policy "kb_management_identity_key_use_authority_only" for relation "kb_management_identity_key_use_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_identity_key_use_update_guard" for relation "kb_management_identity_key_use_intent" does not exist, skipping
+NOTICE:  trigger "kb_management_identity_key_use_truncate_guard" for relation "kb_management_identity_key_use_intent" does not exist, skipping
+NOTICE:  trigger "fact_graph_commit_operation_guard" for relation "fact_graph_commits" does not exist, skipping
+NOTICE:  trigger "fact_graph_change_event" for relation "fact_graph_changes" does not exist, skipping
+NOTICE:  trigger "derived_writer_summaries" for relation "memory_summaries" does not exist, skipping
+NOTICE:  trigger "derived_writer_profiles" for relation "entity_profiles" does not exist, skipping
+NOTICE:  trigger "derived_writer_enrichments" for relation "report_enrichments" does not exist, skipping
+NOTICE:  trigger "derived_writer_patterns" for relation "workflow_patterns" does not exist, skipping
+NOTICE:  trigger "derived_writer_lessons" for relation "anti_patterns" does not exist, skipping
+NOTICE:  trigger "derived_writer_artifact_citations" for relation "artifact_citations" does not exist, skipping
+NOTICE:  trigger "memory_governance_promotion_guard" for relation "memories" does not exist, skipping
+NOTICE:  trigger "memory_epistemic_mutation_guard" for relation "memories" does not exist, skipping
+NOTICE:  trigger "evidence_memories" for relation "memories" does not exist, skipping
+NOTICE:  trigger "evidence_docs" for relation "docs" does not exist, skipping
+NOTICE:  trigger "evidence_document_versions" for relation "document_versions" does not exist, skipping
+NOTICE:  trigger "zz_document_version_retire_prior" for relation "document_versions" does not exist, skipping
+NOTICE:  trigger "evidence_entities" for relation "entity_registry" does not exist, skipping
+NOTICE:  trigger "evidence_aliases" for relation "entity_aliases" does not exist, skipping
+NOTICE:  trigger "evidence_rel_types" for relation "rel_types" does not exist, skipping
+NOTICE:  trigger "evidence_derived" for relation "derived_memory_registry" does not exist, skipping
+NOTICE:  trigger "evidence_scopes" for relation "memory_scopes" does not exist, skipping
+NOTICE:  trigger "evidence_links" for relation "memory_links" does not exist, skipping
+NOTICE:  trigger "evidence_ontology_packages" for relation "ontology_packages" does not exist, skipping
+NOTICE:  trigger "evidence_guard_memories" for relation "memories" does not exist, skipping
+NOTICE:  trigger "evidence_guard_docs" for relation "docs" does not exist, skipping
+NOTICE:  trigger "evidence_guard_document_versions" for relation "document_versions" does not exist, skipping
+NOTICE:  trigger "evidence_guard_entities" for relation "entity_registry" does not exist, skipping
+NOTICE:  trigger "evidence_guard_aliases" for relation "entity_aliases" does not exist, skipping
+NOTICE:  trigger "evidence_guard_rel_types" for relation "rel_types" does not exist, skipping
+NOTICE:  trigger "evidence_guard_derived" for relation "derived_memory_registry" does not exist, skipping
+NOTICE:  trigger "evidence_guard_scopes" for relation "memory_scopes" does not exist, skipping
+NOTICE:  trigger "evidence_guard_links" for relation "memory_links" does not exist, skipping
+NOTICE:  trigger "evidence_guard_ontology_packages" for relation "ontology_packages" does not exist, skipping
+NOTICE:  trigger "zz_semantic_evidence_event_guard" for relation "entity_edges" does not exist, skipping
+NOTICE:  trigger "zz_derived_change_reconcile" for relation "fact_graph_changes" does not exist, skipping
+NOTICE:  trigger "derived_file_reconcile" for relation "files" does not exist, skipping
+NOTICE:  trigger "derived_policy_reconcile" for relation "derivation_policy_versions" does not exist, skipping
+aimee: db2.pool: initialized: up to 16 connections (opened on demand)
+2026-08-26T13:43:04Z INFO  kb.ingest: ingest workers started (4 thread(s))
+2026-08-26T13:43:04Z INFO  kb.ingest.watch: watching 0 project root(s)
+2026-08-26T13:43:04Z INFO  kb.reflection: reflection scheduler started
+2026-08-26T13:43:04Z INFO  kb.curator.drain: no synthesis endpoint configured: LLM lane not started (extraction and synthesis stages cannot run); index lane still serves embedding and graph
+2026-08-26T13:43:04Z INFO  kb.curator.drain: index-lane thread started
+2026-08-26T13:43:04Z INFO  kb.mining: scheduler started (minimum poll=300s)
+2026-08-26T13:43:04Z INFO  css_render: registered command render backend: curl -s --max-time 30 --data-binary @- http://aimee-css-render:8780/render
+2026-08-26T13:43:04Z INFO  kb_http: listening on 127.0.0.1:18755
+2026-08-26T13:43:05Z INFO  kb.http: request_id=1312002-1 method=GET path=/v1/health status=200
+2026-08-26T13:43:05Z INFO  kb.reflection: idle=1787751785s >= threshold=1800s; firing reflection pass
+2026-08-26T13:43:05Z INFO  kb.http: request_id=1312002-2 method=GET path=/v1/health status=200
+2026-08-26T13:43:05Z INFO  kb.http: request_id=1312002-3 method=GET path=/v1/version status=200
+2026-08-26T13:43:06Z INFO  kb.http: request_id=1312002-4 method=POST path=/v1/actions/learning.endogeneity status=200
+2026-08-26T13:43:07Z INFO  kb.http: request_id=1312002-5 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:07Z INFO  kb.http: request_id=1312002-6 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:07Z INFO  kb.http: request_id=1312002-7 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:07Z INFO  kb.http: request_id=1312002-8 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:07Z INFO  kb.http: request_id=1312002-9 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:07Z INFO  kb.http: request_id=1312002-10 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:07Z INFO  kb.http: request_id=1312002-11 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:07Z INFO  kb.http: request_id=1312002-12 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-13 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-14 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-15 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-16 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-17 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-18 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-19 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-20 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-21 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-22 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-23 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-24 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-25 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-26 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:08Z INFO  kb.http: request_id=1312002-27 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-28 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-29 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-30 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-31 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-32 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-33 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-34 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-35 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-36 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-37 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-38 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-39 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:09Z INFO  kb.http: request_id=1312002-40 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:10Z INFO  kb.http: request_id=1312002-41 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:10Z INFO  kb.http: request_id=1312002-42 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:10Z INFO  kb.http: request_id=1312002-43 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:10Z INFO  kb.http: request_id=1312002-44 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:10Z INFO  kb.http: request_id=1312002-45 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:10Z INFO  kb.http: request_id=1312002-46 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:10Z INFO  kb.http: request_id=1312002-47 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:10Z INFO  kb.http: request_id=1312002-48 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:10Z INFO  kb.http: request_id=1312002-49 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:10Z INFO  kb.http: request_id=1312002-50 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:10Z INFO  kb.http: request_id=1312002-51 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:10Z INFO  kb.http: request_id=1312002-52 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:13Z INFO  kb.http: request_id=1312002-53 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:13Z INFO  kb.http: request_id=1312002-54 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-55 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-56 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-57 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-58 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-59 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-60 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-61 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-62 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-63 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-64 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-65 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-66 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-67 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-68 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:14Z INFO  kb.http: request_id=1312002-69 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-70 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-71 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-72 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-73 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-74 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-75 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-76 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-77 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-78 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-79 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-80 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-81 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-82 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:15Z INFO  kb.http: request_id=1312002-83 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-84 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-85 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-86 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-87 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-88 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-89 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-90 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-91 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-92 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-93 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-94 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-95 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:16Z INFO  kb.http: request_id=1312002-96 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:17Z INFO  kb.http: request_id=1312002-97 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:17Z INFO  kb.http: request_id=1312002-98 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:17Z INFO  kb.http: request_id=1312002-99 method=POST path=/v1/actions/learning.policy_select status=200
+2026-08-26T13:43:17Z INFO  kb.http: request_id=1312002-100 method=POST path=/v1/actions/learning.policy_select status=200

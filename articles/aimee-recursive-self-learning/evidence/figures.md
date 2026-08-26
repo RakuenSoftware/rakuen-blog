@@ -615,3 +615,43 @@ change and unmeasured efficacy.
 
 The statement that the mechanisms were easy to sketch has also been removed.
 It was an authorial comparison, not a measured development-effort claim.
+
+## Paired outcome study, 2026-08-26
+
+The article's outcome figure comes from
+[Aimee PR #2859](https://github.com/RakuenSoftware/aimee/pull/2859) and its
+validation report, `docs/validation/self-learning-efficacy-2026-08-26.md`.
+The raw outputs from both valid runs are preserved in
+[`raw/self-learning-efficacy-2026-08-26/`](raw/self-learning-efficacy-2026-08-26/).
+
+Both conditions received the same two failed observations for each of 24
+repeated tasks. The control withheld synthesis before consumption. The
+treatment ran production synthesis and read the result through production
+recall. A fixed consumer began with the same choice in each condition and
+changed it only when recall identified that choice as failed. Another 24 tasks
+had no matching history.
+
+| figure in article | result |
+|---|---:|
+| repeated tasks without the learned failure record | 12/24 |
+| repeated tasks with the learned failure record | 24/24 |
+| novel tasks, both conditions | 12/24 |
+
+There were 12 treatment-only successes and no control-only successes. The
+exact two-sided McNemar p-value was 0.00048828125. Two valid runs passed 12
+harness checks with no failures and produced byte-identical cell-level CSVs,
+SHA-256
+`250a617ff71ad3f069fdd5bd9c82ebc142f3e694693fb368c971706abafaf62c`.
+
+This establishes an outcome change for the controlled failed-approach case. It
+does not measure model reasoning or open-ended generalisation. Three earlier
+attempts were excluded: one stopped at database setup, one at readiness, and
+one produced the same cell results but failed three reporting assertions. The
+Aimee validation report records each disposition.
+
+## Part-one memory trim, 2026-08-26
+
+The section specifying fact classes, lifecycle operations and transactional
+witness behaviour has been removed from part one at author direction. Those
+details belong to part two. Their evidence remains in this reporting record;
+none of it supports the new paired-study figure.
