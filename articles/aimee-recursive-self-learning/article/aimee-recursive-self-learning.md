@@ -23,9 +23,7 @@ Each attempt left a record for the next. The run that reached the key began with
 what its predecessors had already worked out.
 
 We had built the protections against a model reasoning from a cold start. The
-system approaching them carried an accumulated record of successful steps. I
-think that accumulation explains the result, although we have not run the
-ablation needed to separate it from the other conditions.
+system approaching them carried an accumulated record of successful steps.
 
 It cost under $10. Access was already limited, and the credential belonged to
 testing. The practical damage was small. The mechanism mattered more.

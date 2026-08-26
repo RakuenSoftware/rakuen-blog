@@ -342,3 +342,12 @@ agent described here.
 The final article is **3,635 words**. The added words carry the established
 containment-pattern thesis and the immediate memory-and-capability cost of
 leaving the harness; they do not add a new measured result.
+
+## Causal sentence removed, 2026-08-26
+
+At author direction, the prose no longer states that accumulated learning
+explains the test-node result or discusses the missing ablation. It reports the
+observed sequence: attempts left records, and the successful run began with the
+record accumulated by earlier runs. The reporting record continues to note
+that no ablation isolated accumulation from the other conditions. The article
+now runs **3,613 words**.
