@@ -103,7 +103,7 @@ closed when an authority is unavailable, survive process restart and be
 reversible when the evidence changes. Those demands selected the mechanisms in
 this article.
 
-Novelty had no role in the choice. We use something novel only
+Novelty is exactly what gets me woken up at two in the morning. We use it only
 where no established approach will do.
 
 All of it answers to one goal: an AI system that is auditable, governable, and
