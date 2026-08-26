@@ -516,3 +516,45 @@ model's complete execution and authority boundary. “True self-learning” and
 change later behaviour through state whose access, provenance and reversal are
 independently governed and observed. They do not claim that an ungoverned
 memory cannot retain bytes or that a library cannot update a later prompt.
+
+## Why weights cannot become institutional memory, 2026-08-26
+
+The article now states the category boundary directly. Model weights can encode
+information and change model behaviour. On their own they do not provide an
+independent user identity, query-time workspace boundary, source record,
+lifecycle or revocation path. Those properties require a system outside the
+weights. Once that system supplies them and decides what each model instance
+may receive, the relevant learning property lives in the harness.
+
+The company consequence is an architectural inference. Putting organisational
+knowledge into one checkpoint gives every deployment of that checkpoint the
+same blended update. Maintaining different weight artifacts for different
+groups restores separation by forking the learned state, which loses the common
+live record. Harness memory can instead retain local and workspace state while
+making shared or global records available to permitted users and model
+instances. The claim is not that weights cannot memorise company information;
+it is that weights alone cannot make that information a scoped, attributable,
+reversible institutional memory shared across models and users.
+
+## Duplicate-content reduction, 2026-08-26
+
+After the model-sharing, institutional-memory and harness-governance arguments
+were restored, the working article reached **3,959 words**. A full pass against
+the voice guide reduced it to **3,417 words**, a 13.7% cut. The model-and-user
+sharing section fell from 1,135 to 856 words by turning its repeated portability,
+company-value, governability and escape arguments into one sequence.
+
+The pass removed a second explanation of task pressure from the lead; the full
+argument remains in the isolation section. It compressed the introduction's
+repeated capability-and-control mechanism, removed a recap of memory lifecycle
+consequences already established above it, and replaced the second account of
+the policy use-after-free with the distinct no-op-versus-change result the final
+section needed. The complete use-after-free sequence and fix remain in the loop
+section.
+
+No loop, incident, source audit, runtime observation or claim boundary was
+removed. The article still carries the opening incident, the containment
+response, all six loop mechanisms, deployed closure result, endogeneity gate,
+transactional witness, memory failures, weight-learning concession,
+cross-model and cross-user sharing, institutional-memory consequence,
+uniqueness claim, library-log limit, escape cost and valid no-op outcome.
