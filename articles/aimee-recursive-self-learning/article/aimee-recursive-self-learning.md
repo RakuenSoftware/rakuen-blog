@@ -74,7 +74,8 @@ architecture, not to some fundamental conflict between capability and control.
 An ordered audit path shows which evidence and capability shaped an action.
 Grants and isolation decide what the action can reach. Provenance, lifecycle
 and reversal keep learned state maintainable. Aimee's techniques are familiar
-engineering practices assembled for a component that learns through use.
+engineering practices assembled for a component that learns through use and
+keeps that learning in a form which can be used by any model.
 
 The six loops in this article therefore stayed off until 0.4.0. Their producing
 halves existed while we tested them, with the consumers disabled. The incident
