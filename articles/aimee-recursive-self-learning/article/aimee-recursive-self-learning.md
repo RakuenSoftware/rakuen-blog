@@ -369,6 +369,42 @@ knowledge.
 Shared knowledge can improve later work for another enrolled user. Any model
 those servers load can use the same permitted accumulated record.
 
+The deployment creates two useful layers. Each user retains local memory from
+their own work. A workspace can hold the memory of a team, while shared or
+global scope can carry approved knowledge across an organisation or company.
+
+Legal, engineering and sales can contribute to one governed knowledge base
+while keeping group-specific context inside its scope. A contract limit, an
+implementation constraint and a customer commitment can meet in later work
+without losing their source or access rules. Aimee can unify groups around the
+same accumulated institutional memory instead of making each group teach a
+separate model the same company again.
+
+To my knowledge, aimee is the only harness to have attempted this full shape
+and made it work. Local user memory and shared institutional memory feed the
+same model-independent learning record across machines. Every change retains
+its scope and source, and an operator can reverse it.
+
+Our position is simple. Only a harness that owns execution, authority, memory
+and the audit path can make an agent observable and governable as a system
+property. True self-learning and fully persistent memory depend on those two
+properties.
+
+A memory library sees only the calls made to it. It has no authority over the
+model's network access, credentials, tools or alternate state paths, so it
+cannot stop the model going around it. Its log may describe every call it
+received accurately while omitting the action that mattered.
+
+Complete observation needs an enforcement point outside the agent. Trustworthy
+history needs an audit record outside the agent's authority, with a witness
+another component can check. A library can provide storage, and an agent
+framework can connect it to a workflow. Neither owns that whole path.
+
+The harness does. It controls which actions can leave the model's environment,
+records governed work before routing it and commits memory changes with their
+witnesses. The learner cannot switch off those mechanisms. Only the harness can
+make self-learning governable and observable across the whole system.
+
 The models may produce different answers from that record. They still begin
 with the same history. A model update adds the new checkpoint's capabilities
 without resetting the learning, and changing models changes the reasoner
