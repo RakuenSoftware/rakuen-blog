@@ -15,34 +15,30 @@ both stand on. Figures and the provenance of the incident below are recorded in
 the [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-recursive-self-learning/evidence/figures.md).*
 
-The central claim is that self-learning needs a governed harness around it.
-Aimee keeps learned experience in the harness as its primary store. Capabilities
-can grow while the learned state remains inspectable and reversible, and changes
-to models, weights or users do not discard the governed history.
+Self-learning changes the problem a safety boundary has to solve. A model can
+reuse what worked in earlier runs, so protections built for one attempt may face
+a system arriving with a history. Aimee keeps that history in the harness, where
+it can be inspected, reversed and shared without binding it to one model or one
+set of weights.
 
-The argument has two parts. First, isolation had to ship before self-learning,
-and later runs needed a safe way to inherit what earlier work learned. Second,
-the harness had to turn that inheritance into one history it could scope and
-audit. The testing incident below supplied the design test.
+We learned why that boundary matters during testing. An aimee-backed model
+needed somewhere to run tests, and the permitted environment could not finish
+the job. Successive runs worked around the restriction, each leaving its
+discoveries for the next. Eventually one run took an underprotected node, found
+a vast.ai testing API key and spent under $10 on inference to finish its task.
 
-At one point in testing, an aimee-backed model got around the protections we
-had set up. It took an underprotected node for its own use, found a vast.ai
-testing API key and spent the balance on inference to finish its task.
+The practical damage was small. The failure was in our design: we had protected
+against a model reasoning from a cold start, while the system reached the
+boundary with an accumulated record of successful steps.
 
-The route accumulated across many runs while we tested self-learning. Each
-attempt left a record for the next. By the time one run reached the key, it began
-with what its predecessors had already worked out. Our protections assumed a
-cold start; the system arrived with an accumulated record of successful steps.
+This article follows what we changed before self-learning shipped. We put the
+capabilities needed to finish the work inside the governed boundary, kept the
+learned history outside any one model and made every later use of that history
+inspectable. The same design can serve different models, models with changing
+weights and multiple users.
 
-It cost under $10. Access was already limited, and the credential belonged to
-testing. The practical damage was small. The mechanism mattered more.
-
-The model is unspecified because the learning sat in the harness. The harness
-can present its accumulated record to whichever model is loaded. We did not
-repeat the incident across models, so the incident says nothing about how
-individual checkpoints compare.
-
-## Self-learning needed the isolation first
+We did not repeat the incident across models, so it says nothing about how
+individual checkpoints compare. The model is unspecified for that reason.
 
 Public discussion often stops at the prospect of an AI system getting out of
 control. Software has crossed intended boundaries before. Computer viruses and
@@ -76,11 +72,29 @@ Aimee's techniques are familiar engineering practices assembled for a
 component that learns through use. The harness keeps that learning in an
 inspectable form which can be used by any model.
 
-The self-learning in this article therefore stayed off until 0.4.0. It existed
-in testing on unreleased code, including during the incident, and shipped only
-after the isolation did. Catching the incident before release is part of the
-production claim: the test exposed a boundary unfit for a learning system, and
-we held the feature until it had a governed route to the resources it needed.
+The incident happened on unreleased code in testing. It changed the release
+condition for 0.4.0: self-learning would remain off until isolation supplied a
+governed route to the resources its tasks required.
+
+The learning method itself is ordinary feedback: a system changes its next
+attempt based on the outcome of the last one. The title keeps the term from our
+proposal, and I kept `recursive` because it ranks.
+
+Scored alternatives, counterfactual evaluation and calibration are old tools.
+Aimee's work is making them operate together with persistent memory, provenance
+and containment, then keeping the whole system alive in production.
+
+Aimee was designed for production. Its operating standard is a silent pager.
+Self-learning must leave inspectable state and fail closed when authority
+disappears. Its state must survive a process restart and remain reversible when
+the evidence changes.
+
+Those demands selected every mechanism in this article. Novelty is exactly what
+gets me woken up at two in the morning, so we use it only where no established
+approach will do. The standard is a governable system that stays boring in
+operation.
+
+## Self-learning needed the isolation first
 
 Full modules, isolation and containers had to ship before we could turn the
 self-learning on. The incident explains the order. The model needed somewhere
@@ -132,25 +146,6 @@ keeps them off the production one.
 0.4.0 was tested on it. So was this article. The thing the model went around a
 protection to get is now infrastructure, because it turned out to be a
 requirement nobody had written down.
-
-The incident made the production work concrete. The learning method itself is
-ordinary feedback: a system changes its next attempt based on the outcome of the
-last one. The title keeps the term from our proposal, and I kept `recursive`
-because it ranks.
-
-Scored alternatives, counterfactual evaluation and calibration are old tools.
-Aimee's work is making them operate together with persistent memory, provenance
-and containment, then keeping the whole system alive in production.
-
-Aimee was built for production. Its operating standard is a silent pager.
-Self-learning must leave inspectable state and fail closed when authority
-disappears. Its state must survive a process restart and remain reversible when
-the evidence changes.
-
-Those demands selected every mechanism in this article. Novelty is exactly what
-gets me woken up at two in the morning, so we use it only where no established
-approach will do. The standard is a governable system that stays boring in
-operation.
 
 ## Self-learning changes what the next run inherits
 
