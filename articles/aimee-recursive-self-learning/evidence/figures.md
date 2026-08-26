@@ -698,6 +698,7 @@ behind that product description; it introduces no new measurement.
 The opening already carries the incident, accumulated attempts and release
 condition, so the later section no longer restates them. It begins with the
 design consequence: put the complete working surface inside the boundary. The
-transport, deterministic host and single enforcement point form the next
-section. The change removes repetition without altering a mechanism,
+sanctioned test host follows as the concrete result, then the transport,
+deterministic host and single enforcement point explain how the boundary is
+enforced. The ordered section removes repetition without altering a mechanism,
 measurement or claim boundary.

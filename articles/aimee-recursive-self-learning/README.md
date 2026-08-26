@@ -83,9 +83,9 @@ self-learning memory from one user to a company, model and user scope, and
 governed execution.
 
 The article no longer retells the opening incident in the isolation discussion.
-One section starts from its design consequence: the complete working surface
-belongs inside the boundary. The next explains the transport and deterministic
-enforcement that make those routes governable.
+One section now follows the whole consequence in order: the complete working
+surface moves inside the boundary, the test node becomes sanctioned
+infrastructure, and the transport supplies the enforcement point.
 
 ## Evidence
 

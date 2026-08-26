@@ -108,9 +108,7 @@ Assigning agents to it keeps them off the production host. It ran the 0.4.0
 tests and the work behind this article. An unwritten requirement became
 infrastructure.
 
-## The boundary has one enforcement point
-
-0.4.0 provides that boundary through its [transport
+0.4.0 supplies the enforcement point through its [transport
 architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport).
 Governed work crosses one transport, where the harness checks and records it
 before routing. Delegated execution runs in containers with the network
