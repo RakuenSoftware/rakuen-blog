@@ -618,7 +618,7 @@ It was an authorial comparison, not a measured development-effort claim.
 
 ## Paired outcome study, 2026-08-26
 
-The article's outcome figure comes from
+The outcome figure, now carried in part two, comes from
 [Aimee PR #2859](https://github.com/RakuenSoftware/aimee/pull/2859) and its
 validation report, `docs/validation/self-learning-efficacy-2026-08-26.md`.
 The raw outputs from both valid runs are preserved in

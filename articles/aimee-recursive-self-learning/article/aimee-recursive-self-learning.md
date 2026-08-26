@@ -149,20 +149,6 @@ Earlier releases learned content: which evidence to trust, which documents to
 rank and which memories to retain. In 0.4.0 the machinery also operates on its
 own evaluation and policy records, and those records change later work.
 
-On 25 August 2026, we started both deployed services and their required
-processes. The target ran **46 checks** of the deployed self-learning system.
-All 46 passed.
-
-On 26 August, we ran 24 synthetic recovery tasks through the deployed system
-twice, holding the starting choices fixed. Without the learned failure record,
-12 succeeded. With it available, all 24 succeeded. On 24 new tasks with no
-matching history, both phases remained at 12 of 24.
-
-The fixed consumer isolates whether recalled failure changes a later choice.
-Model performance remains outside the study.
-
-## A learner needs a way to distrust itself
-
 The part that learns from aimee's own output has an additional gate. It
 classifies committed proposals by whether their evidence roots outside the
 system. Self-generated evaluation cannot widen its own yardstick.
