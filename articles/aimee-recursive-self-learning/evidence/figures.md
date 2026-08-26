@@ -558,3 +558,21 @@ response, all six loop mechanisms, deployed closure result, endogeneity gate,
 transactional witness, memory failures, weight-learning concession,
 cross-model and cross-user sharing, institutional-memory consequence,
 uniqueness claim, library-log limit, escape cost and valid no-op outcome.
+
+## Production criterion voice pass, 2026-08-26
+
+The introduction now carries the same claims with a sharper progression:
+recursive self-learning remains ordinary feedback, the component techniques
+remain established, aimee remains a production-built assembly, and production
+still selects for inspectable state, fail-closed authority, restart survival
+and reversal. The pager language expresses the author's operating standard and
+introduces no new incident or availability result. The ranking explanation for
+the title remains an author statement.
+
+## Recursive terminology paragraph restored, 2026-08-26
+
+At author direction, the terminology paragraph from the preceding revision is
+restored verbatim. Its wording carries the intended distinction between the
+proposal's title, ordinary self-learning as a decades-old feedback loop, and
+the candid reason `recursive` remains in the title. The surrounding production
+criterion rewrite is unchanged.
