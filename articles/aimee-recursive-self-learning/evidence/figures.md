@@ -619,6 +619,11 @@ original isolation section keeps its scope, related failure sentences were
 consolidated, and the development-effort statement now follows the mechanism
 whose effort it describes. No measurement, mechanism or scope claim changed.
 
+The section-balance pass added a heading to the previously unheaded containment
+context, merged the valid no-change material into the account of what later runs
+inherit, and separated model portability from company-wide sharing. It moved no
+prose and changed no claim.
+
 ## Self-learning terminology and compression, 2026-08-26
 
 At author direction, the article calls the deployed capability self-learning

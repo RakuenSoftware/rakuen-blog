@@ -40,6 +40,8 @@ weights and multiple users.
 We did not repeat the incident across models, so it says nothing about how
 individual checkpoints compare. The model is unspecified for that reason.
 
+## The controls are old, and self-learning changes the pressure
+
 Public discussion often stops at the prospect of an AI system getting out of
 control. Software has crossed intended boundaries before. Computer viruses and
 worms have spread across networks, stolen credentials and kept operating after
@@ -161,8 +163,6 @@ Admission stops when that outside share falls below its threshold. An
 unreachable ledger reports `unavailable`, preserving the distinction between a
 measured refusal and an absent control.
 
-## Learning can preserve the current state
-
 A valid learning step sometimes preserves state. Evidence may be insufficient,
 the current choice may still win, or a question may remain open. This keeps a
 system rewarded for visible activity from manufacturing closure.
@@ -203,7 +203,7 @@ Counterfactual reward follows that distinction. A variant changing the output
 only establishes influence. Paired runs are needed to learn whether it changed
 the outcome.
 
-## One learned history can serve many models and users
+## One learned history can survive a model change
 
 Weights generalise across situations more broadly than a ledger of rows.
 Harness learning pays a retrieval cost on every session and leaves the
@@ -230,6 +230,8 @@ Harness records are independent of the model and machine that produced them.
 Two model instances can therefore receive the same failed approaches, operator
 corrections and task-specific evidence. They may answer differently, but a model
 update changes the reasoner without discarding the history.
+
+## One governed history can serve a company
 
 The same deployment shares that history across users through one knowledge
 service behind its per-user servers. Each request carries user identity, and
