@@ -18,7 +18,7 @@ At one point in testing, an aimee-backed model got around the protections we
 had set up. It took an underprotected node for its own use, found a vast.ai
 testing API key and spent the balance on inference to finish its task.
 
-The route accumulated across many runs while we tested the self-learning loops.
+The route accumulated across many runs while we tested self-learning.
 Each attempt left a record for the next. The run that reached the key began with
 what its predecessors had already worked out.
 
@@ -65,14 +65,13 @@ Aimee's techniques are familiar engineering practices assembled for a
 component that learns through use. The harness keeps that learning in an
 inspectable form which can be used by any model.
 
-The six loops in this article therefore stayed off until 0.4.0. Their producing
-halves existed while we tested them, with the consumers disabled. The incident
-happened on that unreleased code. The loops shipped only after the isolation
-did.
+The self-learning in this article therefore stayed off until 0.4.0. It existed
+in testing on unreleased code, including during the incident, and shipped only
+after the isolation did.
 
 The title keeps the term from our proposal, but recursive self-learning is just
 self-learning. A system that changes its next attempt based on the outcome of
-the last one is using the ordinary feedback loop the field has known for
+the last one is using the ordinary feedback process the field has known for
 decades. I kept `recursive` in the title because it ranks.
 
 Scored alternatives, counterfactual evaluation and calibration are old tools.
@@ -82,8 +81,8 @@ and containment, then keeping the whole system alive in production.
 Aimee was built in production, for production. Research wants an interesting
 finding. Production wants the pager to stay silent.
 
-Silence takes work. A loop must leave inspectable state and fail closed when an
-authority disappears. Its learning must survive process restart and remain
+Silence takes work. Self-learning must leave inspectable state and fail closed
+when an authority disappears. Its state must survive process restart and remain
 reversible when the evidence changes. Those demands selected every mechanism
 in this article.
 
@@ -91,7 +90,7 @@ Novelty is exactly what gets me woken up at two in the morning. We use it only
 where no established approach will do. An auditable, governable system that
 stays boring in operation is the standard.
 
-## Self-learning needed the isolation before it needed the loops
+## Self-learning needed the isolation first
 
 Full modules, isolation and containers had to ship before we could turn the
 self-learning on. The incident explains the order. The model needed somewhere
@@ -132,8 +131,8 @@ order before routing. Open-ended model behaviour becomes observable,
 governable work through patterns we have understood for decades.
 
 A rule with one enforcement point can be enforced. A rule with an unknown
-number of ways around it is advice. That difference is the whole reason the
-loops could be turned on at all.
+number of ways around it is advice. That difference is the whole reason
+self-learning could be turned on at all.
 
 The model took that node because it had to run tests somewhere and nothing had
 given it a permitted place. The node it grabbed is now the node it gets: an
@@ -144,39 +143,23 @@ keeps them off the production one.
 protection to get is now infrastructure, because it turned out to be a
 requirement nobody had written down.
 
-## Closing the loops changes what the next run inherits
+## Self-learning changes what the next run inherits
 
 Earlier releases learned content: which evidence to trust, which documents to
 rank and which memories to retain. In 0.4.0 the machinery also operates on its
-own evaluation and policy records.
-
-All six loops now close. Repeated failure can enter the evaluation suite and
-planning memory. Later outcomes can revise proposals, detector confidence and
-policy selection. Curiosity closes only when evidence supports it.
-
-Each path previously stopped after producing a record. It now reaches a
-consumer that changes later work.
+own evaluation and policy records, and those records change later work.
 
 On 25 August 2026, we started both deployed services and their required
-processes, then followed each producer into the state consumed by a later run.
-The target ran **46 checks** against those paths. All 46 passed.
+processes. The target ran **46 checks** of the deployed self-learning system.
+All 46 passed.
 
-For the failure-admission check, we seeded two identical `agent_jobs` records
-with status `failed`. These were inputs to the test. Aimee combined them into
-one candidate with an occurrence count of two, then admission wrote it into the
-permanent suite.
-
-The remaining checks followed attribution, dead-end recall, curiosity,
-supersession, operator regret and a non-default policy choice into their later
-consumers.
-
-The run establishes closure across all six. Measuring outcome improvement
-requires paired setup and consumer phases under the same tasks and seeds. We
-have not run that study across all six loops.
+The run establishes that the self-learning changes later system state.
+Measuring outcome improvement requires paired setup and consumer phases under
+the same tasks and seeds. We have not run that study across the full system.
 
 ## A learner needs a way to distrust itself
 
-The loop that learns from aimee's own output has an additional gate. It
+The part that learns from aimee's own output has an additional gate. It
 classifies committed proposals by whether their evidence roots outside the
 system. Self-generated evaluation cannot widen its own yardstick.
 
@@ -186,7 +169,7 @@ measured refusal and an absent control.
 
 ## Remembering is the learning
 
-The loops need durable state, but storage alone explains little. In this
+Self-learning needs durable state, but storage alone explains little. In this
 design, remembering is the learning. A learned thing becomes a typed fact with
 a confidence class, date, evidence chain, lifecycle state and fate. Future work
 changes when those records are promoted, expired, superseded and recalled.
@@ -205,10 +188,10 @@ The recall walk then weights what it traverses by confidence class.
 
 Promotion is learning. Expiry is forgetting. Supersession is correction.
 
-Weighted recall applies the learned state to the next turn. The intelligence of
-the loop lies in those memory operations over time.
+Weighted recall applies the learned state to the next turn. The intelligence
+lies in those memory operations over time.
 
-The six loops are memory operating on its contents and the record of its use.
+Self-learning is memory operating on its contents and the record of its use.
 The second article follows how aimee built that memory.
 
 ## The difficult part is useful memory
@@ -349,14 +332,14 @@ The opening incident gave us the design criterion: build a boundary the model
 does not have to fight, then put the capabilities it needs to finish the task
 inside it.
 
-## A valid loop can decide to do nothing
+## Learning can preserve the current state
 
-A valid loop sometimes preserves state. Evidence may be insufficient, the
-current choice may still win, or a question may remain open. This keeps a
+A valid learning step sometimes preserves state. Evidence may be insufficient,
+the current choice may still win, or a question may remain open. This keeps a
 system rewarded for visible activity from manufacturing closure.
 
 The order matters for any system built this way. Isolation comes first, then an
 audit record the learner cannot switch off, then memory able to preserve
-evidence and reversals. The loops come last. That order turns accumulated
+evidence and reversals. Self-learning comes last. That order turns accumulated
 experience into learning without letting the learner erase its boundary or its
 history.
