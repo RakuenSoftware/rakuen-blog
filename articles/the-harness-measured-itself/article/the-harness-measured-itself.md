@@ -1,6 +1,6 @@
 ---
 title: "The Harness Measured Itself"
-date: 2026-08-10
+date: 2026-08-26
 author: Rakuen Software
 tags: [benchmarks, measurement, local-models, aimee]
 excerpt: "A confidence gate, a parser, a truncation flag, a name guard, a throughput figure, a size ladder and three kinds of zero each returned a plausible number about the harness rather than the model."
