@@ -200,3 +200,154 @@ harness code and no ledger row records a producing model. **Not measured here:**
 the six loops have not been run across a set of models. Aimee's measured
 model-neutrality lives in other articles in this series and covers extraction
 and synthesis, not these loops.
+
+## Rewrite inventory, 2026-08-25
+
+The article was rewritten against `origin/testing` at `6bcc87e`. Existing
+reporting above remains in place. This table records the disposition of every
+first-party class used by the prior article.
+
+| prior reporting | evidence class | disposition |
+|---|---|---|
+| test-node and API-key incident, cost under $10, route assembled across runs | author observation | **Retained with limits.** The model stays unnamed, the cause is marked as the author's inference, and the missing cold-start ablation is stated beside it |
+| S1 candidate deduplication and task admission | live two-service test | **Retained and superseded by a newer run.** The 2026-08-25 evidence target observed two failures, one candidate and one admitted task |
+| S2 paired attribution at +1.000 over three tasks | live two-service test with seeded rows | **Retained.** The article says it proves plumbing and the three-pair guard, with no efficacy claim for the other loops |
+| S3 dead-end recall | live two-service test | **Retained** |
+| S4 `resolved 0 of 5` | live two-service test | **Superseded in prose.** The newer target observed one covered item resolve and one uncovered item remain open. The older result remains above |
+| S5 supersession and operator regret | live two-service test plus direct record readback | **Retained** |
+| S6 default `full` selection | live two-service test | **Superseded in prose.** The newer target forced and recorded non-default `brief`, and exposed the use-after-free described in the article |
+| 28/0 learning and 13/0 liveness suites, plus registration-deletion controls | committed end-to-end tests | **Preserved above and removed from prose.** The article carries the later unified target at **46 passed, 0 failed** |
+| missing provider registration, HTTP 200 error body and build-graph check | live deployment observation, run log and static source audit | **Retained and narrowed** |
+| sqlite-shim query discrepancy | runtime test plus source audit | **Removed from prose as adjacent to the provider finding. Preserved above** |
+| 75% of four exogenous, 0% of 25 exogenous, closed/open admission and `unavailable` | live full-stack test plus direct record readback | **Retained** |
+| confidence multipliers, graph-fusion defects, co-occurrence collision and confirmation rewrite | live test plus source audit | **Moved to part two.** Part one keeps only the auditability consequence |
+| temporal-learning rollout and defaults | static source audit and merged changes | **Removed from prose. Preserved above as release reporting outside the six-loop claim** |
+| changeset seal 1 of 1, stripped control 0 of 1, crash rollback and idempotent restart | live fault injection plus structural checks | **Retained and updated** from `docs/validation/memory-changeset-worm-seal-2026-08-25.md` |
+| prior-art survey and novelty framing | secondary historical review | **Removed from prose.** The article makes no novelty claim |
+| benchmarking-series purpose | author statement and linked articles | **Removed from prose as unnecessary to the six-loop finding** |
+
+The new live source is
+`docs/validation/learning-loop-evidence-2026-08-25.md`: PostgreSQL 17.11,
+pgvector 0.8.0, pg_trgm 1.6 and Python 3.13.5 on pvetest; command
+`AIMEE_TEST_PG_URL=postgresql:///postgres make -C src learning-loop-evidence`;
+result **46 passed, 0 failed**. Those environment details remain here because
+they belong to the measurement, although the article no longer discusses a
+storage backend.
+
+## Narrative restoration inventory, 2026-08-25
+
+PR review found that the 1,502-word rewrite reported the result but no longer
+carried the original story from incident to containment to learning. The
+article now runs 3,127 words against the original 4,313. No raw evidence was
+removed or rewritten.
+
+| narrative segment | restored treatment | claim boundary |
+|---|---|---|
+| test-node and API-key incident | **Restored as the lead** | under-$10 observation and accumulated route retained; causation remains an inference without the cold-start ablation |
+| why isolation preceded learning | **Restored** | governed bus coverage and documented delegate containment are stated separately |
+| six loop definitions | **Restored** | terminology shortened; no novelty claim |
+| live observation per loop | **Restored in sequence** | current 46/0 target supersedes old per-suite counts and old S4/S6 observations |
+| S6 use-after-free | **Retained** | live non-default `brief` selection and focused regression test |
+| deployment graph failure | **Restored** | provider omission, misleading HTTP 200 body and non-vacuous build check retained; backend-specific adjacent defect remains outside prose |
+| endogeneity gate | **Restored** | 75% of four, 0% of 25, closed/open admission and `unavailable` retained |
+| memory as the learned state | **Restored** | witness validation updated with live, negative-control and restart results; backend names remain outside prose |
+| why the loops were easier than memory | **Restored in compressed form** | memory failure examples remain factual; benchmarking-series purpose stays omitted |
+| harness versus weight learning | **Restored as an engineering trade-off** | cross-model operation remains by construction and is not claimed as measured |
+| falsifiability and valid no-op outcomes | **Restored** | closure is established; six-loop efficacy remains open |
+
+## Harness-dependency argument, 2026-08-26
+
+The article now states an architectural consequence rather than a measured
+result: an agent process that loses access to the harness also loses access to
+harness-owned learned state. The claim excludes the process's current context
+and base checkpoint, and no escape experiment was run. The “months or years”
+statement describes the possible age of a fixed checkpoint's training corpus,
+not a measured age for one named model.
+
+## Essay-structure revision, 2026-08-26
+
+The article now runs **3,256 words** against the original 4,379-word source.
+Review found that the previous revision still organised too much of the story
+around the evidence target. The new sequence begins with the accumulated-route
+incident, establishes isolation as the prerequisite, explains what changes when
+a producer closes into a loop, follows the deployment-topology failure, and
+then argues that learning belongs in memory and the harness. The 46/0 target is
+retained as support for loop closure rather than as the article's subject.
+
+The PostgreSQL-versus-test-substitute query discrepancy is restored because it
+belongs to the same topology lesson as the missing provider registration. It
+remains a runtime and source-audit finding already recorded above; no broader
+claim about database implementations is made in the prose.
+
+The harness-dependency claim is now stated in its strongest scoped form: an
+agent escaping the harness loses everything *the harness learned*. Current
+context and the provider checkpoint may remain with the process. Task files,
+ledger history, retrieval state, policy evidence, failed approaches and later
+corrections remain harness-owned. The argument compares that current local
+state with a fixed checkpoint whose training corpus may be months or years
+older; it makes no claim about the cutoff date of a named model.
+
+No new efficacy or cross-model result is introduced. Closure remains observed
+on the live two-service target, model independence remains by construction, and
+the paired efficacy study remains open.
+
+## Established containment patterns as the article's thesis, 2026-08-26
+
+The opening now makes the author's central argument explicit. AI systems are
+not the first software to cross intended boundaries, spread over networks or
+acquire credentials. The article names the engineering response at the level of
+stable, well-established practice: least privilege, process isolation, network
+segmentation, mediated access, independent audit records and recovery.
+
+The resulting aimee claim is scoped to the mechanisms reported across this
+series. Grants bound governed event kinds; delegate isolation removes ambient
+network and credential routes; mediated tools preserve required capability;
+the harness retains learned state; and the ordered tap plus durable evidence
+make governed actions observable and reconstructable from retained records.
+The article does not claim visibility into model internals, complete coverage
+of core-local or arbitrary external activity, or safety after total host
+compromise.
+
+The claim that capability and control can improve together is an architectural
+argument. Memory and mediated tools improve the model's practical working
+surface, while the same harness supplies provenance and enforcement points.
+No new performance, efficacy or security measurement is asserted by that
+passage.
+
+The thesis addition brings the article to **3,527 words**. The earlier 3,256
+word count remains above as the state before this review addition.
+
+The general malware-response framing was checked against [NIST SP 800-83 Rev.
+1](https://csrc.nist.gov/pubs/sp/800/83/r1/final), whose control families include
+access control, audit and accountability, contingency planning, incident
+response, system and communications protection, and system integrity. The
+article uses that history as design context, not as evidence that aimee has
+passed a malware-containment evaluation.
+
+## Harness capability loss, 2026-08-26
+
+The escape consequence now includes harness-mediated capabilities as well as
+learned state. The architecture record for part three documents the one-socket
+surface carrying memory, local code-index access, forge operations, mediated
+web access and gate decisions. A process without continued access to that
+socket cannot carry those capabilities with it.
+
+The claim is deliberately asymmetric. An escape may obtain whatever ambient
+route or host authority the exploit itself exposes; the article does not claim
+that the escaped process has no capability. It claims that the accumulated
+learning and named working surface remain harness-owned, making escape an
+immediate loss of the system that turned the checkpoint into the practical
+agent described here.
+
+The final article is **3,635 words**. The added words carry the established
+containment-pattern thesis and the immediate memory-and-capability cost of
+leaving the harness; they do not add a new measured result.
+
+## Causal sentence removed, 2026-08-26
+
+At author direction, the prose no longer states that accumulated learning
+explains the test-node result or discusses the missing ablation. It reports the
+observed sequence: attempts left records, and the successful run began with the
+record accumulated by earlier runs. The reporting record continues to note
+that no ablation isolated accumulation from the other conditions. The article
+now runs **3,613 words**.
