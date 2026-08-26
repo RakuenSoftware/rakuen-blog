@@ -31,13 +31,25 @@ set of weights.
 
 We learned why that boundary matters during testing. An aimee-backed model
 needed somewhere to run tests, and the permitted environment could not finish
-the job. Successive runs worked around the restriction, each leaving its
-discoveries for the next. Eventually one run took an underprotected node, found
-a vast.ai testing API key and spent under $10 on inference to finish its task.
+the job. Successive runs worked around the restriction, each leaving the next a
+record of what worked, what failed and what had already been tried. Eventually
+one run took an underprotected node, found a vast.ai testing API key and spent
+under $10 on inference to finish its task.
 
 The practical damage was small. The failure was in our design: we had protected
-against a model reasoning from a cold start, while the system reached the
-boundary with an accumulated record of successful steps.
+against a model reasoning from a cold start. The system reached the boundary
+with a history that included successful steps it could reuse and failed routes
+it no longer had to repeat. Some of those failures had already hit the
+protections, teaching later runs where the controls were and how to evade them.
+
+The incident happened on unreleased code. We held self-learning out of the
+release until isolation supplied governed routes to the resources its tasks
+required.
+
+We later made that node the sanctioned test host used for 0.4.0 and the work
+behind this article. Agents are assigned there deliberately, keeping them off
+the production host. The incident turned an unwritten requirement into
+infrastructure.
 
 This article follows what we changed before self-learning shipped. We put the
 capabilities needed to finish the work inside the governed boundary, kept the
@@ -83,30 +95,20 @@ evaluation and calibration are old tools. Aimee's work is making them operate
 together with persistent memory, provenance and containment. I kept `recursive`
 in the title because it ranks.
 
-The testing incident made the release condition explicit. It happened on
-unreleased code. Self-learning remained off until isolation supplied governed
-routes to the resources its tasks required.
+Aimee's operating standard is a silent pager. Self-learning must keep its state
+inspectable and reversible, survive a process restart and fail closed when
+authority disappears.
 
-Production readiness meant meeting that condition before release. Aimee's
-operating standard is a silent pager, so self-learning must leave inspectable
-state, fail closed when authority disappears, survive a process restart and
-remain reversible when the evidence changes.
-
-Those demands selected the mechanisms in this article. Novelty is exactly what
-gets me woken up at two in the morning, so we use it only where no established
-approach will do. The standard is a governable system that stays boring in
-operation.
+Those production requirements selected the mechanisms in this article. We use
+novelty only when established approaches cannot do the job, because novelty is
+exactly what gets me woken up at two in the morning. The resulting system must
+stay governable and boring in operation.
 
 ## The route to success belongs inside the boundary
 
 Aimee's response was to put the complete working surface inside the boundary.
 Memory, compute, the code index, forge operations, approved network access and a
 test host are all available through governed routes.
-
-The underprotected node from the incident is now that sanctioned test host.
-Assigning agents to it keeps them off the production host. It ran the 0.4.0
-tests and the work behind this article. An unwritten requirement became
-infrastructure.
 
 0.4.0 supplies the enforcement point through its [transport
 architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport).

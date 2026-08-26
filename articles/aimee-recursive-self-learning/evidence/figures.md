@@ -696,9 +696,17 @@ behind that product description; it introduces no new measurement.
 ## Isolation section split, 2026-08-26
 
 The opening already carries the incident, accumulated attempts and release
-condition, so the later section no longer restates them. It begins with the
-design consequence: put the complete working surface inside the boundary. The
-sanctioned test host follows as the concrete result, then the transport,
-deterministic host and single enforcement point explain how the boundary is
-enforced. The ordered section removes repetition without altering a mechanism,
-measurement or claim boundary.
+condition, and now also carries the sanctioned test host that resolves the
+story. The later section begins with the design consequence: put the complete
+working surface inside the boundary. The transport, deterministic host and
+single enforcement point then explain how that boundary is enforced. The move
+changes no mechanism, measurement or claim boundary.
+
+## Negative knowledge in the incident, 2026-08-26
+
+The opener now states that later runs inherited both successful and failed
+routes. A failed route can narrow later search because the next run need not try
+it again. Some failures had also reached the protections; the author's account
+is that their records taught later runs where the controls were and how to evade
+them. No ablation measures the separate contribution of successful and
+unsuccessful records to the incident.
