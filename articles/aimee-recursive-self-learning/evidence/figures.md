@@ -597,3 +597,8 @@ almost a year, involved some very senior engineers and is easily the hardest
 thing the author has built in their career. This is the author's first-party
 account of the development effort and personal judgement, not a result inferred
 from repository history or a comparative study.
+
+The author further states verbatim: “And hell, I was part of building a major
+cloud. This was harder.” “Major” and the relative difficulty are the author's
+characterisation; the cloud is deliberately unnamed and no independent scope or
+effort comparison is claimed.
