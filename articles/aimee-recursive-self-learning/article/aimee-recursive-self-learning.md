@@ -56,19 +56,26 @@ Putting a model in an ordinary application process with ambient credentials,
 network access and tool bindings gives behavioural instructions the job that
 process boundaries and capability checks were built to perform.
 
-Aimee applies those older patterns to the LLM harness. The same design also
-improves practical ability. Mediated tools give the model the capabilities its
-task requires through named routes. Memory preserves useful experience across
-runs and checkpoints.
+Aimee applies those older patterns to the LLM harness. There is no fundamental
+engineering reason an AI system cannot be fully governable and auditable while
+its capabilities continue to grow.
 
-An ordered audit path shows which evidence and capability
-shaped an action, while grants and isolation decide what the action can reach.
+Each new capability can have a named interface, defined authority, explicit
+failure behaviour and an audit record. A new tool still gives the model
+something useful it could not do before. Better memory still improves its work
+across sessions. The surrounding system gains the ability to observe, revoke
+and repair those capabilities without taking them away.
 
-Capability and control can improve together. The harness gives the model better
-context and better tools while making governed actions observable,
-reconstructable from the record and bounded at their enforcement points.
-Aimee's techniques are familiar
-engineering practices assembled for a component that learns through use.
+Building it that way is harder. It requires more engineering work and a higher
+level of engineering skill than handing the model ambient network access,
+credentials and direct tool bindings. The difficulty belongs to the
+architecture, not to some fundamental conflict between capability and control.
+
+An ordered audit path shows which evidence and capability shaped an action.
+Grants and isolation decide what the action can reach. Provenance, lifecycle
+and reversal keep learned state maintainable. Aimee's techniques are familiar
+engineering practices assembled for a component that learns through use and
+keeps that learning in a form which can be used by any model.
 
 The six loops in this article therefore stayed off until 0.4.0. Their producing
 halves existed while we tested them, with the consumers disabled. The incident
