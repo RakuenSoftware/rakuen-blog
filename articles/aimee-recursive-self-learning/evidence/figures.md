@@ -358,3 +358,12 @@ At author direction, the provider-registration failure, build-graph lint and
 SQL-fixture discrepancy no longer appear in article one. They remain preserved
 in this reporting record as implementation evidence, but they interrupt the
 essay's argument about containment, accumulated learning and the harness.
+
+## Production-built framing restored, 2026-08-26
+
+The introduction again states the author's account that aimee was built in
+production, for production. The passage uses that provenance to explain the
+design criterion: inspectable state, fail-closed authority, restart survival
+and reversibility carry more weight than novelty or an isolated interesting
+result. It is an author statement about the system's development context, not a
+measured comparison with research systems.

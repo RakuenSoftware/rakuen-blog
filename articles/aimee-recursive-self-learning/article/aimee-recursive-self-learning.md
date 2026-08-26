@@ -84,6 +84,16 @@ The title keeps the term used in our proposal. Here, recursive self-learning
 means the system applies outcomes to the machinery that will evaluate its next
 attempt. It is self-learning in the ordinary sense.
 
+Aimee was built in production, for production. A research result can end with
+an interesting finding.
+
+Production carries the result into the next release,
+the next model, an upgrade, an incident and a support call at two in the
+morning. A loop here has to leave inspectable state, fail closed when an
+authority is unavailable, survive process restart and be reversible when the
+evidence changes. Those demands selected the mechanisms in this article more
+than novelty did.
+
 All of it answers to one goal: an AI system that is auditable, governable, and
 will not wake an engineer at two in the morning. The incident above is what the
 first two are for. Everything else in these three articles is an account of
