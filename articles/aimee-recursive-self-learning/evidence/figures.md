@@ -576,3 +576,16 @@ restored verbatim. Its wording carries the intended distinction between the
 proposal's title, ordinary self-learning as a decades-old feedback loop, and
 the candid reason `recursive` remains in the title. The surrounding production
 criterion rewrite is unchanged.
+
+## Model-sharing section split, 2026-08-26
+
+The 837-word model-and-user section contained two complete arguments. It is now
+split into **One learned history can serve many models and users** and **Only
+the harness can make learning governable**, at approximately 450 and 360 words.
+The uniqueness claim opens the second section because it applies to the full
+harness shape rather than shared storage alone.
+
+The light refinement removed a repeated announcement that all six loops close
+and folded the checkpoint-age consequence into the escape comparison. The
+article moved from **3,416 to 3,387 words**. No reporting or mechanism was
+removed; the split changes navigation and paragraph pressure only.
