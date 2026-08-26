@@ -255,8 +255,7 @@ whole system.
 
 To our knowledge, aimee is the only harness to have attempted this full shape
 and made it work. Building it took almost a year and involved many very senior
-engineers. It is the hardest system we have built. We helped build a major
-cloud; aimee was harder.
+engineers. It is the hardest system we have built.
 
 If an agent process leaves the harness, it loses everything the harness
 learned. It keeps only its current context and whatever access it found. Task
