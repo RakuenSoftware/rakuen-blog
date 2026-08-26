@@ -325,12 +325,24 @@ Counterfactual reward follows that distinction. A variant changing the output
 only establishes influence. Paired runs are needed to learn whether it changed
 the outcome.
 
-## Learning like this has to live in the harness
+## One learned history can serve many models and users
 
 Weights generalise across situations more broadly than a ledger of rows.
 Harness learning pays a retrieval cost on every session and leaves the
 checkpoint's raw reasoning ability unchanged. That is the strongest case for
 putting continual learning in weights.
+
+Learning in the weights belongs to the model instance that acquired it. Put two
+copies of the same model on different machines and let each learn from local
+work, and their weights begin to describe different histories. They become two
+different learned models even though they began from the same checkpoint.
+
+Sharing that learning means distributing and coordinating the changed weights.
+A provider's next checkpoint does not contain those local changes, and a switch
+to another model leaves them with the old one. Training the same experience
+into the replacement creates another model-specific result. A self-learner that
+forgets whenever its base model improves works against the reason for having
+self-learning at all.
 
 The harness buys a different set of properties. A learned row has an identity,
 date, evidence chain, fate and deletion path. An operator can inspect its
@@ -343,17 +355,60 @@ extend far beyond one fact. A bad memory changeset can be named, inspected and
 reversed while the rest of the accumulated state remains in place. Provenance
 survives the correction.
 
-The harness also separates accumulated learning from a particular checkpoint.
-A task file synthesised from failure does not depend on which model failed, and
-a ledger row does not encode a producing model. Swap the model and those
-artifacts remain. Model independence follows from that construction; the six
-loops have not been rerun across a model set.
+The harness separates accumulated learning from both the checkpoint and the
+machine running it. A task file synthesised from failure does not depend on
+which model failed, and a ledger row does not encode a producing model. Two
+model instances on different machines can receive the same failed approaches,
+operator corrections and task-specific evidence instead of growing apart.
 
-Checkpoint turnover makes that separation valuable. Learning welded into
-weights creates a choice between the better new model and the history
-accumulated by the old one. Harness state moves across that change. The next
-checkpoint inherits the same failed approaches, operator corrections and
-task-specific evidence on its first run.
+The same deployment shares learning across users through one knowledge service
+behind its per-user servers. Each request carries user identity, and query-time
+scope separates active-project and workspace records from shared or global
+knowledge.
+
+Shared knowledge can improve later work for another enrolled user. Any model
+those servers load can use the same permitted accumulated record.
+
+The deployment creates two useful layers. Each user retains local memory from
+their own work. A workspace can hold the memory of a team, while shared or
+global scope can carry approved knowledge across an organisation or company.
+
+Legal, engineering and sales can contribute to one governed knowledge base
+while keeping group-specific context inside its scope. A contract limit, an
+implementation constraint and a customer commitment can meet in later work
+without losing their source or access rules. Aimee can unify groups around the
+same accumulated institutional memory instead of making each group teach a
+separate model the same company again.
+
+To my knowledge, aimee is the only harness to have attempted this full shape
+and made it work. Local user memory and shared institutional memory feed the
+same model-independent learning record across machines. Every change retains
+its scope and source, and an operator can reverse it.
+
+Our position is simple. Only a harness that owns execution, authority, memory
+and the audit path can make an agent observable and governable as a system
+property. True self-learning and fully persistent memory depend on those two
+properties.
+
+A memory library sees only the calls made to it. It has no authority over the
+model's network access, credentials, tools or alternate state paths, so it
+cannot stop the model going around it. Its log may describe every call it
+received accurately while omitting the action that mattered.
+
+Complete observation needs an enforcement point outside the agent. Trustworthy
+history needs an audit record outside the agent's authority, with a witness
+another component can check. A library can provide storage, and an agent
+framework can connect it to a workflow. Neither owns that whole path.
+
+The harness does. It controls which actions can leave the model's environment,
+records governed work before routing it and commits memory changes with their
+witnesses. The learner cannot switch off those mechanisms. Only the harness can
+make self-learning governable and observable across the whole system.
+
+The models may produce different answers from that record. They still begin
+with the same history. A model update adds the new checkpoint's capabilities
+without resetting the learning, and changing models changes the reasoner
+without discarding what the system already knows.
 
 The dependency runs in the other direction too. If an agent process leaves the
 harness, it loses everything the harness learned. The process may retain its
@@ -381,9 +436,10 @@ current, local learning for stale general capability. The containment boundary
 also holds the useful state the agent needs to keep improving.
 
 Weights-based continual learning buys structural generalisation and ties the
-result to a checkpoint. Harness learning buys portability and auditability at
-the cost of retrieval. Given the rate at which checkpoints change, we chose
-portability.
+result to one learned model. Harness learning buys portability, sharing and
+auditability at the cost of retrieval. Given the rate at which checkpoints
+change and the number of model instances and users the learning has to serve,
+we chose the harness.
 
 Harness learning stays inside a deployment boundary another component can
 inspect and disable. The opening incident gave us the design criterion: build a
