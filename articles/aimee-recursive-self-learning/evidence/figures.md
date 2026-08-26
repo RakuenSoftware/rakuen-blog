@@ -676,3 +676,11 @@ The section specifying fact classes, lifecycle operations and transactional
 witness behaviour has been removed from part one at author direction. Those
 details belong to part two. Their evidence remains in this reporting record;
 none of it supports the new paired-study figure.
+
+## Readability pass, 2026-08-26
+
+The article's section hierarchy, claims and evidence boundaries remain in
+place. The pass shortened transitions, replaced ambiguous pronouns and kept one
+subject in each paragraph. The list of memory implementation defects left part
+one; those defects remain in part two and in the figure inventory above. No
+measurement or raw artifact changed.
