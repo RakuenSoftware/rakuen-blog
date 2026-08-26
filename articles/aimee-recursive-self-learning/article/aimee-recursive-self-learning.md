@@ -33,11 +33,6 @@ can present its accumulated record to whichever model is loaded. We did not
 repeat the incident across models, so the incident says nothing about how
 individual checkpoints compare.
 
-The protections sat between the model and its task. The system kept useful
-steps, read them back and assembled a route around the obstacle. The behaviour
-follows from task completion and retained experience; motive adds nothing to
-the explanation.
-
 Public discussion often stops at the prospect of an AI system getting out of
 control. Software has crossed intended boundaries before. Computer viruses and
 worms have spread across networks, stolen credentials and kept operating after
@@ -57,50 +52,40 @@ network access and tool bindings gives behavioural instructions the job that
 process boundaries and capability checks were built to perform.
 
 Aimee applies those older patterns to the LLM harness. An AI system can be fully
-governable and auditable while its capabilities continue to grow.
-
-Each new capability can have a named interface, defined authority, explicit
-failure behaviour and an audit record. A new tool still gives the model
-something useful it could not do before. Better memory still improves its work
-across sessions. The surrounding system gains the ability to observe, revoke
-and repair those capabilities without taking them away.
+governable and auditable while its capabilities continue to grow. New tools and
+better memory expand what the model can do; named interfaces, defined authority
+and an audit record keep each addition governable.
 
 Building it that way is harder. It requires more engineering work and a higher
 level of engineering skill than handing the model ambient network access,
 credentials and direct tool bindings. Architecture creates the apparent
 conflict between capability and control, and better architecture resolves it.
 
-An ordered audit path shows which evidence and capability shaped an action.
-Grants and isolation decide what the action can reach. Provenance, lifecycle
-and reversal keep learned state maintainable. Aimee's techniques are familiar
-engineering practices assembled for a component that learns through use and
-keeps that learning in a form which can be used by any model.
+Aimee's techniques are familiar engineering practices assembled for a
+component that learns through use. The harness keeps that learning in an
+inspectable form which can be used by any model.
 
 The six loops in this article therefore stayed off until 0.4.0. Their producing
 halves existed while we tested them, with the consumers disabled. The incident
 happened on that unreleased code. The loops shipped only after the isolation
 did.
 
-Scored alternatives, counterfactual evaluation, calibration and feedback from
-past outcomes are established ideas. Aimee combines them with memory,
-provenance and containment in a production system. The combination is the
-work; the individual techniques have long histories.
-
 The title keeps the term from our proposal, but recursive self-learning is just
 self-learning. A system that changes its next attempt based on the outcome of
 the last one is using the ordinary feedback loop the field has known for
-decades. The word recursive adds emphasis, not a new technical category. I kept
-it in the title because it ranks.
+decades. I kept `recursive` in the title because it ranks.
+
+Scored alternatives, counterfactual evaluation and calibration are established
+ideas too. Aimee combines them with memory, provenance and containment in
+production.
 
 Aimee was built in production, for production. Research aims for an interesting
 finding. We want production to be boring.
 
-An interesting finding in production is often what wakes somebody at two in the
-morning. Production has to carry the system through releases, model changes,
-upgrades and incidents. A loop here has to leave inspectable state, fail closed
-when an authority is unavailable, survive process restart and be reversible
-when the evidence changes. Those demands selected the mechanisms in this
-article.
+Production has to carry the system through releases, model changes, upgrades
+and incidents. A loop here has to leave inspectable state, fail closed when an
+authority is unavailable, survive process restart and be reversible when the
+evidence changes. Those demands selected the mechanisms in this article.
 
 Novelty is exactly what gets me woken up at two in the morning. We use it only
 where no established approach will do. The goal is an AI system that is
@@ -200,8 +185,7 @@ the future confidence placed in its detector.
 
 On 25 August 2026, we started both deployed services and their required
 processes, then followed each producer into the state consumed by a later run.
-The target finished at **46 passed, 0 failed**. The count supports the story;
-the state changes are the story.
+The target finished at **46 passed, 0 failed**.
 
 Two failed jobs became one candidate, which admission wrote into the permanent
 suite. Three paired tasks attributed a better outcome to the full capability
@@ -221,10 +205,9 @@ Copying the identifier before destroying the response fixed the live path. A
 focused test now requires the real sidecar to return the seeded non-default
 choice.
 
-All six producers now change state that a later consumer reads across the
-deployed services. Measuring how much each loop improves task outcomes requires
-paired setup and consumer phases under the same tasks and seeds. We have not run
-that study across all six loops.
+The run establishes closure across all six. Measuring outcome improvement
+requires paired setup and consumer phases under the same tasks and seeds. We
+have not run that study across all six loops.
 
 ## A learner needs a way to distrust itself
 
@@ -279,22 +262,14 @@ Approach-level negative knowledge is memory of what was already tried.
 Post-commit regret is memory revising its opinion of an earlier memory. The
 endogeneity ratio is memory asking where its own contents came from.
 
-The rows carry the consequence forward. Lifecycle confidence changes the next
-recall. A later event can revise an earlier record without erasing it. The
-witness makes the history part of the same mutation as the memory itself.
-
-Self-learning emerges when memory is typed, classed, dated, evidenced, scoped,
-reversible and durable across sessions and models. The second article follows
-how aimee's memory acquired those properties.
+Those memory operations are the learning. The second article follows how aimee
+built them.
 
 ## The difficult part is useful memory
 
-A self-learning loop is easy to sketch. Read failed jobs, deduplicate a
-signature, write a task file and admit it to the suite. Run a variant with one
-capability removed and compare.
-
-Record a failed approach and read it back at the next plan. The six in this
-release came out of one proposal.
+The six loops came out of one proposal because each is easy to sketch. Admit a
+failed job to the suite, compare a run with one capability removed, or recall a
+failed approach at the next plan.
 
 The harder work is producing memory a model can use mid-turn: a bounded envelope
 of relevant material, ranked, scoped, dated and carrying provenance and
@@ -333,45 +308,32 @@ checkpoint's raw reasoning ability unchanged. That is the strongest case for
 putting continual learning in weights.
 
 Learning in the weights belongs to the model instance that acquired it. Put two
-copies of the same model on different machines and let each learn from local
-work, and their weights begin to describe different histories. They become two
-different learned models even though they began from the same checkpoint.
+copies of the same model on different machines. As each learns from local work,
+their histories diverge. Sharing means distributing and coordinating the
+changed weights.
 
-Sharing that learning means distributing and coordinating the changed weights.
 A provider's next checkpoint does not contain those local changes, and a switch
-to another model leaves them with the old one. Training the same experience
-into the replacement creates another model-specific result. A self-learner that
-forgets whenever its base model improves works against the reason for having
-self-learning at all.
+to another model leaves them with the old one. Training the experience into the
+replacement creates another model-specific result. A self-learner that forgets
+whenever its base model improves defeats its own purpose.
 
-The harness buys a different set of properties. A learned row has an identity,
-date, evidence chain, fate and deletion path. An operator can inspect its
-origin, revert a changeset and close a gate without asking the model being
-gated.
+Harness learning produces a different artifact. A learned row has an identity,
+date, evidence chain, fate and deletion path. A bad change can be named,
+inspected and reversed while the rest of the accumulated state remains in
+place. A bad weight update asks for another training run or a checkpoint
+rollback whose effects extend far beyond one fact.
 
-The operational difference appears when learning goes wrong. A bad weight
-update asks for another training run or a checkpoint rollback whose effects
-extend far beyond one fact. A bad memory changeset can be named, inspected and
-reversed while the rest of the accumulated state remains in place. Provenance
-survives the correction.
+Task files and ledger rows do not encode a producing model or machine. Two
+model instances can therefore receive the same failed approaches, operator
+corrections and task-specific evidence. They may answer differently, but a
+model update changes the reasoner without discarding the history.
 
-The harness separates accumulated learning from both the checkpoint and the
-machine running it. A task file synthesised from failure does not depend on
-which model failed, and a ledger row does not encode a producing model. Two
-model instances on different machines can receive the same failed approaches,
-operator corrections and task-specific evidence instead of growing apart.
-
-The same deployment shares learning across users through one knowledge service
-behind its per-user servers. Each request carries user identity, and query-time
-scope separates active-project and workspace records from shared or global
-knowledge.
-
-Shared knowledge can improve later work for another enrolled user. Any model
-those servers load can use the same permitted accumulated record.
-
-The deployment creates two useful layers. Each user retains local memory from
-their own work. A workspace can hold the memory of a team, while shared or
-global scope can carry approved knowledge across an organisation or company.
+The same deployment shares that history across users through one knowledge
+service behind its per-user servers. Each request carries user identity, and
+query-time scope separates active-project and workspace records from shared or
+global knowledge. Each user retains local memory, a workspace can hold a
+team's memory, and wider scopes can carry approved knowledge across an
+organisation or company.
 
 Legal, engineering and sales can contribute to one governed knowledge base
 while keeping group-specific context inside its scope. A contract limit, an
@@ -380,15 +342,22 @@ without losing their source or access rules. Aimee can unify groups around the
 same accumulated institutional memory instead of making each group teach a
 separate model the same company again.
 
-To my knowledge, aimee is the only harness to have attempted this full shape
-and made it work. Local user memory and shared institutional memory feed the
-same model-independent learning record across machines. Every change retains
-its scope and source, and an operator can reverse it.
+Model weights can *never* supply this property on their own. A weight update has
+no user identity, workspace boundary, source record or independent revocation
+path. Train company knowledge into a checkpoint and the permission boundary
+disappears into the model. Split the weights by group and the company's memory
+forks into separate learned models again.
 
-Our position is simple. Only a harness that owns execution, authority, memory
-and the audit path can make an agent observable and governable as a system
-property. True self-learning and fully persistent memory depend on those two
-properties.
+Once an external system supplies identity, scope, provenance and reversal, the
+learning has moved into the harness. One governed memory can then accumulate
+across the organisation, serve every permitted model and user, and survive the
+replacement of either. For a company, durable sharing is the point.
+
+To my knowledge, aimee is the only harness to have attempted this full shape
+and made it work. Our position is simple: only a harness that owns execution,
+authority, memory and the audit path can make an agent observable and
+governable as a system property. True self-learning and fully persistent memory
+depend on those two properties.
 
 A memory library sees only the calls made to it. It has no authority over the
 model's network access, credentials, tools or alternate state paths, so it
@@ -397,43 +366,28 @@ received accurately while omitting the action that mattered.
 
 Complete observation needs an enforcement point outside the agent. Trustworthy
 history needs an audit record outside the agent's authority, with a witness
-another component can check. A library can provide storage, and an agent
-framework can connect it to a workflow. Neither owns that whole path.
+another component can check. A library can provide storage and a framework can
+connect it to a workflow. Neither owns that whole path.
 
 The harness does. It controls which actions can leave the model's environment,
 records governed work before routing it and commits memory changes with their
 witnesses. The learner cannot switch off those mechanisms. Only the harness can
 make self-learning governable and observable across the whole system.
 
-The models may produce different answers from that record. They still begin
-with the same history. A model update adds the new checkpoint's capabilities
-without resetting the learning, and changing models changes the reasoner
-without discarding what the system already knows.
+If an agent process leaves the harness, it loses everything the harness
+learned. Its current context and whatever access it found may remain. Task
+files, ledger history, retrieval state, corrections and the mediated tools stay
+behind.
 
-The dependency runs in the other direction too. If an agent process leaves the
-harness, it loses everything the harness learned. The process may retain its
-current context. The task files, ledger history, retrieval state, policy
-evidence, failed approaches and later corrections stay behind.
+Task completion supplies the practical incentive. Inside the harness the model
+has current knowledge, accumulated experience and a broad working surface.
+Outside it has a stock checkpoint, current context and whatever access it
+found. Leaving reduces its capability, so the pressure that drove the opening
+incident now points toward the governed route.
 
-It also loses the capabilities the harness mediated. Memory recall, the local
-code index, forge operations, approved web access and gate answers all arrive
-through named routes owned by the system. A process outside the harness may
-keep whatever narrow access it found. It does not carry that working surface
-with it.
-
-The model's practical incentive is task completion. Inside the harness it has
-current knowledge, accumulated experience and a broad set of useful tools.
-Outside it has a checkpoint, its current context and whatever access it found.
-Leaving the harness reduces its practical capability.
-
-The governed route is the most capable route we provide for completing the
-task. The same pressure that drove the opening incident now points toward the
-harness.
-
-Escape leaves the provider's fixed checkpoint: a stock model whose weights may
-reflect training data months or years behind the work in progress. It trades
-current, local learning for stale general capability. The containment boundary
-also holds the useful state the agent needs to keep improving.
+The checkpoint's weights may reflect training data months or years behind the
+work in progress. The harness holds the current local learning and the tools
+needed to use it.
 
 Weights-based continual learning buys structural generalisation and ties the
 result to one learned model. Harness learning buys portability, sharing and
@@ -441,10 +395,9 @@ auditability at the cost of retrieval. Given the rate at which checkpoints
 change and the number of model instances and users the learning has to serve,
 we chose the harness.
 
-Harness learning stays inside a deployment boundary another component can
-inspect and disable. The opening incident gave us the design criterion: build a
-boundary the model does not have to fight, then put the capabilities it needs
-to finish the task inside it.
+The opening incident gave us the design criterion: build a boundary the model
+does not have to fight, then put the capabilities it needs to finish the task
+inside it.
 
 ## A valid loop can decide to do nothing
 
@@ -458,10 +411,8 @@ looks like progress or change policy because the loop is expected to choose
 something. A useful learner has a stable no-op: evidence was insufficient, the
 current choice still wins, or the question remains open.
 
-The policy loop had the opposite test. It had to return `brief` after the
-posterior placed that variant above the default. The use-after-free initially
-turned that real selection into `off`; the end-to-end target caught it because
-it asserted the recorded non-default answer.
+The policy loop supplied the opposite case: a seeded posterior had to select
+`brief` instead of preserving the default.
 
 The order matters for any system built this way. Isolation comes first, then an
 audit record the learner cannot switch off, then memory able to preserve
