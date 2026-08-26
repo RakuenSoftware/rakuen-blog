@@ -378,3 +378,11 @@ increases practical ability while provenance, lifecycle and reversal keep the
 new state maintainable. This is an architectural argument grounded in the
 mechanisms reported across the series, not a measured comparison with an
 ambient-authority implementation.
+
+## Recursive-self-learning terminology restored, 2026-08-26
+
+The introduction again makes the original terminology point: recursive
+self-learning is ordinary self-learning, and updating a later attempt from the
+outcome of an earlier one is a decades-old feedback-loop shape. The article
+does not claim a new technical category or novelty for that mechanism. The
+historical prior-art note above remains the support and claim boundary.

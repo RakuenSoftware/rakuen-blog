@@ -87,9 +87,11 @@ past outcomes are established ideas. Aimee combines them with memory,
 provenance and containment in a production system. The combination is the
 work; the individual techniques have long histories.
 
-The title keeps the term used in our proposal. Here, recursive self-learning
-means the system applies outcomes to the machinery that will evaluate its next
-attempt. It is self-learning in the ordinary sense.
+The title keeps the term from our proposal, but recursive self-learning is just
+self-learning. A system that changes its next attempt based on the outcome of
+the last one is using the ordinary feedback loop the field has known for
+decades. The word recursive adds emphasis, not a new technical category. I kept
+it in the title because it ranks.
 
 Aimee was built in production, for production. A research result can end with
 an interesting finding.
@@ -387,12 +389,6 @@ The containment judgement follows from the same choice. Harness learning stays
 inside a deployment boundary another component can inspect and disable. The
 opening incident moved the design away from presumed motive and toward bounded
 reach plus the resources the task genuinely requires.
-
-The evidence supports two narrower claims. Each loop closes on the live
-deployment, leaving an inspectable row, response or file. The accumulated state
-is model-independent by construction because the task files and ledger rows do
-not belong to a checkpoint. Cross-model loop runs and a full paired efficacy
-study remain future work.
 
 ## A valid loop can decide to do nothing
 
