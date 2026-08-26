@@ -87,17 +87,18 @@ completed 1,001-row rerun supplies the speculation-off side.
 
 The two compilations merged here restated findings measured in more depth
 elsewhere in the series. Each is now reported once, in the article holding its
-evidence, and named in this article's closing section rather than reprinted:
+evidence. The live article links the published destinations and records the rest
+as unpublished:
 
 | finding | now reported in |
 |---|---|
-| startup time inside throughput; orphaned clients; rented-fleet accounting; timeout diagnoses | `the-parallelism-limit-was-never-vram` |
-| sequence position; borrowed 0.0105 threshold; cross-card identity | `repeatable-is-not-identical` |
-| shared slots against speculation, and self-reproduction under concurrency | `speculative-decoding-was-free`, already published |
-| suppressed reasoning pass; withdrawn +0.084 constant | `one-sentence-turned-the-reasoning-off` |
-| factless strata; scorer null categories displayed as 0.0 | `the-corpus-is-the-experiment` |
-| bit-width ladder and the QAT deltas | `which-quant-beats-how-many-bits`, held back for further testing |
-| 31B and 12B QAT tie, recall against invention | `local-llm-fact-extraction-head-to-head`, already published, which reports the same recall-against-restraint trade |
-| sparse throughput and resident size | `the-parallelism-limit-was-never-vram` |
+| startup time inside throughput; orphaned clients; rented-fleet accounting; timeout diagnoses | `the-parallelism-limit-was-never-vram`, publication-ready and unpublished |
+| sequence position; borrowed 0.0105 threshold; cross-card identity | `repeatable-is-not-identical`, publication-ready and unpublished |
+| shared slots against speculation, and self-reproduction under concurrency | [Local LLMs: Speculative Decoding](https://rakuensoftware.com/blog/speculative-decoding-was-free), published |
+| suppressed reasoning pass; withdrawn +0.084 constant | `one-sentence-turned-the-reasoning-off`, publication-ready and unpublished |
+| factless strata; scorer null categories displayed as 0.0 | `the-corpus-is-the-experiment`, publication-ready and unpublished |
+| bit-width ladder and the QAT deltas | [Quantization Barely Mattered Until Two Bits](https://rakuensoftware.com/blog/which-quant-beats-how-many-bits), published |
+| 31B and 12B QAT tie, recall against invention | [Local LLMs: Fact Extraction Head to Head](https://rakuensoftware.com/blog/local-llm-fact-extraction-head-to-head), published, which reports the same recall-against-restraint trade |
+| sparse throughput and resident size | `the-parallelism-limit-was-never-vram`, publication-ready and unpublished |
 
 No external source, interview or vendor claim carries a material conclusion.
