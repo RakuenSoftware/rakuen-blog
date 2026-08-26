@@ -101,7 +101,10 @@ morning. Production has to carry the system through the next release, the next
 model, upgrades and incidents. A loop here has to leave inspectable state, fail
 closed when an authority is unavailable, survive process restart and be
 reversible when the evidence changes. Those demands selected the mechanisms in
-this article more than novelty did.
+this article.
+
+Novelty had no role in the choice. We use something novel only
+where no established approach will do.
 
 All of it answers to one goal: an AI system that is auditable, governable, and
 will not wake an engineer at two in the morning. The incident above is what the

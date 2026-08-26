@@ -386,3 +386,11 @@ self-learning is ordinary self-learning, and updating a later attempt from the
 outcome of an earlier one is a decades-old feedback-loop shape. The article
 does not claim a new technical category or novelty for that mechanism. The
 historical prior-art note above remains the support and claim boundary.
+
+## Novelty criterion clarified, 2026-08-26
+
+The production-built framing now states the author's rule precisely: novelty
+had no role in selecting the mechanisms described in article one. A novel
+approach is used only where no established approach will do. This supersedes
+the earlier reporting phrase that production demands merely carried “more
+weight” than novelty, which implied novelty still influenced those choices.
