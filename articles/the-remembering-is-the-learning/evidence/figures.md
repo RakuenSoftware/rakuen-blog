@@ -342,18 +342,22 @@ or broader guarantee was added.
 
 ## Self-learning measurements moved from part one, 2026-08-26
 
-The article now carries the deployed **46 checks, 46 passed** result and the
-paired outcome study previously reported in part one. The checks come from
+PR #87 moved both the deployed **46 checks, 46 passed** result and the paired
+outcome study from Article One into this article. The 2026-08-27 reconstruction
+separates them by claim. The broad deployed-system result returns to Article
+One. This article retains the paired study because it tests whether remembered
+failure changes a later choice.
+
+The 46-check source remains
 `docs/validation/learning-loop-evidence-2026-08-25.md`. The paired study comes
 from [Aimee PR #2859](https://github.com/RakuenSoftware/aimee/pull/2859),
 including `docs/validation/self-learning-efficacy-2026-08-26.md`. Both valid raw
-runs are preserved in part one's
+runs are preserved in Article One's
 [`evidence/raw/self-learning-efficacy-2026-08-26/`](../../aimee-recursive-self-learning/evidence/raw/self-learning-efficacy-2026-08-26/)
 directory.
 
 | figure in article | result |
 |---|---:|
-| deployed self-learning checks | 46/46 passed |
 | repeated tasks without the learned failure record | 12/24 |
 | repeated tasks with the learned failure record | 24/24 |
 | novel tasks, both conditions | 12/24 |

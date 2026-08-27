@@ -132,6 +132,19 @@ documents to rank and which memories to retain. In 0.4.0 the harness can also
 learn from its own evaluation and policy records. Those changes affect later
 work.
 
+That claim has two different tests. A deployed two-service target passed all
+46 checks of the self-learning system. In a paired study with the starting
+choices held fixed, 12 of 24 repeated tasks succeeded without the learned
+failure record and 24 of 24 succeeded with it. On 24 new tasks with no matching
+history, both conditions remained at 12 of 24.
+
+The fixed consumer isolates whether recalled failure changed a later choice.
+It does not measure open-ended model performance. [Part Two explains the memory
+mechanism behind the
+result](https://rakuensoftware.com/blog/the-remembering-is-the-learning); its
+[reporting record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-remembering-is-the-learning/evidence/figures.md)
+carries the full study design, replication and limitations.
+
 Learning from those records creates a circularity: Aimee could judge a new
 proposal against a standard it had already changed. An additional gate
 therefore measures how much of the proposal's evidence originates outside

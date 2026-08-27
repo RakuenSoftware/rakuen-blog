@@ -38,8 +38,10 @@ correction, learned vocabulary, identity, recall, scope, synthesis, demotion,
 provenance and the closing design rule. Backend selection remains outside the
 article.
 
-Revised on 2026-08-26 to carry the deployed self-learning checks and paired
-outcome study moved from part one.
+Revised on 2026-08-26 to carry self-learning measurements moved from part one.
+The 2026-08-27 reconstruction returned the broad 46-check system result to
+Article One. This article retains the paired failed-approach outcome because it
+directly tests whether remembered failure changes a later choice.
 
 Revised again on 2026-08-26 to stand alone. The opening now gives the lifecycle
 details before stating the claim, and references to the other articles have been

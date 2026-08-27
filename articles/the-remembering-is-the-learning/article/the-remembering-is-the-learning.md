@@ -34,20 +34,16 @@ Each apparent storage feature changes what the system can trust, retrieve or
 revise next. This article follows that machinery from admission through
 correction and recall.
 
-Two measurements bound that account. The first checks the deployed machinery;
-the second isolates whether a recalled failure changes a later choice.
-
-On 25 August 2026, we started both deployed services and their required
-processes. The target ran **46 checks** of the deployed self-learning system.
-All 46 passed.
+One measurement bounds that account by isolating whether a recalled failure
+changes a later choice.
 
 On 26 August, we ran 24 synthetic recovery tasks through the deployed system
 twice, holding the starting choices fixed. Without the learned failure record,
 12 succeeded. With it available, all 24 succeeded. On 24 new tasks with no
 matching history, both phases remained at 12 of 24.
 
-The second measurement uses a fixed consumer. It isolates the learned record
-and does not measure model performance.
+The measurement uses a fixed consumer. It isolates the learned record and does
+not measure model performance.
 
 ## A fact is born into a class, and authority picks the class
 

@@ -18,29 +18,34 @@ weights and users.
 
 Each article is readable alone. Article Zero owns the product and business
 case, the complete testing incident, deployment options, intended-use framing
-and headline results. Article One retains the technical consequence and the
-conceptual argument. Article Two owns the detailed self-learning measurements
-and memory machinery. Article Three owns the full transport implementation.
+and business-level headline results. Article One retains the technical
+consequence, the conceptual argument and the headline evidence that
+self-learning operates and changes a later outcome. Article Two owns the full
+measurement design, replication record, limitations and memory machinery.
+Article Three owns the full transport implementation.
 
 ## Claim boundary
 
-The article makes five architectural claims:
+The article makes six bounded claims:
 
 1. Self-learning lets later work inherit useful results and failed approaches,
    which changes the boundary a model harness has to enforce.
-2. Internal testing showed that self-learning was unsafe without critical
+2. The deployed self-learning paths passed 46 of 46 checks, and a paired
+   fixed-consumer study found that recalled failure changed repeated-task
+   outcomes while leaving novel-task outcomes unchanged.
+3. Internal testing showed that self-learning was unsafe without critical
    boundaries, and Rakuen built those boundaries before release.
-3. The route required to finish work belongs inside governed interfaces rather
+4. The route required to finish work belongs inside governed interfaces rather
    than behind a barrier the model must route around.
-4. Harness learning can persist across model and weight changes while identity
+5. Harness learning can persist across model and weight changes while identity
    and scope let one history serve multiple authorised users.
-5. System-wide observability requires the harness to own execution, authority,
+6. System-wide observability requires the harness to own execution, authority,
    memory and the audit path.
 
 The article makes no market claim, population-effect claim or claim that every
-learned item improves an outcome. Detailed efficacy, cross-model and cost
-measurements remain in the reporting records and the articles whose arguments
-need them.
+learned item improves an outcome. Article Two and the reporting records retain
+the full efficacy method and limitations; cross-model and cost measurements
+remain with the articles whose arguments need them.
 
 ## Reconstruction
 
@@ -49,8 +54,10 @@ historical snapshot wholesale:
 
 - PR #83 at `48f10a17e9` supplies the fuller self-learning argument after the
   counted-loop framing was removed.
-- PR #87 at `956185a0` supplies the explicit scope decisions that moved the
-  46-check result, paired study and detailed memory machinery to Article Two.
+- PR #87 at `956185a0` supplies the scope decision that moved the detailed
+  measurement treatment and memory machinery to Article Two. The headline
+  results remain in Article One because they directly support its central
+  self-learning claim.
 - PRs #91 through #98 supply the approved reader orientation, structure,
   incident ownership, company voice and ending.
 - PR #104's implementation report and PR #108's hybrid rewrite are not used as
