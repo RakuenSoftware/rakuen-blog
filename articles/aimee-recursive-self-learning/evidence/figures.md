@@ -18,6 +18,30 @@ validates. The learning work in 0.4.0 spans many branches. The loop figures come
 from the recursive self-improvement work, merged to `testing` on 2026-08-24 as
 `877e994c2f`.
 
+## Article restoration inventory, 2026-08-27
+
+PR #104 mistakenly replaced the agreed conceptual Article One with a
+count-driven implementation report. This inventory records the disposition of
+every first-party result in that report before the public article is restored.
+The source artifacts and the detailed entries below remain append-only.
+
+| result or observation | public disposition | evidence disposition |
+|---|---|---|
+| One live target observed the six implementation paths and reported 46 passed, 0 failed | Remove from the article and its README. It is implementation-liveness evidence, not the article's business or technical thesis. | Retain the full result and per-path breakdown below. |
+| The live policy-selection target exposed a use-after-free | Remove from the article. | Retain the defect and corrective-test record below. |
+| Failed-approach recall changed repeated-task results from 12/24 to 24/24 while novel tasks remained 12/24 in both arms; an independent fresh-database replicate was byte-identical | Retain, compressed. This is the controlled causal evidence for the article's self-learning claim. | Retain the complete design, result, exact McNemar value and replication record below. |
+| A Qwen-derived failed approach changed later Luna and Terra work; Luna still failed, learned Terra passed both graders, and a learned Qwen retry still failed | Retain, compressed and explicitly exploratory. | Retain all positive and negative outcomes, controls and limitations below. |
+| Three matched large failures used 34.1 percent fewer tokens while all six runs still failed | Remove from Article One. Article Zero carries the non-technical cost claim. | Retain the valid pairs, quarantined first attempt and cost calculation below. |
+| Retry handoff comparison, learned-row shape, Jaccard floor, recall bound and policy arms | Remove most implementation detail. Retain only the architectural distinction between workflow-local handoff and durable self-learning. | Retain the full comparison and implementation details below. |
+| A test run reached an underprotected machine and a testing API key outside the permitted path | Retain only the technical boundary lesson, causal uncertainty and link to Article Zero. | Retain the first-party account and its limitations below. |
+| A missing production registration, build-graph check and provider-fixture blind spot | Remove from the restored article. | Retain the deployment defect and correction below. |
+| The endogeneity gate reported open, closed and unavailable under the recorded conditions | Retain as a short explanation of why self-produced evidence cannot judge itself. | Retain the full gate design and recorded states below. |
+| Immutable memory audit produced 1/1 rows normally and 0/1 with sealing removed; crash recovery sealed once | Retain, compressed, as evidence that learned changes remain independently inspectable. | Retain the complete fault-injection result below. |
+| Harness learning can coexist with changing models and weight updates | Retain as an architectural claim, not an efficacy result. | Retain the claim boundary and open test below. |
+| Aimee is a company knowledge platform offered as managed cloud or self-hosted; named professional fields are intended uses, not measured production breadth | Retain with the corrected product scope. | Retain the correction history below. |
+
+No raw artifact is removed or rewritten by this restoration.
+
 ## The incident moved to Article Zero
 
 **First-party account by the author.** The test run in which an aimee-backed
