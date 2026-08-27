@@ -15,6 +15,12 @@ This file previously read "Not yet published" after the article had already
 shipped, which kept `tools/publish.py` offering it as a ready export. Exporting
 it again would have overwritten a live post.
 
+Two edits landed after it went live. The batching claim was corrected: MCP does
+not forbid several tool calls in one message, and what we observed is that no
+model we tested emitted them. A same-day correction notice was then removed,
+because it was written and applied on the publication date and so announced a
+draft edit as a change to something readers had already seen.
+
 ## The claim this rests on
 
 A stateless protocol re-sends the whole accumulated conversation on every turn.

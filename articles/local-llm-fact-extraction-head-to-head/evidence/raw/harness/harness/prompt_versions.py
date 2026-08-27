@@ -90,6 +90,65 @@ def v4clause(text=None):
     return s.replace(FINAL_LIVE, FINAL_V4, 1)
 
 
+REASON_LIVE = "Reason first if it helps;"
+REASON_FORCED = ("Reason first on every note, including the ones where the answer "
+                 "looks immediate;")
+
+
+def forcereason(text=None):
+    """COUNTERFACTUAL. Removes the model's discretion over whether to reason.
+
+    The live prompt says "if it helps", so a note answered without reasoning is a
+    choice the model made. E4B at Q6 makes it on about 13% of notes and the same
+    weights at Q4 and Q8 almost never do, which says the build decides rather than
+    the note. What no observation can say is whether those notes were cheap to
+    skip or expensive: the model picks which ones go silent, so "silent notes
+    score well" is equally consistent with reasoning being unnecessary there and
+    with the model skipping the notes it happens to already know.
+
+    Forcing reasoning breaks that tie, because the same note is then answered both
+    ways. Only the conditional clause changes; everything else, including the
+    output-format sentence that suppressed reasoning under v4, is untouched.
+
+    The wording is a confound and the design absorbs it: notes that reasoned under
+    BOTH prompts are the control. If those move as much as the forced-silent ones,
+    the effect is the sentence rather than the reasoning, and the comparison is
+    dead.
+    """
+    s = text if text is not None else live()
+    _require(s, REASON_LIVE, "conditional reasoning clause")
+    return s.replace(REASON_LIVE, REASON_FORCED, 1)
+
+
+REASON_INSISTENT = (
+    "Before the JSON, write at least one sentence of reasoning about this note. "
+    "Do this on every note without exception, including notes where the answer is "
+    "obvious and notes where there is nothing to extract;")
+
+
+def forcereason2(text=None):
+    """THE ESCALATION. Asks harder than forcereason, to price the instruction.
+
+    forcereason moved 67 of 134 silent notes and left the other 67 exactly as they
+    were, which is either a sentence that was not firm enough or a decision the
+    prompt does not reach. One wording cannot tell those apart, and the article
+    drawn from that run says the decision sits below the level a sentence reaches
+    — a claim a stronger sentence can falsify.
+
+    So this one removes the escapes the previous wording left open. It names a
+    minimum ("at least one sentence"), forbids the exemption the model might infer
+    ("including notes where the answer is obvious"), and covers the empty case
+    ("nothing to extract"), which matters because a note with no durable fact is
+    the one place skipping reasoning looks most defensible.
+
+    It replaces the whole conditional clause rather than layering, so the rendered
+    prompt has one instruction about reasoning and not two competing ones.
+    """
+    s = text if text is not None else live()
+    _require(s, REASON_LIVE, "conditional reasoning clause")
+    return s.replace(REASON_LIVE, REASON_INSISTENT, 1)
+
+
 def noclause(text=None):
     """THE TEST. Removes the output-format constraint entirely.
 
@@ -139,7 +198,8 @@ def v7(text=None):
 
 
 VERSIONS = {"v5": v5, "v6": v6, "v7": v7, "v4clause": v4clause,
-            "noclause": noclause}
+            "noclause": noclause, "forcereason": forcereason,
+            "forcereason2": forcereason2}
 
 
 def render(version):
