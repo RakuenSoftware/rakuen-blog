@@ -29,8 +29,8 @@ Novelty is outside the claim.
 
 ## Status
 
-Published 2026-08-26. Live at
-[rakuensoftware.com/blog/aimee-recursive-self-learning](https://rakuensoftware.com/blog/aimee-recursive-self-learning).
+Draft. Accidentally published on 2026-08-26 and retired from the public site on
+2026-08-27. The source and evidence remain here for revision.
 
 The recursive self-improvement work merged to `testing` on 2026-08-24 as
 `877e994c2f`. All the learning work described is in 0.4.0.
