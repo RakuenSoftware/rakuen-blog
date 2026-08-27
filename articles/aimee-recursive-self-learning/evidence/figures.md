@@ -153,6 +153,11 @@ self-hosted. Rakuen offers both a managed cloud service and a self-hosted
 option. None of the technical results in this article depends on which
 deployment option a customer chooses.
 
+The same correction pass expanded the opening product description. The Aimee
+knowledge base holds documents, code, facts, decisions, evidence and work
+history; durable learning is one capability of that larger system. This is a
+product-scope correction with no effect on the technical results.
+
 ## Test environment for the live loop figures
 
 This is the node from the incident. It was unused, the model took it, and it was

@@ -10,7 +10,7 @@ detail and first-party validation.
 
 ## Teaser cut inventory, 2026-08-27
 
-This pass reduced Article Zero from 1,439 words to 564. No first-party result
+This pass reduced Article Zero from 1,439 words to 581. No first-party result
 was removed from this reporting record.
 
 | prior article material | evidence class | disposition |
@@ -30,7 +30,7 @@ was removed from this reporting record.
 
 | claim | source | evidence class |
 |---|---|---|
-| aimee is an open-source layer around coding tools and models, offered as a managed cloud service or self-hosted | `aimee/README.md`, read at `testing` commit `6bcc87e` on 2026-08-26, plus Rakuen operator correction on 2026-08-27 | first-party product documentation and operator statement |
+| aimee is an open-source company knowledge platform containing documents, code, facts, decisions and work history, offered as a managed cloud service or self-hosted | `aimee/README.md`, `docs/KNOWLEDGE.md`, `docs/ARCHITECTURE.md`, read at `testing` commit `6bcc87e` on 2026-08-26, plus Rakuen operator correction on 2026-08-27 | first-party product documentation and operator statement |
 | one `aimee-server` assists one person and one `aimee-kb` can serve a corpus, team or company | `aimee/README.md`, `docs/ARCHITECTURE.md`, `docs/DEPLOYMENT.md` | first-party product and deployment documentation |
 | memory carries source, scope, confidence, time and correction state | `docs/KNOWLEDGE.md`; detailed first-party audit in `articles/the-remembering-is-the-learning/evidence/figures.md` | shipped design plus live and static audit |
 | code maps, model routing, bounded delegates, execution controls and one audit path are shipped together | `aimee/README.md`, `docs/STATUS.md`, `docs/CODE_INTELLIGENCE.md`, `docs/DELEGATES.md`, `docs/SECURITY.md` | first-party product documentation; per-feature evidence remains in the technical articles and repository validation reports |

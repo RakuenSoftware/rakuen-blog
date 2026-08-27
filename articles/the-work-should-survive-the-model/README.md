@@ -48,7 +48,7 @@ current deployment or measured efficacy in each field.
 ## Status
 
 Draft, updated 2026-08-27. Not published. A teaser pass cut the article from
-1,439 words to 564. It keeps the business premise, three headline returns, the
+1,439 words to 581. It keeps the business premise, three headline returns, the
 company-memory consequence and the incident that set the boundary. Technical
 method, buyer guidance, licensing detail and comparison inventories remain in
 the reporting record or later articles.
@@ -66,6 +66,11 @@ intended use.
 
 Corrected on 2026-08-27: an earlier draft described Aimee only as self-hosted.
 Rakuen offers both a managed cloud service and a self-hosted option.
+
+Corrected on 2026-08-27: the opening described only the learning loop and made
+Aimee read as a memory add-on. It now identifies the whole product as a company
+knowledge platform containing documents, code, facts, decisions and work
+history. Self-learning is one capability inside that system.
 
 Split from the opening incident and conceptual product argument in Article 1.
 Article 1 remains the technical deep dive and retains every measured loop,

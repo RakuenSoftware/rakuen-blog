@@ -92,6 +92,11 @@ intended use.
 Corrected on 2026-08-27: an earlier draft described Aimee only as self-hosted.
 Rakuen offers both a managed cloud service and a self-hosted option.
 
+Corrected on 2026-08-27: the opening described Aimee through its memory and
+execution controls without naming the full knowledge platform. It now places
+documents, durable memory, code knowledge, model routing and execution inside
+that larger product.
+
 A second large-repository campaign adds matched failure-cost evidence. Across
 three valid task pairs, local Qwen consumption fell from 1,819,904 to 1,199,552
 tokens, a 34.1 percent reduction. All six retained runs failed the hidden
