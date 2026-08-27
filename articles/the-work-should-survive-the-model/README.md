@@ -9,8 +9,8 @@ a Terra hidden-grade completion crossover.
 ## The series
 
 0. **Overview** — this one. The company keeps the work when the model changes.
-1. **[Self-learning](../aimee-recursive-self-learning/)** — six learning loops
-   reach their consumers on a live deployment.
+1. **[Self-learning](../aimee-recursive-self-learning/)** — failures become
+   lessons that change later work across models.
 2. **[Memory](../the-remembering-is-the-learning/)** — how learned records are
    promoted, forgotten and corrected.
 3. **[Architecture](../everything-crosses-one-transport/)** — the boundary that
@@ -48,7 +48,7 @@ current deployment or measured efficacy in each field.
 ## Status
 
 Draft, updated 2026-08-27. Not published. A teaser pass cut the article from
-1,439 words to 628. It keeps the business premise, three headline returns, the
+1,439 words to 620. It keeps the business premise, three headline returns, the
 company-memory consequence and the incident that set the boundary. Technical
 method, buyer guidance, licensing detail and comparison inventories remain in
 the reporting record or later articles.
