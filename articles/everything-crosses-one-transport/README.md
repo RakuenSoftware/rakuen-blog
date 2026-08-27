@@ -1,12 +1,15 @@
 # Everything Crosses One Transport
 
-Part three of three. Each daemon routes supervised inter-module work through
-one typed transport. The measured dispatch figure is a 134 ns median; dispatch
-and audit enqueue each have a 1,000 ns enforced ceiling. Core-local calls and
-external traffic sit outside that coverage.
+Article Three of four, and the third technical entry. Each daemon routes
+supervised inter-module work through one typed transport. The measured dispatch
+figure is a 134 ns median; dispatch and audit enqueue each have a 1,000 ns
+enforced ceiling. Core-local calls and external traffic sit outside that
+coverage.
 
 ## The series
 
+0. **[Overview](../the-work-should-survive-the-model/):** the non-technical
+   introduction and business case.
 1. **[Self-learning](../aimee-recursive-self-learning/):** why isolation comes
    before learning and what later work inherits.
 2. **[Memory](../the-remembering-is-the-learning/):** how stored evidence
@@ -40,7 +43,7 @@ Revised on 2026-08-26 to stand alone. Cross-article references now state the
 incident, memory operation or failure rule needed at that point, while the
 series links remain optional context.
 
-The opening now also includes the project-level description shared by all three
+The opening now also includes the project-level description shared by all four
 articles: what aimee is, the operational problem it solves, and the role of
 self-learning memory from one user to a company, model and user scope, and
 governed execution.

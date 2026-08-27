@@ -4,10 +4,18 @@ Every figure in
 [`the-remembering-is-the-learning.md`](../article/the-remembering-is-the-learning.md),
 and where it came from.
 
-Part two of three. Part one is `articles/aimee-recursive-self-learning/`, part three
+Article Two of four, after the non-technical
+`articles/the-work-should-survive-the-model/` and technical Article One in
+`articles/aimee-recursive-self-learning/`. Article Three is
 `articles/everything-crosses-one-transport/`. Figures shared with those pieces
-are marked shared, and recorded in their records too, so one number is not
-logged three times as if independently sourced.
+are marked shared and recorded in their records too, so one number is not
+logged several times as if independently sourced.
+
+Corrected on 2026-08-27: the opening now describes Aimee as the complete
+open-source company knowledge platform, available as a managed cloud service or
+self-hosted. Self-learning is one capability inside that product. The product
+sources and scope boundary are recorded in Article Zero's reporting record.
+This correction changes no technical result below.
 
 ## Provenance of this article
 

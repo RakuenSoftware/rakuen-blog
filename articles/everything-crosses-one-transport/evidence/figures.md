@@ -4,10 +4,17 @@ Every figure in
 [`everything-crosses-one-transport.md`](../article/everything-crosses-one-transport.md),
 and where it came from.
 
-Part three of three. The self-learning article is
-`articles/aimee-recursive-self-learning/`; the memory article is the second. Figures
-shared with those pieces are noted here and in theirs, so a number is not
-recorded twice as if independently sourced.
+Article Three of four. The non-technical introduction is
+`articles/the-work-should-survive-the-model/`; the self-learning article is
+`articles/aimee-recursive-self-learning/`; the memory article is Article Two.
+Figures shared with those pieces are noted here and in theirs, so a number is
+not recorded several times as if independently sourced.
+
+Corrected on 2026-08-27: the opening now describes Aimee as the complete
+open-source company knowledge platform, available as a managed cloud service or
+self-hosted. Self-learning is one capability inside that product. The product
+sources and scope boundary are recorded in Article Zero's reporting record.
+This correction changes no technical result below.
 
 Evidence is first-party and lives in the public
 [aimee repository](https://github.com/RakuenSoftware/aimee) rather than in this

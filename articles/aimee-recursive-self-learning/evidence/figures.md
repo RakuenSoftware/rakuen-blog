@@ -1,8 +1,8 @@
 # Reporting record and figure provenance
 
-Every figure in
-[`aimee-recursive-self-learning.md`](../article/aimee-recursive-self-learning.md), and where it
-came from.
+The source and disposition of every first-party result used by, removed from or
+considered for
+[`aimee-recursive-self-learning.md`](../article/aimee-recursive-self-learning.md).
 
 Article one of four, after the non-technical
 [overview](../../the-work-should-survive-the-model/). The memory article is
@@ -18,31 +18,35 @@ validates. The learning work in 0.4.0 spans many branches. The loop figures come
 from the recursive self-improvement work, merged to `testing` on 2026-08-24 as
 `877e994c2f`.
 
-## PR #83 restoration inventory, 2026-08-27
+## Article One reconstruction inventory, 2026-08-27
 
-PR #83 at `48f10a17e9` is the editorial baseline. Its article contained 2,797
-words and had already replaced the count-based framing with self-learning. PR
-#104 later replaced that article with a different implementation report. PR
-#108 initially made the same mistake by writing a new article instead of
-restoring the reviewed one.
+No single historical snapshot contains the intended article. PR #83 at
+`48f10a17e9` preserves the fuller self-learning argument after the counted-loop
+framing was removed. PR #87 at `956185a0` records the later instruction to move
+the 46-check result, paired study and detailed memory machinery to Article Two.
+PRs #91 through #98 contain approved reader feedback, alongside cuts that do not
+define a new source wholesale. PR #104 replaced the article with an
+implementation report, and PR #108 combined the pre-feedback PR #83 prose with
+later experiments.
 
-This pass starts with the exact PR #83 article. It removes only material now
-owned by Article Zero, applies the agreed title terminology and adds later
-technical evidence without replacing the article's structure or argument.
+This reconstruction follows that lineage by editorial decision. It retains the
+conceptual self-learning argument, applies the approved feedback and keeps each
+body of reporting with the article whose claim needs it.
 
-| PR #83 or later material | public disposition | evidence disposition |
+| prior or later material | public disposition | evidence disposition |
 |---|---|---|
 | Full opening incident account, including the testing key, spend and immediate impact | Remove from Article One. Article Zero owns the complete non-technical account. Article One retains the technical boundary consequence and a link. | Retain the first-party account and causal limits below. |
-| Product and business case, deployment options, intended professional fields and headline return figures | Leave in Article Zero. Do not duplicate them in Article One. | Retain their sources in Article Zero's reporting record. |
-| Older security controls, governed execution, self-produced evidence, useful memory, model-independent history and company scope | Restore from PR #83. These are Article One's technical argument. | Retain the original source map below. |
-| The 46-check deployed-system result | Restore from PR #83 without reintroducing a counted taxonomy. | Retain the full implementation-path result below. |
-| Failed-approach recall changed repeated-task results from 12/24 to 24/24 while novel tasks remained 12/24 in both conditions | Add after the PR #83 baseline as the later controlled efficacy result. | Retain the complete design, exact McNemar value and replication record below. |
-| Qwen-derived failure changed later Luna and Terra work; learned Terra passed, learned Luna and the learned Qwen retry still failed | Add as a bounded exploratory result because Article Zero points here for the technical evidence. | Retain every positive and negative outcome below. |
-| Three matched large failures used 34.1 percent fewer tokens while every run still failed | Add as technical support for Article Zero's headline, explicitly as cost containment rather than capability improvement. | Retain the valid pairs, quarantined first attempt and calculation below. |
+| Product and business case, deployment options, intended professional fields and headline return figures | Leave in Article Zero. Article One keeps only the compact product orientation required for a standalone entry. | Retain their sources in Article Zero's reporting record. |
+| Older security controls, governed execution, self-produced evidence, useful memory, model-independent history and company scope | Retain in Article One. These are its technical argument. | Retain the original source map below. |
+| The 46-check deployed-system result | Keep out of Article One under the explicit PR #87 scope decision. | Retain the full implementation-path result below and with Article Two's measurement record. |
+| Failed-approach recall changed repeated-task results from 12/24 to 24/24 while novel tasks remained 12/24 in both conditions | Keep the study conditions and counts out of Article One. Its argument retains the standard that outcome improvement requires a matched comparison. | Retain the complete design, exact McNemar value and replication record below and with Article Two. |
+| Qwen-derived failure changed later Luna and Terra work; learned Terra passed, learned Luna and the learned Qwen retry still failed | Keep out of Article One. Article Zero uses the result as a bounded business example. | Retain every positive and negative outcome below and in Article Zero's record. |
+| Three matched large failures used 34.1 percent fewer tokens while every run still failed | Keep out of Article One. Article Zero owns the headline cost result. | Retain the valid pairs, quarantined first attempt and calculation below and in Article Zero's record. |
 | Implementation diary material introduced after PR #83, including the use-after-free and missing provider registration | Keep out of the restored article. | Retain the defect and corrective-test records below. |
-| Full incident-based uniqueness and engineering-effort claim | Keep out of Article One. Article Zero owns the market claim; neither article needs the engineering résumé aside. | Retain the historical prose in Git. |
+| Market uniqueness claim | Keep out of Article One. Article Zero owns the market claim. | Retain its source boundary in Article Zero's record. |
+| Building Aimee took almost a year, involved many very senior engineers and is the hardest system Rakuen has built | Retain in Article One as the deliberate authorial statement approved in PRs #97 and #98. | First-party company statement; retain its historical wording in Git. |
 
-No raw artifact is removed or rewritten by this restoration.
+No raw artifact is removed or rewritten by this reconstruction.
 
 ## The incident moved to Article Zero
 
@@ -52,9 +56,9 @@ vast.ai testing API key is the author's own account of Rakuen's own system, own
 key and own spend, including the **under $10** figure.
 
 The full account now lives in Article Zero, where the incident carries the
-product consequence. This article keeps only the compact context required by
-the isolation result. The prior reporting remains recorded here rather than
-disappearing with the prose.
+product consequence. Article One states the isolation result and links to the
+account without repeating the event. The prior reporting remains recorded here
+rather than disappearing with the prose.
 
 That is the source, and the byline names it. No artifact is attached and none is
 required: the account criticises the author's own protections and deflates its
@@ -65,16 +69,15 @@ reason to dispute.
 No date is given because nothing turns on one. The claim is that this happened
 during testing, before the 0.4.0 isolation work, which the article states.
 
-**The public article does not attribute the cause.** It states that successive
-runs inherited what earlier attempts had learned, then draws the engineering
-requirement for a boundary outside the learner. It does not claim that the
-accumulated history caused the later result.
+**Article One does not attribute the cause.** It states the general property
+that later work can inherit useful results and failed approaches, then draws the
+engineering requirement for a boundary outside the learner. It does not claim
+that accumulated history caused the incident.
 
-On the record: the incident happened during the testing of those loops, on code
-that never reached a release. The article's statement that the loops "stayed off
-until 0.4.0" describes shipped releases, and testing code is where they ran. The
-article now says so in place, because the earlier wording invited the reading
-that nothing was learning at the time.
+On the record: the incident happened during testing on code that never reached
+a release. Article Zero carries that sequence. Article One states the resulting
+release decision: Rakuen built the critical boundaries before releasing
+self-learning.
 
 Not on the record: that the accumulation is what carried the model past the
 protections. No paired run was made against a harness with the accumulated
@@ -82,9 +85,8 @@ record withheld. The reporting record preserves that limitation even though
 the public article no longer makes the causal attribution.
 
 The model is unspecified deliberately. Nothing about the account depends on
-which model it was, and the author's position is that it should theoretically
-have been possible with any of them. The article says so rather than leaving the
-omission to look like discretion.
+which model it was. Article One does not discuss the model because it does not
+repeat the incident.
 
 ## Sources
 
@@ -111,33 +113,32 @@ changes the disposition of five claims:
 
 | item | evidence class | disposition |
 |---|---|---|
-| "everything gating it is disabled" | static source audit at the article pin | **Corrected.** `config_learning_synthesize_enabled()` reads a default-zero value, and six `learning_implicit_*` flags remain in the rollout-readiness programme. The restored article no longer organises its claim around that count. It retains the 46-check target only as liveness evidence. |
+| "everything gating it is disabled" | static source audit at the article pin | **Corrected.** `config_learning_synthesize_enabled()` reads a default-zero value, and six `learning_implicit_*` flags remain in the rollout-readiness programme. The reconstructed article does not organise its claim around that count and leaves the 46-check target in the reporting record. |
 | the missing provider registration | live two-service test plus build-graph source audit (`PROD`, `PR`) | **Retained and narrowed.** The provider-injection unit fixtures could not reproduce this deployment omission. The heading now carries the actual fix: a check derived from the build graph. |
 | loop closure as evidence of self-learning benefit | live liveness tests (`S0S1`, `S2S6`, `FULL`, `PROD`, `PR`) | **Limited, then partly superseded on 2026-08-27.** Closure remains observed. `EFFICACY` now establishes benefit for the failed-approach loop only; the other five loops have not met that standard. |
 | the cause of the test-node incident | first-party account plus the article's account of inherited history | **Moved and scoped.** Article Zero carries the full observed account. Neither public article attributes the later result to the accumulated history. Article One retains only the isolation requirement the incident produced. |
 | a memory mutation leaves an inseparable audit record | static call-path audit plus live PostgreSQL fault injection (`WORM`) | **Added.** The C mutation API already sealed in `fm_commit_finish()`; all five SQL-owned close paths now do the same. PR #2847 has landed. The live arm sealed 1 of 1 memory changesets and the call-stripped control sealed 0 of 1. |
 
-Three figures are surfaced together in the memory section rather than left only
-in this ledger: the confidence multiplier, proposal 8001's two observed fates,
-and the live WORM seal/control counts. Their original entries and sources remain
-below.
+The reconstructed Article One carries no test figure. The confidence
+multiplier, proposal 8001's observed fates and the live WORM seal/control counts
+belong to the memory article. Their original entries and sources remain below.
 
 ## Efficacy update, 2026-08-27
 
-This pass adds results without removing any earlier reporting or negative
-outcome.
+These results remain part of the reporting record without being inserted into
+the reconstructed Article One.
 
 | result | source | disposition |
 |---|---|---|
-| repeated-task score 12/24 with synthesis withheld and 24/24 with self-learning enabled | `EFFICACY` | **Published as causal efficacy for production failed-approach synthesis and recall.** The consumer is deterministic, so this is not presented as a model-reasoning benchmark. |
-| novel-task score 12/24 in both conditions | `EFFICACY` | **Published as the unrelated-task control.** |
-| 12 treatment-only successes, zero control-only, exact two-sided McNemar p = 0.00048828125 | `EFFICACY` | **Published exactly.** |
-| second fresh-DB run produced byte-identical `results.csv`; both valid runs passed 12 harness checks | `EFFICACY` | **Published as reproducibility for the deployed test path.** Three invalid earlier attempts remain retained in the source report and excluded for stated setup/harness reasons. |
-| local Qwen source failure stopped after 512,545 provider tokens with no patch | `CROSS` | **Published as the source of the transferred lesson.** The 11.2% comparison to an earlier plain failure belongs to Article Zero's ROI record. |
-| Luna learned arm completed a full server build and focused-test execution that its base arm did not; final grade failed in both | `CROSS` | **Published as a capability and verification-depth crossover with the negative final grade in place.** |
-| Terra base failed the hidden grade; learned arm passed visible and hidden grades and authored a regression-sensitive test | `CROSS` | **Published as a one-task completion crossover.** |
-| learned retry on the originating Qwen model failed after 519,662 tokens | `CROSS` | **Published as a negative result.** The lesson was not universally sufficient. |
-| different source/user/session/model references reinforce one row and similar-goal recall ignores source identity inside one shared KB | `src/tests/test_approach_memory.c` in PR #2873 | **Published as storage-path evidence.** Authorisation selects the accessible KB/scope; source identity remains provenance. |
+| repeated-task score 12/24 with synthesis withheld and 24/24 with self-learning enabled | `EFFICACY` | **Preserved for Article Two and the reporting record.** The consumer is deterministic, so this is not a model-reasoning benchmark. |
+| novel-task score 12/24 in both conditions | `EFFICACY` | **Preserved as the unrelated-task control.** |
+| 12 treatment-only successes, zero control-only, exact two-sided McNemar p = 0.00048828125 | `EFFICACY` | **Preserved exactly.** |
+| second fresh-DB run produced byte-identical `results.csv`; both valid runs passed 12 harness checks | `EFFICACY` | **Preserved as reproducibility for the deployed test path.** Three invalid earlier attempts remain retained in the source report and excluded for stated setup/harness reasons. |
+| local Qwen source failure stopped after 512,545 provider tokens with no patch | `CROSS` | **Preserved as the source of the transferred lesson and summarised in Article Zero.** The 11.2% comparison to an earlier plain failure belongs to Article Zero's ROI record. |
+| Luna learned arm completed a full server build and focused-test execution that its base arm did not; final grade failed in both | `CROSS` | **Preserved as a capability and verification-depth crossover with the negative final grade in place.** |
+| Terra base failed the hidden grade; learned arm passed visible and hidden grades and authored a regression-sensitive test | `CROSS` | **Preserved as a one-task completion crossover and summarised in Article Zero.** |
+| learned retry on the originating Qwen model failed after 519,662 tokens | `CROSS` | **Preserved as a negative result.** The lesson was not universally sufficient. |
+| different source/user/session/model references reinforce one row and similar-goal recall ignores source identity inside one shared KB | `src/tests/test_approach_memory.c` in PR #2873 | **Preserved as storage-path evidence.** Authorisation selects the accessible KB/scope; source identity remains provenance. |
 
 The controlled Luna and Terra arms received the Qwen lesson unchanged and
 directly. They did not retrieve it through separate live user identities. The
@@ -149,8 +150,9 @@ or Terra arms. No cost figure is inferred from their trajectories.
 
 ### Retry-handoff distinction
 
-The article's comparison between a workflow-local failure summary and Aimee's
-failed-approach learning is an architectural comparison, not a market census.
+The reporting record's comparison between a workflow-local failure summary and
+Aimee's failed-approach learning is an architectural comparison, not a market
+census.
 `APPROACH` establishes the concrete row shape, source provenance, normalised
 token set, 0.5 Jaccard floor, bounded pool, maximum of eight recalled matches,
 repetition count, unrelated-goal silence and `off`/`brief`/full policy arms.
@@ -161,11 +163,11 @@ folded or condensed with scoped recovery pointers. No economizer saving is
 attributed to the Terra pilot: its controlled arms did not traverse that full
 production path and exposed no provider usage objects.
 
-The article keeps the experimental seam explicit. `CROSS` delivered the fixed
-Qwen lesson directly to Luna and Terra. `APPROACH` separately tests recording
-under one user/session/model source, reinforcement under another, similar-goal
-recall and unrelated-goal exclusion. Joining those pieces end to end remains a
-confirmatory experiment, not a completed claim.
+The reporting record keeps the experimental seam explicit. `CROSS` delivered
+the fixed Qwen lesson directly to Luna and Terra. `APPROACH` separately tests
+recording under one user/session/model source, reinforcement under another,
+similar-goal recall and unrelated-goal exclusion. Joining those pieces end to
+end remains a confirmatory experiment, not a completed claim.
 
 Rakuen reports current production use. This is a first-party operator statement
 with customer identities and usage records withheld. Legal, accounting,
@@ -200,9 +202,12 @@ infrastructure, so these are our numbers on our bench.
 The extension is pgvector 0.8.0; 0.4.0 moves the default to pgvectorscale.
 Nothing above is a vector-search measurement.
 
-## Figures
+## Historical figure inventory
 
-| figure in article | source | note |
+The reconstructed Article One carries no test count. This table remains the
+source map for figures used by earlier drafts and companion articles.
+
+| first-party figure | source | note |
 |---|---|---|
 | 7 modules on the KB, 17 on the server | `PROD`, `PR` | every module each daemon is granted and has a binary for |
 | one shared `aimee-kb` behind many per-user `aimee-server` instances; the loops were measured against a single pair | author, corroborated by `docs/DEPLOYMENT.md` and `docs/SECURITY.md` on `testing` | **Corrected 2026-08-24.** Earlier drafts described the two services without their multiplicity, which reads as one-for-one. DEPLOYMENT.md: "Server and one KB are declared together... The one-KB Compose files are deployment profiles, not the fleet limit." SECURITY.md carries per-user write grants and KB-signed user identity. Shared with part three, which carries the reach-versus-capability distinction |
@@ -213,7 +218,7 @@ Nothing above is a vector-search measurement.
 | learning loops e2e 28 passed / 0 failed | `PR` | supersedes the 20/0 in `PROD` for an earlier revision of the suite |
 | module liveness e2e 13 passed / 0 failed | `PROD`, `PR` | |
 | deleting the KB registration turns them red at 25/28 and 9/13 | `PR` | proof against the bug |
-| four pieces placed where they could not reach their own data; one answered 200 to every refused signal | `FULL`, `S2S6`, `PROD` | **shared** with the architecture article, which states the split's cost and points here. The detail moved to this article on 2026-08-24: the incident belongs with the learning work, and the e2e and registration-deletion rows above are its evidence |
+| four pieces placed where they could not reach their own data; one answered 200 to every refused signal | `FULL`, `S2S6`, `PROD` | **Historical Article One evidence.** A 2026-08-24 draft brought this detail into Article One. The reconstruction removes the implementation diary from the public article; the source record remains here, and the architecture article owns the split's implementation cost. |
 | the classifier registered in the daemon and not the KB; the `WARN` and the 200 | `PROD`, `PR` | quoted verbatim from the run log. Carried over from the architecture article's record on 2026-08-24 with the prose |
 | the seam lint check, its self-test deleting the real registration line, and the non-zero exit when zero pairs resolve | `PR` | `scripts/check_provider_registration.py`; the self-test is what stops the guard passing vacuously |
 | the sqlite shim accepts SQL Postgres rejects; a two-hop neighbour query survived as a Postgres syntax error | `PR` | the same wall on the database side |
@@ -235,14 +240,13 @@ Nothing above is a vector-search measurement.
 | 134 ns dispatch, 82 ns audit publish, the ceilings and the merge gate | architecture. No longer referenced here at all after the 2026-08-24 scope pass |
 | grants, principal refs, the supervised-process count, the capture tap | architecture |
 | the bus inventory, validation in both directions, the OIDC instance | architecture |
-| ~~the provider-registration lint check and the sqlite-shim defects~~ | **returned to this article, 2026-08-24.** They moved out with the architecture split and came back with the prose: the incident is about the learning work, and its evidence was already recorded here. The architecture article keeps the split's cost and points here |
+| ~~the provider-registration lint check and the sqlite-shim defects~~ | **Historical disposition, superseded by the reconstruction.** They returned to an Article One draft on 2026-08-24. They now remain only in this reporting record; the public article keeps the boundary consequence, not the implementation diary. |
 | the evidence and lifecycle layer, the five memory seams, per-seam failure behaviour | memory |
 | write authority derived from authentication | memory |
 
-The article still refers to the containment property, because its opening
-incident raises the question and a reader should not have to leave the piece to
-get the answer. Those sentences are sourced from the architecture record rather
-than restated here.
+The article still refers to the containment property because the self-learning
+argument requires the answer. Those sentences are sourced from the architecture
+record rather than restated here.
 
 **Trimmed 2026-08-24.** That summary had grown into a second account of the
 mechanism: `--network none`, the bind-mounted socket, grant semantics and the
@@ -258,16 +262,12 @@ the third article. `134 ns` no longer appears in this article at all.
 
 ## The prior-art claim
 
-The article states that a system improving its own improvement process is an old
-and ordinary idea, citing genetic algorithms running a scored population since
-the 1970s, training loops adjusting against a measure, and hyperparameter search
-tuning the tuner. That is general knowledge about the field rather than a
-first-party finding, and it is stated to bound the article's own claim rather
-than to support it: the technique is not new, the claim is that these six loops
-close on this deployment.
-
-No comparison is made to any other system's implementation, and none of the
-figures in this article depend on the prior-art paragraph being right.
+Earlier drafts bounded the article's claim with examples of self-improvement as
+an old idea: genetic algorithms running a scored population, training loops
+adjusting against a measure and hyperparameter search tuning the tuner. The
+reconstructed article keeps only the narrower statement that scored
+alternatives, counterfactual evaluation and calibration are established tools.
+It makes no novelty comparison.
 
 ## Claims that are not measurements
 
@@ -277,30 +277,32 @@ figures in this article depend on the prior-art paragraph being right.
 | the loops came out of one proposal, the memory took a measurement campaign | author, and this blog |
 | the benchmarking series was undertaken to establish that the memory is good enough to build on | statement of intent behind the published series; the articles are the artifact |
 
-The "Learning like this has to live in the harness" section is argument. It carries no
-figures. The claim that a continuously learning model will get outside its
-harness is a judgement and is written as one.
+The harness-governance sections are argument and carry no test figure.
 
 ## The strong claims, and what settles them
 
-**Recursive self-learning is on.** Falsifiable per loop: a signal that reaches
-no sink, an admitted candidate that produces no task file the harness will load,
-a superseded proposal whose fate does not change, an endogeneity ratio computed
+**Self-learning operation.** Falsifiable per path: a signal that reaches no
+sink, an admitted candidate that produces no task file the harness will load, a
+superseded proposal whose fate does not change, an endogeneity ratio computed
 from no ledger, or a declared policy arm the sampler never returns. Each is
 covered by an assertion in `tests/e2e/learning-loops-pg-e2e.sh` or
-`tests/e2e/module-liveness-pg-e2e.sh`, both run on a real two-service stack.
+`tests/e2e/module-liveness-pg-e2e.sh`, both run on a real two-service stack. The
+result remains in this record and Article Two rather than Article One.
 
-**Failed-approach efficacy.** `EFFICACY` now measures the production synthesis
-and recall path with the consumer held deterministic. It establishes a matched
+**Failed-approach efficacy.** `EFFICACY` measures the production synthesis and
+recall path with the consumer held deterministic. It establishes a matched
 task-outcome effect and unchanged novel-task control. It does not establish
-open-ended model following or efficacy for the other five loops.
+open-ended model following or efficacy for the other learning paths. The result
+remains in this record and Article Two.
 
 **Model independence.** The boundary remains model-independent by construction,
-and `CROSS` now adds one direct measurement. One Qwen-derived failure lesson
-changed later Luna and Terra trajectories; Terra crossed from hidden-grade
-failure to completion. One task and one run per arm establish the occurrence,
-not its frequency. A multi-task, repeated campaign with live shared-KB user
-identities would settle the population and end-to-end deployment claims.
+and `CROSS` adds one direct measurement. One Qwen-derived failure lesson changed
+later Luna and Terra trajectories; Terra crossed from hidden-grade failure to
+completion. One task and one run per arm establish the occurrence, not its
+frequency. Article Zero summarises the business consequence. The full result
+and its negative arms remain in the reporting records rather than Article One.
+A multi-task, repeated campaign with live shared-KB user identities would settle
+the population and end-to-end deployment claims.
 
 ## Rewrite inventory, 2026-08-25
 
@@ -317,7 +319,7 @@ first-party class used by the prior article.
 | S4 `resolved 0 of 5` | live two-service test | **Superseded in prose.** The newer target observed one covered item resolve and one uncovered item remain open. The older result remains above |
 | S5 supersession and operator regret | live two-service test plus direct record readback | **Retained** |
 | S6 default `full` selection | live two-service test | **Superseded in prose.** The newer target forced and recorded non-default `brief`, and exposed the use-after-free described in the article |
-| 28/0 learning and 13/0 liveness suites, plus registration-deletion controls | committed end-to-end tests | **Preserved above and removed from prose.** The article carries the later unified target at **46 passed, 0 failed** |
+| 28/0 learning and 13/0 liveness suites, plus registration-deletion controls | committed end-to-end tests | **Preserved above and removed from prose.** The later unified target at **46 passed, 0 failed** also remains in this reporting record and Article Two. |
 | missing provider registration, HTTP 200 error body and build-graph check | live deployment observation, run log and static source audit | **Retained and narrowed** |
 | sqlite-shim query discrepancy | runtime test plus source audit | **Removed from prose as adjacent to the provider finding. Preserved above** |
 | 75% of four exogenous, 0% of 25 exogenous, closed/open admission and `unavailable` | live full-stack test plus direct record readback | **Retained** |

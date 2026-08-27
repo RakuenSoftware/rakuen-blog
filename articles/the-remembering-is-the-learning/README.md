@@ -1,11 +1,14 @@
 # The Remembering Is The Learning
 
-Part two of three. A fact begins in a confidence class, can become durable,
-expires without confirmation, and keeps its prior value legible after
+Article Two of four, and the second technical entry. A fact begins in a
+confidence class, can become durable, expires without confirmation, and keeps
+its prior value legible after
 supersession. Those changes decide what a later turn receives.
 
 ## The series
 
+0. **[Overview](../the-work-should-survive-the-model/):** the non-technical
+   introduction and business case.
 1. **[Self-learning](../aimee-recursive-self-learning/):** why isolation comes
    before learning and what later work inherits.
 2. **Memory:** this one. How stored evidence becomes learning.
@@ -42,7 +45,7 @@ Revised again on 2026-08-26 to stand alone. The opening now gives the lifecycle
 details before stating the claim, and references to the other articles have been
 replaced with the facts needed in place.
 
-The opening now also includes the project-level description shared by all three
+The opening now also includes the project-level description shared by all four
 articles: what aimee is, the operational problem it solves, and the role of
 self-learning memory from one user to a company, model and user scope, and
 governed execution.

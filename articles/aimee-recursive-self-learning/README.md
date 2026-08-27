@@ -1,78 +1,80 @@
 # Aimee: Self-Learning
 
-Article One of four, and the first technical entry. The editorial baseline is
-PR #83 at `48f10a17e9`, the last valid version identified after the article was
-replaced by later rewrites.
+Article One of four, and the first technical entry. It explains why
+self-learning changes the boundary around an AI model, why the learning belongs
+in the harness and how one governed history can survive changes to models,
+weights and users.
 
 ## The series
 
 0. **[Overview](../the-work-should-survive-the-model/)**: the short business
    case and non-technical introduction.
-1. **Self-learning**: this article. It explains the learning claim, its current
-   evidence and the boundary built around it.
+1. **Self-learning**: this article. It explains the learning argument and the
+   boundary built around it.
 2. **[Memory](../the-remembering-is-the-learning/)**: retrieval, scope,
    correction and temporal knowledge.
 3. **[Architecture](../everything-crosses-one-transport/)**: the isolation,
    transport and audit structure under the system.
 
-Each article should be readable alone. Article Zero owns the product pitch,
-business figures, deployment options, intended-use framing and complete
-incident account. Article One retains the technical consequences and evidence.
+Each article is readable alone. Article Zero owns the product and business
+case, the complete testing incident, deployment options, intended-use framing
+and headline results. Article One retains the technical consequence and the
+conceptual argument. Article Two owns the detailed self-learning measurements
+and memory machinery. Article Three owns the full transport implementation.
 
 ## Claim boundary
 
-The article makes five measured or architectural claims:
+The article makes five architectural claims:
 
-1. The deployed self-learning target passed 46 checks and changed later system
-   state. This establishes operation, not universal outcome improvement.
-2. Failed-approach synthesis and recall changed repeated-task outcomes from
-   12/24 to 24/24 in a deterministic paired test while unrelated tasks remained
-   12/24 in both conditions.
-3. In one exploratory repository task, a lesson from a stopped Qwen failure
-   changed later Luna and Terra work. Learned Terra completed the hidden-graded
-   repair; learned Luna and the learned Qwen retry still failed.
-4. Across three matched large failures, Aimee reduced provider-recorded tokens
-   by 34.1 percent. Every run failed, so the result establishes cost containment
-   rather than improved Qwen capability.
-5. Harness records can persist across workflows and model changes, retain
-   identity, scope and provenance, and remain independently auditable on the
-   tested paths.
+1. Self-learning lets later work inherit useful results and failed approaches,
+   which changes the boundary a model harness has to enforce.
+2. Internal testing showed that self-learning was unsafe without critical
+   boundaries, and Rakuen built those boundaries before release.
+3. The route required to finish work belongs inside governed interfaces rather
+   than behind a barrier the model must route around.
+4. Harness learning can persist across model and weight changes while identity
+   and scope let one history serve multiple authorised users.
+5. System-wide observability requires the harness to own execution, authority,
+   memory and the audit path.
 
-The article does not claim a population success rate, that every learned item
-improves work, or that one open-ended model run separates learning from ordinary
-model variation. It makes no market or novelty claim.
+The article makes no market claim, population-effect claim or claim that every
+learned item improves an outcome. Detailed efficacy, cross-model and cost
+measurements remain in the reporting records and the articles whose arguments
+need them.
+
+## Reconstruction
+
+This draft reconstructs the reviewed editorial lineage instead of selecting one
+historical snapshot wholesale:
+
+- PR #83 at `48f10a17e9` supplies the fuller self-learning argument after the
+  counted-loop framing was removed.
+- PR #87 at `956185a0` supplies the explicit scope decisions that moved the
+  46-check result, paired study and detailed memory machinery to Article Two.
+- PRs #91 through #98 supply the approved reader orientation, structure,
+  incident ownership, company voice and ending.
+- PR #104's implementation report and PR #108's hybrid rewrite are not used as
+  editorial source material.
+
+The reconstruction preserves the deliberate engineering-effort statement,
+keeps the complete incident in Article Zero and restores no counted taxonomy.
 
 ## Status
 
-Draft, restored from PR #83 on 2026-08-27. Not published.
-
-The restoration uses the exact PR #83 article as its editorial source. It then
-makes only these scoped changes:
-
-- Removes the full incident, product and business material now owned by Article
-  Zero.
-- Changes the public title and terminology to self-learning.
-- States directly that internal testing showed self-learning was unsafe without
-  critical boundaries and that Rakuen built those boundaries before release.
-- Adds the later controlled recall result, exploratory cross-model pilot and
-  matched failed-task token result without replacing the PR #83 structure.
-- Removes the implementation diary and counted taxonomy introduced by PR #104.
-
-The previous PR #108 rewrite is not used as editorial source material.
+Draft, reconstructed 2026-08-27. Not published.
 
 ## Evidence
 
 Evidence is first-party and lives in the public
 [Aimee repository](https://github.com/RakuenSoftware/aimee). The
-[reporting record](evidence/figures.md) carries the per-result source map,
-corrections, excluded results and open claim boundaries. Raw artifacts remain
-unchanged.
+[reporting record](evidence/figures.md) carries the complete source map,
+corrections, excluded results and the disposition of every result removed from
+Article One. Raw artifacts remain unchanged.
 
 ## Open items before publication
 
-- Run a preregistered, repeated, multi-task cross-model campaign to estimate
-  how often learned failure improves later work.
-- Join automatic failure recording, live shared-knowledge retrieval, model
-  action and hidden grading in one end-to-end experiment.
-- Test compatibility with changing model weights directly.
 - Keep the containment summary consistent with the architecture article.
+- Confirm that Article Two carries the measurement detail previously assigned
+  to it.
+- Review the reconstructed article as prose before treating this lineage as the
+  new editorial baseline.

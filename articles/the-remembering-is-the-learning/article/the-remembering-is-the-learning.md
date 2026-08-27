@@ -7,8 +7,10 @@ tags: [aimee, memory, knowledge-graph, ontology, authority]
 excerpt: "Aimee learns by changing the standing of remembered facts: authority sets their starting class, evidence promotes or expires them, correction preserves their history, and recall applies the result."
 ---
 
-*Rakuen builds aimee, the system written about here. This is the memory article
-in a three-part series. [Self-learning](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
+*Rakuen Software builds aimee, the system written about here. [Article
+Zero](https://rakuensoftware.com/blog/the-work-should-survive-the-model) gives
+the non-technical introduction. This is Article Two and the second technical
+article. [Self-learning](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
 covers what later work inherits, and the
 [architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
 covers the boundary around it. Source read from `testing` on 24 August 2026;
@@ -16,12 +18,11 @@ figures are traced in the
 [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-remembering-is-the-learning/evidence/figures.md).*
 
-Aimee is a cloud-hosted or locally hosted self-learning AI harness that scales
-from one user to an entire company. It gives every model and user it serves
-access to one coherent memory, with identity and scope determining which parts
-each can retrieve. It learns from work as it happens and carries that experience
-into later sessions while keeping the learned history observable, auditable and
-reversible.
+Aimee is an open-source knowledge platform for company AI work, available as a
+managed cloud service or self-hosted. It brings documents, code, facts,
+decisions and work history into one governed knowledge base. It scales from one
+user to an entire company, with identity and scope deciding what each person and
+AI model can retrieve.
 
 Aimee gives every learned thing an authority class, evidence chain, confidence,
 scope and lifecycle. Confirmation can make it durable. Missing support can
