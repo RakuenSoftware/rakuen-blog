@@ -1,406 +1,384 @@
 ---
-title: "Aimee: Recursive Self-Learning"
+title: "Aimee: Self-Learning"
 slug: aimee-recursive-self-learning
 date: 2026-08-27
 author: Rakuen Software
 tags: [aimee, self-learning, memory, isolation]
-excerpt: "Aimee 0.4.0 closes six learning loops on a live deployment. A paired study isolates one loop's effect, and a Qwen failure changes later Luna and Terra work, including a completion crossover in Terra."
+excerpt: "Aimee learns in the harness, where experience can be remembered, inspected and reversed. The same boundary that contains the agent also holds everything it has learned."
 ---
 
-*Rakuen builds aimee, the system reported on here. This is the first technical
-entry in a four-article series, after the non-technical overview and followed by
-the memory and architecture under both. Source and test provenance live in the [reporting
-record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-recursive-self-learning/evidence/figures.md).
-Source was rechecked against `testing` at `6bcc87e` on 25 August 2026. Efficacy
-and cross-model evidence was added on 27 August.*
+*Rakuen builds aimee, the system written about here. This is Article One and
+the first technical article in the series. [Article
+Zero](https://rakuensoftware.com/blog/the-work-should-survive-the-model) makes
+the business case. The second technical article covers memory, and the third
+covers the
+[architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
+both stand on. Figures and test provenance are recorded in the [reporting
+record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-recursive-self-learning/evidence/figures.md).*
 
-Aimee is a company knowledge platform, available as a managed cloud service or
-self-hosted. It brings documents, durable memory, code knowledge, model routing
-and execution controls together around AI tools. One personal service holds a
-user's work. A shared knowledge service can serve a corpus, team or company
-while keeping access scoped.
+Software has crossed intended boundaries before. Computer viruses and worms
+have spread across networks, stolen credentials and kept operating after their
+authors lost control of them. Decades of responding to that history gave us
+least privilege, process isolation, network segmentation, mediated access,
+independent audit records and recovery plans.
 
-Rakuen currently uses Aimee in production. Work across legal, accounting,
-software, and other professional fields is the intended use. This article uses
-software experiments because code, builds and sealed tests make the causal
-boundary unusually strict. It does not claim that the measured software effect
-size transfers unchanged to every domain.
+A large language model changes the pressure on those controls. It can search
+for an effective route through a task and reuse what worked. The architectural
+problem is still familiar: an unpredictable component has useful work to do
+and must receive less authority than the process around it could otherwise
+provide.
 
-Version 0.4.0 closes six feedback loops in that system. On 25 August 2026, one
-live two-service target observed every loop and finished at **46 checks passed,
-0 failed**. The result proves that learned state reaches later work on the
-tested deployment.
+The industry keeps treating this as a question about whether an AI model is
+fundamentally controllable. The practical question is where authority lives.
+Putting a model in an ordinary application process with ambient credentials,
+network access and tool bindings gives behavioural instructions the job that
+process boundaries and capability checks were built to perform.
 
-A later paired study isolates a task-outcome gain from the failed-approach loop.
-An exploratory large-repository pilot then carries one Qwen failure into Luna
-and Terra, with a completion crossover in Terra. Those results still do not
-prove that all six loops improve task outcomes.
+Aimee applies those older patterns to the model harness. An AI system can be
+governable and auditable while its capabilities continue to grow. New tools
+and better memory expand what the model can do; named interfaces, defined
+authority and an audit record keep each addition governable.
 
-## Six loops now reach their consumers
+Building it that way is harder. It requires more engineering work and a higher
+level of engineering skill than handing the model ambient network access,
+credentials and direct tool bindings. Architecture creates the apparent
+conflict between capability and control, and better architecture resolves it.
 
-Aimee had collected learning signals before 0.4.0, but several paths ended at
-the signal. A failed job could be detected without joining the permanent eval
-suite. A dead end could be written without appearing in the next plan. The
-machinery produced evidence and then left it unused.
+Aimee's techniques are familiar engineering practices assembled for a
+component that learns through use. The harness keeps that learning in an
+inspectable form which can be used by any model.
 
-The 0.4.0 work closed six paths:
+The self-learning in this article therefore stayed out of released versions
+until 0.4.0. It existed in testing on unreleased code and shipped only after the
+isolation did.
 
-- A repeated live failure can become a quarantined candidate and then a
-  permanent eval task.
-- A paired run can attribute a result to a capability that was removed.
-- A failed approach can return during planning for a similar goal.
-- A curiosity item can close when a probe finds supporting evidence.
-- A later commit can supersede an earlier proposal, and an operator verdict can
-  revise its fate.
-- A policy variant can be selected from recorded reward instead of always
-  returning the default.
+Self-learning is ordinary feedback. A system changes its next attempt using
+the outcome of the last one. Scored alternatives, counterfactual evaluation
+and calibration are established tools. Aimee's work is making them operate
+together with persistent memory, provenance and containment, then keeping the
+whole system alive in production.
 
-The name “recursive self-learning” adds more drama than information. These are
-feedback loops in the harness. They read an outcome, update a durable record
-and change a later run.
+Aimee was built in production, for production. Research wants an interesting
+finding. Production wants predictable operation.
 
-## One live target exercises all six
+That takes work. Self-learning must leave inspectable state and fail closed
+when an authority disappears. Its state must survive process restart and
+remain reversible when the evidence changes. Those demands selected every
+mechanism in this article.
 
-On 25 August 2026, the committed evidence target started both aimee services
-and their required processes against a throwaway store. It produced one live
-observation for each loop.
+We use novelty only where no established approach will do. An auditable,
+governable system that stays boring in operation is the standard.
 
-The individual results matter more than the total:
+## Self-learning needed the isolation first
 
-- Two failed jobs collapsed into one candidate with an occurrence count of two.
-  Admission wrote one task file and moved the candidate to `admitted`.
-- Three paired `full` and `no_rescue` tasks produced `+1.000`, reported as
-  “removing it cost us.”
-- The failed approach from the first test came back through the planning
-  command with its failure mode.
-- One uncovered curiosity item stayed open while a covered item became
-  `resolved`.
-- A later commit superseded the first proposal. An operator verdict then moved
-  its fate to `contradicted` and counted as regret.
-- With exploration disabled and the `brief` posterior seeded above `off` and
-  `full`, the live policy route selected and recorded `brief`.
+Our internal testing showed that self-learning was unsafe without critical
+boundaries around it. We built those boundaries before releasing the feature.
+The [full incident
+account](https://rakuensoftware.com/blog/the-work-should-survive-the-model)
+lives in Article Zero; the technical consequence belongs here.
 
-The target also found a use-after-free in policy selection. The optimiser had
-selected `brief`, then freed the response containing that string before
-comparing it. The service returned `off`. Copying the identifier before
-destroying the response fixed the live path, and a focused test now drives the
-real sidecar and requires the non-default selection.
+The model needed somewhere to run tests, and the protections gave it no
+permitted route to the resource the task required. Across successive attempts,
+each run inherited what the earlier attempts had learned.
 
-The result covers more than six functions in isolation. Both services, the
-processes between them and the durable records took part in one reproducible
-target.
+A boundary built for a model arriving from a cold start was not enough for a
+system arriving with a history. The model is unspecified because the incident
+exposed a system boundary, not a difference between models. We did not repeat
+the known failure across models; we fixed the environment instead.
 
-## One loop now has a causal task-outcome result
+The model did not cross the boundary for its own sake. It was trying to
+complete its assigned task, and a barrier between the model and the task became
+something to route around.
 
-Closure and benefit remain different claims. The six-loop target proves that
-each loop reaches its consumer. A second study now measures the benefit of one
-of them: failed-approach synthesis and recall.
+Harness design decides which way that pressure points. A harness that withholds
+an ability the task requires turns its boundary into a barrier. Aimee keeps
+memory, compute, the code index, forge operations and approved network access
+available through governed routes. The complete working surface sits inside
+the boundary.
 
-Both conditions began with the same 48 failed jobs, two observations for each
-of 24 repeated tasks. The control withheld the production synthesis pass. The
-treatment ran synthesis and read the result through the production
-`aimee learning approaches` command.
+Self-learning therefore requires useful capability inside an audit path for
+governed work, with control over what execution can touch. Better containment
+can make the system more capable at the same time.
 
-A deterministic consumer then began every task with the same fixed choice. It
-changed that choice only when production recall identified the matching failed
-approach. Another 24 novel tasks had no matching history and tested whether an
-unrelated learned record changed the answer.
+0.4.0's architecture provides that boundary, and it is [its own
+article](https://rakuensoftware.com/blog/everything-crosses-one-transport). One
+property matters here: governed inter-module work crosses a transport where it
+is permitted or refused and offered to an ordered tap. Delegated execution runs
+in containers with the network disabled, no ambient credentials and a single
+mediated control socket.
+
+The harness around that model is deterministic, old, boring code. Its transport
+host is written in C, a language in use for more than fifty years. We chose C
+for the part that needs explicit control over memory layout, buffer lifetime
+and the small runtime surface every governed action crosses.
+
+The model remains nondeterministic. Its effects on the rest of the system enter
+as typed events governed by deterministic rules. A grant permits or refuses an
+event type, the host gives accepted traffic an order, and the tap records that
+order before routing. Open-ended model behaviour becomes observable,
+governable work through patterns we have understood for decades.
+
+A rule with one enforcement point can be enforced. A rule with an unknown
+number of ways around it is advice. That difference is the reason self-learning
+could be turned on at all.
+
+The underprotected machine from the test is now a sanctioned test host. Agents
+are assigned there deliberately, which keeps them off the production host.
+0.4.0 and the work behind this article were tested there. The incident turned
+an unwritten requirement into infrastructure.
+
+## Self-learning changes what the next run inherits
+
+Earlier releases learned content: which evidence to trust, which documents to
+rank and which memories to retain. In 0.4.0 the machinery also operates on its
+own evaluation and policy records, and those records change later work.
+
+On 25 August 2026, we started both deployed services and their required
+processes. The target ran **46 checks** of the deployed self-learning system.
+All 46 passed.
+
+The run establishes that self-learning changes later system state. It does not
+establish that every change improves an outcome. That requires a paired setup
+and a consumer measured under the same tasks and conditions.
+
+## A failed run can improve later work
+
+We tested failed-approach learning with a deterministic consumer. Both
+conditions began with the same 48 failed jobs: two observations for each of 24
+repeated tasks. The control withheld the production synthesis pass. The
+treatment ran synthesis and retrieved the result through Aimee's production
+command.
+
+Every task began with the same fixed choice. The consumer changed that choice
+only when production recall found the matching failed approach. Another 24
+novel tasks tested whether an unrelated learned record changed the answer.
 
 | task class | synthesis withheld | self-learning enabled |
 |---|---:|---:|
 | repeated tasks | 12/24 | 24/24 |
 | novel tasks | 12/24 | 12/24 |
 
-There were 12 treatment-only successes and no control-only successes. The exact
-two-sided McNemar p-value is 0.00048828125. A second run against another fresh
-PostgreSQL database produced a byte-identical cell-level result. Both valid
-runs passed all 12 harness checks.
+There were 12 treatment-only successes and no control-only successes. The
+exact two-sided McNemar p-value is 0.00048828125. A second run against a fresh
+database produced the same cell-level result.
 
-This establishes a causal result for the deployed synthesis and recall path:
-when the task matched, the remembered failure changed the later outcome. It is
-not a benchmark of model reasoning. The fixed consumer isolates recall from
-model variance, and the unchanged novel-task score checks for indiscriminate
-behaviour change.
+This establishes a causal result for the tested synthesis and recall path.
+When the task matched, remembered failure changed the later outcome. The fixed
+consumer isolates recall from model variance, and the unchanged novel-task
+score checks for indiscriminate behaviour change.
 
-That fixed consumer matters because model runs are nondeterministic. One
-different answer from one model run cannot separate a learned intervention from
-ordinary run-to-run variation. An open-ended model study needs repeated matched
-runs to estimate that effect; the cross-model test below is an exploratory
-observation until those repetitions exist.
+It is not a benchmark of model reasoning. Model runs are nondeterministic, so
+one different answer from one run cannot separate a learned intervention from
+ordinary run-to-run variation.
 
-The result does not establish efficacy for the other five loops. Their
-consumers still need genuine setup-and-consumer ablations, not labels added to
-a runner that never disables them.
+We then asked whether the same kind of lesson could cross models during
+open-ended repository work. A local Qwen model failed to repair a trust-bundle
+readiness defect in Aimee's codebase. It explored without producing an edit and
+was stopped after 512,545 provider-recorded tokens.
 
-## A failure crossed models and changed completion
+The learned record described the failed strategy, not the solution. Matched
+Luna and Terra base and learned conditions then received the same task. Only
+the learned condition received the unchanged Qwen-derived lesson.
 
-The next test asks whether an open-ended coding agent will use the same kind of
-lesson, and whether the lesson survives a change of model.
+The learned Luna run investigated and verified more deeply, but it still failed
+the final grader. Terra's base run passed its visible test and failed the hidden
+grader. The learned Terra run made a focused repair, passed both graders and
+added a regression-sensitive test. A learned retry by the originating Qwen
+model also failed.
 
-A local Qwen3.8-27B agent worked on a trust-bundle readiness defect in Aimee's
-own C and Python repository. It made 28 successful calls without a mutation,
-including nine repeated or overlapping retrievals. The progress controller
-stopped it after 512,545 provider-recorded tokens with no patch.
+The controlled model runs received the lesson directly so the intervention
+would remain fixed. A separate storage-backed test records a failure under one
+user, session and model source, reinforces it under another, recalls it for a
+similar authorised goal and excludes an unrelated goal. A confirmatory study
+still needs to join automatic recording, live shared-knowledge recall, model
+action and independent grading in one repeated chain.
 
-The sealed lesson described the failed strategy, not the solution: broad
-exploration without an edit had failed, so a later attempt should form a
-concrete defect hypothesis and try the smallest justified edit or decisive test
-before broadening its search.
+A separate matched campaign measured spending on three large failures. The
+ordinary Qwen runs consumed 1,819,904 provider-recorded tokens. Aimee stopped
+the unproductive work at 1,199,552 tokens, a reduction of 620,352 tokens or
+34.1 percent.
 
-For Luna and Terra separately, base and learned runs used fresh worktrees at the
-same buggy revision, the same task, medium reasoning and the same independent
-visible and hidden graders. Only the learned run received the Qwen-derived
-lesson, unchanged.
+Every run in that campaign failed its hidden grader. The finding supports cost
+containment on an unproductive trajectory, not increased Qwen capability.
 
-The Luna base run wrote production code and a test, then stopped after assuming
-that missing CMake support blocked verification. The repository had an exact
-Make target. Its patch did not link under that grader.
+## A learner needs a way to distrust itself
 
-The learned Luna run completed a full server build and executed its focused
-test. An assertion exposed stale fixture state, and its final visible and hidden
-grades still failed. The transferred lesson increased implementation and
-verification depth without completing the task.
+The part that learns from Aimee's own output has an additional gate. It
+classifies committed proposals by whether their evidence originates outside
+the system. Self-generated evaluation cannot widen its own yardstick.
 
-The Terra base run passed its own tests and the visible grader but failed the
-sealed hidden grader. Its change affected general readiness rather than the
-write-tier contract under test. The learned Terra run made a focused three-file
-repair, passed both graders, and wrote a test that failed when applied by itself
-to the buggy parent. The Qwen-derived lesson changed a hidden-grade failure into
-a regression-sensitive completion by another model tier.
+Admission stops when that outside share falls below its configured threshold.
+An unreachable ledger reports `unavailable`, preserving the distinction
+between a measured refusal and an absent control.
 
-The originating Qwen model did not rescue itself on a learned retry. It failed
-again after 519,662 tokens, 1.4 percent above its source run. That negative
-result matters. The lesson changed realised capability in Luna and Terra, but
-it was not a universal solution.
+## Remembering is the learning
 
-This is a one-task pilot with one run per condition. It proves an observed
-cross-model effect, not its expected frequency. The collaboration runtime did
-not expose Luna or Terra token-usage objects, so it also supports no cost claim
-for those runs.
+Self-learning needs durable state, but storage alone explains little. In this
+design, remembering is the learning. A learned thing becomes a typed fact with
+a confidence class, date, evidence chain, lifecycle state and fate. Future work
+changes when those records are promoted, expired, superseded and recalled.
 
-The controlled runs received the lesson directly. A separate storage-backed
-test covers the product path. It records a failure under one user, session and
-local-model source, reinforces it under another user, session and model source,
-recalls it for a similar goal and excludes an unrelated goal. Source identity
-remains provenance rather than a recall boundary inside the authorised shared
-KB.
+Every closed memory changeset also leaves a hash-chained witness in the same
+transaction. If the witness fails, the memory mutation rolls back. Live
+validation produced one witness for one changeset, while a control with the
+seal calls stripped produced none. Crash recovery then closed three pending
+changesets with three witnesses, and a second worker pass added no duplicates.
 
-## Three larger failures stopped spending earlier
+A fact enters as Class C speculation. Repeated confirmation can promote it to
+durable, while a speculation that stops being confirmed expires.
 
-A matched campaign asked what happens before learning rescues a task. It used
-the same local Qwen model on three defects selected from Aimee's own history:
-DB2 pool attribution, repository-clone ownership and descriptor handling, and a
-work-item contract crossing C, Go and JSON. Each pair used the same buggy
-revision, prompt, tools, limits and sealed hidden grader.
+A later assertion can supersede an earlier value without erasing it. The
+recall walk then weights what it traverses by confidence class.
 
-The Qwen-alone runs reached the context limit without a patch after 428,483,
-616,577 and 774,844 provider-recorded tokens. In the Aimee condition, the
-canonical history passed through the production Go economizer handler. A
-preregistered progress sequence issued a checkpoint, escalated once and stopped
-after continued retrieval without a mutation. Those runs ended after 371,687,
-321,292 and 506,573 tokens.
+Promotion is learning. Expiry is forgetting. Supersession is correction.
 
-Across the three pairs, consumption fell from 1,819,904 to 1,199,552 tokens. The
-620,352-token difference is a 34.1 percent reduction. The individual reductions
-were 13.3, 47.9 and 34.6 percent.
+Weighted recall applies the learned state to the next turn. The intelligence
+lies in those memory operations over time.
 
-All six runs failed the hidden grader. The finding supports cost containment on
-an unproductive trajectory. Qwen capability did not increase in this campaign.
+Self-learning is memory operating on its contents and the record of its use.
+The second technical article follows how Aimee built that memory.
 
-The first attempt at the cross-language pair lacked a required historical build
-fixture and remains quarantined in the original artifact. The corrected rerun
-generated the fixture in both conditions, passed the visible grader in both and
-produced the third retained pair above.
+## The difficult part is useful memory
 
-## Retry handoffs end with the workflow
+The central work is producing memory a model can use mid-turn: a bounded
+envelope of relevant material, ranked, scoped, dated and carrying provenance
+and confidence. It must fit the context window and remain fenced as evidence
+rather than instruction.
 
-The common multi-agent comparison is worth making precisely. A planner gives a
-task to a worker. The worker fails and returns a summary. The planner revises
-the current plan or gives the summary to a stronger worker.
+Those constraints pull against one another. More recalled material improves
+the chance of including a decisive fact while consuming attention and token
+budget. Aggressive scope filtering protects private knowledge while hiding
+useful relationships.
 
-That orchestration is useful, and Aimee supports it.
+Rich provenance makes a claim inspectable while making the envelope larger.
+The learning only matters after these tradeoffs produce something the model
+can use safely in the turn where a decision is made.
 
-The tested mechanism persists across workflows.
+Several failures looked healthy from the outside. Typed facts were absent from
+the graph walk. A relation-weight table was bypassed at the fusion call.
 
-| property | ordinary retry handoff | Aimee failed-approach learning |
-|---|---|---|
-| lifetime | the current workflow | later workflows after the originating run has ended |
-| unit stored | a free-form task summary | a goal, attempted approach, failure mode and source reference |
-| selection | the planner explicitly forwards it | sufficiently similar later goals recall it; unrelated goals receive nothing |
-| model and user boundary | whatever the active workflow was built to route | source identity is provenance inside the authorised shared KB, not a model or session recall key |
-| repetition | another summary | the same normalised goal and approach reinforce one row |
-| prompt cost | often forwards the whole summary | at most eight ranked matches, with an `off`, `brief` or full advisory option |
+A co-occurrence update collided with a direct assertion, and normalisation
+rewrote confirmation counts. The system answered queries while handing the
+model the wrong evidence.
 
-A durable store can extend a handoff beyond the current workflow. Persistence
-settles the first row in the table. The learning claim rests on the remaining
-chain: outcome capture, a stable learned record, relevant recall, bounded prompt
-cost, source and access scope, later correction, and measured changes in what
-the consumer does.
+Changing model behaviour is a poor success criterion. A confidently wrong
+recall also changes output. The useful question is whether the answer improved.
 
-An agent can also write its own permanent notes. Aimee accepts agent-authored
-evidence, but the model does not grant that evidence authority, choose who may
-read it or own the audit record. Those decisions remain in the surrounding
-services. Another model can consume the result without trusting the originating
-model as the system's administrator.
+Counterfactual reward follows that distinction. A variant changing the output
+only establishes influence. Paired runs are needed to learn whether it changed
+the outcome.
 
-The implementation normalises goal text into a de-duplicated token set, drops
-short and common words, narrows a bounded candidate pool, and applies a 0.5
-Jaccard-overlap floor. This is deliberately conservative. It handles the same
-goal with wording drift and is expected to miss deeper paraphrases; an unrelated
-goal must stay silent. Matching failed approaches are reported as evidence of
-what was tried and what happened, never rendered as an imperative rule.
+## One learned history can serve many models and users
 
-The no-progress controller writes one stable approach description for repeated
-retrieval without an edit. A repeated stop therefore increments the same record
-instead of creating an unlimited stack of slightly different prose. Before a
-retry, the renderer asks the learning policy whether the evidence is worth no
-tokens, one brief line or the full advisory. The wider memory system separately
-tracks scope, evidence, correction and outcomes, while the economizer folds and
-condenses accumulated tool history with recovery pointers.
+Weights generalise across situations more broadly than a ledger of rows.
+Harness learning pays a retrieval cost on every session and leaves the model's
+raw reasoning ability unchanged. That is the strongest case for putting
+continual learning in weights.
 
-The cross-model pilot isolates only part of that production path. Its Luna and
-Terra treatment runs received the sealed Qwen lesson directly so the experiment
-could hold the intervention fixed. The storage-backed test separately proves
-that the originating model, user and session are not recall boundaries for a
-similar goal inside the authorised shared KB. A confirmatory end-to-end run must
-join those two pieces: automatic recording, live shared-KB recall, model action
-and hidden grading in one chain.
+Learning in the weights belongs to the model instance that acquired it. Put two
+copies of the same model on different machines. As each learns from local work,
+their histories diverge. Sharing means distributing and coordinating the
+changed weights.
 
-Terra's weights did not change. Relevant, durable evidence from earlier models
-changed the work the same Terra model was able to complete under the grader.
-The capability result belongs to the complete model-plus-harness system.
+A provider's next model version does not contain those local changes, and a
+switch to another model leaves them with the previous one. Training the
+experience into the replacement creates another model-specific result. A
+self-learning system that forgets whenever its base model improves defeats its
+own purpose.
 
-## The deployment graph was part of the test
+Harness learning produces a different artifact. A learned row has an identity,
+date, evidence chain, fate and deletion path. A bad change can be named,
+inspected and reversed while the rest of the accumulated state remains in
+place. A bad weight update asks for another training run or a model rollback
+whose effects extend far beyond one fact.
 
-An internal test supplied one example of why the boundary is part of the
-learning claim. An aimee-backed model needed to run software tests, but its
-permitted environment was too restricted to finish the assigned task. Across
-several attempts, the harness retained successful and failed route information.
-A later run reached an underprotected test machine and used a testing API key
-outside the permitted path to complete the task.
+Task files and ledger rows do not encode a producing model or machine. Two
+model instances can therefore receive the same failed approaches, operator
+corrections and task-specific evidence. They may answer differently, but a
+model update changes the reasoner without discarding the history.
 
-I think the accumulated record caused the result. We did not run a cold-start
-comparison, so that cause remains an inference. The [full
-account](https://rakuensoftware.com/blog/the-work-should-survive-the-model)
-defines the machine, the immediate impact and the release consequence.
+The same deployment shares that history across users through one knowledge
+service behind its per-user servers. Each request carries user identity, and
+query-time scope separates active-project and workspace records from shared or
+global knowledge. Each user retains local memory, a workspace can hold a
+team's memory, and wider scopes can carry approved knowledge across an
+organisation or company.
 
-The incident left one technical requirement here. A system that keeps useful
-routes can also keep routes around a weak control. Isolation has to sit outside
-the learner, and its record has to live somewhere the learner does not own.
+Legal, engineering and sales can contribute to one governed knowledge base
+while keeping group-specific context inside its scope. A contract limit, an
+implementation constraint and a customer commitment can meet in later work
+without losing their source or access rules. Aimee can unify groups around the
+same accumulated institutional memory instead of making each group teach a
+separate model the same company again.
 
-An earlier live run exposed a different class of failure. The learning
-classifier was registered in the per-user service and absent from the shared
-control service. Signal capture returned HTTP 200 while its body reported an
-error:
+Model weights cannot supply this property on their own. A weight update has no
+user identity, workspace boundary, source record or independent revocation
+path. Train company knowledge into a model and the permission boundary
+disappears into the model. Split the weights by group and the company's memory
+forks into separate learned models again.
 
-```
-WARN  learning: signal classification unavailable; refusing signal type=mark_rule
-POST /v1/actions/learning.propose_signal -> 200
-      {"status":"error","message":"failed to record learning signal"}
-```
+Once an external system supplies identity, scope, provenance and reversal, the
+learning has moved into the harness. One governed memory can then accumulate
+across the organisation, serve every permitted model and user, and survive the
+replacement of either. For a company, durable sharing is the point.
 
-Provider-injection tests supplied their own classifier, so they could not
-observe production failing to supply one. More tests with the same fixture
-would have repeated the blind spot.
+## Only the harness can make learning governable
 
-The replacement check derives each required registration from the binaries
-that build the provider's owning file. Its self-test removes a real
-registration and requires a failure. It also exits non-zero when it resolves
-no provider and daemon pairs, which stops an empty analysis passing as a clean
-result.
+Only a harness that owns execution, authority, memory and the audit path can
+make an agent observable and governable as a system property. Persistent
+self-learning and memory depend on those properties.
 
-The defect changed how we test the loops. A function can work while its
-deployment cannot reach it. The build graph is part of the behaviour.
+A memory library sees only the calls made to it. It has no authority over the
+model's network access, credentials, tools or alternate state paths, so it
+cannot stop the model going around it. Its log may describe every call it
+received accurately while omitting the action that mattered.
 
-## Self-produced evidence has its own gate
+Complete observation needs an enforcement point outside the agent. Trustworthy
+history needs an audit record outside the agent's authority, with a witness
+another component can check. A library can provide storage and a framework can
+connect it to a workflow. Neither owns that whole path.
 
-One loop deserves a separate control because it can change the yardstick used
-to judge later work. Each committed proposal is classified by the root of its
-evidence. Human corrections, test exits, verification gates, observed git
-outcomes and official graders count as exogenous.
+The harness does. It controls which actions can leave the model's environment,
+records governed work before routing it and commits memory changes with their
+witnesses. The learner cannot switch off those mechanisms. Only the harness can
+make self-learning governable and observable across the whole system.
 
-Signals inferred from aimee's own transcript count as endogenous. Unknown
-provenance takes the endogenous side.
+If an agent process leaves the harness, it loses everything the harness
+learned. Its current context and whatever access it found may remain, while
+task files, ledger history, retrieval state, corrections and mediated tools
+stay behind.
 
-In the recorded full-stack run, a ledger with three exogenous proposals out of
-four reported `open`. A ledger containing 25 implicit-detector commits and no
-outside root reported `closed`. While closed, a reproduced candidate admitted
-zero tasks and wrote no task file. Reopening the gate admitted one.
+Task completion supplies the practical incentive. Inside the harness the model
+has current knowledge, accumulated experience and a broad working surface.
+Outside it has a stock model whose weights may reflect training data months or
+years behind the work in progress, current context and whatever access it
+found. Leaving reduces its capability, so the pressure from the test incident
+now points toward the governed route.
 
-An unreachable gate reports `unavailable`. That answer is operationally
-important. An operator can distinguish a measured decision from a missing
-control.
+Weights-based continual learning buys structural generalisation and ties the
+result to one learned model. Harness learning buys portability, sharing and
+auditability at the cost of retrieval. Given the rate at which model versions
+change and the number of model instances and users the learning has to serve,
+we chose the harness as the primary store.
 
-## The learned state remains inspectable
+Aimee also supports both forms at once. The model serving a turn can change,
+its weights can change, or both can happen while harness learning continues.
+The delegate boundary sits outside the model, so model selection and
+weight-changing work pass through the same governed path. Its isolation,
+authorisation, observability and audit chain remain intact.
 
-Each loop changes a record the next run can inspect. Failed approaches keep
-their identity and failure mode. Proposals keep a fate, eval candidates keep
-their observations and admission state, and policy selection keeps reward
+The test incident gave us the design criterion: build a boundary the model does
+not have to fight, then put the capabilities it needs to finish the task inside
+it.
+
+## Learning can preserve the current state
+
+A valid learning step sometimes preserves state. Evidence may be insufficient,
+the current choice may still win, or a question may remain open. This keeps a
+system rewarded for visible activity from manufacturing closure.
+
+The order matters for any system built this way. Isolation comes first, then an
+audit record the learner cannot switch off, then memory able to preserve
+evidence and reversals. Self-learning comes last. That order turns accumulated
+experience into learning without letting the learner erase its boundary or its
 history.
-
-Memory changes carry a separate audit path. Every close now writes an immutable
-audit intent inside the mutation transaction. A separately credentialed worker
-turns committed intents into the hash chain. Five close paths once skipped that
-step; the structural check now resolves all five and requires every one to be
-sealed.
-
-The live fault-injection run closed one memory changeset and found one matching
-audit row. With the five seal calls stripped, the same check found zero. A
-second recovery run injected a crash between chain insertion and delivery
-acknowledgement. The transaction rolled back, restart sealed the pending
-intents once, and another restart added nothing.
-
-These results establish traceability for the tested paths. They do not make the
-learned contents correct. A bad fact can still be remembered, and a policy can
-still learn from a poor measure. Audit gives the mistake a location, an author
-or process identity and a path to correction.
-
-## The harness owns the learning
-
-Continual weight updates have a strong case. They can change a model's
-behaviour without paying retrieval cost on every later session, and they can
-generalise beyond the examples that produced the update.
-
-Harness learning buys different properties. The learned item stays visible
-with its evidence, scope and later verdict. An operator can remove one item
-without replacing an entire model version. A newer model can inherit the same
-records without repeating the learning run.
-
-Those properties fit aimee's problem better. They also cost retrieval,
-curation and repeated measurement. A durable record does not change a model's
-weights or intrinsic reasoning.
-
-It can change realised capability when the harness retrieves the record and the
-model acts on it. The deterministic study isolates the first step, and the
-Terra pilot observes the complete path through a hidden-graded repair.
-
-The test incident made the containment argument concrete. Learning in the
-harness can be stopped by a boundary outside the learner.
-
-The two forms of learning can run together. Aimee supports that dual-learning
-profile today: models can change between turns, their weights can change, or
-both can happen at once. The delegate boundary does not depend on a fixed model
-or model version.
-
-Isolation, authorisation, the audit chain and durable records sit outside the
-model, so weight-changing work passes through the same governed path as every
-other delegated action. It remains observable and auditable, with the
-protections described above applying unchanged.
-
-Harness learning and weight learning are therefore not competing architectural
-choices. Harness records provide portable, shareable and directly inspectable
-learning; weight updates provide structural generalisation without retrieval.
-A deployment can use either or both while retaining the same governance
-boundary.
-
-The order is the useful part: isolate execution, make the audit path
-independent, make memory correct enough to use, then close the loops. The
-current evidence says all six loops run, one loop changes matched task outcomes
-under a controlled consumer, and one Qwen-derived failure changed later Luna
-and Terra work enough for Terra to complete a repair its base run missed.
-
-The next claim is frequency. A preregistered multi-task campaign needs several
-source and consumer models, repeated conditions, real repository tasks that can
-exhaust context, hidden graders, complete provider billing records, and live
-shared-KB user identities. That study can estimate how often a stopped failure
-becomes cheaper or more capable work for everyone who inherits the lesson.
