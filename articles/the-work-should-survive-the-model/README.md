@@ -47,10 +47,11 @@ current deployment or measured efficacy in each field.
 
 ## Status
 
-Draft, updated 2026-08-27. Not published. The current pass adds the
-buyer-facing distinction between workflow-local agent handoffs, permanent
-instruction files and Aimee's cross-workflow organisational learning. The new
-ROI campaign remains in progress, so this article is not complete.
+Draft, updated 2026-08-27. Not published. A teaser pass cut the article from
+1,439 words to 610. It keeps the business premise, three headline returns, the
+company-memory consequence and the incident that set the boundary. Technical
+method, buyer guidance, licensing detail and comparison inventories remain in
+the reporting record or later articles.
 
 An editorial clarity pass on 2026-08-27 restored the full internal test
 incident promised by both reporting records. The account now defines the test

@@ -8,6 +8,23 @@ Article Zero of four. This article owns the product, buyer and market argument.
 The self-learning, memory and architecture articles own the implementation
 detail and first-party validation.
 
+## Teaser cut inventory, 2026-08-27
+
+This pass reduced Article Zero from 1,439 words to 610. No first-party result
+was removed from this reporting record.
+
+| prior article material | evidence class | disposition |
+|---|---|---|
+| 21.1 percent lower API-price-equivalent cost per passing task in the eight-task paired run | paired provider run with hidden-test scoring and category pricing | **Retained as “lower cost per completed task.”** Method, sample size and pricing detail remain below and in the technical record. |
+| 34.1 percent fewer tokens across three matched large-repository failures | paired provider-backed failure trajectories with sealed graders | **Retained as “less model use on failing tasks.”** The fact that all six runs failed remains in this record and Article One. |
+| 58.6 percent lower frontier-model use in the 50-task delegation campaign | live ledger-window token counts; worker cost and task correctness unmeasured | **Retained as one headline figure.** The article calls it reduced use of the most expensive model, not total savings. |
+| Qwen lesson changed Luna verification depth and Terra completion | one-task matched cross-model pilot | **Retained in compressed form.** Negative Qwen and Luna outcomes remain in Article One and this record. |
+| current production use and intended professional fields | first-party operator statement | **Retained with the corrected boundary.** Named fields remain intended use rather than claimed deployment breadth. |
+| underprotected test-host incident and spend under $10 | first-party account with causal inference marked | **Retained in compressed form.** Machine, credential and release details remain below and in Article One's record. |
+| AGPL licence, customer-controlled deployment and no-phone-home statements | first-party repository and licence review | **Compressed.** Open source and customer-controlled deployment remain in the article. Licence detail and the operational limit remain below. |
+| workflow handoff, permanent instruction file and complete-loop comparison | architectural and market analysis | **Compressed to the company-memory mechanism and complete-loop claim.** The full comparison remains below. |
+| buyer fit, operating costs and four-part pilot checklist | product analysis | **Cut from the teaser.** It remains recoverable in the preceding draft and is not first-party measurement. |
+
 ## Product sources
 
 | claim | source | evidence class |
