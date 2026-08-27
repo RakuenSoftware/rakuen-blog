@@ -20,7 +20,7 @@ was removed from this reporting record.
 | 58.6 percent lower frontier-model use in the 50-task delegation campaign | live ledger-window token counts; worker cost and task correctness unmeasured | **Retained as one headline figure.** The article calls it reduced use of the most expensive model, not total savings. |
 | Qwen lesson changed Luna verification depth and Terra completion | one-task matched cross-model pilot | **Retained as the example behind the compounding business case.** Negative Qwen and Luna outcomes remain in Article One and this record. The claim that capability grows and rediscovery cost falls over time is a product consequence, not a measured longitudinal rate. |
 | current production use and intended professional fields | first-party operator statement | **Retained with the corrected boundary.** Named fields remain intended use rather than claimed deployment breadth. |
-| underprotected test-host incident and spend under $10 | first-party account | **Retained in compressed form.** Article Zero states the author's safety conclusion and that Rakuen built the required boundaries before release. Causal inference and the missing cold-start control remain in Article One. |
+| underprotected test-host incident and spend under $10 | first-party account | **Retained in compressed form.** Article Zero states the author's safety conclusion and that Rakuen built the required boundaries before release. Article One retains the engineering requirement without attributing the cause. |
 | AGPL licence, managed-cloud and self-hosted deployment options, and no-phone-home statement for self-hosted services | first-party repository, operator statement and licence review | **Corrected and compressed.** Both deployment options remain in the article. Licence detail and the self-hosted operational limit remain below. |
 | workflow handoff, permanent instruction file and complete-loop comparison | architectural and market analysis | **Compressed to the company-memory mechanism and complete-loop claim.** The full comparison remains below. |
 | Recuris academic comparison in the ROI and cross-model memo | external paper review | **Removed from that memo.** Article Zero makes no academic novelty claim. The source review remains in this central record only to bound the narrower complete-product market claim. |
@@ -55,8 +55,7 @@ that criticises Rakuen's own controls.
 
 Several attempts contributed successful and failed route information to the
 record used by the later attempt. The claim that this accumulation caused the
-result is inference. Article Zero omits that technical argument. Article One
-marks it with "I think" and states that no cold-start comparison was run.
+result is inference. Neither public article makes that causal attribution.
 
 Rakuen fixed the environment and did not repeat the known boundary failure
 across models, so no model comparison is made. No new measurement is attached

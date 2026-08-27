@@ -18,6 +18,32 @@ validates. The learning work in 0.4.0 spans many branches. The loop figures come
 from the recursive self-improvement work, merged to `testing` on 2026-08-24 as
 `877e994c2f`.
 
+## PR #83 restoration inventory, 2026-08-27
+
+PR #83 at `48f10a17e9` is the editorial baseline. Its article contained 2,797
+words and had already replaced the count-based framing with self-learning. PR
+#104 later replaced that article with a different implementation report. PR
+#108 initially made the same mistake by writing a new article instead of
+restoring the reviewed one.
+
+This pass starts with the exact PR #83 article. It removes only material now
+owned by Article Zero, applies the agreed title terminology and adds later
+technical evidence without replacing the article's structure or argument.
+
+| PR #83 or later material | public disposition | evidence disposition |
+|---|---|---|
+| Full opening incident account, including the testing key, spend and immediate impact | Remove from Article One. Article Zero owns the complete non-technical account. Article One retains the technical boundary consequence and a link. | Retain the first-party account and causal limits below. |
+| Product and business case, deployment options, intended professional fields and headline return figures | Leave in Article Zero. Do not duplicate them in Article One. | Retain their sources in Article Zero's reporting record. |
+| Older security controls, governed execution, self-produced evidence, useful memory, model-independent history and company scope | Restore from PR #83. These are Article One's technical argument. | Retain the original source map below. |
+| The 46-check deployed-system result | Restore from PR #83 without reintroducing a counted taxonomy. | Retain the full implementation-path result below. |
+| Failed-approach recall changed repeated-task results from 12/24 to 24/24 while novel tasks remained 12/24 in both conditions | Add after the PR #83 baseline as the later controlled efficacy result. | Retain the complete design, exact McNemar value and replication record below. |
+| Qwen-derived failure changed later Luna and Terra work; learned Terra passed, learned Luna and the learned Qwen retry still failed | Add as a bounded exploratory result because Article Zero points here for the technical evidence. | Retain every positive and negative outcome below. |
+| Three matched large failures used 34.1 percent fewer tokens while every run still failed | Add as technical support for Article Zero's headline, explicitly as cost containment rather than capability improvement. | Retain the valid pairs, quarantined first attempt and calculation below. |
+| Implementation diary material introduced after PR #83, including the use-after-free and missing provider registration | Keep out of the restored article. | Retain the defect and corrective-test records below. |
+| Full incident-based uniqueness and engineering-effort claim | Keep out of Article One. Article Zero owns the market claim; neither article needs the engineering résumé aside. | Retain the historical prose in Git. |
+
+No raw artifact is removed or rewritten by this restoration.
+
 ## The incident moved to Article Zero
 
 **First-party account by the author.** The test run in which an aimee-backed
@@ -39,10 +65,10 @@ reason to dispute.
 No date is given because nothing turns on one. The claim is that this happened
 during testing, before the 0.4.0 isolation work, which the article states.
 
-**The cause is attributed, and the attribution is the author's reading.** The
-article now states that the route past the protections was assembled across many
-runs, and that the self-learning loops under test are what accumulated it. Two
-parts of that are on the record and one is not.
+**The public article does not attribute the cause.** It states that successive
+runs inherited what earlier attempts had learned, then draws the engineering
+requirement for a boundary outside the learner. It does not claim that the
+accumulated history caused the later result.
 
 On the record: the incident happened during the testing of those loops, on code
 that never reached a release. The article's statement that the loops "stayed off
@@ -52,10 +78,8 @@ that nothing was learning at the time.
 
 Not on the record: that the accumulation is what carried the model past the
 protections. No paired run was made against a harness with the accumulated
-record withheld, so the causal step is inference from a first-party account. The
-article marks it with "I think" where it is made and says that the comparison
-has not been run. It is used only to explain the requirement for an external
-isolation and audit boundary.
+record withheld. The reporting record preserves that limitation even though
+the public article no longer makes the causal attribution.
 
 The model is unspecified deliberately. Nothing about the account depends on
 which model it was, and the author's position is that it should theoretically
@@ -87,10 +111,10 @@ changes the disposition of five claims:
 
 | item | evidence class | disposition |
 |---|---|---|
-| "everything gating it is disabled" | static source audit at the article pin | **Corrected.** `config_learning_synthesize_enabled()` reads a default-zero value, and six `learning_implicit_*` flags remain in the rollout-readiness programme. The article now confines the claim to the six measured loops: they are on and their producing halves reach consumers. |
+| "everything gating it is disabled" | static source audit at the article pin | **Corrected.** `config_learning_synthesize_enabled()` reads a default-zero value, and six `learning_implicit_*` flags remain in the rollout-readiness programme. The restored article no longer organises its claim around that count. It retains the 46-check target only as liveness evidence. |
 | the missing provider registration | live two-service test plus build-graph source audit (`PROD`, `PR`) | **Retained and narrowed.** The provider-injection unit fixtures could not reproduce this deployment omission. The heading now carries the actual fix: a check derived from the build graph. |
 | loop closure as evidence of self-learning benefit | live liveness tests (`S0S1`, `S2S6`, `FULL`, `PROD`, `PR`) | **Limited, then partly superseded on 2026-08-27.** Closure remains observed. `EFFICACY` now establishes benefit for the failed-approach loop only; the other five loops have not met that standard. |
-| the cause of the test-node incident | first-party account plus the article's own statement of which loops were off | **Moved and scoped.** Article Zero now carries the full account, attributes the route to accumulation across runs, marks the causal step as the author's reading and states that the comparison settling it has not been run. This article retains only the isolation requirement it produced. |
+| the cause of the test-node incident | first-party account plus the article's account of inherited history | **Moved and scoped.** Article Zero carries the full observed account. Neither public article attributes the later result to the accumulated history. Article One retains only the isolation requirement the incident produced. |
 | a memory mutation leaves an inseparable audit record | static call-path audit plus live PostgreSQL fault injection (`WORM`) | **Added.** The C mutation API already sealed in `fm_commit_finish()`; all five SQL-owned close paths now do the same. PR #2847 has landed. The live arm sealed 1 of 1 memory changesets and the call-stripped control sealed 0 of 1. |
 
 Three figures are surfaced together in the memory section rather than left only
@@ -286,7 +310,7 @@ first-party class used by the prior article.
 
 | prior reporting | evidence class | disposition |
 |---|---|---|
-| test-node and API-key incident, cost under $10, route assembled across runs | author observation | **Split by audience.** Article Zero keeps the observed event, spend and release consequence. This article keeps the causal inference and missing cold-start comparison beside the isolation requirement. |
+| test-node and API-key incident, cost under $10, route assembled across runs | author observation | **Split by audience.** Article Zero keeps the observed event, spend and release consequence. Article One keeps the isolation requirement without making the causal attribution. |
 | S1 candidate deduplication and task admission | live two-service test | **Retained and superseded by a newer run.** The 2026-08-25 evidence target observed two failures, one candidate and one admitted task |
 | S2 paired attribution at +1.000 over three tasks | live two-service test with seeded rows | **Retained.** The article says it proves plumbing and the three-pair guard, with no efficacy claim for the other loops |
 | S3 dead-end recall | live two-service test | **Retained** |

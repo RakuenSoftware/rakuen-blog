@@ -55,9 +55,9 @@ the reporting record or later articles.
 
 An editorial clarity pass on 2026-08-27 restored the full internal test
 incident promised by both reporting records. The account now defines the test
-machine, states the spend and gives its release consequence. Causal attribution,
-the missing cold-start comparison and model-comparison limits remain in Article
-One.
+machine, states the spend and gives its release consequence. Article One keeps
+the engineering requirement the incident produced without attributing its
+cause.
 
 Corrected on 2026-08-27: an earlier draft described intended professional
 fields as current production breadth. The article now states current production
