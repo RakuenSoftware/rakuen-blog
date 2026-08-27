@@ -10,7 +10,7 @@ detail and first-party validation.
 
 ## Teaser cut inventory, 2026-08-27
 
-This pass reduced Article Zero from 1,439 words to 610. No first-party result
+This pass reduced Article Zero from 1,439 words to 620. No first-party result
 was removed from this reporting record.
 
 | prior article material | evidence class | disposition |
@@ -21,20 +21,21 @@ was removed from this reporting record.
 | Qwen lesson changed Luna verification depth and Terra completion | one-task matched cross-model pilot | **Retained in compressed form.** Negative Qwen and Luna outcomes remain in Article One and this record. |
 | current production use and intended professional fields | first-party operator statement | **Retained with the corrected boundary.** Named fields remain intended use rather than claimed deployment breadth. |
 | underprotected test-host incident and spend under $10 | first-party account with causal inference marked | **Retained in compressed form.** Machine, credential and release details remain below and in Article One's record. |
-| AGPL licence, customer-controlled deployment and no-phone-home statements | first-party repository and licence review | **Compressed.** Open source and customer-controlled deployment remain in the article. Licence detail and the operational limit remain below. |
+| AGPL licence, managed-cloud and self-hosted deployment options, and no-phone-home statement for self-hosted services | first-party repository, operator statement and licence review | **Corrected and compressed.** Both deployment options remain in the article. Licence detail and the self-hosted operational limit remain below. |
 | workflow handoff, permanent instruction file and complete-loop comparison | architectural and market analysis | **Compressed to the company-memory mechanism and complete-loop claim.** The full comparison remains below. |
+| Recuris academic comparison in the ROI and cross-model memo | external paper review | **Removed from that memo.** Article Zero makes no academic novelty claim. The source review remains in this central record only to bound the narrower complete-product market claim. |
 | buyer fit, operating costs and four-part pilot checklist | product analysis | **Cut from the teaser.** It remains recoverable in the preceding draft and is not first-party measurement. |
 
 ## Product sources
 
 | claim | source | evidence class |
 |---|---|---|
-| aimee is a self-hosted layer around coding tools and models | `aimee/README.md`, read at `testing` commit `6bcc87e` on 2026-08-26 | first-party product documentation |
+| aimee is an open-source layer around coding tools and models, offered as a managed cloud service or self-hosted | `aimee/README.md`, read at `testing` commit `6bcc87e` on 2026-08-26, plus Rakuen operator correction on 2026-08-27 | first-party product documentation and operator statement |
 | one `aimee-server` assists one person and one `aimee-kb` can serve a corpus, team or company | `aimee/README.md`, `docs/ARCHITECTURE.md`, `docs/DEPLOYMENT.md` | first-party product and deployment documentation |
 | memory carries source, scope, confidence, time and correction state | `docs/KNOWLEDGE.md`; detailed first-party audit in `articles/the-remembering-is-the-learning/evidence/figures.md` | shipped design plus live and static audit |
 | code maps, model routing, bounded delegates, execution controls and one audit path are shipped together | `aimee/README.md`, `docs/STATUS.md`, `docs/CODE_INTELLIGENCE.md`, `docs/DELEGATES.md`, `docs/SECURITY.md` | first-party product documentation; per-feature evidence remains in the technical articles and repository validation reports |
 | outcomes can change later evaluation, planning and policy selection | `articles/aimee-recursive-self-learning/evidence/figures.md` | live two-service tests and source audit |
-| Aimee's own source is public under the GNU AGPL v3, the services do not phone home, and other licence terms can be discussed | `aimee/README.md`, `LICENSE`, `NOTICE` | first-party repository and licence text |
+| Aimee's own source is public under the GNU AGPL v3, the self-hosted services do not phone home, and other licence terms can be discussed | `aimee/README.md`, `LICENSE`, `NOTICE` | first-party repository and licence text |
 
 The product description is Rakuen's account of the product it builds. Article
 Zero states the interest in its first line. It does not convert these documents

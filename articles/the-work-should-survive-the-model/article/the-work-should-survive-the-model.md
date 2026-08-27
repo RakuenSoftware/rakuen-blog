@@ -11,8 +11,8 @@ excerpt: "Aimee lets a company pay for discovery once. Every authorised user and
 next article contains the technical evidence. Sources and calculations live in
 the [reporting record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-work-should-survive-the-model/evidence/figures.md).*
 
-Aimee is open-source software for company AI work. It runs on infrastructure
-the customer controls. It turns useful discoveries from successful and failed
+Aimee is open-source software for company AI work, available as a managed cloud
+service or self-hosted. It turns useful discoveries from successful and failed
 work into company knowledge, then gives the relevant part to later authorised
 people and AI models.
 
@@ -64,7 +64,8 @@ the controlled tests because independent graders can judge a repair.
 
 Memory systems, agent workflows and model routing already exist. As of 27
 August 2026, we have found no other available product that gives a company this
-complete learning loop in one self-hosted, open-source system.
+complete learning loop in one open-source system, available as a managed cloud
+service or self-hosted.
 
 ## Learning needed a stronger boundary
 
@@ -83,7 +84,7 @@ governed test host with the tools and compute the work required. The incident
 set the design criterion for everything that followed: keep the learning
 inspectable, then put the useful route inside the boundary.
 
-Aimee is open source and runs on infrastructure the customer controls. The next
-three articles show the learning, memory and enforcement mechanisms underneath
-that claim. Start with [the six learning
+Aimee is open source. Rakuen offers a managed cloud service and a self-hosted
+option. The next three articles show the learning, memory and enforcement
+mechanisms underneath that claim. Start with [the six learning
 loops](https://rakuensoftware.com/blog/aimee-recursive-self-learning).

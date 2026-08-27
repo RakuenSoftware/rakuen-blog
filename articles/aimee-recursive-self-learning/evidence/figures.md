@@ -148,6 +148,11 @@ with customer identities and usage records withheld. Legal, accounting,
 software and other professional work are the intended use. The statement does
 not establish current deployment or measured efficacy in each field.
 
+Corrected on 27 August 2026: an earlier draft described Aimee only as
+self-hosted. Rakuen offers both a managed cloud service and a self-hosted
+option. None of the technical results in this article depends on which
+deployment option a customer chooses.
+
 ## Test environment for the live loop figures
 
 This is the node from the incident. It was unused, the model took it, and it was

@@ -120,24 +120,3 @@ The production statement establishes use, not domain breadth or a causal
 efficacy estimate. The cross-model completion crossover is a controlled software
 task because a sealed hidden grader and regression-sensitive test make the
 outcome independently checkable.
-
-## Closest academic result
-
-[Recuris](https://arxiv.org/abs/2608.24876) is an implemented experimental
-system, not a theoretical proposal. It evolves a benchmark-specific skill-memory
-package from one deployment model and loads the package unchanged into frozen
-target models. It reports task-success gains across four long-horizon benchmarks
-and ten models.
-
-The paper does not present or evaluate an organisation-scoped production
-knowledge service with multiple user identities, access-scoped recall, durable
-record provenance and correction, independent execution and credential
-isolation, or a tamper-evident audit path. Its experiments use controlled
-benchmarks rather than a production deployment of the complete governed system.
-
-The articles therefore do not claim that Aimee invented cross-model memory or
-first demonstrated a performance effect from it. Their narrower distinction is
-that Aimee integrates cross-model experiential learning into a production,
-customer-controlled and governed organisational system, and the current pilot
-shows a Qwen-derived failure lesson changing completion of a real repository
-repair by another model tier.

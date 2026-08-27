@@ -14,10 +14,10 @@ record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-r
 Source was rechecked against `testing` at `6bcc87e` on 25 August 2026. Efficacy
 and cross-model evidence was added on 27 August.*
 
-Aimee is a self-hosted system that puts durable memory, code knowledge, model
-routing and execution controls around AI coding tools. One personal service
-holds a user's work. A shared knowledge service can serve a corpus, team or
-company while keeping access scoped.
+Aimee is available as a managed cloud service or self-hosted. It puts durable
+memory, code knowledge, model routing and execution controls around AI coding
+tools. One personal service holds a user's work. A shared knowledge service can
+serve a corpus, team or company while keeping access scoped.
 
 Rakuen currently uses Aimee in production. Work across legal, accounting,
 software, and other professional fields is the intended use. This article uses

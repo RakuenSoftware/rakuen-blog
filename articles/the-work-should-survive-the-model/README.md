@@ -23,7 +23,7 @@ market argument. The other three own the implementation and its evidence.
 
 The article claims that, as of 2026-08-27, the author has found no other
 available product that closes the same full organizational learning loop in one
-self-hosted operating layer.
+open-source system available as a managed cloud service or self-hosted.
 
 It does not claim novelty for persistent memory, model routing, code search,
 agent workflows, access control, audit logs or self-improvement in isolation.
@@ -48,7 +48,7 @@ current deployment or measured efficacy in each field.
 ## Status
 
 Draft, updated 2026-08-27. Not published. A teaser pass cut the article from
-1,439 words to 610. It keeps the business premise, three headline returns, the
+1,439 words to 620. It keeps the business premise, three headline returns, the
 company-memory consequence and the incident that set the boundary. Technical
 method, buyer guidance, licensing detail and comparison inventories remain in
 the reporting record or later articles.
@@ -63,6 +63,9 @@ Corrected on 2026-08-27: an earlier draft described intended professional
 fields as current production breadth. The article now states current production
 use without assigning that use to named fields, then labels those fields as the
 intended use.
+
+Corrected on 2026-08-27: an earlier draft described Aimee only as self-hosted.
+Rakuen offers both a managed cloud service and a self-hosted option.
 
 Split from the opening incident and conceptual product argument in Article 1.
 Article 1 remains the technical deep dive and retains every measured loop,
