@@ -79,9 +79,7 @@ lives in Article Zero; the technical consequence belongs here.
 
 The model needed somewhere to run tests, and the protections gave it no
 permitted route to the resource the task required. Across successive attempts,
-each run inherited what the earlier attempts had learned. I think that
-accumulated history enabled the later result, although we did not run a
-cold-start comparison to establish the cause.
+each run inherited what the earlier attempts had learned.
 
 A boundary built for a model arriving from a cold start was not enough for a
 system arriving with a history. The model is unspecified because the incident
