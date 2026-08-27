@@ -1,5 +1,5 @@
 ---
-title: "Aimee: Self-Learning"
+title: "Aimee: Recursive Self-Learning"
 slug: aimee-recursive-self-learning
 date: 2026-08-27
 author: Rakuen Software
