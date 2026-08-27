@@ -240,16 +240,33 @@ fewer triples than all twenty-one runs scoring above it.
 
 ## Parse rate: read it first, because 0.90 is malformed JSON and 1.00 can still be wrong
 
-**Both gemma-4-12B runs parse at 0.92 and 0.90, with zero rows at the context
-limit.** The failures are malformed JSON. The QAT build's 0.6854 counts 83
-unreadable rows as failures and the non-QAT build's 0.6754 counts 98. Their real
-capability is above the numbers I printed, the 31B and Qwen rows at 1.00 carry
-no such handicap, and the gap between them is overstated by an amount I cannot
-currently quantify.
+**Both gemma-4-12B runs parse at 0.92 and 0.90.** The QAT build's 0.6854 counts
+83 unreadable rows as failures and the non-QAT build's 0.6754 counts 98. Their
+real capability is above the numbers I printed, the 31B and Qwen rows at 1.00
+carry no such handicap, and the gap between them is overstated.
+
+**Corrected 2026-08-27.** This said the runs had zero rows at the context limit
+and that the failures were malformed JSON. Both halves are wrong, and they are
+wrong because I checked. The runner's truncation flag read false on every row of
+every run this series has ever produced, because it compared the completion
+against the requested cap and a completion that fills the context never reaches
+it.
+
+Reading the token distribution instead: **those 98 and 83 unreadable rows have a
+median completion of 7,616 tokens against a context wall at roughly 7,620.** They
+are not malformed JSON. They are answers cut off mid-sentence. The amount I said
+I could not quantify is quantifiable and it is most of the handicap.
 
 **MiniCPM5-1B parses 0.87.** Its 0.763 abstention and 82 spurious triples
 describe only the output that made it through parsing. The unreadable rows still
 count as failures, so its 0.1652 is a floor on capability.
+
+**Corrected 2026-08-27.** A floor, and a much lower one than the number suggests.
+Its 126 unreadable rows have a median completion of 7,631 tokens, so they are
+truncations rather than a model that cannot format. Of the runs behind figures in
+this article, this one and gemma-4-12B UD-Q4 are the two the defect touched
+materially; the other eight affected runs lose between one and eleven notes out
+of 1,001 and cannot move a figure.
 
 **LFM2.5-1.2B parses 0.73 at Q8_0 and 0.59 at Q6_K.**
 
