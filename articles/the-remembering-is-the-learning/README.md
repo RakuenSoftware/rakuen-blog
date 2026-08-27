@@ -39,9 +39,10 @@ provenance and the closing design rule. Backend selection remains outside the
 article.
 
 Revised on 2026-08-26 to carry self-learning measurements moved from part one.
-The 2026-08-27 reconstruction returned the broad 46-check system result to
-Article One. This article retains the paired failed-approach outcome because it
-directly tests whether remembered failure changes a later choice.
+The 2026-08-27 reconstruction returned both the broad 46-check system result
+and the paired failed-approach outcome to Article One, where they directly
+support the self-learning claim. This article points back to that evidence and
+owns the memory machinery behind it.
 
 Revised again on 2026-08-26 to stand alone. The opening now gives the lifecycle
 details before stating the claim, and references to the other articles have been

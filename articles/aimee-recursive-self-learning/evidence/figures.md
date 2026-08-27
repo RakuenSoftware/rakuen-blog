@@ -24,12 +24,13 @@ No single historical snapshot contains the intended article. PR #83 at
 `48f10a17e9` preserves the fuller self-learning argument after the counted-loop
 framing was removed. PR #87 at `956185a0` records the later instruction to move
 the self-learning measurements and detailed memory machinery to Article Two.
-The reconstruction narrows that decision: Article One retains the headline
-evidence required by its central claim, while Article Two owns the full method,
-replication, limitations and memory machinery. PRs #91 through #98 contain
-approved reader feedback, alongside cuts that do not define a new source
-wholesale. PR #104 replaced the article with an implementation report, and PR
-#108 combined the pre-feedback PR #83 prose with later experiments.
+The reconstruction corrects that decision by claim: Article One owns the
+self-learning measurements, including their full method, replication and
+limitations, while Article Two owns the memory machinery behind the result.
+PRs #91 through #98 contain approved reader feedback, alongside cuts that do
+not define a new source wholesale. PR #104 replaced the article with an
+implementation report, and PR #108 combined the pre-feedback PR #83 prose with
+later experiments.
 
 This reconstruction follows that lineage by editorial decision. It retains the
 conceptual self-learning argument, applies the approved feedback and keeps each
@@ -41,7 +42,7 @@ body of reporting with the article whose claim needs it.
 | Product and business case, deployment options, intended professional fields and headline return figures | Leave in Article Zero. Article One keeps only the compact product orientation required for a standalone entry. | Retain their sources in Article Zero's reporting record. |
 | Older security controls, governed execution, self-produced evidence, useful memory, model-independent history and company scope | Retain in Article One. These are its technical argument. | Retain the original source map below. |
 | The 46-check deployed-system result | Retain the 46/46 headline in Article One because it supports the claim that the deployed self-learning paths operate. It does not belong in Article Two's public memory argument. | Retain the full implementation-path result below; Article Two's record preserves the history of the earlier transfer. |
-| Failed-approach recall changed repeated-task results from 12/24 to 24/24 while novel tasks remained 12/24 in both conditions | Retain the paired headline and fixed-consumer limit in Article One because it supports the claim that recalled failure changed a later outcome. | Retain the complete design, exact McNemar value and replication record below and with Article Two. |
+| Failed-approach recall changed repeated-task results from 12/24 to 24/24 while novel tasks remained 12/24 in both conditions | Retain the paired result and fixed-consumer limit in Article One as direct evidence that earlier experience changed a later outcome. Article Two may point back while explaining the memory mechanism. | Retain the complete design, exact McNemar value, replication record and raw outputs with Article One. |
 | Qwen-derived failure changed later Luna and Terra work; learned Terra passed, learned Luna and the learned Qwen retry still failed | Keep out of Article One. Article Zero uses the result as a bounded business example. | Retain every positive and negative outcome below and in Article Zero's record. |
 | Three matched large failures used 34.1 percent fewer tokens while every run still failed | Keep out of Article One. Article Zero owns the headline cost result. | Retain the valid pairs, quarantined first attempt and calculation below and in Article Zero's record. |
 | Implementation diary material introduced after PR #83, including the use-after-free and missing provider registration | Keep out of the restored article. | Retain the defect and corrective-test records below. |
@@ -128,13 +129,13 @@ the memory article. Their original entries and sources remain below.
 
 ## Efficacy update, 2026-08-27
 
-These results remain part of the reporting record without being inserted into
-the reconstructed Article One.
+This inventory includes the self-learning results reported in Article One and
+the later experimental results assigned elsewhere.
 
 | result | source | disposition |
 |---|---|---|
-| repeated-task score 12/24 with synthesis withheld and 24/24 with self-learning enabled | `EFFICACY` | **Summarised in Article One and preserved in full for Article Two and the reporting record.** The consumer is deterministic, so this is not a model-reasoning benchmark. |
-| novel-task score 12/24 in both conditions | `EFFICACY` | **Summarised in Article One and preserved as the unrelated-task control.** |
+| repeated-task score 12/24 with synthesis withheld and 24/24 with self-learning enabled | `EFFICACY` | **Reported in Article One and preserved in full in this reporting record.** The consumer is deterministic, so this is not a model-reasoning benchmark. |
+| novel-task score 12/24 in both conditions | `EFFICACY` | **Reported in Article One as the unrelated-task control.** |
 | 12 treatment-only successes, zero control-only, exact two-sided McNemar p = 0.00048828125 | `EFFICACY` | **Preserved exactly.** |
 | second fresh-DB run produced byte-identical `results.csv`; both valid runs passed 12 harness checks | `EFFICACY` | **Preserved as reproducibility for the deployed test path.** Three invalid earlier attempts remain retained in the source report and excluded for stated setup/harness reasons. |
 | local Qwen source failure stopped after 512,545 provider tokens with no patch | `CROSS` | **Preserved as the source of the transferred lesson and summarised in Article Zero.** The 11.2% comparison to an earlier plain failure belongs to Article Zero's ROI record. |
@@ -292,14 +293,13 @@ from no ledger, or a declared policy arm the sampler never returns. Each is
 covered by an assertion in `tests/e2e/learning-loops-pg-e2e.sh` or
 `tests/e2e/module-liveness-pg-e2e.sh`, both run on a real two-service stack. The
 46/46 headline remains in Article One; the path-level detail remains in this
-record and Article Two.
+record.
 
 **Failed-approach efficacy.** `EFFICACY` measures the production synthesis and
 recall path with the consumer held deterministic. It establishes a matched
 task-outcome effect and unchanged novel-task control. It does not establish
 open-ended model following or efficacy for the other learning paths. Article
-One states the outcome and that limit; the full result remains in this record
-and Article Two.
+One states the outcome and that limit; the full result remains in this record.
 
 **Model independence.** The boundary remains model-independent by construction,
 and `CROSS` adds one direct measurement. One Qwen-derived failure lesson changed

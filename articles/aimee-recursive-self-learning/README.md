@@ -20,9 +20,10 @@ Each article is readable alone. Article Zero owns the product and business
 case, the complete testing incident, deployment options, intended-use framing
 and business-level headline results. Article One retains the technical
 consequence, the conceptual argument and the headline evidence that
-self-learning operates and changes a later outcome. Article Two owns the full
-measurement design, replication record, limitations and memory machinery.
-Article Three owns the full transport implementation.
+self-learning operates and changes a later outcome. Article One's reporting
+record owns the full measurement design, replication and limitations. Article
+Two owns the memory machinery behind the result. Article Three owns the full
+transport implementation.
 
 ## Claim boundary
 
@@ -43,9 +44,9 @@ The article makes six bounded claims:
    memory and the audit path.
 
 The article makes no market claim, population-effect claim or claim that every
-learned item improves an outcome. Article Two and the reporting records retain
-the full efficacy method and limitations; cross-model and cost measurements
-remain with the articles whose arguments need them.
+learned item improves an outcome. Its reporting record retains the full
+efficacy method and limitations; cross-model and cost measurements remain with
+the articles whose arguments need them.
 
 ## Reconstruction
 
@@ -54,10 +55,10 @@ historical snapshot wholesale:
 
 - PR #83 at `48f10a17e9` supplies the fuller self-learning argument after the
   counted-loop framing was removed.
-- PR #87 at `956185a0` supplies the scope decision that moved the detailed
-  measurement treatment and memory machinery to Article Two. The headline
-  results remain in Article One because they directly support its central
-  self-learning claim.
+- PR #87 at `956185a0` records a scope decision that moved the measurements and
+  memory machinery to Article Two. The reconstruction keeps the memory
+  machinery there but returns the measurements to Article One because they
+  directly support its central self-learning claim.
 - PRs #91 through #98 supply the approved reader orientation, structure,
   incident ownership, company voice and ending.
 - PR #104's implementation report and PR #108's hybrid rewrite are not used as

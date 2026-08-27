@@ -138,12 +138,16 @@ choices held fixed, 12 of 24 repeated tasks succeeded without the learned
 failure record and 24 of 24 succeeded with it. On 24 new tasks with no matching
 history, both conditions remained at 12 of 24.
 
-The fixed consumer isolates whether recalled failure changed a later choice.
-It does not measure open-ended model performance. [Part Two explains the memory
-mechanism behind the
-result](https://rakuensoftware.com/blog/the-remembering-is-the-learning); its
-[reporting record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-remembering-is-the-learning/evidence/figures.md)
-carries the full study design, replication and limitations.
+That is direct evidence of self-learning in the harness: the stored result of
+earlier work changed later outcomes. The fixed consumer makes the attribution
+narrower, not weaker. It isolates recalled failure from model variance. It does
+not establish open-ended model performance.
+
+This article's [reporting
+record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-recursive-self-learning/evidence/figures.md)
+carries the full study design, replication and limitations. [Part Two explains
+the memory mechanism that made the result
+possible](https://rakuensoftware.com/blog/the-remembering-is-the-learning).
 
 Learning from those records creates a circularity: Aimee could judge a new
 proposal against a standard it had already changed. An additional gate

@@ -34,16 +34,10 @@ Each apparent storage feature changes what the system can trust, retrieve or
 revise next. This article follows that machinery from admission through
 correction and recall.
 
-One measurement bounds that account by isolating whether a recalled failure
-changes a later choice.
-
-On 26 August, we ran 24 synthetic recovery tasks through the deployed system
-twice, holding the starting choices fixed. Without the learned failure record,
-12 succeeded. With it available, all 24 succeeded. On 24 new tasks with no
-matching history, both phases remained at 12 of 24.
-
-The measurement uses a fixed consumer. It isolates the learned record and does
-not measure model performance.
+[Article One reports the direct self-learning
+evidence](https://rakuensoftware.com/blog/aimee-recursive-self-learning): a
+recalled failure changed later task outcomes under a fixed consumer. This
+article explains the memory machinery that made that result possible.
 
 ## A fact is born into a class, and authority picks the class
 
