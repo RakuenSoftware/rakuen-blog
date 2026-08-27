@@ -10,7 +10,7 @@ detail and first-party validation.
 
 ## Teaser cut inventory, 2026-08-27
 
-This pass reduced Article Zero from 1,439 words to 628. No first-party result
+This pass reduced Article Zero from 1,439 words to 620. No first-party result
 was removed from this reporting record.
 
 | prior article material | evidence class | disposition |

@@ -84,6 +84,6 @@ We built those boundaries before release and held self-learning back until the
 harness could provide the auditability and governance it required.
 
 Aimee is open source. Rakuen offers a managed cloud service and a self-hosted
-option. The next three articles show the learning, memory and enforcement
-mechanisms underneath that claim. Start with [the six learning
-loops](https://rakuensoftware.com/blog/aimee-recursive-self-learning).
+option. The next three articles cover self-learning, memory and enforcement.
+Start with
+[self-learning](https://rakuensoftware.com/blog/aimee-recursive-self-learning).
