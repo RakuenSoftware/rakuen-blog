@@ -120,9 +120,19 @@ loses less than either mixture, so the aggregate is carried by the 12B. What the
 data supports is that the catastrophic case was dense and no mixture had one,
 not that every dense model is fragile.
 
-The 12B also loses its output discipline at two bits. It generates faster than
-any other rung on its own ladder and takes two and a half times as long to
-finish, because it emits a median of **7,609 tokens per note against 958**.
+The 12B also emits far more at two bits than at any other rung on its own
+ladder, a median of **7,609 tokens per note against 958**, and takes two and a
+half times as long to finish.
+
+**Corrected 2026-08-27.** This said the model loses its output discipline. It
+does not. The context wall for these runs sits at roughly 7,620 tokens, so a
+median of 7,609 is a model being cut off rather than one that will not stop, and
+**61.6% of its notes ended within three tokens of that wall**.
+
+Our runner recorded them as finished because its truncation test compared the
+completion against the requested cap, which a completion that fills the context
+never reaches. The figure above is the fingerprint of a harness defect and this
+article read it as a property of the model.
 
 ## Quantization-aware training is the exception that inverts
 
@@ -236,8 +246,20 @@ measured anywhere here.
 times what the same step costs on the ordinary build.
 
 **Never take a dense model below four bits without measuring it.** One of the
-three here lost more than half its accuracy at two bits, behind a healthy tokens
-per second.
+three here fell furthest at two bits, behind a healthy tokens per second.
+
+**Corrected 2026-08-27.** The original said it lost more than half its accuracy.
+That number came from the run described above, two thirds of which was scored on
+answers that had been cut off, so it overstates the fall by an amount we are
+re-measuring rather than estimating. Re-run on 200 of the same notes under the
+sampling gemma's own `generation_config` ships, the model's parse rate rises from
+33% to 58% and the share of notes hitting the wall falls from 59% to 16.5%. The
+full 1,001-note re-run is in progress and this recommendation will carry its
+number.
+
+The direction survives and the size does not. Two bits is still the worst rung on
+this ladder: 16.5% of notes reach the wall even under the best setting we have
+found, so the model is genuinely damaged there as well as badly measured.
 
 **Run a mixture of experts at the lowest width that still fits.** None of the
 three lost more than four points below four bits, and all stayed card-resident
