@@ -1,12 +1,17 @@
 # Aimee: Recursive Self-Learning
 
-Part one of three. Aimee 0.4.0 self-learning changes state consumed by later
-work on a live two-service deployment. Part two carries the deployed checks and
-paired outcome study.
+Article one of four, and the first technical entry. Aimee 0.4.0 closes six
+learning loops on a live two-service deployment. The 25 August evidence target
+produced one observation per loop and finished at 46 passed, 0 failed. A later
+paired study isolates an outcome gain from failed-approach recall, and an
+exploratory Qwen-to-Luna/Terra pilot records a Terra completion crossover.
 
 ## The series
 
-1. **Self-learning** — this one. The learned state changes later work.
+0. **[Overview](../the-work-should-survive-the-model/)** — the non-technical
+   product, buyer and market argument.
+1. **Self-learning** — this one. The loops close; one loop now has paired
+   efficacy evidence and a cross-model open-ended pilot.
 2. **[Memory](../the-remembering-is-the-learning/)** — the machinery behind this
    article's central claim.
 3. **[Architecture](../everything-crosses-one-transport/)** — what parts one and
@@ -17,22 +22,27 @@ every reporting record that uses them.
 
 ## The claim, and only the claim
 
-Three things are claimed here:
+Five things are claimed here:
 
-1. self-learning changes later state on the tested deployment;
-2. the harness keeps the learned state;
-3. the state remains inspectable and auditable on the tested paths.
+1. six learning loops close on the tested deployment;
+2. the harness keeps their learned state;
+3. the state remains inspectable and auditable on the tested paths;
+4. failed-approach synthesis and recall causally changed matched outcomes for a
+   deterministic consumer while leaving novel-task outcomes unchanged;
+5. in one exploratory repository task, a lesson from a stopped Qwen failure
+   changed Luna verification depth and let Terra complete a hidden-graded,
+   regression-sensitive repair its base arm missed.
 
-The measured outcome and its limits are reported in part two.
+No claim is made that all six loops improve outcomes over time or that the
+one-task cross-model effect estimates a general success rate.
 
 Novelty is outside the claim.
 
 ## Status
 
-Draft. Accidentally published on 2026-08-26 and retired from the public site on
-2026-08-27. The source and evidence remain here for revision.
+Draft, updated 2026-08-27. Not published.
 
-The recursive self-improvement work merged to `testing` on 2026-08-24 as
+The recursive self-improvement loops merged to `testing` on 2026-08-24 as
 `877e994c2f`. All the learning work described is in 0.4.0.
 
 Trimmed from a 5,200-word master draft when the architecture material was split
@@ -49,62 +59,80 @@ names the build-graph check that caught the provider omission, separates loop
 closure from measured benefit, and surfaces the memory audit result. The audit
 sentence's dependency landed in Aimee PR #2847 on 2026-08-25.
 
+Extended on 2026-08-26: the harness-versus-weights section had read as a choice
+between two designs. It now states that the harness makes no assumption about
+which model serves a turn or about whether that model's weights change between
+turns, so a weight-updating model runs inside the same isolation and audit path
+with every protection intact. The compatibility statement is a design claim
+about the shipped boundary and carries no test of its own; see the open items.
+
+Split on 2026-08-26: the full test-node incident and the non-technical product,
+buyer and market argument moved to Article Zero. This article keeps the compact
+incident context needed by its isolation result and retains every technical
+test, source audit and design limit from the prior draft.
+
+Extended on 2026-08-27: the failed-approach loop now carries two efficacy
+layers. A 48-task paired deterministic study isolates production synthesis and
+recall. A one-task open-ended pilot transfers a sealed Qwen failure lesson into
+matched Luna and Terra arms. The article retains the failed learned-Qwen retry
+and the Luna final-grade failure.
+
+An editorial clarity pass on 2026-08-27 mapped comments on the earlier
+three-part draft against this four-part rewrite. It restored the full incident
+account promised by both reporting records to Article Zero, defines the test
+machine and immediate impact, and explains why the deterministic efficacy test
+can isolate recall while the one-run model pilot cannot separate learning from
+ordinary model variation.
+
+Corrected on 2026-08-27: an earlier draft described intended professional
+fields as current production breadth. The article now states current production
+use without assigning that use to named fields, then labels those fields as the
+intended use.
+
+Corrected on 2026-08-27: an earlier draft described Aimee only as self-hosted.
+Rakuen offers both a managed cloud service and a self-hosted option.
+
+Corrected on 2026-08-27: the opening described Aimee through its memory and
+execution controls without naming the full knowledge platform. It now places
+documents, durable memory, code knowledge, model routing and execution inside
+that larger product.
+
+A second large-repository campaign adds matched failure-cost evidence. Across
+three valid task pairs, local Qwen consumption fell from 1,819,904 to 1,199,552
+tokens, a 34.1 percent reduction. All six retained runs failed the hidden
+grader, so the article identifies cost containment rather than capability
+uplift. The invalid first attempt at the cross-language pair remains preserved
+and quarantined; a corrected rerun supplies the third valid pair.
+
+The same update now separates workflow-local retry summaries from the durable
+failed-approach loop. It records the row shape, matching floor, recall bound,
+policy arms and the experimental seam between direct lesson injection and the
+storage-backed shared-KB test.
+
 Rewritten on 2026-08-25 against `testing` at `6bcc87e`. The new six-loop target
 supersedes the older per-suite counts for the article's current result: 46
 passed, 0 failed.
-
-Revised in PR review on 2026-08-25 to restore the original narrative spine.
-The article now runs 3,234 words, down from 4,313. It retains the lead incident,
-the containment prerequisite, the six live observations, the deployment-graph
-failure, the endogeneity gate, the memory argument and the harness trade-off.
-It also makes the harness dependency explicit: without continued harness access,
-an agent falls back to its checkpoint and current context rather than carrying
-the accumulated learned state with it. The study and cross-model limits remain
-adjacent to the claims they bound.
-
-Revised on 2026-08-26 after editorial review. The lead now states what
-self-learning changes before telling the testing incident, and identifies the
-author's role. The production criterion is connected directly to holding
-self-learning until the isolation shipped. The original section scopes remain,
-the organisation-sharing sentence is explicit about identity and scope, and the
-harness section closes the article.
-
-The same review balanced the section hierarchy. The containment context now has
-its own heading, the two short learning-state sections are one section, and
-model portability is separated from company-wide sharing.
-
-A readability pass on 2026-08-26 kept that hierarchy and the article's claims
-in place. It gave each paragraph one subject, replaced distant referents and
-moved the remaining memory-defect detail out of part one. Part two and the
-reporting record retain that detail.
-
-The opening now includes the project-level description shared by all three
-articles: what aimee is, the operational problem it solves, and the role of
-self-learning memory from one user to a company, model and user scope, and
-governed execution.
-
-The article no longer retells the opening incident in the isolation discussion.
-The sanctioned test node now resolves the incident in the opener. The later
-section follows one mechanism in order: the complete working surface moves
-inside the boundary, and the transport supplies the enforcement point.
 
 ## Evidence
 
 First-party, in the public
 [aimee repository](https://github.com/RakuenSoftware/aimee). The
-[reporting record](evidence/figures.md) carries the per-figure map, the
-provenance of the lead incident, the figures that moved out in the split, and
-the two strong claims with what would settle them. The paired-study raw output
-is preserved under `evidence/raw/self-learning-efficacy-2026-08-26/`.
+[reporting record](evidence/figures.md) carries the per-figure map, the prior
+incident's move to Article Zero, the figures that moved out in earlier splits,
+and the two strong claims with what would settle them.
 
 ## Open items before publication
 
 - ~~Counts. Refresh at the 0.4.0 tag.~~ **Closed, 2026-08-25.** The article
-  series carries the reproducible self-learning target in part two.
-- ~~Measure whether learned state changes later outcomes.~~ **Closed for the
-  controlled failed-approach case, 2026-08-26.** The result and its limits now
-  appear in part two.
+  carries the reproducible six-loop target at 46 passed, 0 failed.
+- Model-agnostic failure transfer now has one exploratory Qwen-to-Luna/Terra
+  task behind it. A preregistered multi-task, repeated campaign is still needed
+  for a population estimate. Weight-updating compatibility remains a statement
+  about where the boundary sits and has no direct first-party efficacy run.
+- The cross-model pilot injected the lesson directly. Storage-backed tests
+  separately cover source-independent recall within one authorised shared KB;
+  a confirmatory run should exercise live multi-user retrieval end to end.
 - Temporal-learning rollout details remain in the reporting record and are
-  outside the article's self-learning claim.
+  outside the article's six-loop claim.
 - Keep the compressed containment summary consistent with part three if either
   changes.

@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "captured_at_utc": "2026-08-26T20:36:53Z",
+  "command": "python3 evidence/analyze_roi_tokens.py --aimee-repo /home/virant/dev/aimee --provider-stream-root /home/virant/.local/share/aimee/e6-paired-aa8-20260730-v2/cell-artifacts",
+  "method": "Recompute the standard-versus-Aimee-on coding result from the tracked E6 provider artifact, recover billed usage categories from each preserved provider stream, verify each stream's uncached input against the tracked result, and recompute the separate 50-task delegation totals from the tracked per-instance ledger export.",
+  "environment": {
+    "python": "3.13.5",
+    "system": "Linux 7.0.14-4-pve x86_64 GNU/Linux"
+  },
+  "expected": {
+    "quality_cells": "8 eligible standard cells and 8 eligible on cells; stream uncached input equals the tracked cell result",
+    "delegation_rows": 50,
+    "source_mutation": "none"
+  },
+  "actual": {
+    "quality_cells": "8 eligible standard cells and 8 eligible on cells; all 16 stream checks matched",
+    "delegation_rows": 50,
+    "source_mutation": "none",
+    "new_provider_calls": 0
+  },
+  "quality_adjusted_billable_tokens": {
+    "tracked_source": {
+      "path": "/home/virant/dev/aimee/benchmarks/code-agent-effectiveness/results/e6-20260730-provider.json",
+      "sha256": "cb552a748c89d47105a673ad0c3513afffb23126883719794aef8b87ed1dc957",
+      "pinned_aimee_commit": "aa8c40e9d75449774c9b0b630bb8f1037efb8097"
+    },
+    "run": {
+      "model": "gpt-5.6-sol",
+      "reasoning": "medium",
+      "tasks_per_arm": 8,
+      "exclusions": 0,
+      "retries": 0
+    },
+    "standard": {
+      "successful_tasks": 5,
+      "success_rate_pct": 62.5,
+      "input_tokens": 1115730,
+      "cached_input_tokens": 873216,
+      "uncached_input_tokens": 242514,
+      "output_tokens": 19550,
+      "input_plus_output_tokens": 1135280,
+      "input_plus_output_tokens_per_successful_task": 227056.0
+    },
+    "aimee_on": {
+      "successful_tasks": 6,
+      "success_rate_pct": 75.0,
+      "input_tokens": 1046028,
+      "cached_input_tokens": 802304,
+      "uncached_input_tokens": 243724,
+      "output_tokens": 16178,
+      "input_plus_output_tokens": 1062206,
+      "input_plus_output_tokens_per_successful_task": 177034.33333333334
+    },
+    "aimee_on_minus_standard": {
+      "successful_tasks": 1,
+      "success_rate_percentage_points": 12.5,
+      "input_tokens": -69702,
+      "input_tokens_pct": -6.247210346589228,
+      "cached_input_tokens": -70912,
+      "cached_input_tokens_pct": -8.120785693345061,
+      "uncached_input_tokens": 1210,
+      "uncached_input_tokens_pct": 0.4989402673660077,
+      "output_tokens": -3372,
+      "output_tokens_pct": -17.248081841432224,
+      "input_plus_output_tokens": -73074,
+      "input_plus_output_tokens_pct": -6.436649989429919,
+      "input_plus_output_tokens_per_successful_task": -50021.66666666666,
+      "input_plus_output_tokens_per_successful_task_pct": -22.03054165785826,
+      "recovered_tasks": 1,
+      "regressed_tasks": 0
+    },
+    "provider_streams": [
+      {"cell":"standard-c01","sha256":"4c60ac7427461c17043b5d8377894976199053950eea0f6e1a568f5f9f8d0821","input_tokens":143526,"cached_input_tokens":103680,"output_tokens":2928,"reasoning_output_tokens":1599},
+      {"cell":"standard-c02","sha256":"08987693d1534d091d8922ec9b86018d9a4b2e6a783fd055f7f3448bf763f396","input_tokens":142831,"cached_input_tokens":103680,"output_tokens":2819,"reasoning_output_tokens":856},
+      {"cell":"standard-c03","sha256":"262202cb0bb7c150485f1d62b83cb20f20d6310db22a6e98fd73aabcc7a284af","input_tokens":132450,"cached_input_tokens":98560,"output_tokens":1592,"reasoning_output_tokens":511},
+      {"cell":"standard-c04","sha256":"a506d271a25e3682753945aa62e041b20b35bde64ad146417a45775f369f5c20","input_tokens":156365,"cached_input_tokens":138752,"output_tokens":2773,"reasoning_output_tokens":1078},
+      {"cell":"standard-c05","sha256":"2f0484acbe64b30ddb750e33d13c13d1e94c8d584e9803813ff1970499d122bf","input_tokens":101714,"cached_input_tokens":68352,"output_tokens":1226,"reasoning_output_tokens":310},
+      {"cell":"standard-c06","sha256":"89da83f64e768bb3b92aa6c69506dc9ca36419542eed4e47337be9a1691fd2d8","input_tokens":134644,"cached_input_tokens":112640,"output_tokens":2086,"reasoning_output_tokens":672},
+      {"cell":"standard-c07","sha256":"a1f33ba92568c6f9c68a922fef10883be196d95d9b195efd782153295cb99c35","input_tokens":201005,"cached_input_tokens":157184,"output_tokens":4364,"reasoning_output_tokens":2244},
+      {"cell":"standard-c08","sha256":"4c488fd8fcc771a410a01bf5b3b01189fe21b5a41ceaf40e23add0cdb0309275","input_tokens":103195,"cached_input_tokens":90368,"output_tokens":1762,"reasoning_output_tokens":531},
+      {"cell":"on-c01","sha256":"29d95ddfc0a00b9f9cb7009cc7e6583927e655914243b88b4b9c8022f2ce905d","input_tokens":129443,"cached_input_tokens":107776,"output_tokens":2253,"reasoning_output_tokens":817},
+      {"cell":"on-c02","sha256":"9a0ffabc5d35531be1ec2ae997fdccfe9102af8b23fcff05f8a08300b9f452e7","input_tokens":143305,"cached_input_tokens":119808,"output_tokens":2078,"reasoning_output_tokens":588},
+      {"cell":"on-c03","sha256":"9ee9e0f008b0a57707fcf07d3d78f025f278f868e7e9e5c903516fb01c685ad3","input_tokens":88769,"cached_input_tokens":55296,"output_tokens":1405,"reasoning_output_tokens":412},
+      {"cell":"on-c04","sha256":"8908cde8c3d5ceb56887ecb950b4ec08316cf5376030758e0e093a47607755cb","input_tokens":156787,"cached_input_tokens":116736,"output_tokens":1857,"reasoning_output_tokens":380},
+      {"cell":"on-c05","sha256":"c14da365dd66f0dec6caa0cca6cc370f93722a10be7fabec04631771eb7dd318","input_tokens":105969,"cached_input_tokens":71424,"output_tokens":1896,"reasoning_output_tokens":614},
+      {"cell":"on-c06","sha256":"a950b3ec10249488758b83adc736ecd096655d3ca6cee79c5b44d1a7bb22d657","input_tokens":111619,"cached_input_tokens":100608,"output_tokens":2038,"reasoning_output_tokens":678},
+      {"cell":"on-c07","sha256":"598d39bc265bfa9b345606f258f0bb28932814d11b5fc944d8611c79657c7961","input_tokens":202130,"cached_input_tokens":158208,"output_tokens":2548,"reasoning_output_tokens":739},
+      {"cell":"on-c08","sha256":"b1924016c92a09ea8a6695d7f252be80be2c293ae33490984627ca5ab797f172","input_tokens":108006,"cached_input_tokens":72448,"output_tokens":2103,"reasoning_output_tokens":759}
+    ]
+  },
+  "frontier_delegation": {
+    "campaign_source": {
+      "path": "/home/virant/dev/aimee/benchmarks/results/cost_savings/lite50.json",
+      "sha256": "28fafe4c64169a97150b550273280915ca93ede883a7c8b34f86ff966457996c"
+    },
+    "per_instance_source": {
+      "path": "/home/virant/dev/aimee/benchmarks/results/cost_savings/lite50.perinstance.json",
+      "sha256": "64839e7db2bb0355ad1a97ec9423a4dc140e9b1045f2dad673d38571e2506515"
+    },
+    "pinned_aimee_commit": "4b46f973a5a6c2b21c95ce4db9b4465fdfc92b47",
+    "primary_model": "gpt-5.6-sol",
+    "worker_pool": ["MiniMax-M3", "mimo-v2.5-pro", "kimi-k2.7-code"],
+    "tasks": 50,
+    "default_frontier_tokens": 464252,
+    "delegated_frontier_tokens": 192406,
+    "frontier_tokens_displaced": 271846,
+    "frontier_token_reduction_pct": 58.55569819839225,
+    "tasks_with_fewer_frontier_tokens": 45,
+    "tasks_with_more_frontier_tokens": 5,
+    "median_per_task_frontier_token_reduction_pct": 60.8
+  },
+  "interpretation_limits": [
+    "The paired quality result contains eight tasks per arm. It is directional evidence, not a population estimate or company-wide ROI study.",
+    "Input, cached-input, and output tokens are separate billing categories. The input-plus-output count is raw provider-recorded volume, not a dollar conversion.",
+    "Reasoning output is reported for audit but is not added again because it is included in output tokens.",
+    "The delegation result counts only primary frontier-model prompt and completion tokens. Worker-model tokens are excluded.",
+    "The delegation run did not grade task correctness, so it establishes frontier-token displacement rather than cost per correct task.",
+    "No dollar result is reported because model prices and customer contracts vary."
+  ]
+}
