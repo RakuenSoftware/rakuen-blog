@@ -47,11 +47,12 @@ current deployment or measured efficacy in each field.
 
 ## Status
 
-Draft, updated 2026-08-27. Not published. A teaser pass cut the article from
-1,439 words to 620. It keeps the business premise, three headline returns, the
-company-memory consequence and the incident that set the boundary. Technical
-method, buyer guidance, licensing detail and comparison inventories remain in
-the reporting record or later articles.
+Published 2026-08-27. Live at
+[rakuensoftware.com/blog/the-work-should-survive-the-model](https://rakuensoftware.com/blog/the-work-should-survive-the-model).
+A teaser pass cut the article from 1,439 words to 620. It keeps the business
+premise, three headline returns, the company-memory consequence and the incident
+that set the boundary. Technical method, buyer guidance, licensing detail and
+comparison inventories remain in the reporting record or later articles.
 
 An editorial clarity pass on 2026-08-27 restored the full internal test
 incident promised by both reporting records. The account now defines the test

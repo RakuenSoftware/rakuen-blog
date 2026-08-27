@@ -69,7 +69,9 @@ keeps the complete incident in Article Zero and restores no counted taxonomy.
 
 ## Status
 
-Draft, reconstructed 2026-08-27. Not published.
+Published 2026-08-27. Live at
+[rakuensoftware.com/blog/aimee-recursive-self-learning](https://rakuensoftware.com/blog/aimee-recursive-self-learning).
+The reviewed reconstruction is the editorial baseline.
 
 ## Evidence
 
@@ -81,8 +83,11 @@ Article One. Raw artifacts remain unchanged.
 
 ## Open items before publication
 
-- Keep the containment summary consistent with the architecture article.
-- Confirm that Article Two carries the measurement detail previously assigned
-  to it.
-- Review the reconstructed article as prose before treating this lineage as the
-  new editorial baseline.
+- ~~Keep the containment summary consistent with the architecture article.~~
+  **Closed, 2026-08-27.** The public summary matches the architecture record's
+  transport, grant, network and control-socket boundaries.
+- ~~Confirm the measurement ownership after PR #87.~~ **Closed, 2026-08-27.**
+  Article One owns the self-learning measurements and reporting record; Article
+  Two owns the memory machinery.
+- ~~Review the reconstruction as prose.~~ **Closed, 2026-08-27.** The reviewed
+  reconstruction merged in PR #109.
