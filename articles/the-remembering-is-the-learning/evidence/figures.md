@@ -71,7 +71,7 @@ boundary on recall.
 | lane floors for summaries and facts, gated by configuration | `LANES` | **Corrected in draft, 2026-08-25, then narrowed the same day.** An earlier version read "reserved slots keep summaries and facts from being crowded out", stated as unconditional recall behaviour. `memory_apply_lane_floor()` is called at `memory_core_search_c.c:929-932` inside `if (config_memory_recall_lanes_enabled())`, so the gating is certain. **The shipped default is not verified here and the draft claims none.** A first pass read `double value = 0` in that accessor as the default; it is the fallback when the key is absent from the served snapshot. `config_client_read_number()` reads a snapshot fetched over the transport from the config module, whose implementation is external to this repository (`src/modules/config/module.yaml` names `github.com/RakuenSoftware/aimee-module-config`), so no default for this key is readable from the aimee tree at this pin. `memory_recall_lanes_enabled` is one of the flags `docs/validation/flag-rollout-readiness.md` lists as still needing an A/B |
 | typed facts were excluded from the graph walk, and the gravity table was dead at the fusion call site, which passed no relation and took the 0.45 unknown default for every edge | `TYPED`, `FUSION` | **shared** with part one. Two distinct defects; an earlier draft merged them into "co-occurrence at 0.45 drove recall". `MEMORY_GRAPH_GRAVITY_DEFAULT` is 0.45 and `co_discussed`'s own gravity is also 0.45, which is what made the conflation easy to miss |
 | A 1.0, B 0.75, C 0.5, multiplying a semantic baseline of 0.80 | `FUSION` | **shared** with part one. `memory_graph_confidence_factor`; `MEMORY_GRAPH_GRAVITY_SEMANTIC` is 0.80. The class is a multiplier on gravity, not an alternative to it |
-| three visibility bands, scope applied inside the query, stable sort within a band | `AUDIT`, `SCOPE` | **Corrected in draft, 2026-08-25.** An earlier version credited the exclusion to the ranking expression. `DB2_MEMORY_SCOPE_RANK_SQL` is the `CASE` used for ordering; `DB2_MEMORY_SCOPE_FILTER_SQL` is the separate `WHERE` predicate that drops out-of-band rows. Both bind through `db2_memory_scope_bind_current()` and are applied together in `memory_briefing.c`, `memory_relations.c` and `pgvec_transport.c` |
+| three normal visibility bands plus an optional exact-scope band, scope applied inside the query, stable sort within a band | `AUDIT`, `SCOPE` | **Corrected 2026-08-25 at `6bcc87e`.** Normal project, workspace and shared/global recall uses three bands. `DB2_MEMORY_SCOPE_RANK_SQL` now places an explicitly requested exact scope above them. `DB2_MEMORY_SCOPE_FILTER_SQL` is the separate `WHERE` predicate that drops out-of-band rows. Both bind through `db2_memory_scope_bind_current()` |
 | five functional tiers: Experience, Observation, World, Mental Models, Patterns; a directive can require recorded operator approval | `TIERS` | Corrected from an earlier draft reading "from scratch at L0 ... to L5", which implied six tiers. `TIER_L0_NAME` and `TIER_L1_NAME` are both `"Experience"` and `memory_functional_tier_name()` collapses L0 and L1 |
 | Experience occupies two storage levels, L0 and L1 | `TIERS` | distinct priorities from `memory_tier_priority()` (0 and 1) and their own promotion and expiry constants; five tiers, six levels |
 | scope is orthogonal to tier and is never encoded as an extra tier | `TIERS` | stated in the header comment |
@@ -227,6 +227,110 @@ figures.
 
 Both are carried from the earlier article's own reporting rather than
 discovered here, and neither is fixed in this release.
+
+**Correction, 2026-08-25.** The second limit above described a mechanism that
+no longer activates vocabulary. Relation sightings now order a review queue,
+and activation requires an authenticated decision. The current thin place is
+the catch-all filter: `misc` and similar predicates are excluded by an
+extraction instruction rather than by a code guard. The article carries that
+current limit.
+
+## Rewrite inventory, 2026-08-25
+
+The article was rewritten after a second source check against `origin/testing`
+at `6bcc87e`. Existing reporting above remains in place. This table records the
+disposition of every first-party class used by the prior article.
+
+| prior reporting | evidence class | disposition |
+|---|---|---|
+| three confidence classes, authenticated provenance and model-authority ceiling | pinned source audit | **Retained** |
+| endpoint-presence extraction check and its false-relation limit | pinned source audit | **Retained with the limit adjacent** |
+| promotion, expiry and the rule that durability does not raise authority | source audit plus lifecycle tests | **Retained** |
+| confirmation rewrite from 1 to 20 and 2 to 100 | live observation plus source audit | **Retained** |
+| co-occurrence collision with direct assertions | live observation plus source audit | **Retained** |
+| correction policies and class ordering | pinned source audit | **Retained** |
+| four authority-escalation paths and their fix | PR and source audit | **Retained in compressed form** |
+| valid and transaction time | pinned source audit | **Retained** |
+| shipped relation vocabulary and endpoint/cardinality gate | pinned source audit | **Retained without the fast-rotting count of 17** |
+| relation sighting, review order and attributable activation | current source audit | **Retained and corrected** |
+| removed catch-all code guard and surviving prompt instruction | current source audit | **Retained as a named limit** |
+| identity resolution and reversible merges | pinned source audit | **Retained** |
+| top 12 candidates, up to 48 entity seeds when graph fusion is enabled, and 13 score terms | source audit at `958af1c5`, rechecked at `6bcc87e` | **Retained with the feature gate stated, and with code proximity and display confidence excluded from the term count** |
+| ranking weights fitted from outcomes and benchmark-gated promotion | pinned source audit | **Retained** |
+| configured lane floors | current source audit | **Removed from prose as an optional ranking detail** |
+| graph confidence multipliers and the two fusion defects | source audit plus live observation | **Retained** |
+| three normal visibility bands, optional exact-scope band, in-query filtering and stable ordering | current source audit | **Retained and refreshed at `6bcc87e`** |
+| five functional tiers over six internal levels | current source audit | **Retained** |
+| pattern synthesis at three sessions, entity promotion at three sources and signed vocabulary review | current source audit | **Retained with each mechanism's separate gate** |
+| outcome-only demotion and minimum-evidence decline | pinned source audit | **Retained** |
+| contradiction retention and review backlog | pinned source audit | **Retained** |
+| error propagation through graph expansion | analysis grounded in the mechanism | **Retained and shortened** |
+| recalled context fenced as untrusted evidence | module contract | **Retained with behavioural limits** |
+| five transport decisions and per-seam failure behaviour | module and bus audit | **Removed from prose as architecture detail. Preserved above** |
+| required-core readiness and degraded lexical fallback | module contract | **Removed from prose as deployment detail. Preserved above** |
+| evidence ledger, changesets, lifecycle states, purge receipts and derived staleness | PR and source audit | **Retained in compressed form** |
+| 812 bytes per event in one idle-container run | one benchmark run | **Removed from prose. Preserved above with its conditions** |
+| default storage choice, replacement interface and performance argument | author statement without comparative benchmark | **Removed from the article** |
+| production provenance of every design constraint | author statement | **Removed from prose because per-constraint incident records do not exist** |
+| production use across teams | author statement without figures | **Removed** |
+| comparison with fourteen other memory projects | prior multi-repository source audit | **Still excluded from this article.** Its folder, raw artifacts and right-of-reply blocker remain unchanged |
+
+The rewrite adds no new runtime measurement. Its new work is a static recheck
+of the named symbols at `6bcc87e` and a disposition audit. Storage-backend
+details remain above where they identify old test conditions or preserve prior
+reporting. They no longer appear in the article.
+
+## Narrative restoration inventory, 2026-08-25
+
+PR review found that the 1,884-word rewrite retained the mechanism inventory
+but compressed the learning story too far. The article now runs 3,072 words
+against the original 4,032 and restores the original progression of belief over
+time.
+
+| narrative segment | restored treatment | claim boundary |
+|---|---|---|
+| authority chooses the initial confidence class | **Restored** | endpoint-presence check and false-relation limit remain adjacent |
+| promotion, expiry and the two confirmation defects | **Restored** | durability does not raise authority |
+| correction and derived retraction authority | **Restored** | request bodies may lower authority and cannot raise it |
+| learned vocabulary and attributable activation | **Restored** | sightings order review; they do not activate a relation; catch-all prompt limit remains explicit |
+| canonical identity and reversible merge | **Restored** | ambiguous names queue without blocking write or recall |
+| fused recall and thirteen-term score | **Restored** | top 12 and 48 seeds apply only when graph fusion is enabled; display confidence is not a score term |
+| confidence defect history | **Restored** | typed-fact exclusion and missing relation weight remain separate defects |
+| scope bands and maturity tiers | **Restored** | three normal bands plus optional exact-scope band; filter occurs inside the query |
+| cross-session synthesis | **Restored** | pattern synthesis, separately gated entity promotion and signed vocabulary review keep distinct conditions |
+| outcome-only demotion and contradiction backlog | **Restored** | minimum evidence may produce no judgement |
+| graph error propagation and evidence fencing | **Restored** | prompt fencing marks role but does not guarantee model behaviour |
+| named provider failure behaviour | **Restored briefly** | no backend or module inventory in prose |
+| evidence ledger and reversibility | **Restored** | the one-run 812-byte figure remains outside prose |
+| operational default discussion | **Still omitted** | no backend-selection or replacement-interface discussion in the article |
+| slow learning and two known limits | **Restored** | per-constraint production provenance remains omitted because it lacks individual records |
+
+## Essay-structure revision, 2026-08-26
+
+The article now runs **2,930 words** against the original 3,649-word source.
+The revision preserves the original progression from authority class through
+promotion, expiry, correction, vocabulary, identity, recall, scope, synthesis,
+outcome-based demotion, evidence fencing and reversibility. The prose now treats
+those mechanisms as one argument about how a remembered fact changes over time,
+rather than as a subsystem inventory.
+
+No physical storage choice, replacement module or vector-database discussion
+appears in the article. The phrase “vector search” was also replaced with the
+mechanism already named in the preceding sentence, dense retrieval. Historical
+storage and test-environment references remain in this append-only reporting
+record only.
+
+The thirteen-term score, 12-candidate and 48-seed limits, confidence
+multipliers, authority ordering, signed vocabulary activation, query-time scope
+bands and five-functional-tier/six-level distinction remain unchanged from the
+source audit recorded above. “Benchmark gate” was changed to “evaluation gate”
+in prose because the gate's role in proposal promotion matters to the argument,
+while the benchmark machinery does not.
+
+The two thin places remain explicit: endpoint presence does not detect a false
+relation between genuine endpoints, and catch-all predicates are currently
+excluded by prompt instruction instead of a code check. No new runtime result
+or broader guarantee was added.
 
 ## Self-learning measurements moved from part one, 2026-08-26
 

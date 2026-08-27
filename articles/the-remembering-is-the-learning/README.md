@@ -1,8 +1,8 @@
 # The Remembering Is The Learning
 
-Part two of three. A fact is born into a class, climbs to durable by being
-confirmed, expires when it stops being confirmed, and is superseded with its old
-value still legible. Those are not storage features. They are what learning is.
+Part two of three. A fact begins in a confidence class, can become durable,
+expires without confirmation, and keeps its prior value legible after
+supersession. Those changes decide what a later turn receives.
 
 ## The series
 
@@ -29,6 +29,12 @@ has a different job.
 
 Draft, 2026-08-24. Not published.
 
+Revised in PR review on 2026-08-25. The article now runs 3,072 words, down from
+4,032. It retains the original progression from authority and lifecycle through
+correction, learned vocabulary, identity, recall, scope, synthesis, demotion,
+provenance and the closing design rule. Backend selection remains outside the
+article.
+
 Revised on 2026-08-26 to carry the deployed self-learning checks and paired
 outcome study moved from part one.
 
@@ -49,8 +55,8 @@ on every correction path, and used by the default recall path. aimee is one
 subject among fourteen.
 
 This article carries the aimee mechanism from it, re-verified against `testing`
-on 2026-08-24, and adds the 0.4.0 material it predates. It carries none of the
-comparison.
+at `6bcc87e` on 2026-08-25, and adds the 0.4.0 material it predates. It carries
+none of the comparison.
 
 **That article keeps its folder, its evidence and its raw artifacts.**
 `articles/AGENTS.md` makes first-party reporting append-only, and it holds a
@@ -78,14 +84,13 @@ earlier article. The paired-study raw output remains preserved under part one's
 - ~~Pin. Mechanism was read at `testing` rather than at a commit.~~ **Closed,
   2026-08-24.** `testing` is the 0.4.0 release, so the read is a read of 0.4.0
   and there is no separate tag to pin to.
-- pgvector vs pgvectorscale is **not** an open item. The article names the 0.4.0
-  default; the reports name the environment they ran in. Both stand.
+- Storage-backend selection is outside this article.
 - ~~The comparison decision above.~~ **Decided, 2026-08-24: the fourteen-project
   comparison stays unpublished.** It is not retired and its folder, evidence and
   raw artifacts stay where they are, per `articles/AGENTS.md`. Its outstanding
   right of reply travels with it and is the reason it does not publish. This
   article is unaffected: it makes no comparative claim and never depended on
   that decision going either way.
-- Two limits are stated in the body and both are carried from the earlier
-  article's reporting rather than re-verified here: the extractor's endpoint
-  check, and the vocabulary counter not requiring distinct sources.
+- Two limits are stated in the body: endpoint checks miss false relations
+  between present names, and catch-all relations are blocked by a prompt
+  instruction before review rather than by code.

@@ -4,7 +4,7 @@ slug: the-remembering-is-the-learning
 date: 2026-08-24
 author: Rakuen Software
 tags: [aimee, memory, knowledge-graph, ontology, authority]
-excerpt: "A fact is born into a class, climbs to durable by being confirmed, expires when it stops being confirmed, and is superseded with its old value still legible. Those are what learning is, and aimee's memory is where it happens."
+excerpt: "Aimee learns by changing the standing of remembered facts: authority sets their starting class, evidence promotes or expires them, correction preserves their history, and recall applies the result."
 ---
 
 *Rakuen builds aimee, the system written about here. This is the memory article
@@ -62,20 +62,17 @@ The asserted authority and the write-gate verdict choose the class. That first
 decision sets the fact's starting confidence, lifecycle and later weight in
 recall.
 
-The extraction path has no route from model authority to Class A. The extractor
-passes model authority as a constant, so a fact-extraction prompt cannot claim
-the user's class. Stored-note provenance is stamped from the authenticated
-writer and defaults to agent-authored.
+The extraction path fixes model authority before the prompt runs. Text emitted
+by the model therefore cannot claim the user's class. Stored-note provenance
+comes from the authenticated writer and defaults to agent-authored.
 
 The extractor also ignores the model's self-reported confidence. It commits
 only when both endpoints occur in the source note. That catches invented
 endpoints. It does not catch a false relation drawn between two names that are
 both really there.
 
-This matters more than it sounds, because the class is the weight. It is what
-the recall walk multiplies by later. Getting a fact into the wrong class is not
-a bookkeeping error, it is teaching the system something with the wrong
-confidence.
+The class feeds the weight applied during recall. A classification mistake
+teaches the system to trust a fact at the wrong level.
 
 ## Promotion is learning. Expiry is forgetting
 
@@ -83,12 +80,11 @@ A fact that keeps being confirmed is promoted to durable by a scheduled
 maintenance pass. A speculation that stops being confirmed runs out its clock
 and is stamped as no longer believed.
 
-Nothing decided that. No loop reasoned about it. Those two passes are the
-system changing what it believes on the evidence, and they are ordinary memory
-operations on a schedule.
+The scheduled passes change what the system believes according to accumulated
+evidence. They are ordinary memory maintenance and also the learning process.
 
-The rule that keeps it honest: **repetition buys durability, it does not buy
-authority.** Reinforcement can make a model inference durable and it stays
+The rule that keeps it honest is that repetition buys durability, not
+authority. Reinforcement can make a model inference durable and it stays
 Class B. A new relation remains speculation even when a person asserted it,
 because the unsettled part is the vocabulary and personal authority cannot
 settle that.
@@ -98,13 +94,13 @@ first time exposed a maintenance job that rewrote confirmation counts on
 semantic edges, taking a Class A fact from 1 to 20 and a Class C fact from 2 to
 100. Weight on those edges is a confirmation count and the lifecycle reads it
 as one, so that rewrite promoted things nothing had confirmed and stopped
-anything ever expiring: precisely the two outcomes the lifecycle exists to
+anything ever expiring: the two outcomes the lifecycle exists to
 prevent. A separate defect had co-occurrence upserts landing on the same unique
 triple as real assertions, so two words appearing in one session counted as
 somebody repeating themselves.
 
-Both of those are learning defects wearing storage clothes. The store was
-working correctly the entire time.
+Both defects appeared to be storage maintenance while changing what the system
+believed. Reads and writes continued to work throughout.
 
 ## Correction leaves the old value where it is
 
@@ -115,7 +111,9 @@ while keeping its row. Others refuse quiet rewrites.
 The ordinary commit path applies class ordering. If a model extracts a
 different object for a single-valued relation, the write compares the old and
 new classes first. A Class B `works_for` write cannot supersede a current Class
-A value, and it cannot sit beside it either, because a single-valued relation
+A value.
+
+It cannot sit beside it either, because a single-valued relation
 must not end up holding two current values. A user write can replace a model
 value. Equal-ranked writes fall back to the relation's ordinary policy.
 
@@ -144,9 +142,9 @@ device to an address. The write gate looks up the relation and checks both
 ends. If the model says the printer works for the kernel, the commit stops
 before a row is written.
 
-Seventeen relationships ship with the system so a fresh install can validate
-before it has learned anything. The live set sits in a table the running system
-can extend, with cardinality and endpoint rules on each relation.
+A shipped vocabulary lets a fresh system validate before it has learned
+anything. The live set can grow, with cardinality and endpoint rules on each
+relation.
 
 A relation nothing has seen enters as speculation. Facts using it still commit,
 as Class C, and the sighting is counted. A sighting registers only after its
@@ -161,12 +159,13 @@ their own, and this release replaced the counter with a decision that has to be
 signed, on the stated grounds that activating a predicate is not something
 recurrence should settle.
 
-Note what that does and does not require. The actor is a credential, not
-necessarily a person. Point an automation holding one at the queue and the
-vocabulary grows by itself again, which is a legitimate way to run this and the
-one I would expect a mature deployment to choose. What the design refuses is
-not autonomy. It is an activation nobody is named for. Evidence sets the
-queue's priority, something signs, and the ledger records which.
+The actor is a credential, not necessarily a person. An automation holding that
+credential can work the queue, so the design does not require a person at a
+console.
+
+What it refuses is an activation attributed to nobody. Evidence sets the
+queue's priority, something named signs, and the ledger records which identity
+made the decision.
 
 Catch-alls such as `misc` are excluded by an instruction in the extractor's
 prompt. The code guard that used to drop them went out with the counter it
@@ -179,7 +178,7 @@ accumulated. That door and the queue differ in bulk rather than in kind: a
 whole vocabulary at once from a document, or one relation at a time as evidence
 raises it.
 
-## Identity comes before storage, and a bad guess is reversible
+## Identity comes before the fact, and a bad guess is reversible
 
 The graph walk starts from the entities a candidate mentions, so splitting one
 person across three nodes loses paths that should have been found.
@@ -189,60 +188,54 @@ point at that identity, never at other names. Values such as an address or an
 age bypass the identity register entirely.
 
 Every completed merge is recorded and reversible. A name with several plausible
-owners goes to a queue with bounded retries, and blocks neither write nor
-recall. That is deliberate and I would argue for it anywhere: learning that
-cannot be undone is not learning, it is damage.
+owners goes to a queue with bounded retries while writes and recall continue.
+Reversibility matters because identity resolution will sometimes be wrong, and
+an irreversible guess turns later evidence into damage control.
 
-## One recall, one score, and that score is the learned model being applied
+## Recall is where the learned model takes effect
 
-Lexical matching and dense vectors produce the first candidates. The top twelve
-supply up to forty-eight canonical entities as seeds. Expansion collects the
-memories attached to each seed, then follows direct neighbours using the
-relation and authority class of each edge.
+Lexical matching and dense retrieval produce the first candidates. When graph
+fusion is enabled, the top twelve supply up to forty-eight canonical entities
+as seeds. Expansion collects the memories attached to each seed and follows
+direct neighbours using the relation and authority class of each edge.
 
-The graph adds memories that both lexical and vector search missed. A question
+The graph adds memories that both lexical and dense retrieval missed. A question
 can share no words with its answer if an entity connects the two.
 
-One score of thirteen summed parts ranks the result: lexical match and
-coverage, dense match, entity overlap, time, evidence, state, salience,
-surprise, graph proximity, PageRank, query intent and recorded outcome. Code
-proximity is that graph term relabelled when the path ran through a code node.
-Confidence is filled in after ranking, for display rather than for position. A
-typed fact, a conversation from March and a function edited last week compete
-on one scale. Lane floors keep summaries and facts from being crowded out when
-they are switched on, which is a configuration question rather than something
-recall does on its own. The winners pull in neighbouring turns, and then scope
-removes anything the caller cannot see.
+One score of thirteen summed parts ranks the result: lexical match, coverage,
+entity overlap, time, evidence, semantic match, state, query intent, salience,
+surprise, graph proximity, PageRank and recorded outcome. Code proximity names
+the graph term when the path ran through code. Display confidence is filled
+after ranking and sits outside those thirteen terms.
 
 The weights are fitted from feature rows and recorded retrieval outcomes. A new
-ranking model lands as a proposal until a benchmark gate promotes it.
+ranking model remains a proposal until an evaluation gate promotes it.
 
-Read that last paragraph again as a learning operation. What the system has
-learned about which evidence to trust is the weight vector, and applying it is
-what happens on every turn.
+The ranking weights record what the system has learned about which evidence to
+trust. Applying them on every turn puts that learning to work.
 
-Confidence class enters here too, and once did not. Typed facts were excluded
-from this walk altogether, so a user-stated, type-validated fact contributed
-nothing to it. Worse, the gravity table was dead at the fusion call site, which
-passed no relation at all and so took the unknown-relation default of 0.45 for
-**every** edge. Nothing was being weighted by what it was. Fixed, a typed fact
-takes a semantic baseline of 0.80 and its class multiplies that: A at 1.0, B at
-0.75, C at 0.5.
+Confidence class enters graph expansion. A semantic edge begins at 0.80. Class
+A multiplies it by 1.0, Class B by 0.75 and Class C by 0.5.
+
+That path once had two defects. Typed facts never entered graph expansion, and
+the fusion call omitted the relation name, so every edge took the
+unknown-relation default of 0.45. The memory held the facts while recall used
+neither their type nor their intended relation weight.
 
 ## Scope ranks inside the query
 
 Memory shares one graph, and query-time scope separates projects and
 workspaces.
 
-A recall carries the caller's active project and workspace. Active-project
-memory takes the first visibility band, the workspace the second, shared or
-global memory the third. Anything else scores zero. The query receives both
-halves as bound parameters. The band is an ordering term, and a matching
-predicate in the same statement's filter drops the rest before anything is
-ranked. A filter applied afterwards leaks through timing and through which
-candidates reached the scorer at all. A stable sort preserves relevance inside
-each band, so the caller gets the best match they may see with no signal that a
-stronger hidden one exists.
+A recall carries the caller's active project and workspace. Normal recall puts
+the active project in the first visibility band, the workspace in the second,
+and shared or global memory in the third. A caller requesting one exact scope
+adds a narrower band above those three.
+
+The query receives scope as bound parameters. A matching predicate removes
+other rows before ranking, and stable sorting preserves relevance inside each
+band. Filtering afterwards would leak through timing and through which hidden
+candidates reached the scorer.
 
 Underneath runs a second axis: how settled a memory is. Five functional tiers,
 from Experience through Observation, World and Mental Models to Patterns. Raw
@@ -258,16 +251,16 @@ looking at the rows: L0 and L1 carry different promotion and expiry constants
 and rank differently, and both answer to the same functional name. Five tiers,
 six levels.
 
-Tier records how settled a memory is. Scope records where it may appear. They
-are different questions, and I think conflating them is how a system ends up
-either leaking or forgetting.
+Tier records how settled a memory is. Scope records where it may appear. Mixing
+the two causes a system to leak information or discard useful memory.
 
 ## What a team knows, distilled out of work nobody filed
 
 The design goal is refinement under use. Something one engineer established can
-climb out of its original scope after independent work corroborates it, and
-nobody has to file or curate anything. That is the goal. Two of the three
-mechanisms under it sit behind their own switches.
+climb out of its original scope after independent work corroborates it. Months
+of ordinary work can produce team knowledge without asking each person to file
+the lesson separately. Two of the three mechanisms remain behind their own
+switches.
 
 Three was the default threshold in three places, and the units differed. Two of
 them still run on a count. A durable fact seen in three distinct sessions can
@@ -281,8 +274,8 @@ three thresholds this article started with, one is automatic, one is available
 and off, and one has become a decision that carries a name.
 
 Months later, somebody who never spoke to the first engineer can receive an
-answer carrying what that work established. That is the loop closing on a
-timescale no session can see.
+answer carrying what that work established. The loop closes on a timescale no
+session can see.
 
 ## Demotion reads outcomes
 
@@ -300,65 +293,48 @@ frequency is a property of ranking while source count is evidence about the
 claim. Under a floor of recorded outcomes the scorer declines to judge at all,
 and says so.
 
-Counterfactual discipline reaches the memory layer through those outcomes. What
-a memory is worth is what happened when it was used.
+The counterfactual discipline from the first article reaches the memory layer
+here. A memory's value comes from what happened when it was used.
 
 Contradictions are not resolved by picking a winner. Both claims stay, linked,
 with their sources intact. Policy chooses the current value, and unresolved
 conflicts join a backlog beside stale facts and thinly covered topics.
 
-## One bad write spreads, which is what the discipline is for
+## One bad write spreads
 
-A wrong fact in an isolated fact store harms the queries that retrieve it. In a
-fused graph an edge changes what the walk reaches and what enters the ranking,
-including queries that mention neither endpoint. On a shared deployment, later
-sessions can carry it into pattern synthesis.
+A wrong fact on its own harms the queries that retrieve it. In a fused graph,
+an edge changes what the walk reaches and what enters the ranking, including
+queries that mention neither endpoint. On a shared deployment, later sessions
+can carry it into pattern synthesis.
 
-A bad write spreads. That is the entire reason for the gate, the classes, the
-identity resolution and the reversible merge, and it is why those cost what
-they cost.
+A bad write spreads. The gate, authority classes, identity resolution and
+reversible merge exist to limit that propagation.
 
-## Recall hands back evidence
+## Recall returns evidence
 
-What memory returns is fenced. Injected context is untrusted evidence, not
-authorization and not executable instruction.
+Memory returns recalled text inside an evidence fence. The harness assigns it
+the role of untrusted evidence, separate from authorization and executable
+instruction.
 
-A model reading its own memory is reading evidence about the world, not
-receiving orders. Without that boundary the recall path would be an injection
-surface pointed directly at the learning loops, since anything that could get
-itself remembered could later instruct the thing that remembered it.
+The fence cannot guarantee that a model will ignore every malicious instruction
+embedded in the text. It gives the model and the surrounding policy a clear
+distinction to enforce. Without that distinction, anything that got itself
+remembered would return in the same role as an instruction from the harness.
 
-## Every decision is answered somewhere with a name
+## Every decision has a named authority
 
-Memory is required core. Its descriptor sets `runtime_toggle.supported` to
-false: it cannot be removed from a running profile. Readiness means durable
-storage opens and the configured embedding path has a compatible dimension. A
-lexical fallback preserves a degraded lookup and does not make the deployment
-compliant, which is the difference between a thing that answers and a thing
-that remembers.
+Named providers answer the decisions around a memory write or recall. The
+caller has no permissive local substitute for an unavailable answer.
 
-Five decisions cross the transport, each on its own event: whether a candidate
-triple may commit as a semantic edge, extraction and the retraction pre-scan,
-the PII recall gate, the confidence band, and embedding.
+Failure behaviour depends on what is at risk. The write gate defers so the
+caller can retry. Extraction returns an error because an error and no facts are
+different answers. Privacy gates withhold, and the retraction pre-scan leaves a
+fact in place because an extra retained fact is recoverable while a mistaken
+deletion is not.
 
-Four of those are pure decisions, and each is served by a registered provider
-that is authoritative and never falls back to the local implementation, on the
-stated grounds that a silent fallback lets a broken module look healthy.
-Embedding is the exception and is arranged differently: the module serves HTTP
-embedders behind its own circuit breaker, while program-based embedders remain
-in the host path by explicit contract, with the module returning a decline on
-those commands.
-
-What a failure does is chosen per seam, and the set is worth reading together.
-The write gate defers, so nothing is written and the caller retries. Extraction
-returns an error, because an error and "no facts" are different answers. Both
-halves of the PII gate fail closed, withholding. The retraction pre-scan does
-not retract, because that path deletes, and a fact left behind is recoverable
-where one deleted by mistake is not.
-
-Ported decisions are held to the original implementation by differential
-fixtures generated from it, so no expectation is transcribed by hand from
-reading it.
+Here the architecture in part three meets the lifecycle in this article. Memory
+rules hold only when an unavailable decision remains distinguishable from
+approval.
 
 ## A learned thing has an identity, a date, and a delete
 
@@ -367,68 +343,18 @@ evidence ledger, with transactional mutation guards and an authenticated actor
 on each row. Changes group into changesets that can be shown, diffed, previewed
 and reverted by compensation. Documents move through active, invalidated,
 retired and purged, with a bounded blast-radius preview before and a
-content-free purge receipt after. Derived memories declare what they were
+content-free purge receipt after.
+
+Derived memories declare what they were
 derived from, so staleness propagates and a rederivation queue picks them up.
 Recall explanations are persisted and scoped, carrying lane, contribution,
-gate, staleness and provenance. One run of the bounded-growth benchmark, on an
-idle test container, put the ledger at 812 bytes an event. That is what a kept
-event costs, measured once. What it costs under load is not a number we have.
+gate, staleness and provenance.
 
-What makes a learned thing a thing at all is an identity, a date, an evidence
-chain, a fate, and a delete. Those properties explain why the harness keeps the
-learned history outside model weights. You cannot walk a gradient step's
-evidence chain to its roots, and you cannot revert one commit's worth of weight
-update because someone later said it was wrong.
-
-## The default store is boring on purpose, and you can replace it
-
-Aimee installs by default onto PostgreSQL with pgvectorscale, and that is not
-an accident or a shrug. It is one instance of the rule the whole system is
-built on: almost unlimited customisation, over defaults chosen to be sensible
-and boring. Everything in this article behaves the same way. The thresholds,
-the class weights, the promotion and expiry clocks, the tiers and the scope
-bands are all constants somebody can change, and the values shipped are the
-ones we were willing to be woken up by.
-
-I am not claiming it is the fastest way to do this. It is not. There are vector
-databases built specifically for this workload that will beat it, some of them
-substantially, and an end user who moves to one can expect a real improvement.
-
-What we are unwilling to trade for that is the shape of the bad case. A store
-that wins on the median and can stall for ten seconds under conditions nobody
-has characterised is worth less to us than a slower one whose worst day is
-written down, because the ten seconds is what a person sits through and what
-somebody gets woken up about. Speed still matters; the deciding number is the
-worst case. The transport uses the same rule and commits a ceiling instead of an
-average.
-
-A published best-case figure for a vector store is not the number we are asking
-for. The measurement itself is fine; the wrong end of the distribution was
-published. Give us the worst case instead: where it stalls, what provokes it,
-how long it lasts, how often. Then there is a real conversation to have, and it
-could end with us moving.
-
-So the vector store is a module you can swap.
-
-What the default buys is the same thing the rest of this article keeps
-choosing. The performance limits are known. How to improve them is thoroughly
-understood. The documentation is extensive and mostly written by people who
-were not selling anything. When it misbehaves, the shape of the misbehaviour
-has a name and a mailing list thread from 2015.
-
-The real reason is that the people who wrote aimee are the
-people who get woken up by it, and we would rather be woken up by a mechanism
-we understand than by a faster one we do not. That is a judgement about which
-risk to carry, and if your operational situation is different then so is the
-right answer. The module is there for exactly that.
-
-The swap is genuinely supported, and that distinction is worth drawing. Someone
-else's worst case may genuinely be a different one. Or they may have
-characterised a faster store's tail on their own workload and know precisely
-what they are carrying, which is a better-informed position about their
-deployment than ours could be. If a purpose-built vector database is what a
-user wants, that is a legitimate engineering decision and we back it, because
-the criterion above belongs to us and to our situation.
+A learned thing becomes manageable through an identity, date, evidence chain,
+fate and delete. The first article argued that the loops lose those properties
+when translated into model weights. A gradient step has no evidence chain to
+walk back to its roots, and one commit's worth of weight update cannot be
+reverted cleanly after an operator rejects it.
 
 ## Slow on purpose, and thin in two named places
 
@@ -436,39 +362,30 @@ The discipline is not free and some of it is slow on purpose. A novel relation
 waits for a signed approval. A memory climbs tiers on evidence. An operator
 approval gates policy.
 
-I will defend the slowness, and the reason is not caution in the abstract.
+The slowness protects the quality of what later turns will treat as knowledge.
 
-A system with no memory is useless. A system with fast, bad memory is worse
-than useless, because it is confidently wrong and it stays that way. The
-failure does not announce itself as a failure: recall keeps answering, the
-answers keep sounding reasonable, and the wrong thing propagates into
-everything downstream that treats memory as settled. No memory costs you
-capability. Bad memory learned quickly costs you the ability to trust anything
-the system says, including the parts that were fine. Given the choice I would
-take the first one, and none of these thresholds exists to make that choice
-unnecessary.
+A system without memory is limited. A system with fast, bad memory is
+confidently wrong and remains wrong. Recall keeps answering, the answers keep
+sounding reasonable, and the mistake propagates into everything downstream
+that treats memory as settled.
 
-We did not reason our way to that position. Every constraint in this article
-came out of running aimee in production and watching what went wrong: the
-thresholds, the class ordering, the reversible merge, the outcome-only
-demotion. The gravity default and the confirmation-count rewrite described
-above are the same story at a smaller scale. Each of them is a rule that exists
-because something happened without it.
+Missing memory costs capability. Bad memory learned quickly costs trust in every
+answer, including the sound parts. A slower promotion path is cheaper than
+rebuilding that trust after the system has spread a falsehood.
 
-Two limits worth stating plainly. The extractor's endpoint check catches
+Two limits remain. The extractor's endpoint check catches
 invented endpoints and does not catch a false relation between two names that
 are genuinely present in the note. And the bar against catch-all predicates is
 now an instruction in a prompt rather than a check in code, so what stops a
 `misc` reaching the review queue is a model following an instruction.
 
-Both are known and both are narrower than the guarantees around them. The
-first is unfixed in this release. The second this release created, by removing
-the check and keeping the requirement.
+Both limits are known. The endpoint check remains incomplete in this release.
+The prompt-only catch-all rule appeared when the code check was removed while
+the requirement remained.
 
-If you are building memory for a model to use, settle what a learned thing is
-before settling where to put it. An identity, a date, an evidence chain, a fate
-and a delete are the five fields that make every later correction possible, and
-they are cheap to write on the first day. Adding them afterwards means going
-back through rows that were stored without them, deciding what each one meant,
-and guessing at the provenance of anything already acted on. That is the
-expensive version, and it is the one most systems end up buying.
+If you are building memory for a model, settle what a learned thing is before
+settling where to put it. Identity, date, evidence chain, fate and delete make
+every later correction possible, and they are cheap to establish on the first
+day. Adding them later means reconstructing meaning and provenance for facts
+the system may already have used. The remembering becomes learning only when
+the system can also explain, revise and forget what it remembers.
