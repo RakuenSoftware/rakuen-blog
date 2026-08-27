@@ -1,7 +1,7 @@
 ---
 title: "Aimee: Self-Learning"
 slug: aimee-recursive-self-learning
-date: 2026-08-24
+date: 2026-08-27
 author: Rakuen Software
 tags: [aimee, self-learning, memory, isolation]
 excerpt: "Aimee learns in the harness, where experience can be remembered, inspected and reversed. The same boundary that contains the agent also holds everything it has learned."
@@ -10,11 +10,9 @@ excerpt: "Aimee learns in the harness, where experience can be remembered, inspe
 *Rakuen Software builds aimee, the system written about here. [Article
 Zero](https://rakuensoftware.com/blog/the-work-should-survive-the-model) gives
 the non-technical introduction and business case. This is Article One and the
-first technical article. The second technical article covers
-[memory](https://rakuensoftware.com/blog/the-remembering-is-the-learning), and
-the third covers the
-[architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
-both stand on. Sources and reporting decisions are recorded in the [reporting
+first technical article. A later article will cover memory, followed by an
+article about the architecture beneath both. Sources and reporting decisions are
+recorded in the [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-recursive-self-learning/evidence/figures.md).*
 
 Aimee is an open-source knowledge platform for company AI work, available as a
@@ -104,8 +102,8 @@ Self-learning therefore requires useful capability inside an audit path for
 governed work, with control over what execution can touch. Better containment
 can make the system more capable at the same time.
 
-0.4.0 supplies the enforcement point through its [transport
-architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport).
+0.4.0 supplies the enforcement point through its transport architecture, which
+a later article will cover.
 Governed work crosses one transport, where the harness checks and records it
 before routing. Delegated execution runs in containers with the network
 disabled, no ambient credentials and one mediated control socket.
@@ -145,9 +143,8 @@ not establish open-ended model performance.
 
 This article's [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/aimee-recursive-self-learning/evidence/figures.md)
-carries the full study design, replication and limitations. [Part Two explains
-the memory mechanism that made the result
-possible](https://rakuensoftware.com/blog/the-remembering-is-the-learning).
+carries the full study design, replication and limitations. Part Two will
+explain the memory mechanism that made the result possible.
 
 Learning from those records creates a circularity: Aimee could judge a new
 proposal against a standard it had already changed. An additional gate
@@ -179,8 +176,7 @@ useful relationships.
 
 Rich provenance makes a claim inspectable while making the envelope larger.
 Learning matters only when these tradeoffs produce evidence the model can use
-safely at the point of decision. [Part Two explains the memory
-machinery](https://rakuensoftware.com/blog/the-remembering-is-the-learning) and
+safely at the point of decision. Part Two will explain the memory machinery and
 the defects we found while building it.
 
 Useful memory also needs a stricter success test. A confidently wrong recall

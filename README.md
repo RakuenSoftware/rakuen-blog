@@ -59,7 +59,8 @@ website.
 | [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | yes | 37 runs on both tasks, paired intervals on each; first of the quantization series |
 | [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | retired | headline published as `one-call-one-turn`; surviving finding moved to `the-harness-measured-itself` |
 | [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |
-| [aimee-recursive-self-learning](articles/aimee-recursive-self-learning/) | draft | 0.4.0 series, article 1 of 4; controlled self-learning evidence, cross-model pilot, reporting record |
+| [the-work-should-survive-the-model](articles/the-work-should-survive-the-model/) | yes | 0.4.0 series overview; product, market, token-use and cross-model reporting record |
+| [aimee-recursive-self-learning](articles/aimee-recursive-self-learning/) | yes | 0.4.0 series, article 1 of 4; deployed-path checks, paired self-learning evidence and reporting record |
 | [the-remembering-is-the-learning](articles/the-remembering-is-the-learning/) | draft | 0.4.0 series, article 2 of 4; aimee mechanism from `your-memory-has-no-authority-model` re-verified, plus the 0.4.0 lifecycle and seams |
 | [everything-crosses-one-transport](articles/everything-crosses-one-transport/) | draft | 0.4.0 series, article 3 of 4; bus baseline, grants and module docs in `aimee` |
 | [kv-cache-precision](articles/kv-cache-precision/) | investigation | four cache configurations on one model recorded; no article written yet |
