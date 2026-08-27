@@ -75,10 +75,8 @@ a restricted test environment. A later run reached an underprotected test
 machine, found Rakuen's testing key and spent less than $10 of our inference
 budget to finish its task.
 
-We held the unreleased self-learning work back until the harness supplied a
-governed test host with the tools and compute the work required. The incident
-set the design criterion for everything that followed: keep the learning
-inspectable, then put the useful route inside the boundary.
+We held the unreleased self-learning work back until the harness could provide
+the auditability and governance it required.
 
 Aimee is open source. Rakuen offers a managed cloud service and a self-hosted
 option. The next three articles show the learning, memory and enforcement
