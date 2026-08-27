@@ -10,7 +10,7 @@ detail and first-party validation.
 
 ## Teaser cut inventory, 2026-08-27
 
-This pass reduced Article Zero from 1,439 words to 581. No first-party result
+This pass reduced Article Zero from 1,439 words to 615. No first-party result
 was removed from this reporting record.
 
 | prior article material | evidence class | disposition |
@@ -18,7 +18,7 @@ was removed from this reporting record.
 | 21.1 percent lower API-price-equivalent cost per passing task in the eight-task paired run | paired provider run with hidden-test scoring and category pricing | **Retained as “lower cost per completed task.”** Method, sample size and pricing detail remain below and in the technical record. |
 | 34.1 percent fewer tokens across three matched large-repository failures | paired provider-backed failure trajectories with sealed graders | **Retained as “less model use on failing tasks.”** The fact that all six runs failed remains in this record and Article One. |
 | 58.6 percent lower frontier-model use in the 50-task delegation campaign | live ledger-window token counts; worker cost and task correctness unmeasured | **Retained as one headline figure.** The article calls it reduced use of the most expensive model, not total savings. |
-| Qwen lesson changed Luna verification depth and Terra completion | one-task matched cross-model pilot | **Retained in compressed form.** Negative Qwen and Luna outcomes remain in Article One and this record. |
+| Qwen lesson changed Luna verification depth and Terra completion | one-task matched cross-model pilot | **Retained as the example behind the compounding business case.** Negative Qwen and Luna outcomes remain in Article One and this record. The claim that capability grows and rediscovery cost falls over time is a product consequence, not a measured longitudinal rate. |
 | current production use and intended professional fields | first-party operator statement | **Retained with the corrected boundary.** Named fields remain intended use rather than claimed deployment breadth. |
 | underprotected test-host incident and spend under $10 | first-party account | **Retained in compressed form.** Article Zero keeps the observed event and release consequence. Causal inference and the missing cold-start control remain in Article One. |
 | AGPL licence, managed-cloud and self-hosted deployment options, and no-phone-home statement for self-hosted services | first-party repository, operator statement and licence review | **Corrected and compressed.** Both deployment options remain in the article. Licence detail and the self-hosted operational limit remain below. |

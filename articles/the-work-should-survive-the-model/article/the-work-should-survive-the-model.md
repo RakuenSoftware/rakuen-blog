@@ -42,12 +42,15 @@ The first business results were:
 - **34.1 percent less model use on failing tasks.**
 - **58.6 percent less use of the most expensive model.**
 
-A failed run also taught a later model enough to complete a repair that its
-ordinary run missed.
+Aimee lets models learn from failure, even when the next attempt uses a
+different model. In one test, a failed run taught a later model enough to
+complete a repair that its ordinary run missed.
 
-The failure returned value twice: less waste in one run, then better work in
-another. [Article One](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
-carries the technical evidence.
+Each retained failure is one less dead end later work has to pay to rediscover.
+The effect compounds: the company's AI capability grows over time while the
+cost of repeated work falls. [Article
+One](https://rakuensoftware.com/blog/aimee-recursive-self-learning) carries the
+technical evidence.
 
 ## The company keeps the learning
 
