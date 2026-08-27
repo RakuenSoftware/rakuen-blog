@@ -109,16 +109,17 @@ in the controlled pilot, and the deployed storage mechanism makes such records
 reusable by later authorised users and models on the same KB. It is not a claim
 that the pilot itself exercised multiple live user identities.
 
-## Production breadth
+## Production use and intended breadth
 
-Rakuen reports current production use across legal, accounting, software and
-other professional work. This is a first-party operator statement recorded on
-27 August 2026. Customer identities, corpora and usage records are not disclosed.
+Rakuen reports current production use. This is a first-party operator statement
+recorded on 27 August 2026. Customer identities, corpora and usage records are
+not disclosed. Legal, accounting, software and other professional work are the
+intended use, not a claim that each field has a current production deployment.
 
-The production statement establishes domain breadth, not a causal efficacy
-estimate in each domain. The cross-model completion crossover is a controlled
-software task because a sealed hidden grader and regression-sensitive test make
-the outcome independently checkable.
+The production statement establishes use, not domain breadth or a causal
+efficacy estimate. The cross-model completion crossover is a controlled software
+task because a sealed hidden grader and regression-sensitive test make the
+outcome independently checkable.
 
 ## Closest academic result
 
@@ -132,8 +133,7 @@ The paper does not present or evaluate an organisation-scoped production
 knowledge service with multiple user identities, access-scoped recall, durable
 record provenance and correction, independent execution and credential
 isolation, or a tamper-evident audit path. Its experiments use controlled
-benchmarks rather than current production users in multiple professional
-domains.
+benchmarks rather than a production deployment of the complete governed system.
 
 The articles therefore do not claim that Aimee invented cross-model memory or
 first demonstrated a performance effect from it. Their narrower distinction is

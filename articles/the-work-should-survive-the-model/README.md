@@ -40,10 +40,10 @@ solved any task, so that result establishes failure-cost containment rather
 than a capability increase.
 
 The cross-model pilot has one task and one run per arm. It establishes an
-observed behaviour and completion crossover, not a population effect. The
-production-use breadth across legal, accounting, software and other
-professional work is a first-party Rakuen operator statement, not an efficacy
-ablation in each field.
+observed behaviour and completion crossover, not a population effect. Rakuen's
+current production use is a first-party operator statement. Legal, accounting,
+software and other professional fields are the intended scope, not a claim of
+current deployment or measured efficacy in each field.
 
 ## Status
 
@@ -57,6 +57,11 @@ incident promised by both reporting records. The account now defines the test
 machine, states the immediate impact, separates the observed sequence from the
 inferred role of accumulated history and explains why it supports no comparison
 between model versions.
+
+Corrected on 2026-08-27: an earlier draft described intended professional
+fields as current production breadth. The article now states current production
+use without assigning that use to named fields, then labels those fields as the
+intended use.
 
 Split from the opening incident and conceptual product argument in Article 1.
 Article 1 remains the technical deep dive and retains every measured loop,

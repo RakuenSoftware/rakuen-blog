@@ -143,10 +143,10 @@ under one user/session/model source, reinforcement under another, similar-goal
 recall and unrelated-goal exclusion. Joining those pieces end to end remains a
 confirmatory experiment, not a completed claim.
 
-Rakuen reports current production use across legal, accounting, software and
-other professional work. This is a first-party operator statement with customer
-identities and usage records withheld. It establishes deployment breadth, not
-equal measured efficacy across those domains.
+Rakuen reports current production use. This is a first-party operator statement
+with customer identities and usage records withheld. Legal, accounting,
+software and other professional work are the intended use. The statement does
+not establish current deployment or measured efficacy in each field.
 
 ## Test environment for the live loop figures
 

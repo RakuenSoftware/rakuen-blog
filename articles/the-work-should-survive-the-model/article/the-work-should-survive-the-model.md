@@ -84,10 +84,11 @@ ordinary AI: one user pays -> one session benefits
 Aimee:       one user pays -> the organisation learns
 ```
 
-Rakuen currently uses Aimee in production work across legal, accounting,
-software and other professional fields. Software supplied the controlled test
-because independent tests can judge a repair. The company-memory use case
-extends to corrections, procedures, verified facts and failed approaches.
+Rakuen currently uses Aimee in production. Work across legal, accounting,
+software, and other professional fields is the intended use. Software supplied
+the controlled test because independent tests can judge a repair. The
+company-memory use case extends to corrections, procedures, verified facts and
+failed approaches.
 
 ## A handoff finishes a job; Aimee preserves the lesson
 

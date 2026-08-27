@@ -203,7 +203,7 @@ This section inventories their disposition in Article Zero.
 | Terra base passed visible but failed hidden; learned passed visible and hidden and authored a regression-sensitive test | independent visible, sealed hidden and test-sensitivity graders | **Published as an exploratory completion crossover.** One task and one run per arm do not estimate a population effect. |
 | learned Qwen retry failed after 519,662 tokens, 1.4% above its source failure | provider-backed negative retry | **Published as a limit.** The advisory did not rescue its originating model on this run. |
 | source-independent approach recall inside one shared KB | storage-backed production test with distinct user/session/model source references | **Published as mechanism evidence.** The controlled model arms received the lesson directly; the product test separately establishes shared-KB reuse. |
-| production use across legal, accounting, software and other professional work | first-party Rakuen operator statement, customer details withheld | **Published as deployment breadth, not per-domain causal efficacy.** |
+| current production use; legal, accounting, software and other professional work as intended use | first-party Rakuen operator statement, customer details withheld | **Corrected.** Published as current production use without assigning that deployment to the named fields. The fields describe intended scope, not current domain breadth or per-domain causal efficacy. |
 
 The collaboration runtime exposed no provider token-usage objects for the Luna
 and Terra arms. No cost comparison is attached to those arms.
@@ -249,10 +249,10 @@ a theoretical proposal.
 The relevant product distinction is narrower. Recuris does not present or
 evaluate an organisation-scoped production service with multi-user
 authorisation, provenance and correction history, independent execution and
-credential isolation, or tamper-evident audit. Aimee also has current
-first-party production use across multiple professional domains, while the new
-controlled cross-model effect uses a real large repository and sealed repair
-grader.
+credential isolation, or tamper-evident audit. Aimee has current first-party
+production use, while the named professional fields describe intended scope.
+The new controlled cross-model effect uses a real large repository and sealed
+repair grader.
 
 Adjacent commercial documentation was rechecked for shared organisational
 memory:

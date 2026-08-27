@@ -84,6 +84,11 @@ machine and immediate impact, and explains why the deterministic efficacy test
 can isolate recall while the one-run model pilot cannot separate learning from
 ordinary model variation.
 
+Corrected on 2026-08-27: an earlier draft described intended professional
+fields as current production breadth. The article now states current production
+use without assigning that use to named fields, then labels those fields as the
+intended use.
+
 A second large-repository campaign adds matched failure-cost evidence. Across
 three valid task pairs, local Qwen consumption fell from 1,819,904 to 1,199,552
 tokens, a 34.1 percent reduction. All six retained runs failed the hidden

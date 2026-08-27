@@ -19,11 +19,11 @@ routing and execution controls around AI coding tools. One personal service
 holds a user's work. A shared knowledge service can serve a corpus, team or
 company while keeping access scoped.
 
-The same substrate is in production use across legal, accounting, software and
-other professional work. This article uses software experiments because code,
-builds and sealed tests make the causal boundary unusually strict. It does not
-claim that the measured software effect size transfers unchanged to every
-domain.
+Rakuen currently uses Aimee in production. Work across legal, accounting,
+software, and other professional fields is the intended use. This article uses
+software experiments because code, builds and sealed tests make the causal
+boundary unusually strict. It does not claim that the measured software effect
+size transfers unchanged to every domain.
 
 Version 0.4.0 closes six feedback loops in that system. On 25 August 2026, one
 live two-service target observed every loop and finished at **46 checks passed,
