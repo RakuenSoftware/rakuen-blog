@@ -51,6 +51,22 @@ completion tokens with `max_tokens`. A request that exhausted the total context
 never reached that completion limit, so the guard could not fire. Prompt tokens
 plus completion tokens must be compared with context size.
 
+**Update 2026-08-27.** That remedy was not applied for sixteen days, and this
+article published with the guard still wrong. What it cost is now measured: the
+flag read false on every row of all 49 runs in the campaign that followed, 21 of
+those runs had notes ending within a few tokens of the context wall, and one had
+61.6% of them there. Two published figures rested on it, both corrected today.
+
+Worse than the field going unread, the field was read. Our scorer refuses any run
+containing a truncated row, and says why: scoring a cut-off answer charges the
+model for a bound the harness chose. That gate ran on every one of those runs,
+asked the flag, and was told false each time.
+
+The guard now tests three things: the server's own `finish_reason`, the caller's
+cap, and prompt plus completion against the context it reads from the server at
+startup and records on every row. A field nobody reads produces no false
+confidence. A check that runs, passes, and is trusted produces a great deal.
+
 Both failures scored as incapacity. Neither model was incapable, and in both
 cases the run had already recorded the number that separates the two.
 
