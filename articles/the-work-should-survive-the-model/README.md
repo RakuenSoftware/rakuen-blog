@@ -48,16 +48,16 @@ current deployment or measured efficacy in each field.
 ## Status
 
 Draft, updated 2026-08-27. Not published. A teaser pass cut the article from
-1,439 words to 620. It keeps the business premise, three headline returns, the
+1,439 words to 591. It keeps the business premise, three headline returns, the
 company-memory consequence and the incident that set the boundary. Technical
 method, buyer guidance, licensing detail and comparison inventories remain in
 the reporting record or later articles.
 
 An editorial clarity pass on 2026-08-27 restored the full internal test
 incident promised by both reporting records. The account now defines the test
-machine, states the immediate impact, separates the observed sequence from the
-inferred role of accumulated history and explains why it supports no comparison
-between model versions.
+machine, states the spend and gives its release consequence. Causal attribution,
+the missing cold-start comparison and model-comparison limits remain in Article
+One.
 
 Corrected on 2026-08-27: an earlier draft described intended professional
 fields as current production breadth. The article now states current production

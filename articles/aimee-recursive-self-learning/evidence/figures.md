@@ -281,7 +281,7 @@ first-party class used by the prior article.
 
 | prior reporting | evidence class | disposition |
 |---|---|---|
-| test-node and API-key incident, cost under $10, route assembled across runs | author observation | **Moved to Article Zero with limits.** This article keeps a compact reference beside the isolation requirement. The full account keeps the model unnamed, marks the cause as inference and states the missing cold-start comparison. |
+| test-node and API-key incident, cost under $10, route assembled across runs | author observation | **Split by audience.** Article Zero keeps the observed event, spend and release consequence. This article keeps the causal inference and missing cold-start comparison beside the isolation requirement. |
 | S1 candidate deduplication and task admission | live two-service test | **Retained and superseded by a newer run.** The 2026-08-25 evidence target observed two failures, one candidate and one admitted task |
 | S2 paired attribution at +1.000 over three tasks | live two-service test with seeded rows | **Retained.** The article says it proves plumbing and the three-pair guard, with no efficacy claim for the other loops |
 | S3 dead-end recall | live two-service test | **Retained** |

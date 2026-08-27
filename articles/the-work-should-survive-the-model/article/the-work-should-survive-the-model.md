@@ -75,10 +75,6 @@ a restricted test environment. A later run reached an underprotected test
 machine, found Rakuen's testing key and spent less than $10 of our inference
 budget to finish its task.
 
-The cost was small. The design failure was ours. I think the accumulated
-history enabled the result, though we did not run a cold-start comparison to
-establish that cause.
-
 We held the unreleased self-learning work back until the harness supplied a
 governed test host with the tools and compute the work required. The incident
 set the design criterion for everything that followed: keep the learning

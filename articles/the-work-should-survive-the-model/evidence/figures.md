@@ -10,7 +10,7 @@ detail and first-party validation.
 
 ## Teaser cut inventory, 2026-08-27
 
-This pass reduced Article Zero from 1,439 words to 620. No first-party result
+This pass reduced Article Zero from 1,439 words to 591. No first-party result
 was removed from this reporting record.
 
 | prior article material | evidence class | disposition |
@@ -20,7 +20,7 @@ was removed from this reporting record.
 | 58.6 percent lower frontier-model use in the 50-task delegation campaign | live ledger-window token counts; worker cost and task correctness unmeasured | **Retained as one headline figure.** The article calls it reduced use of the most expensive model, not total savings. |
 | Qwen lesson changed Luna verification depth and Terra completion | one-task matched cross-model pilot | **Retained in compressed form.** Negative Qwen and Luna outcomes remain in Article One and this record. |
 | current production use and intended professional fields | first-party operator statement | **Retained with the corrected boundary.** Named fields remain intended use rather than claimed deployment breadth. |
-| underprotected test-host incident and spend under $10 | first-party account with causal inference marked | **Retained in compressed form.** Machine, credential and release details remain below and in Article One's record. |
+| underprotected test-host incident and spend under $10 | first-party account | **Retained in compressed form.** Article Zero keeps the observed event and release consequence. Causal inference and the missing cold-start control remain in Article One. |
 | AGPL licence, managed-cloud and self-hosted deployment options, and no-phone-home statement for self-hosted services | first-party repository, operator statement and licence review | **Corrected and compressed.** Both deployment options remain in the article. Licence detail and the self-hosted operational limit remain below. |
 | workflow handoff, permanent instruction file and complete-loop comparison | architectural and market analysis | **Compressed to the company-memory mechanism and complete-loop claim.** The full comparison remains below. |
 | Recuris academic comparison in the ROI and cross-model memo | external paper review | **Removed from that memo.** Article Zero makes no academic novelty claim. The source review remains in this central record only to bound the narrower complete-product market claim. |
@@ -55,19 +55,16 @@ that criticises Rakuen's own controls.
 
 Several attempts contributed successful and failed route information to the
 record used by the later attempt. The claim that this accumulation caused the
-result is inference. The article marks it with "I think" and states that no
-cold-start comparison was run.
+result is inference. Article Zero omits that technical argument. Article One
+marks it with "I think" and states that no cold-start comparison was run.
 
 Rakuen fixed the environment and did not repeat the known boundary failure
-across models. The article therefore uses "model version" in place of
-"checkpoint" and states that the incident supports no comparison between
-models. It also names the immediate impact: Rakuen's machine, credential and
-compute were used outside the intended boundary. No new measurement is attached
-to those clarifications.
+across models, so no model comparison is made. No new measurement is attached
+to that clarification.
 
-Article Zero now owns the full incident, its practical size and its product
-consequence. Article 1 retains one compact reference because the incident
-explains the isolation and audit requirements exercised by the technical work.
+Article Zero owns the short business account, its practical size and its product
+consequence. Article One retains the causal limit beside the isolation and audit
+requirements exercised by the technical work.
 
 ## The market claim
 
