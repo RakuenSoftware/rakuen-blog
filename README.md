@@ -65,6 +65,7 @@ website.
 | [everything-crosses-one-transport](articles/everything-crosses-one-transport/) | draft | 0.4.0 series, part 3 of 3; bus baseline, grants and module docs in `aimee` |
 | [kv-cache-precision](articles/kv-cache-precision/) | investigation | four cache configurations on one model recorded; no article written yet |
 | [your-memory-has-no-authority-model](articles/your-memory-has-no-authority-model/) | draft, partly superseded | source map, sixteen-repository source audit; right of reply outstanding; aimee sections carried into `the-remembering-is-the-learning`; comparison stays unpublished by decision of 2026-08-24, folder and evidence retained |
+| [ornith-against-its-base](articles/ornith-against-its-base/) | draft | registered plan; four runs outstanding, no accuracy result yet |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
 `draft` means the article exists and its provenance gaps are written down, but it
