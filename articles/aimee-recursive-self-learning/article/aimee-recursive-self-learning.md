@@ -186,10 +186,6 @@ grader. The learned Terra run made a focused repair, passed both graders and
 added a regression-sensitive test. A learned retry by the originating Qwen
 model also failed.
 
-This is one task with one run per condition. It establishes an observed
-cross-model result, not the frequency with which transfer will help. The Luna
-and Qwen failures are part of that result, not exceptions to be discarded.
-
 The controlled model runs received the lesson directly so the intervention
 would remain fixed. A separate storage-backed test records a failure under one
 user, session and model source, reinforces it under another, recalls it for a
