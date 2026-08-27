@@ -8,14 +8,16 @@ excerpt: "Aimee lets a company pay for discovery once. Every authorised user and
 ---
 
 *Rakuen builds aimee. This is Article Zero, the non-technical introduction. The
-next article contains the technical evidence. Sources and calculations live in
-the [reporting record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-work-should-survive-the-model/evidence/figures.md).*
+next article explains the technical boundary around self-learning. Sources and
+calculations live in the [reporting
+record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-work-should-survive-the-model/evidence/figures.md).*
 
 Aimee is an open-source knowledge platform for company AI work, available as a
 managed cloud service or self-hosted. It brings documents, code, facts,
-decisions and work history into one governed knowledge base. People and AI
-models can retrieve what they are authorised to use, and useful discoveries
-return to the company instead of dying with a session.
+decisions and work history into one governed knowledge base. It scales from one
+user to an entire company. People and AI models can retrieve what they are
+authorised to use, and useful discoveries return to the company instead of
+dying with a session.
 
 The business case is simple: pay for discovery once.
 
@@ -48,9 +50,9 @@ complete a repair that its ordinary run missed.
 
 Each retained failure is one less dead end later work has to pay to rediscover.
 The effect compounds: the company's AI capability grows over time while the
-cost of repeated work falls. [Article
-One](https://rakuensoftware.com/blog/aimee-recursive-self-learning) carries the
-technical evidence.
+cost of repeated work falls. The [reporting
+record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-work-should-survive-the-model/evidence/figures.md)
+carries the technical evidence and its limits.
 
 ## The company keeps the learning
 

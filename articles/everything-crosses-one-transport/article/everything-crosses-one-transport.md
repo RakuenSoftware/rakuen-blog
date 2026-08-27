@@ -7,19 +7,20 @@ tags: [aimee, architecture, isolation, governance, event-bus]
 excerpt: "A cheap, language-neutral transport gives ordinary engineering controls one place to hold: declared reach, ordered observation, durable evidence and a boundary around every governed action."
 ---
 
-*Rakuen builds aimee, the system written about here. This is the architecture
-article in a three-part series. [Self-learning](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
+*Rakuen Software builds aimee, the system written about here. [Article
+Zero](https://rakuensoftware.com/blog/the-work-should-survive-the-model) gives
+the non-technical introduction. This is Article Three and the third technical
+article. [Self-learning](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
 covers what later work inherits, and
 [memory](https://rakuensoftware.com/blog/the-remembering-is-the-learning) covers
 how that history remains useful. Figures are traced in the [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/everything-crosses-one-transport/evidence/figures.md).*
 
-Aimee is a cloud-hosted or locally hosted self-learning AI harness that scales
-from one user to an entire company. It gives every model and user it serves
-access to one coherent memory, with identity and scope determining which parts
-each can retrieve. It learns from work as it happens and carries that experience
-into later sessions while keeping the learned history observable, auditable and
-reversible.
+Aimee is an open-source knowledge platform for company AI work, available as a
+managed cloud service or self-hosted. It brings documents, code, facts,
+decisions and work history into one governed knowledge base. It scales from one
+user to an entire company, with identity and scope deciding what each person and
+AI model can retrieve.
 
 The goal is an AI system that is auditable, governable, and will not wake an
 engineer at two in the morning.

@@ -7,8 +7,10 @@ tags: [aimee, memory, knowledge-graph, ontology, authority]
 excerpt: "Aimee learns by changing the standing of remembered facts: authority sets their starting class, evidence promotes or expires them, correction preserves their history, and recall applies the result."
 ---
 
-*Rakuen builds aimee, the system written about here. This is the memory article
-in a three-part series. [Self-learning](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
+*Rakuen Software builds aimee, the system written about here. [Article
+Zero](https://rakuensoftware.com/blog/the-work-should-survive-the-model) gives
+the non-technical introduction. This is Article Two and the second technical
+article. [Self-learning](https://rakuensoftware.com/blog/aimee-recursive-self-learning)
 covers what later work inherits, and the
 [architecture](https://rakuensoftware.com/blog/everything-crosses-one-transport)
 covers the boundary around it. Source read from `testing` on 24 August 2026;
@@ -16,12 +18,11 @@ figures are traced in the
 [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-remembering-is-the-learning/evidence/figures.md).*
 
-Aimee is a cloud-hosted or locally hosted self-learning AI harness that scales
-from one user to an entire company. It gives every model and user it serves
-access to one coherent memory, with identity and scope determining which parts
-each can retrieve. It learns from work as it happens and carries that experience
-into later sessions while keeping the learned history observable, auditable and
-reversible.
+Aimee is an open-source knowledge platform for company AI work, available as a
+managed cloud service or self-hosted. It brings documents, code, facts,
+decisions and work history into one governed knowledge base. It scales from one
+user to an entire company, with identity and scope deciding what each person and
+AI model can retrieve.
 
 Aimee gives every learned thing an authority class, evidence chain, confidence,
 scope and lifecycle. Confirmation can make it durable. Missing support can
@@ -33,20 +34,10 @@ Each apparent storage feature changes what the system can trust, retrieve or
 revise next. This article follows that machinery from admission through
 correction and recall.
 
-Two measurements bound that account. The first checks the deployed machinery;
-the second isolates whether a recalled failure changes a later choice.
-
-On 25 August 2026, we started both deployed services and their required
-processes. The target ran **46 checks** of the deployed self-learning system.
-All 46 passed.
-
-On 26 August, we ran 24 synthetic recovery tasks through the deployed system
-twice, holding the starting choices fixed. Without the learned failure record,
-12 succeeded. With it available, all 24 succeeded. On 24 new tasks with no
-matching history, both phases remained at 12 of 24.
-
-The second measurement uses a fixed consumer. It isolates the learned record
-and does not measure model performance.
+[Article One reports the direct self-learning
+evidence](https://rakuensoftware.com/blog/aimee-recursive-self-learning): a
+recalled failure changed later task outcomes under a fixed consumer. This
+article explains the memory machinery that made that result possible.
 
 ## A fact is born into a class, and authority picks the class
 

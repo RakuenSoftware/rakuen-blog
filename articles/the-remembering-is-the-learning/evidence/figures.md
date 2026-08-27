@@ -4,10 +4,18 @@ Every figure in
 [`the-remembering-is-the-learning.md`](../article/the-remembering-is-the-learning.md),
 and where it came from.
 
-Part two of three. Part one is `articles/aimee-recursive-self-learning/`, part three
+Article Two of four, after the non-technical
+`articles/the-work-should-survive-the-model/` and technical Article One in
+`articles/aimee-recursive-self-learning/`. Article Three is
 `articles/everything-crosses-one-transport/`. Figures shared with those pieces
-are marked shared, and recorded in their records too, so one number is not
-logged three times as if independently sourced.
+are marked shared and recorded in their records too, so one number is not
+logged several times as if independently sourced.
+
+Corrected on 2026-08-27: the opening now describes Aimee as the complete
+open-source company knowledge platform, available as a managed cloud service or
+self-hosted. Self-learning is one capability inside that product. The product
+sources and scope boundary are recorded in Article Zero's reporting record.
+This correction changes no technical result below.
 
 ## Provenance of this article
 
@@ -334,18 +342,22 @@ or broader guarantee was added.
 
 ## Self-learning measurements moved from part one, 2026-08-26
 
-The article now carries the deployed **46 checks, 46 passed** result and the
-paired outcome study previously reported in part one. The checks come from
+PR #87 moved both the deployed **46 checks, 46 passed** result and the paired
+outcome study from Article One into this article. The 2026-08-27 reconstruction
+returns both to Article One because they directly support its self-learning
+claim. The current Article Two points back to that evidence while owning the
+memory machinery behind it.
+
+The 46-check source remains
 `docs/validation/learning-loop-evidence-2026-08-25.md`. The paired study comes
 from [Aimee PR #2859](https://github.com/RakuenSoftware/aimee/pull/2859),
 including `docs/validation/self-learning-efficacy-2026-08-26.md`. Both valid raw
-runs are preserved in part one's
+runs are preserved in Article One's
 [`evidence/raw/self-learning-efficacy-2026-08-26/`](../../aimee-recursive-self-learning/evidence/raw/self-learning-efficacy-2026-08-26/)
 directory.
 
-| figure in article | result |
+| figure in the superseded Article Two draft | result |
 |---|---:|
-| deployed self-learning checks | 46/46 passed |
 | repeated tasks without the learned failure record | 12/24 |
 | repeated tasks with the learned failure record | 24/24 |
 | novel tasks, both conditions | 12/24 |
