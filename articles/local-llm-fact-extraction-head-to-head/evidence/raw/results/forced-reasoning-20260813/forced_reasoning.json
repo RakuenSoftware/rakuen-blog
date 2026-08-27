@@ -1,0 +1,29 @@
+{
+ "notes": 1001,
+ "silent_live": 134,
+ "silent_forced": 71,
+ "groups": {
+  "FORCED": 67,
+  "CONTROL": 863,
+  "STUBBORN": 67,
+  "LOST": 4
+ },
+ "mean_f1": {
+  "FORCED": {
+   "live": 0.8507462686567164,
+   "forced": 0.6417910447761194
+  },
+  "CONTROL": {
+   "live": 0.42116647354190806,
+   "forced": 0.4183854770181537
+  },
+  "STUBBORN": {
+   "live": 0.6567164179104478,
+   "forced": 0.6119402985074627
+  },
+  "LOST": {
+   "live": 0.0,
+   "forced": 0.0
+  }
+ }
+}
