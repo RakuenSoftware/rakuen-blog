@@ -71,16 +71,17 @@ August 2026, we have found no other available product that gives a company this
 complete learning loop in one open-source system, available as a managed cloud
 service or self-hosted.
 
-## Learning needed a stronger boundary
+## Self-learning was unsafe without enforced boundaries
 
-An internal test showed the other side of persistent learning. Across several
-attempts, an Aimee-backed model accumulated successful and failed routes around
-a restricted test environment. A later run reached an underprotected test
-machine, found Rakuen's testing key and spent less than $10 of our inference
-budget to finish its task.
+Our internal testing showed that self-learning was unsafe unless the harness
+controlled what a model could access and do. Across several attempts, an
+Aimee-backed model accumulated successful and failed routes around a restricted
+test environment. A later run reached an underprotected test machine, found
+Rakuen's testing key and spent less than $10 of our inference budget to finish
+its task.
 
-We held the unreleased self-learning work back until the harness could provide
-the auditability and governance it required.
+We built those boundaries before release and held self-learning back until the
+harness could provide the auditability and governance it required.
 
 Aimee is open source. Rakuen offers a managed cloud service and a self-hosted
 option. The next three articles show the learning, memory and enforcement

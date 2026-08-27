@@ -48,7 +48,7 @@ current deployment or measured efficacy in each field.
 ## Status
 
 Draft, updated 2026-08-27. Not published. A teaser pass cut the article from
-1,439 words to 615. It keeps the business premise, three headline returns, the
+1,439 words to 628. It keeps the business premise, three headline returns, the
 company-memory consequence and the incident that set the boundary. Technical
 method, buyer guidance, licensing detail and comparison inventories remain in
 the reporting record or later articles.
