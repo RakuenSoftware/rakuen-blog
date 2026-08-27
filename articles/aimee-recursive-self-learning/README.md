@@ -1,4 +1,4 @@
-# Aimee: Self-Learning
+# Aimee: Recursive Self-Learning
 
 Article One of four, and the first technical entry. It explains why
 self-learning changes the boundary around an AI model, why the learning belongs
