@@ -22,6 +22,20 @@ consumer. The open-ended cross-model result is exploratory with one task and
 one run per arm. The paper includes a confirmatory study design rather than
 presenting the pilot as a population estimate.
 
+Revised for voice on 2026-08-29 against `/home/virant/dev/voice-guide`. Part IV
+reserves academic voice, so the pass applied Part I and field convention and
+left Part III alone. It took the negation-that-sets-up-an-assertion from 18
+instances to one, removed nine demonstrative paragraph openers, converted four
+decorative research questions into stated aims, split the paragraphs that ran
+past four sentences, and moved the interest disclosure up beside the first
+claim. No number and no claim boundary changed.
+
+Two `tools/voice_gate.py` failures are deliberate and should stay. The gate
+wants `run` wherever the paper says `arm`; `arm` is field convention for an
+experimental condition, and the voice guide's own evidence quotes the author
+using it. The gate also rejects bolded noun phrases leading a bullet, which
+`VOICE.md` explicitly asks for.
+
 ## Claim boundary
 
 This is not a first claim for experiential memory, shared agent memory,
