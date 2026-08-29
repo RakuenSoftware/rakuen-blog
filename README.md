@@ -67,8 +67,12 @@ website.
 | [your-memory-has-no-authority-model](articles/your-memory-has-no-authority-model/) | draft, partly superseded | source map, sixteen-repository source audit; right of reply outstanding; aimee sections carried into `the-remembering-is-the-learning`; comparison stays unpublished by decision of 2026-08-24, folder and evidence retained |
 | [ornith-against-its-base](articles/ornith-against-its-base/) | draft | registered plan; four runs outstanding, no accuracy result yet |
 | [we-forced-it-to-think-and-the-score-fell](articles/we-forced-it-to-think-and-the-score-fell/) | ready | figure map, three prompt arms, seven rerunnable scripts |
+| [failure-as-shared-capability](articles/failure-as-shared-capability/) | paper | working academic paper; ten keyed sources, hashes pinned to an Aimee merge commit |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
+`paper` means an academic working paper rather than a blog post. It is not a
+site publication candidate, `tools/publish.py` does not export it, and the voice
+gate's journalism rules do not apply to it. Its evidence rules do.
 `draft` means the article exists and its provenance gaps are written down, but it
 is not a publication candidate and the voice gate does not check it.
 `held` means the article passes every gate and is still not a candidate, because
