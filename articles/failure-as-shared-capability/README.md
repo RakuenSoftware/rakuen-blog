@@ -80,6 +80,16 @@ use. It was extended on 2026-08-29 with `FAILCOST-3`, the matched failure-cost
 campaign, whose six hidden-grader failures and quarantined first pair are
 recorded alongside its 34.1 percent reduction.
 
+## Required updates
+
+[REQUIRED-UPDATES.md](REQUIRED-UPDATES.md) records an adversarial read of the
+paper as a submission, 2026-08-29. It carries the defects a reviewer would find
+that this file does not already track: the McNemar p-value applied to a
+deterministic consumer, the constructed control rate in Experiment B, the
+unaddressed contamination and git-history leakage path in Experiment C, and the
+missing methods section, threat model and baseline. Its first ten items are
+edits that need no runs. The experiments listed below stay the plan of record.
+
 ## Open items before publication
 
 - **Venue and format are undecided.** The paper is markdown with blog
