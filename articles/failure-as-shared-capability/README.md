@@ -22,6 +22,47 @@ consumer. The open-ended cross-model result is exploratory with one task and
 one run per arm. The paper includes a confirmatory study design rather than
 presenting the pilot as a population estimate.
 
+Revised for voice on 2026-08-29 against `/home/virant/dev/voice-guide`. Part IV
+reserves academic voice, so the pass applied Part I and field convention and
+left Part III alone. It took the negation-that-sets-up-an-assertion from 18
+instances to one, removed nine demonstrative paragraph openers, converted four
+decorative research questions into stated aims, split the paragraphs that ran
+past four sentences, and moved the interest disclosure up beside the first
+claim. No number and no claim boundary changed.
+
+A second pass on 2026-08-29 removed the tics the first pass introduced. The
+guide warns that swapping one connective for another relocates a tic instead of
+removing it, which is exactly what had happened: six sentence-initial `So`
+against a budget of one per section. `establishes` and `demonstrates` had become
+the paper's default reporting verbs at eleven uses; they now stand at two.
+`therefore` went from three to one. The whole file was then reflowed to one
+width, because ragged wrapping is its own tell. A word-level diff confirms the
+reflow moved no text.
+
+A third pass on 2026-08-29 worked on argument instead of surface. Section 6 now
+opens with the strongest objection to Experiment C, which the paper had been
+carrying in this README while the paper itself stayed quiet: both learned runs
+received text about a prior failure, and nothing here separates the value of
+the typed record from the value of telling a model that someone already failed.
+The abstract concedes it too. Section 3.4 now states that two of its three
+retained pairs sit in strata named for high historical context use, which
+favours the treatment it reports. Section 6 stopped re-arguing section 3.4 and
+points at it.
+
+For register, we read the abstracts and introductions of the papers this one
+cites most closely: Reflexion, ExpeL and Negative Knowledge on arXiv. **Do not
+imitate them.** That register is the one the voice guide is reacting against:
+`novel framework`, `robust learning efficacy`, `This scenario emphasizes the
+growing need`, and the negation-setup construction sitting in the second
+sentence of an abstract. The target is plain declarative systems prose plus Part
+I, and the paper is written to that instead.
+
+Two `tools/voice_gate.py` failures are deliberate and should stay. The gate
+wants `run` wherever the paper says `arm`; `arm` is field convention for an
+experimental condition, and the voice guide's own evidence quotes the author
+using it. The gate also rejects bolded noun phrases leading a bullet, which
+`VOICE.md` explicitly asks for.
+
 ## Claim boundary
 
 This is not a first claim for experiential memory, shared agent memory,
