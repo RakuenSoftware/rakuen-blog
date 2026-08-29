@@ -4,7 +4,7 @@ slug: failure-as-shared-capability
 date: 2026-08-27
 author: Rakuen Software
 tags: [language-model-agents, memory, cross-model-transfer, organisational-learning, ai-systems]
-excerpt: "A production-oriented memory substrate turns one model's stopped failure into durable organisational knowledge and changes the graded work completed by another model tier."
+excerpt: "One model's stopped failure becomes a durable organisational record, and changes the graded work a different model tier completes."
 ---
 
 # From Failed Run to Shared Capability
@@ -29,9 +29,8 @@ problem is less studied: how an organisation retains those lessons across users
 and heterogeneous models while preserving provenance, access scope, correction
 history, execution isolation, and an audit path the learner does not control.
 
-We describe Aimee, a self-hosted organisational learning substrate deployed
-across legal, accounting, software and other professional work. We evaluate one
-of its six feedback loops at three levels. First, a live two-service target
+We describe Aimee, a self-hosted organisational learning system, and evaluate
+one of its six feedback loops at three levels. First, a live two-service target
 observes all six loops and passes 46 of 46 checks. Second, a paired study
 isolates failed-approach synthesis and recall. On 24 repeated tasks, a
 deterministic consumer scores 12/24 when synthesis is withheld and 24/24 when
@@ -46,8 +45,8 @@ base/learned arms receive the same large-repository task; learned arms alone
 receive the unchanged Qwen lesson. Luna reaches full-build and focused-test
 execution that its base arm does not, but both final repairs fail. Terra's base
 arm fails a sealed hidden grader; its learned arm passes visible and hidden
-graders and authors a regression-sensitive test. A learned Qwen retry also
-fails, showing that the advisory is not universally sufficient.
+graders and authors a regression-sensitive test. The same lesson fails to
+rescue Qwen itself on retry, so it is no guarantee.
 
 Separately, three matched large-repository pairs on the same local model reduce
 pooled consumption from 1,819,904 to 1,199,552 tokens, a 34.1% reduction. All
@@ -56,8 +55,9 @@ unproductive failure costs. Capability is untouched.
 
 Together these establish causal recall efficacy under a fixed consumer, and one
 observed cross-model completion crossover under open-ended work. How often
-transfer pays is unmeasured. We close with a design to be preregistered before
-any confirmatory run.
+transfer pays is unmeasured, and the pilot cannot yet separate what the typed
+record contributes from what any account of a prior failure would contribute.
+We close with a design to be preregistered before any confirmatory run.
 
 ## 1. Introduction
 
@@ -116,19 +116,19 @@ the fourth and specifies the next experiment.
 We contribute:
 
 - **An architecture.** Organisational memory that separates learning from model
-  identity while keeping scope, provenance, correction, isolation and
-  independent audit.
+identity while keeping scope, provenance, correction, isolation and independent
+audit.
 - **A replicated paired study.** It isolates the causal effect of one
-  production synthesis-and-recall loop.
+production synthesis-and-recall loop.
 - **A traced cross-model transfer.** One stopped local-model failure changes
-  behaviour in two later model tiers, including a hidden-graded completion
-  crossover.
+behaviour in two later model tiers, including a hidden-graded completion
+crossover.
 - **An economic frame.** Failure control, retained negative knowledge and
-  cross-user reuse measured as one organisational learning loop, with three
-  matched large-repository pairs cutting the cost of an unproductive failure by
+cross-user reuse measured as one organisational learning loop, with three
+matched large-repository pairs cutting the cost of an unproductive failure by
   34.1% and leaving capability where it was.
 - **A confirmatory protocol.** What it would take to estimate the frequency,
-  cost and security of cross-model, cross-user transfer.
+cost and security of cross-model, cross-user transfer.
 
 We claim none of this first. Recuris and INMS already demonstrate cross-model
 and shared agent memory, and earlier work covers experiential learning more
@@ -212,7 +212,7 @@ required modules and PostgreSQL against disposable state. It observes:
 - a failed approach returning during planning for a similar goal;
 - a curiosity item resolving when a probe supplies evidence;
 - a later commit superseding an earlier proposal and an operator verdict
-  changing its fate;
+changing its fate;
 - a non-default policy variant selected from seeded reward history.
 
 The target passes 46 checks and fails none. It also exposes a use-after-free in
@@ -374,6 +374,11 @@ attribution, repository-clone ownership and descriptor handling, and a
 work-item contract crossing C, Go and JSON. Each pair holds the buggy revision,
 prompt, tools, limits and sealed hidden grader fixed.
 
+Two of the three sit in strata named for high historical context use, which is
+a selection that favours the treatment reported below. The preregistration
+keeps those historical outcomes out of the new measurement. It bounds the
+effect without removing it.
+
 The control runs the model alone. The treatment passes canonical history
 through the production economizer handler and applies the preregistered
 progress sequence, which issues a checkpoint, escalates once, and stops after
@@ -476,9 +481,9 @@ outside experiential failure memory and organisational agent memory.
 Structurally aligned subtask-level memory applies memory directly to software
 engineering agents and evaluates across model backbones on SWE-bench Verified
 ([Shen et al., 2026](https://arxiv.org/abs/2602.21611)). It is an important
-baseline for a confirmatory Aimee campaign. The present pilot differs by
-transferring a record derived from a named failed source trajectory and by
-testing the production governance path separately.
+baseline for a confirmatory Aimee campaign. Our pilot differs on two points: it
+transfers a record derived from one named failed trajectory, and it tests the
+production governance path separately.
 
 ## 5. Discussion
 
@@ -499,9 +504,9 @@ worth money with no fine-tuning anywhere in the story.
 
 ### 5.2 Failure has option value
 
-Progress termination provides an immediate bound on waste. The durable record
-adds option value: a later worker may avoid the failed strategy or reach a
-solution. The total return from a failure:
+Progress termination bounds the waste immediately. The durable record adds
+option value on top, because a later worker may skip the failed strategy or
+reach a solution. The total return from a failure:
 
 ```text
 avoided additional run cost
@@ -524,9 +529,9 @@ here, and calling them enterprise features understates the job.
 
 Rakuen reports current Aimee use across legal, accounting, software and other
 professional work. Customer identities and records are confidential, and none
-of them are experimental data here. The breadth shows the substrate runs
-outside coding. Whether the measured software effect size survives the move to
-another domain is unknown.
+of them are experimental data here. The breadth shows the system runs outside
+coding. Whether the measured software effect size survives the move to another
+domain is unknown.
 
 We measure in software because a fixed revision, a visible test, a sealed
 hidden test and a test-sensitivity check make an outcome unusually hard to
@@ -536,10 +541,18 @@ replication.
 
 ## 6. Threats to validity
 
-The cross-model result has one task and one run per arm. Model stochasticity,
-prompt sensitivity and task-specific interaction could each explain some or all
-of an unreplicated difference. The event occurred under the recorded protocol.
-Its probability is unmeasured.
+The strongest objection to Experiment C is that the typed record did nothing a
+paragraph of any kind would not have done. Both learned runs received text
+about a prior failure, and neither was compared against a raw transcript of the
+Qwen run or a generic warning against over-exploring. On the evidence here we
+cannot separate the value of the record from the value of telling a model that
+someone already failed. Section 7.2 is the four-arm control that would, and it
+has not run.
+
+The cross-model result also has one task and one run per arm. Model
+stochasticity, prompt sensitivity and task-specific interaction could each
+explain some or all of an unreplicated difference. The event occurred under the
+recorded protocol. Its probability is unmeasured.
 
 The cross-model runs receive the lesson directly. Shared-KB persistence and
 source-independent recall are tested elsewhere. No experiment yet runs the
@@ -559,11 +572,9 @@ The deterministic study uses matching task descriptions and a fixed consumer.
 It has strong internal validity for the synthesis-and-recall path, and thin
 ecological validity for open-ended reasoning and semantic generalisation.
 
-The failure-cost campaign is a combined treatment. Context reduction and
-progress termination are applied together, so the 34.1% reduction cannot be
-attributed to either mechanism. All six of its runs fail the hidden grader, so
-it carries no capability claim, and three pairs with one run per cell do not
-estimate a population effect.
+The failure-cost campaign carries the limits recorded in section 3.4: a
+combined treatment, no capability claim, three pairs at one run per cell, and a
+task set selected partly for high historical context use.
 
 The novelty statement rests on a bounded review of published literature and
 public product documentation. A private system with the same combination would
@@ -600,10 +611,8 @@ Cross at least three source classes with three consumer classes:
 
 For each source failure, compare four consumer arms: base, raw transcript,
 generic failure warning, and typed Aimee record. Repeat each enough times to
-estimate stochastic variance. Only that four-way split separates what the
-learned record is worth from what any extra prose about a failure is worth. Our
-own cross-model pilot has not run it, so this is the first thing a reader
-should demand of the result in section 3.3.
+estimate stochastic variance. Only that four-way split answers the objection in
+section 6, and it is the arm we would run first.
 
 ### 7.3 Recall generalisation and near-miss controls
 
@@ -620,7 +629,7 @@ record:
 - a paraphrase preserving meaning and vocabulary;
 - a structurally related goal that shares little of its vocabulary;
 - a near miss that shares vocabulary but requires a different approach, which
-  must not recall the record.
+must not recall the record.
 
 Report retrieval precision and recall separately from consumer outcome, and
 give the near-miss class its own false-positive rate. Folding it into an

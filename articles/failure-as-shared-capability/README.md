@@ -39,6 +39,16 @@ the paper's default reporting verbs at eleven uses; they now stand at two.
 width, because ragged wrapping is its own tell. A word-level diff confirms the
 reflow moved no text.
 
+A third pass on 2026-08-29 worked on argument instead of surface. Section 6 now
+opens with the strongest objection to Experiment C, which the paper had been
+carrying in this README while the paper itself stayed quiet: both learned runs
+received text about a prior failure, and nothing here separates the value of
+the typed record from the value of telling a model that someone already failed.
+The abstract concedes it too. Section 3.4 now states that two of its three
+retained pairs sit in strata named for high historical context use, which
+favours the treatment it reports. Section 6 stopped re-arguing section 3.4 and
+points at it.
+
 For register, we read the abstracts and introductions of the papers this one
 cites most closely: Reflexion, ExpeL and Negative Knowledge on arXiv. **Do not
 imitate them.** That register is the one the voice guide is reacting against:
