@@ -30,6 +30,23 @@ decorative research questions into stated aims, split the paragraphs that ran
 past four sentences, and moved the interest disclosure up beside the first
 claim. No number and no claim boundary changed.
 
+A second pass on 2026-08-29 removed the tics the first pass introduced. The
+guide warns that swapping one connective for another relocates a tic instead of
+removing it, which is exactly what had happened: six sentence-initial `So`
+against a budget of one per section. `establishes` and `demonstrates` had become
+the paper's default reporting verbs at eleven uses; they now stand at two.
+`therefore` went from three to one. The whole file was then reflowed to one
+width, because ragged wrapping is its own tell. A word-level diff confirms the
+reflow moved no text.
+
+For register, we read the abstracts and introductions of the papers this one
+cites most closely: Reflexion, ExpeL and Negative Knowledge on arXiv. **Do not
+imitate them.** That register is the one the voice guide is reacting against:
+`novel framework`, `robust learning efficacy`, `This scenario emphasizes the
+growing need`, and the negation-setup construction sitting in the second
+sentence of an abstract. The target is plain declarative systems prose plus Part
+I, and the paper is written to that instead.
+
 Two `tools/voice_gate.py` failures are deliberate and should stay. The gate
 wants `run` wherever the paper says `arm`; `arm` is field convention for an
 experimental condition, and the voice guide's own evidence quotes the author

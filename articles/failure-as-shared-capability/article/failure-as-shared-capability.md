@@ -72,12 +72,13 @@ record that changes later work without fine-tuning the model that reads it, and
 the record outlives model upgrades. Someone can inspect it or withdraw it
 without touching weights.
 
-Prior research establishes that this works.
+Prior research has already shown that this works.
 [Reflexion](https://arxiv.org/abs/2303.11366) keeps verbal reflections in an
 episodic buffer for later trials. [ExpeL](https://arxiv.org/abs/2308.10144)
-extracts natural-language insight from prior tasks. [INMS](https://arxiv.org/abs/2404.09982)
-shares conversational memories among agents. [Negative Knowledge](https://arxiv.org/abs/2606.21024)
-turns failed research attempts into typed shared records. Most directly,
+extracts natural-language insight from prior tasks.
+[INMS](https://arxiv.org/abs/2404.09982) shares conversational memories among
+agents. [Negative Knowledge](https://arxiv.org/abs/2606.21024) turns failed
+research attempts into typed shared records. Most directly,
 [Recuris](https://arxiv.org/abs/2608.24876) evolves a skill-memory package from
 one deployment model and reports gains when that package is loaded unchanged
 into other frozen models.
@@ -97,14 +98,14 @@ weights, keeps their evidence and scope, and routes execution through controls
 the learner does not hold. Memory mutations produce audit intents that a
 separately credentialed worker commits to a hash chain.
 
-Four things need establishing:
+Four things need testing:
 
-1. **Closure.** Whether the implemented feedback loops reach the later consumers
-   they are built to change.
+1. **Closure.** Whether the implemented feedback loops reach the later
+   consumers they are built to change.
 2. **Causal efficacy.** Whether failed-approach synthesis and recall change a
    later outcome while the consumer is held fixed.
-3. **Cross-model transfer.** Whether a failure produced by one model changes the
-   open-ended capability or completion of another model tier.
+3. **Cross-model transfer.** Whether a failure produced by one model changes
+   the open-ended capability or completion of another model tier.
 4. **Cost.** Whether the same substrate lowers cost per successful task, or
    bounds the cost of an unproductive failure.
 
@@ -117,8 +118,8 @@ We contribute:
 - **An architecture.** Organisational memory that separates learning from model
   identity while keeping scope, provenance, correction, isolation and
   independent audit.
-- **A replicated paired study.** It isolates the causal effect of one production
-  synthesis-and-recall loop.
+- **A replicated paired study.** It isolates the causal effect of one
+  production synthesis-and-recall loop.
 - **A traced cross-model transfer.** One stopped local-model failure changes
   behaviour in two later model tiers, including a hidden-graded completion
   crossover.
@@ -130,7 +131,7 @@ We contribute:
   cost and security of cross-model, cross-user transfer.
 
 We claim none of this first. Recuris and INMS already demonstrate cross-model
-and shared agent memory, and earlier work establishes experiential learning more
+and shared agent memory, and earlier work covers experiential learning more
 generally. What we add is the production systems combination, and its observed
 path through a real large repository.
 
@@ -150,9 +151,9 @@ can use one shared knowledge service while authorisation constrains what each
 principal may read or change.
 
 Models are replaceable workers behind that boundary. One model writes a record
-and a different one reads it later. Source model, session and user ride along as
-provenance, and the lesson itself belongs to the organisation. Retrieval still
-respects the caller's authorised KB and scope.
+and a different one reads it later. Source model, session and user ride along
+as provenance, and the lesson itself belongs to the organisation. Retrieval
+still respects the caller's authorised KB and scope.
 
 The separation buys a stronger amortisation than personal memory does. One user
 pays the discovery cost and later authorised users collect. A local model can
@@ -167,9 +168,9 @@ source provenance and occurrence history. Similar-goal recall returns the
 record during later planning. An unrelated goal should not receive it.
 
 The no-progress record uses deliberately stable approach text, so a retry
-reinforces one row and the store never fills with paraphrases. Originating user,
-session and model stay attached to the observation, and the recall query ignores
-all three. Authorisation is enforced at the knowledge-service boundary.
+reinforces one row and the store never fills with paraphrases. Originating
+user, session and model stay attached to the observation, and the recall query
+ignores all three. Authorisation is enforced at the knowledge-service boundary.
 
 No record is assumed permanently correct. Aimee's memory model carries later
 evidence, supersession and correction, and it needs to: agent memory has an
@@ -182,8 +183,8 @@ current one ([Xiong et al., 2026](https://aclanthology.org/2026.acl-long.27/)).
 Learning changes future preparation and policy, so the controls around it must
 remain outside the learner. Aimee routes delegated work through explicit
 capabilities, workspace and network boundaries, and separately managed
-credentials. The learned record can advise a plan; it cannot grant itself a
-new authority.
+credentials. The learned record can advise a plan; it cannot grant itself a new
+authority.
 
 Memory changes use a separate audit path. The mutation transaction writes an
 immutable audit intent. A separately credentialed worker seals committed
@@ -202,9 +203,9 @@ learner grading itself against a history it wrote.
 
 ### 3.1 Experiment A: loop closure
 
-The first experiment asks whether six implemented feedback loops reach their
-consumers on a live deployment. The target starts `aimee-server`, `aimee-kb`,
-their required modules and PostgreSQL against disposable state. It observes:
+Experiment A asks whether six implemented feedback loops reach their consumers
+on a live deployment. The target starts `aimee-server`, `aimee-kb`, their
+required modules and PostgreSQL against disposable state. It observes:
 
 - repeated failures becoming one eval candidate and then one admitted task;
 - paired capability attribution reaching the ledger;
@@ -220,13 +221,13 @@ that held the identifier, and returned `off`. Copying the identifier before
 destroying the response repairs the live path, and the focused test requires
 the non-default selection.
 
-The result establishes closure. An outcome changes durable state, and a later
-consumer reads that state. Whether each loop improves a downstream task is a
-separate question, and Experiment A does not touch it.
+The result is closure. An outcome changes durable state, and a later consumer
+reads that state. Whether each loop improves a downstream task is a separate
+question, and this experiment does not touch it.
 
 ### 3.2 Experiment B: causal efficacy of failed-approach recall
 
-The second experiment separates setup from consumption.
+Experiment B separates setup from consumption.
 
 Both conditions receive the same 48 failed `agent_jobs`: two observations for
 each of 24 repeated tasks. The control condition withholds the production
@@ -264,8 +265,8 @@ untested here. Section 7.3 is the study that would settle it.
 
 ### 3.3 Experiment C: exploratory cross-model transfer
 
-The third experiment puts model variance back in and asks whether the record
-changes what an agent actually completes.
+Experiment C puts model variance back in, and asks whether the record changes
+what an agent completes.
 
 #### Source failure
 
@@ -309,24 +310,25 @@ learned arm's authored test change to the buggy parent and requires it to fail.
 | Terra | passes self-selected tests and visible grader; sealed hidden grader fails because the patch changes general readiness rather than the write-tier contract | makes a focused three-file repair; visible and hidden graders pass; authored test-only patch fails on the buggy parent |
 
 The Luna pair crosses over on capability and verification depth, and stops
-short of completion. The learned run reaches a build and a focused test its base
-run never gets to, then fails the task anyway.
+short of completion. The learned run reaches a build and a focused test its
+base run never gets to, then fails the task anyway.
 
 The Terra pair crosses over on completion. The base run looks successful under
 its own selected tests and the visible grader, and the sealed contract catches
-it. The learned run passes that contract and writes a regression-sensitive test.
+it. The learned run passes that contract and writes a regression-sensitive
+test.
 
 We retried the originating Qwen model with the learned lesson. It failed again
 after 519,662 tokens, 1.4% above its source failure, with no patch and no test.
-The lesson is therefore no solution and no general capability increase. Its
-worth depends on whether the later model can act on it.
+The lesson is no solution, and no general capability increase. Its worth
+depends on whether the later model can act on it.
 
 The cross-model runs receive the lesson directly, which is what preserves the
 controlled contrast. A storage-backed product test covers the organisational
 path on its own: it records the source under one user/session/local-model
 reference, reinforces the same row under another user/session/Terra reference,
-recalls it for a similar goal, and withholds it from an unrelated one. So the
-pilot tests the cross-model effect and the product test establishes
+recalls it for a similar goal, and withholds it from an unrelated one. Between
+them, the pilot tests the cross-model effect and the product test covers
 source-independent reuse inside an authorised shared KB. No single live
 multi-user run has yet exercised both.
 
@@ -347,11 +349,12 @@ coding tasks. Hidden tests grade outcomes; there are no exclusions or retries.
 | input plus output | 1,135,280 | 1,062,206 |
 | billable token units per passing task | 227,056 | 177,034 |
 
-The raw unit count per passing task falls 22.0%. Because billing categories have
-different rates, we also price each category at the
-[published GPT-5.6 Sol API rates on 27 August 2026](https://developers.openai.com/api/docs/models/gpt-5.6-sol):
-$4 per million uncached input tokens, $0.40 per million cached input tokens and
-$20 per million output tokens. Every request remains below the model page's
+The raw unit count per passing task falls 22.0%. Because billing categories
+have different rates, we also price each category at the [published GPT-5.6 Sol
+API rates on 27 August
+2026](https://developers.openai.com/api/docs/models/gpt-5.6-sol): $4 per
+million uncached input tokens, $0.40 per million cached input tokens and $20
+per million output tokens. Every request remains below the model page's
 long-context threshold.
 
 The standard arm has a price-equivalent total of $1.7103424, or $0.342068480
@@ -367,14 +370,14 @@ are too few to estimate a stable population effect.
 
 A second campaign prices failure itself. The same local Qwen3.8-27B model
 attempts three defects drawn from Aimee's own history: DB2 pool lease
-attribution, repository-clone ownership and descriptor handling, and a work-item
-contract crossing C, Go and JSON. Each pair holds the buggy revision, prompt,
-tools, limits and sealed hidden grader fixed.
+attribution, repository-clone ownership and descriptor handling, and a
+work-item contract crossing C, Go and JSON. Each pair holds the buggy revision,
+prompt, tools, limits and sealed hidden grader fixed.
 
-The control runs the model alone. The treatment passes canonical history through
-the production economizer handler and applies the preregistered progress
-sequence, which issues a checkpoint, escalates once, and stops after continued
-retrieval without a mutation.
+The control runs the model alone. The treatment passes canonical history
+through the production economizer handler and applies the preregistered
+progress sequence, which issues a checkpoint, escalates once, and stops after
+continued retrieval without a mutation.
 
 | task | languages | Qwen alone | Aimee | reduction |
 |---|---|---:|---:|---:|
@@ -387,25 +390,25 @@ Every control run reaches the context limit. Every treatment run stops under
 the progress sequence. All six runs fail the sealed hidden grader and write no
 patch.
 
-So the campaign contains the cost of failing. Capability stayed where it was,
-and nobody should read the number as saying otherwise. The treatment is also
-combined: context reduction and progress termination were applied together, and
-the campaign splits the 620,352 tokens between neither. Three pairs at one run
-per cell estimate no population effect.
+The campaign contains the cost of failing, and nothing beyond it. Capability
+stayed where it was, and nobody should read the number as saying otherwise. The
+treatment is also combined: context reduction and progress termination were
+applied together, and the campaign splits the 620,352 tokens between neither.
+Three pairs at one run per cell estimate no population effect.
 
 The first attempt at the cross-language pair lacked a required historical build
-fixture and failed the visible grader in both conditions. It remains quarantined
-in its original artifact and excluded from measurement. A corrected rerun
-generates the fixture in both conditions, passes the visible grader in both and
-supplies the third retained pair above.
+fixture and failed the visible grader in both conditions. It remains
+quarantined in its original artifact and excluded from measurement. A corrected
+rerun generates the fixture in both conditions, passes the visible grader in
+both and supplies the third retained pair above.
 
 The stopped Qwen run is a looser observation. Its 512,545 tokens sit 11.2%
 below an earlier recorded plain failure at 577,214. A fresh plain run then
 diverged and hit its context limit at 333,390.
 
-So 11.2% describes two recorded trajectories and no paired estimate. What
-survives is that the stopped failure produced a reusable lesson whose later
-value was above zero.
+Two recorded trajectories are the whole of what 11.2% describes. It is no
+paired estimate. What survives is that the stopped failure produced a reusable
+lesson whose later value was above zero.
 
 The campaign carries the economic argument, because a failure only has option
 value while it stays cheap. Progress termination bounds the immediate loss. The
@@ -415,32 +418,32 @@ durable record supplies the later return.
 
 ### 4.1 Learning without weight updates
 
-Reflexion demonstrates that linguistic feedback stored in an episodic buffer
-can improve subsequent trials across coding, reasoning and sequential decision
+Reflexion shows that linguistic feedback stored in an episodic buffer can
+improve subsequent trials across coding, reasoning and sequential decision
 tasks ([Shinn et al., 2023](https://arxiv.org/abs/2303.11366)). ExpeL extracts
 insights and experiences from training tasks and retrieves them during later
-inference ([Zhao et al., 2023](https://arxiv.org/abs/2308.10144)). Both establish
-the value of visible natural-language learning outside model weights.
+inference ([Zhao et al., 2023](https://arxiv.org/abs/2308.10144)). Both put
+visible natural-language learning outside model weights and show that it pays.
 
 Aimee takes that external-learning premise and changes who owns the result. The
-record belongs to an authorised organisational scope, and it is built to survive
-a change of user, session, tool or model.
+record belongs to an authorised organisational scope, and it is built to
+survive a change of user, session, tool or model.
 
 ### 4.2 Shared and negative memory
 
 INMS creates an asynchronous conversational memory pool shared among agents and
-reports gains across three datasets ([Gao and Zhang, 2024](https://arxiv.org/abs/2404.09982)).
-Learning to Share trains a controller to admit useful intermediate steps to a
-global bank shared by parallel teams, reducing runtime while matching or
-improving performance ([Fioresi et al., 2026](https://arxiv.org/abs/2602.05965)).
-Between them they preclude any broad claim that Aimee first shared memory among
-agents.
+reports gains across three datasets ([Gao and Zhang,
+2024](https://arxiv.org/abs/2404.09982)). Learning to Share trains a controller
+to admit useful intermediate steps to a global bank shared by parallel teams,
+reducing runtime while matching or improving performance ([Fioresi et al.,
+2026](https://arxiv.org/abs/2602.05965)). Between them they preclude any broad
+claim that Aimee first shared memory among agents.
 
 Negative Knowledge sits closest to the failed-approach mechanism. It converts
 failed research attempts into bounded, typed records that a downstream agent
 adopts or rejects, and reports same-task, cross-task and cross-problem gains at
-fewer tokens ([Wang, 2026](https://arxiv.org/abs/2606.21024)). It establishes
-failure as a collective knowledge asset.
+fewer tokens ([Wang, 2026](https://arxiv.org/abs/2606.21024)). It makes failure
+a collective knowledge asset.
 
 We add a heterogeneous-model repository repair, and the production identity,
 scope, correction, isolation and audit substrate around the record.
@@ -451,9 +454,9 @@ Recuris is the closest performance precedent. It evolves a benchmark-specific
 skill-memory package from failures produced by one deployment model, then loads
 the package unchanged into target models that did not participate in evolution.
 Across four long-horizon benchmarks and ten models, it reports improvement in
-35 of 37 completed model-benchmark pairs ([Yu et al., 2026](https://arxiv.org/abs/2608.24876)).
-It therefore rules out a first claim for cross-model experiential memory
-increasing task success.
+35 of 37 completed model-benchmark pairs ([Yu et al.,
+2026](https://arxiv.org/abs/2608.24876)). It therefore rules out a first claim
+for cross-model experiential memory increasing task success.
 
 The distinction is deployment scope. Recuris evaluates a memory-control method
 on controlled benchmarks. It does not present or evaluate a multi-user
@@ -466,16 +469,16 @@ hidden-graded repository completion.
 Cross-Model Memory Transfer studies a different representation: a learned
 Engram table moved across backbones and read through a compatible or adapted
 target-side reader ([Li et al., 2026](https://arxiv.org/abs/2608.17050)). It
-establishes that learned external knowledge ports between backbones. The object
-it ports is parametric-adjacent stored knowledge, and the questions it answers
-sit outside experiential failure memory and organisational agent memory.
+shows that learned external knowledge ports between backbones. The object it
+ports is parametric-adjacent stored knowledge, and the questions it answers sit
+outside experiential failure memory and organisational agent memory.
 
 Structurally aligned subtask-level memory applies memory directly to software
 engineering agents and evaluates across model backbones on SWE-bench Verified
-([Shen et al., 2026](https://arxiv.org/abs/2602.21611)). It is an important baseline for a
-confirmatory Aimee campaign. The present pilot differs by transferring a record
-derived from a named failed source trajectory and by testing the production
-governance path separately.
+([Shen et al., 2026](https://arxiv.org/abs/2602.21611)). It is an important
+baseline for a confirmatory Aimee campaign. The present pilot differs by
+transferring a record derived from a named failed source trajectory and by
+testing the production governance path separately.
 
 ## 5. Discussion
 
@@ -487,8 +490,8 @@ Terra's final grade. So two kinds of capability are worth separating.
 
 Intrinsic capability is a property of the model under a specified interface.
 Realised capability is the work that the model, memory, tools, policy and
-verification harness complete together. A durable record raises the second while
-the first stands still.
+verification harness complete together. A durable record raises the second
+while the first stands still.
 
 The separation has a price attached. An organisation buys completed work from a
 system, and a memory that lets a cheaper or different model finish a task is
@@ -498,7 +501,7 @@ worth money with no fine-tuning anywhere in the story.
 
 Progress termination provides an immediate bound on waste. The durable record
 adds option value: a later worker may avoid the failed strategy or reach a
-solution. The total return from a failure is therefore:
+solution. The total return from a failure:
 
 ```text
 avoided additional run cost
@@ -513,22 +516,23 @@ on those tasks. The cross-model pilot gives one observation of the second.
 Neither fixes a population expectation.
 
 The ACL experience-following result loads the last negative term. A system that
-shares lessons widely amplifies bad lessons just as widely. So provenance,
-scope, correction, admission gates and future-outcome feedback all do efficacy
-work, and calling them enterprise features understates the job.
+shares lessons widely amplifies bad lessons just as widely. Provenance, scope,
+correction, admission gates and future-outcome feedback all do efficacy work
+here, and calling them enterprise features understates the job.
 
 ### 5.3 Production breadth buys nothing about efficacy breadth
 
 Rakuen reports current Aimee use across legal, accounting, software and other
-professional work. Customer identities and records are confidential, and none of
-them are experimental data here. The breadth shows the substrate runs outside
-coding. Whether the measured software effect size survives the move to another
-domain is unknown.
+professional work. Customer identities and records are confidential, and none
+of them are experimental data here. The breadth shows the substrate runs
+outside coding. Whether the measured software effect size survives the move to
+another domain is unknown.
 
-We measure in software because a fixed revision, a visible test, a sealed hidden
-test and a test-sensitivity check make an outcome unusually hard to argue with.
-A domain study needs criteria that are just as external: adjudicated legal
-review, reconciled accounting outcomes, predeclared research replication.
+We measure in software because a fixed revision, a visible test, a sealed
+hidden test and a test-sensitivity check make an outcome unusually hard to
+argue with. A domain study needs criteria that are just as external:
+adjudicated legal review, reconciled accounting outcomes, predeclared research
+replication.
 
 ## 6. Threats to validity
 
@@ -538,9 +542,9 @@ of an unreplicated difference. The event occurred under the recorded protocol.
 Its probability is unmeasured.
 
 The cross-model runs receive the lesson directly. Shared-KB persistence and
-source-independent recall are tested elsewhere. No experiment yet runs the whole
-live path from user A's Qwen failure to authorised retrieval by user B's Terra
-agent.
+source-independent recall are tested elsewhere. No experiment yet runs the
+whole live path from user A's Qwen failure to authorised retrieval by user B's
+Terra agent.
 
 The collaboration runtime withholds token-usage objects for Luna and Terra, so
 their comparison carries capability and completion claims and nothing about
@@ -551,14 +555,14 @@ failed earlier than both recorded runs. Establishing an expected stopping
 benefit needs repeated randomised trajectories or a deterministic replay
 environment.
 
-The deterministic study uses matching task descriptions and a fixed consumer. It
-has strong internal validity for the synthesis-and-recall path, and thin
+The deterministic study uses matching task descriptions and a fixed consumer.
+It has strong internal validity for the synthesis-and-recall path, and thin
 ecological validity for open-ended reasoning and semantic generalisation.
 
 The failure-cost campaign is a combined treatment. Context reduction and
 progress termination are applied together, so the 34.1% reduction cannot be
 attributed to either mechanism. All six of its runs fail the hidden grader, so
-it supports no capability claim, and three pairs with one run per cell do not
+it carries no capability claim, and three pairs with one run per cell do not
 estimate a population effect.
 
 The novelty statement rests on a bounded review of published literature and
@@ -598,23 +602,23 @@ For each source failure, compare four consumer arms: base, raw transcript,
 generic failure warning, and typed Aimee record. Repeat each enough times to
 estimate stochastic variance. Only that four-way split separates what the
 learned record is worth from what any extra prose about a failure is worth. Our
-own cross-model pilot has not run it, so this is the first thing a reader should
-demand of the result in section 3.3.
+own cross-model pilot has not run it, so this is the first thing a reader
+should demand of the result in section 3.3.
 
 ### 7.3 Recall generalisation and near-miss controls
 
-The deterministic study in section 3.2 used matching task descriptions. So it
-establishes recall efficacy for lexical matches, and its novel tasks show that
-unrelated goals collect nothing. The interesting ground lies between those two
-results: a goal that states the same problem in different words. Where recall
-stops reaching is unmeasured.
+The deterministic study in section 3.2 used matching task descriptions. It buys
+recall efficacy for lexical matches, and its novel tasks show that unrelated
+goals collect nothing. The interesting ground lies between those two results: a
+goal that states the same problem in different words. Where recall stops
+reaching is unmeasured.
 
 Extend the deterministic consumer with four goal classes against one stored
 record:
 
 - the original goal, as already tested;
 - a paraphrase preserving meaning and vocabulary;
-- a structurally related goal with substantially different vocabulary;
+- a structurally related goal that shares little of its vocabulary;
 - a near miss that shares vocabulary but requires a different approach, which
   must not recall the record.
 
@@ -638,10 +642,10 @@ Run the four conditions separately on the same task set and revisions:
 | termination only | off | on |
 | combined | on | on |
 
-Report tokens at termination and terminal reason for every cell. Both mechanisms
-end a run early for different reasons, which makes the terminal reason part of
-the result and not a diagnostic beside it. Until this runs, no published number
-may credit progress control alone with a failure-cost saving.
+Report tokens at termination and terminal reason for every cell. Both
+mechanisms end a run early for different reasons, which makes the terminal
+reason part of the result and not a diagnostic beside it. Until this runs, no
+published number may credit progress control alone with a failure-cost saving.
 
 ### 7.5 End-to-end organisational path
 
@@ -695,20 +699,21 @@ test. The originating Qwen retry failed, and both Luna final grades failed.
 
 What we have is one documented occurrence of a production path from failed work
 to shared cross-model capability. A general effect size needs the campaign in
-section 7. Until it runs, how often the path pays, what it costs, and how safely
-it crosses users and domains are all open.
+section 7. Until it runs, how often the path pays, what it costs, and how
+safely it crosses users and domains are all open.
 
 ## 9. Data and code availability
 
 Aimee is published under the GNU Affero General Public License at
-[github.com/RakuenSoftware/aimee](https://github.com/RakuenSoftware/aimee).
-The cross-model artifacts, failure-cost artifacts and product-test changes
-merged on 28 August 2026 through Aimee PR
+[github.com/RakuenSoftware/aimee](https://github.com/RakuenSoftware/aimee). The
+cross-model artifacts, failure-cost artifacts and product-test changes merged
+on 28 August 2026 through Aimee PR
 [#2873](https://github.com/RakuenSoftware/aimee/pull/2873) at commit
 [`faaf05298ce4d3b484f24cb00ccc402c62128e69`](https://github.com/RakuenSoftware/aimee/tree/faaf05298ce4d3b484f24cb00ccc402c62128e69).
 
 We verified every SHA-256 in the evidence inventory against that commit. The
-[evidence inventory](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/failure-as-shared-capability/evidence/figures.md)
+[evidence
+inventory](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/failure-as-shared-capability/evidence/figures.md)
 records source paths, artifact hashes, invalid attempts, negative results and
 claim limits. Full provider transcripts stay out of the blog repository because
 they hold agent conversation data. We retain their hashes and usage fields.
@@ -741,8 +746,9 @@ Target-Side Reader Adaptation.* arXiv:2608.17050. Submitted 17 August 2026,
 revised 19 August 2026. <https://arxiv.org/abs/2608.17050>
 
 Shen, K., Zhang, J., Sun, C., Zeng, W., and Yue, Y. (2026). *Structurally
-Aligned Subtask-Level Memory for Software Engineering Agents.* arXiv:2602.21611.
-Submitted 25 February 2026. <https://arxiv.org/abs/2602.21611>
+Aligned Subtask-Level Memory for Software Engineering Agents.*
+arXiv:2602.21611. Submitted 25 February 2026.
+<https://arxiv.org/abs/2602.21611>
 
 Shinn, N., Cassano, F., Berman, E., Gopinath, A., Narasimhan, K., and Yao, S.
 (2023). *Reflexion: Language Agents with Verbal Reinforcement Learning.*
@@ -756,8 +762,7 @@ Xiong, Z., Lin, Y., Xie, W., He, P., Liu, Z., Tang, J., Lakkaraju, H., and
 Xiang, Z. (2026). *How Memory Management Impacts LLM Agents: An Empirical Study
 of Experience-Following Behavior.* In Proceedings of the 64th Annual Meeting of
 the Association for Computational Linguistics (Volume 1: Long Papers), pages
-623-645, San Diego, California.
-<https://aclanthology.org/2026.acl-long.27/>
+623-645, San Diego, California. <https://aclanthology.org/2026.acl-long.27/>
 
 Yu, Z., Wu, Y., Yin, Z., Chen, K., Zhao, Z., Wang, M., Yan, S., and Yang, L.
 (2026). *Recursive Experiential-Working Memory Evolution for Long-Horizon Agent
@@ -767,4 +772,4 @@ Recuris. <https://arxiv.org/abs/2608.24876>
 Zhao, A., Huang, D., Xu, Q., Lin, M., Liu, Y.-J., and Huang, G. (2023). *ExpeL:
 LLM Agents Are Experiential Learners.* arXiv:2308.10144. Submitted 20 August
 2023. Published at the 38th AAAI Conference on Artificial Intelligence
-(AAAI-24). <https://arxiv.org/abs/2308.10144>
+      (AAAI-24). <https://arxiv.org/abs/2308.10144>
