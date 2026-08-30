@@ -55,10 +55,17 @@ document, test or source file, please identify the exact record and version.
    its “novel core”? Please provide the dates, queries, databases, references
    reviewed and reviewer names.
 
-5. Which of the following did Perseus review before filing: m4, Docutils, Org
-   Babel, Make, Bazel, RAG, XACML, Hearsay-II, Maildir, Aider, Continue, Cline,
-   AutoGen, Task Master, Aimee, LlamaIndex ingestion caching, Prompt Cache,
-   RAGCache and TurboRAG? Where is the resulting element analysis?
+5. Which of these systems did Perseus review before filing?
+
+   - **Atlassian:** Rovo, Teamwork Graph, Rovo for GitHub Copilot, Rovo Search,
+     Rovo Dev, Rovo MCP and Agents in Jira.
+   - **AI development:** Aider, Continue, Cline, AutoGen, Task Master and Aimee.
+   - **LLM caching:** LlamaIndex ingestion caching, Prompt Cache, RAGCache and
+     TurboRAG.
+   - **Foundational systems:** m4, Docutils, Org Babel, Make, Bazel, RAG, XACML,
+     Hearsay-II and Maildir.
+
+   Where is the resulting element analysis for each system reviewed?
 
 6. Perseus's closest-prior-art table describes Accenture US 12,511,287 as
    resolution interleaved with model calls. It also combines Intuit US
