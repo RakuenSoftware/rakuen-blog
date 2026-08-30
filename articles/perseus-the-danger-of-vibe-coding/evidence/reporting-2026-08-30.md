@@ -330,7 +330,9 @@ The Atlassian request is drafted at
 [`right-of-reply-atlassian-draft-2026-08-30.md`](right-of-reply-atlassian-draft-2026-08-30.md).
 It asks Atlassian to check the dated product account, Connally's public
 employment facts, the published invention-disclosure email, any later ownership
-determination it can disclose, and the product-overlap analysis.
+determination it can disclose, the product-overlap analysis, and whether the
+proposed claims conflict with Atlassian's products or its freedom to continue
+developing them.
 
 The cited-project questions are drafted at
 [`source-questions-prior-art-projects-draft-2026-08-30.md`](source-questions-prior-art-projects-draft-2026-08-30.md).

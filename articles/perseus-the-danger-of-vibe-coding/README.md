@@ -40,7 +40,8 @@ is the send-ready right-of-reply request to Perseus.
 
 [`evidence/right-of-reply-atlassian-draft-2026-08-30.md`](evidence/right-of-reply-atlassian-draft-2026-08-30.md)
 asks Atlassian to check the product chronology, employment facts, public legal
-correspondence and competition analysis.
+correspondence, competition analysis and whether Perseus's proposed claims
+conflict with Atlassian's products.
 
 [`evidence/source-questions-prior-art-projects-draft-2026-08-30.md`](evidence/source-questions-prior-art-projects-draft-2026-08-30.md)
 asks the cited project maintainers to verify dates and technical descriptions.
