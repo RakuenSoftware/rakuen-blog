@@ -43,3 +43,8 @@ Before publication, confirm that every figure has an artifact or named source,
 every prior first-party result has a recorded disposition, and every material
 criticism has completed right of reply. Missing raw support changes how a result
 is described; it does not make the reporting disappear.
+
+`articles/REVIEW` is not publication. It may expose a clearly labelled,
+unlisted and non-indexed copy at the eventual article URL solely to complete
+right of reply. A review slug must move to `articles/PUBLISHED`, never remain in
+both files, only after this gate passes.

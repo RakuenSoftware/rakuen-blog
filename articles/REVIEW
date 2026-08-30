@@ -1,0 +1,12 @@
+# Unlisted right-of-reply review copies.
+#
+# A line here makes articles/<slug> reachable at the final article URL:
+# rakuensoftware.com/blog/<slug>. It does not publish the article. Review copies
+# are omitted from the home page, blog index and sitemap, carry no publication
+# metadata or canonical tag, and ask search engines not to index them.
+#
+# This state exists so a subject can review the exact page readers would later
+# see without changing links when the reporting is complete. Publication is the
+# deliberate move from this file to PUBLISHED after the publication gate passes.
+
+perseus-the-danger-of-vibe-coding
