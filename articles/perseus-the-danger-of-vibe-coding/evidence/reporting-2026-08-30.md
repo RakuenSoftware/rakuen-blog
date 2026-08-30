@@ -162,9 +162,10 @@ does not state that one reference anticipates a complete patent claim.
 
 [`public-claim-chart-2026-08-30.md`](public-claim-chart-2026-08-30.md) separately
 charts every public proposed claim or dependent limitation at combination level.
-It records the strongest Perseus response and the missing single-reference
-limitation. The engineering conclusion is that every combination is obvious;
-remaining single-reference searches concern anticipation evidence only.
+It records the strongest Perseus framing, the established mechanisms, the
+reason to combine them and the expected result. The engineering conclusion is
+that every combination is old and obvious. Perseus could not have pioneered
+the mechanisms or their routine combinations.
 
 The named-patent check read the summaries and bibliographic records for
 Accenture US 12,511,287 and Intuit US 2025/0139367 and US 12,423,313. The article

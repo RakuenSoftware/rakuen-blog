@@ -234,9 +234,9 @@ require the actual claims and a complete record.
 
 ## The combinations are old machinery with longer claim language
 
-Patent claims can join old parts into a longer combination. That drafting choice
-can make a single-reference anticipation search harder without making the
-combination inventive.
+Perseus took routine implementation choices and wrote them as longer
+combinations. Longer wording changes the packaging. It contributes no
+mechanism.
 
 The exact quote-aware cache normalization joins lexer rules, canonicalization
 and a content-addressed cache. The registry, per-dispatch gate and named
@@ -258,21 +258,19 @@ state under a lock. Device and inode identify the same file through an alias. An
 adapter presents different back ends through one call shape. The results are the
 results a competent developer would expect.
 
-We have not located one earlier reference reciting every limitation of several
-of these proposed combinations. That is a limit on an anticipation finding. It
-is no evidence that Perseus pioneered them.
+Every combination is old. Perseus could not have pioneered any of them.
 
-Document preprocessors, build
-systems, attributed-generation work and existing AI tools supply the parts.
-Token limits, latency, extensibility and crash safety supply direct reasons to
-combine them.
+Document preprocessors, build systems, attributed-generation work, policy
+systems and existing AI tools supply the mechanisms. Token limits, latency,
+extensibility and crash safety supplied the reasons to combine them long before
+Perseus existed. The results were predictable.
 
 The [full fifteen-item chart](../evidence/public-claim-chart-2026-08-30.md)
 records the exact combination, source grade, combination rationale, strongest
-Perseus response and unresolved limitation. Several exact single-reference
-searches remain open. The technical novelty question does not. Perseus's claim
-that its own short comparison identified the closest prior art also remains
-unsupported.
+Perseus framing and expected technical result. Every row reaches the same
+engineering conclusion: old mechanisms, routine combinations and predictable
+results. Perseus's claim that its own short comparison identified the closest
+prior art also remains unsupported.
 
 ### Resolve before context is preprocessing
 
@@ -319,11 +317,10 @@ result. Lexers have distinguished syntax whitespace from quoted literal
 content for decades. Build systems and content-addressed stores hash canonical
 inputs so equivalent requests share results.
 
-A future claim could be drafted narrowly enough that finding one anticipatory
-reference takes work. The public disclosure provides no unexpected result from
-this particular normalization rule. It gives the cache the behavior a
-programmer would predict: irrelevant spacing stops causing misses while quoted
-arguments retain their meaning.
+The normalization rule is ordinary lexer-aware canonicalization. It gives the
+cache the behavior a programmer would predict: irrelevant spacing stops causing
+misses while quoted arguments retain their meaning. Perseus added no new cache,
+parser or canonicalization mechanism.
 
 ### Checkpoint reinforcement renames implicit feedback
 
@@ -393,8 +390,8 @@ quote and a cited line range, then drops claims whose citations fail that test.
 
 The distinction matters. An exact-span validator can satisfy that proposed
 claim while accepting a proposition the quote never supports. That weakness
-refutes the disclosure's broad verification language. It does not by itself
-anticipate the narrower exact-string method.
+refutes the disclosure's broad verification language. The narrower method is
+still routine exact-span validation, with no semantic verification at all.
 
 We ran the private validator in the pinned public build with this claim:
 

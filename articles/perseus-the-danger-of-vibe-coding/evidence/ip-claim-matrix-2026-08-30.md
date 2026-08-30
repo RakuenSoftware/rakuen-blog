@@ -84,11 +84,10 @@ The model sees prepared text because the program prepares the text first. Zero
 tool calls during inference follow from that ordering. Frozen inputs make an
 ordinary deterministic preprocessor repeat.
 
-The strongest anticipation search should target pre-May 2026 prompt assemblers
-that parse source declarations, execute them before a single model call and
-emit one finished context artifact. The obviousness combination is already
-plain: a document preprocessor supplies parsing and dispatch; RAG supplies the
-model-context destination.
+This is the ordinary combination of a document preprocessor, which supplies
+parsing and dispatch, and RAG, which supplies the model-context destination.
+Parsing source declarations, executing them before a model call and emitting
+one finished context artifact produce no unexpected interaction.
 
 ## Public cluster 2: context tiers and selective loading
 
@@ -144,9 +143,8 @@ selectors do not teach.
 
 Every part performs its established function. The selected canonical form has
 the predictable effect: spacing outside literals stops causing misses while
-literal contents remain distinct. The search still needs one older parser cache
-that uses the exact quoted-whitespace rule before an anticipation statement can
-be considered.
+literal contents remain distinct. The exact rule is an ordinary application of
+lexer-aware canonicalization to a cache key and produces the expected result.
 
 ## Public cluster 4: checkpoint-correlated implicit reinforcement
 

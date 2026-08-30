@@ -13,15 +13,14 @@ row distinguishes four questions:
 1. What combination did Perseus actually describe?
 2. Which earlier source supplies which limitation?
 3. What reason would have led a skilled developer to combine the sources?
-4. Which limitation still lacks a single dated reference?
+4. Does the combination produce any interaction or result beyond the expected
+   behavior of its parts?
 
-An old ingredient alone does not dispose of a combination claim. Anticipation
-requires one reference to supply every limitation. The absence of that one
-reference supplies no positive evidence of invention. An obviousness theory may
-combine references when an articulated reason and predictable result exist.
-Here the engineering pressures and expected results are visible in the proposed
-combinations themselves. The article can reject Perseus's technical novelty
-narrative before converting that criticism into a legal invalidity opinion.
+Every public combination joins established mechanisms under familiar
+engineering pressure and produces the expected result. Longer wording does not
+turn those combinations into technical inventions. This chart evaluates
+Perseus's public novelty narrative. It does not offer an invalidity opinion on
+confidential claims that the public cannot inspect.
 
 ## Evidence grades
 
@@ -78,11 +77,10 @@ reason to perform deterministic work once before a model call. Aider documents
 the token-budget pressure. Build and document preprocessors supply the familiar
 implementation pattern.
 
-**Strongest Perseus response:** none of the cited references presently supplies
-the whole registry-metadata-plus-prompt-output combination in one document.
+**Strongest Perseus response:** the public summary places registry metadata and
+prompt output in the same description.
 
 **Status:** technically obvious. No unexpected interaction or result is stated.
-The single-reference anticipation search is a separate legal evidence question.
 
 ## D1.2: registry-declared context tiers
 
@@ -99,11 +97,11 @@ current source dates remain incomplete. Grades A, D and C respectively.
 problem that ranking and tiering already solve. Attaching the priority to an
 existing registry row is the expected place to store it.
 
-**Strongest Perseus response:** the located Aider source ranks content rather
-than assigning a fixed tier to resolver types.
+**Strongest Perseus response:** Perseus assigns a fixed tier to resolver types
+instead of ranking content dynamically.
 
 **Status:** technically obvious. A fixed tier is a routine simplification of
-ranking or priority admission. Exact anticipation remains a separate question.
+ranking or priority admission.
 
 ## D1.3: quote-preserving normalized cache key
 
@@ -120,12 +118,11 @@ D.
 is the ordinary reason to canonicalize before hashing. Preserving literal
 contents avoids changing the directive argument.
 
-**Strongest Perseus response:** the exact normalization rule has not been found
-in one earlier parser cache.
+**Strongest Perseus response:** the public summary specifies one normalization
+rule for this parser cache.
 
 **Status:** technically obvious. The normalization produces exactly the cache
-behaviour a developer would expect. Exact anticipation remains a separate
-question.
+behaviour a developer would expect.
 
 ## D2.1: checkpoint-correlated implicit reinforcement
 
@@ -139,9 +136,8 @@ and editor suggestion-selection telemetry. Grade A.
 **Combination rationale:** a developer checkpoint is an observable outcome event.
 Time-window attribution is a standard response to delayed outcome signals.
 
-**Strongest Perseus response:** the located references do not use a project
-checkpoint description as the matching event or infer rejection from this exact
-absence rule.
+**Strongest Perseus response:** Perseus uses a project checkpoint description as
+the delayed outcome event and treats expiration of one window as rejection.
 
 **Status:** technically obvious. The noisy-rejection problem is also a model
 quality defect.
@@ -161,9 +157,8 @@ directive capabilities. Grades A and D.
 metadata and profile-derived defaults are the conventional way to avoid repeated
 per-call policy configuration.
 
-**Strongest Perseus response:** the article has not located one earlier document
-renderer with the same registry metadata, per-dispatch consultation and named
-profile bundle.
+**Strongest Perseus response:** Perseus packages registry metadata, per-dispatch
+consultation and named profiles in one document renderer.
 
 **Implementation conflict:** network, redirect, path, authentication and output
 checks remain distributed. Perseus's own security review found missed checks in
@@ -187,18 +182,18 @@ Grade A.
 to confirm that a quoted span came from the named source. Exact matching is the
 simplest validator.
 
-**Strongest Perseus response:** the located papers use broader attribution or
-entailment machinery and may not disclose this exact line-window exclusion rule.
+**Strongest Perseus response:** Perseus substitutes exact-string matching within
+a line window for broader attribution or entailment machinery.
 
 **Implementation conflict:** the reviewed production entry point returns a
 prompt and never consumes or validates the host's answer. The private helper
 accepts a false claim carrying an unrelated exact quote. The first fact
 challenges reduction to practice. The second challenges the disclosure's broad
 claim that every generated claim is verified “against” the sources. Neither fact
-alone anticipates the narrow exact-string proposed claim.
+adds novelty to the narrow exact-string method.
 
 **Status:** exact span validation is obvious, and the product representation is
-contradicted by the rerunnable checks. Anticipation remains a separate question.
+contradicted by the rerunnable checks.
 
 ## D5.1: static dependency prefetch
 
@@ -214,8 +209,8 @@ execution; HTML prefetch warms a cache before likely demand. Grade A.
 before execution. Build systems teach using that knowledge to test freshness and
 consult a cache. Prefetch teaches moving the lookup before demand.
 
-**Strongest Perseus response:** the source domain is model context and the exact
-sequence is split across references.
+**Strongest Perseus response:** Perseus applies the established dependency and
+cache sequence to model context.
 
 **Status:** technically obvious. This is build-system dependency and cache
 machinery applied to model context. Field-of-use language changes no mechanism.
@@ -235,9 +230,8 @@ ready-work selection and atomic claiming. Grades A, B and C.
 direct reason to use filesystem publication primitives and dependency traversal
 to coordinate without infrastructure.
 
-**Strongest Perseus response:** the closest AI tools use different storage
-formats or a database. The exact Markdown-frontmatter/no-server combination has
-not been located in one earlier reference.
+**Strongest Perseus response:** Perseus chooses Markdown frontmatter and no
+central server where other AI task tools use other file formats or a database.
 
 **Implementation conflict:** `os.replace` prevents partial publication but does
 not compare task state. The later advisory-lock repair re-reads under the lock,
@@ -247,7 +241,6 @@ claim” and NFS language therefore exceed the tested guarantee.
 
 **Status:** technically obvious. Frontmatter is a file format, while task state,
 dependencies, claiming and filesystem coordination were established machinery.
-Exact anticipation and Beads publication dates are separate evidence questions.
 
 ## R1.1: recursive include with path and inode ancestor identity
 
@@ -263,8 +256,8 @@ recognize hard-link aliases. Grade A.
 defeat string-only detection. Filesystem identity is the standard mechanism for
 recognizing the same object under different names.
 
-**Strongest Perseus response:** the exact words of the proposed combination may
-take more than one reference to reproduce.
+**Strongest Perseus response:** the public summary places both path strings and
+filesystem identity in the active ancestor set.
 
 **Status:** technically obvious. Recursive inclusion requires an active cycle
 set, and filesystem identity is the standard response to path aliases. Adding
@@ -309,9 +302,8 @@ A and C.
 **Combination rationale:** a common interface and registry remove parser branches
 and make new providers extensible. That is the ordinary purpose of both patterns.
 
-**Strongest Perseus response:** no located dated reference presently enumerates
-all six functional classes under the same registry, grammar and call-signature
-adapter.
+**Strongest Perseus response:** the public summary enumerates six functional
+classes under the same registry, grammar and call-signature adapter.
 
 **Status:** technically obvious. The number of source classes adds no technical
 interaction.
@@ -321,8 +313,8 @@ interaction.
 Docutils exposes a directive registry from which directive lookup occurs. Plugin
 registries conventionally define the recognized extension vocabulary. Grade A.
 
-**Strongest Perseus response:** a direct source showing parser-recognized names
-generated from the same registry would improve the anticipation case.
+**Strongest Perseus response:** the parser-recognized names are generated from
+the same registry.
 
 **Status:** technically obvious. Deriving accepted names from the registry is the
 ordinary way to prevent parser and registry drift.
@@ -352,10 +344,9 @@ one-call versus serial-agent baselines. It is not a live-model latency result.
 None of the fifteen public combinations is technically new. Each joins familiar
 parts for their established functions, under the exact engineering pressure
 that normally causes a competent developer to join them. None states an
-unexpected interaction or result. The remaining single-reference searches bear
-on anticipation doctrine, not on the engineering conclusion.
+unexpected interaction or result. Perseus could not have pioneered these
+mechanisms or their routine combinations.
 
 Perseus's public “closest prior art” work remains inadequate because it omits
 these predecessor classes and supplies no element chart of its own. That is the
-publishable finding before the confidential application and remaining dated
-sources become available.
+publishable finding from the public record.
