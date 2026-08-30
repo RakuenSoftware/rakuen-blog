@@ -33,111 +33,118 @@ please identify the record and proposed date before the deadline. We will place
 answers with the findings they address. If we receive no response, we will say
 so without assigning a motive.
 
-## Questions and findings
+## Questions
 
-1. Perseus says provisional application `64/069,842` was filed in May 2026.
-   Please provide the exact filing date and a redacted filing receipt. If you
-   want us to assess support for the public 27 June claim elements, please also
-   provide the filed specification or identify where each element appears in
-   it.
+Please answer each numbered question separately. Where an answer depends on a
+document, test or source file, please identify the exact record and version.
 
-2. Our attached public claim chart covers all fifteen proposed claims or claim
-   clusters in the public disclosures. We found old elements throughout, a
-   routine reason to make every combination and no unexpected technical result.
-   Please identify the precise feature you contend is novel in each charted
-   claim and the strongest earlier reference you considered for it. For static
-   dependency prefetch specifically, why does your analysis omit Aimee,
-   LlamaIndex ingestion caching, Prompt Cache, RAGCache and TurboRAG?
+### Filing and prior art
 
-3. Git attributes the 28 May commit that introduced six complete technical
-   disclosures to Hermes Agent as author and committer. Other commits are
-   attributed to Codex or Claude. What did those agent identities do? Who chose
-   and read the prior art, who drafted the distinctions, and who approved each
-   claim summary before publication?
+1. What was the exact filing date of provisional application `64/069,842`?
+   Please provide a redacted filing receipt.
 
-4. The resolver-generator disclosure says every generated claim is
-   mechanically verified before rendered output. In the pinned build, the
-   public synthesis path returns a prompt with `generated: false` and no claims.
-   The private validator accepts a claim that Perseus was independently audited
-   by NASA when its exact quote merely says a resolver builds a dependency
-   graph. Is there another production component that performs generation and
-   semantic support checking? If so, please identify the code and version.
+2. Where does the filed specification support each claim element Perseus
+   published on 27 June? Please provide the specification or an
+   element-by-element citation to it.
 
-5. The Agora disclosure says two agents cannot claim the same task and states
-   that the protocol works across NFS. The implementation depends on advisory
-   locking, and its lock helper permits a fail-open path. Under that permitted
-   condition our synchronized reproducer returned success to both claimers.
-   Which filesystems, NFS versions, lock managers and mount options are
-   supported? Please provide a multi-client test or narrow the guarantee.
+3. For each proposed claim, what precise limitation does Perseus contend was
+   new on the filing date? What earlier reference comes closest to it, and what
+   unexpected technical result does the combination produce?
 
-6. The trust-boundary disclosure describes one registry as a single policy
-   spine. Path, redirect, authentication, redaction and output checks still
-   execute in individual resolvers and transports, and the project's July
-   review found missed checks in those sites. What exact security property does
-   the registry itself enforce, beyond recording metadata and selecting gates?
+4. What prior-art search did Perseus perform before describing these systems as
+   its “novel core”? Please provide the dates, queries, databases, references
+   reviewed and reviewer names.
 
-7. Exhibit E4 derives round-trip counts from two selected architectures and
-   sets token, latency and cost fields to null. The introducing commit calls it
-   a benchmark that quantifies the patent's core technical effect for Section
-   101 prosecution. Was any live model, network, token, latency or cost
-   measurement made? Please provide the raw data and protocol if so.
+5. Which of the following did Perseus review before filing: m4, Docutils, Org
+   Babel, Make, Bazel, RAG, XACML, Hearsay-II, Maildir, Aider, Continue, Cline,
+   AutoGen, Task Master, Aimee, LlamaIndex ingestion caching, Prompt Cache,
+   RAGCache and TurboRAG? Where is the resulting element analysis?
 
-8. The published Atlassian email says Atlassian cannot confirm full ownership.
-   Perseus's appended analysis says Atlassian “declined to review or claim
-   ownership.” Perseus's July strategy documents describe Atlassian as building
-   managed enterprise memory across Rovo, Jira, Confluence, Teamwork Graph and
-   agent sessions, tell Perseus not to compete head-on, and prohibit “Atlassian
-   memory, but better.” What were Thomas Connally's Atlassian role and relevant
-   duties while Perseus was developed? Did those duties involve AI agents,
-   context management, memory, Rovo, Jira, Confluence or Teamwork Graph? Do you
-   have an agreement, assignment, waiver or release that supports your ownership
-   statement? Please provide it or explain the difference in wording. Do you
-   dispute our product-level mapping of Context Engine, Vault, Agora, cited
-   synthesis, agent workflows, MCP adapters, trust controls and federation to
-   Rovo, Teamwork Graph, Rovo Search, Rovo Dev, Agents in Jira and Rovo MCP? If
-   so, identify the functional distinction for each disputed row. Do you dispute
-   that Perseus competes with Atlassian for the context and memory layer around
-   teams and agents? If so, reconcile that answer with your instructions to
-   avoid head-on competition, publish non-competitive positioning and avoid
-   “Atlassian memory, but better” messaging, and with your treatment of the
-   narrower CogniRepo overlap as a high direct competitive threat.
+6. Perseus's closest-prior-art table describes Accenture US 12,511,287 as
+   resolution interleaved with model calls. It also combines Intuit US
+   2025/0139367 and US 12,423,313 under one description. What element analysis
+   supports those descriptions?
 
-9. The Context Engine and Vault security reviews call themselves “Independent
-   pre-launch” audits. Git attributes their introducing commits to Perseus
-   Computing, with Claude Opus as a co-author, while both products' milestone
-   documents say an independent external audit remains open. Who performed the
-   reviews, for what organization and under what engagement? In what sense were
-   they independent?
+### Authorship and review
 
-10. Vault advertises persistent encrypted memory. Its current security policy
-    says the FTS5 index contains memory bodies in plaintext, with metadata also
-    plaintext; its threat model says vectors are plaintext and semantically
-    reconstructable. Its claims audit records a retired latency claim, an
-    unbacked insert-rate figure, “signed” used for a self-computed hash and
-    “federation” used for a local file operation. Do you dispute this account?
-    What exact current encryption boundary should the headline communicate?
+7. What work did Hermes Agent, Codex and Claude perform on the technical
+   disclosures, claim maps and prior-art analysis?
 
-11. Perseus's closest-prior-art table describes Accenture US 12,511,287 as
-    workflow orchestration with resolution interleaved with model calls. The
-    patent describes generating query data for chunks and storing the enriched
-    chunks before a later prompt. The same table combines Intuit US
-    2025/0139367, a prompt-to-planning-problem patent, with US 12,423,313, a
-    hierarchical graph RAG patent, under one generic description. Please supply
-    the element analysis supporting those descriptions and correct any errors.
+8. Who selected and read the prior art, drafted the distinctions, checked the
+   factual descriptions and approved each claim summary? Please identify the
+   human reviewer responsible for each stage.
 
-12. We have identified older and contemporary work including m4, Docutils, Org
-    Babel, Make, Bazel, RAG, XACML, Hearsay-II, Maildir, Aider, Continue, Cline,
-    AutoGen, Task Master and other agent task or memory systems. Atlassian's
-    dated public Rovo materials describe cross-tool Teamwork Graph context,
-    company-grounded chat and agents in May 2024; Jira and Confluence context
-    supplied to GitHub Copilot in January 2025; source-linked search in July
-    2025; persistent user memory in August 2025; and a generally available Rovo
-    MCP server in February 2026. Why are Rovo and Teamwork Graph absent from the
-    closest-prior-art table despite Connally's employment at Atlassian? Aimee was
-    publicly accessible from February 2026, although a 3 June history
-    replacement removed at least three months of visible ancestry. Which of
-    these did you review before calling the public disclosures the novel core
-    and their named references the closest prior art?
+### Atlassian ownership and competition
+
+9. What were Thomas Connally's role and relevant duties at Atlassian while
+   Perseus was developed? Did those duties involve Rovo, Jira, Confluence,
+   Teamwork Graph, AI agents, context management or persistent memory?
+
+10. Atlassian's published email says it cannot confirm full ownership.
+    Perseus's appended analysis says Atlassian “declined to review or claim
+    ownership.” What record supports that description? Please provide any
+    assignment, waiver or release on which Perseus relies.
+
+11. Atlassian had published Teamwork Graph context, company-grounded agents,
+    Jira and Confluence context for GitHub Copilot, source-linked search,
+    persistent user memory and Rovo MCP before Perseus filed. Which of those
+    systems did Perseus review, and why are Rovo and Teamwork Graph absent from
+    the closest-prior-art table?
+
+12. Do you dispute our product-level mapping between Context Engine, Vault and
+    Agora and Atlassian's Rovo, Teamwork Graph, Rovo Search, Rovo Dev, Agents in
+    Jira and Rovo MCP? Please identify the functional distinction for each
+    disputed row.
+
+13. Do you dispute that Perseus competes with Atlassian for the context and
+    memory layer around teams and agents? How does your answer fit Perseus's
+    instructions to avoid head-on competition and “Atlassian memory, but
+    better” messaging?
+
+### Claims against the implementation
+
+14. What production component generates and verifies the claims described in
+    the resolver-generator disclosure? Please identify the code and version.
+    The pinned public synthesis path returns `generated: false`, while the
+    private validator accepted an unsupported NASA audit claim.
+
+15. Which filesystems, NFS versions, lock managers and mount options support
+    Agora's task-exclusivity guarantee? Please provide a multi-client test. Our
+    synchronized reproducer returned success to two claimers under the
+    documented fail-open locking condition.
+
+16. What security property does the directive registry itself enforce? Path,
+    redirect, authentication, redaction and output checks execute in individual
+    resolvers and transports.
+
+17. Did Exhibit E4 measure a live model, network, token count, latency or cost?
+    Please provide the protocol and raw results. Which specific mechanism does
+    Perseus contend improves computer operation for its Section 101 argument?
+
+18. What mechanism makes Perseus's byte-reproducibility claim different from
+    an ordinary deterministic build or template renderer once all external
+    state is frozen?
+
+19. What prevents a malicious file, command result, memory or remote source
+    from placing operative instructions into the model context? The parser does
+    not reparse resolver output as Perseus directives, but the language model
+    still receives that output as tokens.
+
+### Security and Vault
+
+20. Who performed the Context Engine and Vault reviews labelled “Independent
+    pre-launch” audits, for which organisation and under what engagement? Both
+    milestone documents say an external independent audit remains outstanding.
+
+21. What exact data does Vault protect when an attacker obtains the database
+    file? Its FTS5 index contains memory bodies in plaintext, while metadata and
+    optional vectors also remain plaintext.
+
+22. Does workspace scoping provide tenant isolation, or does it provide routing
+    and relevance under a trusted-caller model?
+
+23. Who approved the latency, insert-rate, “signed” and “federation” claims that
+    Vault later corrected? What evidence review now prevents the same failure?
 
 Please also send any correction we have not asked about and any statement you
 want quoted in full or in relevant part. We may follow up on factual material
