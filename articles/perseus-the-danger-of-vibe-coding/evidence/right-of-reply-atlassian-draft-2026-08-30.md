@@ -13,68 +13,75 @@ https://rakuensoftware.com/blog/perseus-the-danger-of-vibe-coding
 The page is labelled as an unpublished right-of-reply draft and is excluded
 from Rakuen's article listings, sitemap and search indexing.
 
-Please answer each numbered question separately. Where an answer depends on a
-public record, please identify it. We understand that Atlassian may be unable to
-disclose confidential personnel or legal material. A clear statement of that
-limit is still useful.
+Please answer each numbered question separately and identify the record behind
+each answer. If Atlassian cannot answer because the information is
+confidential, please say which question that prevents it from answering.
 
-## Product chronology
+## Atlassian's earlier products
 
-1. Does our dated account of Rovo and Teamwork Graph accurately describe the
-   capabilities Atlassian had publicly announced or released before May 2026?
-   Please identify any incorrect date or description.
+1. Do you dispute any publication date in our Rovo and Teamwork Graph
+   chronology? Identify the date and the correct public record.
 
-2. By May 2026, did Atlassian products provide cross-source organisational
-   context, company-grounded chat or agents, coding-assistant context,
-   source-linked retrieval, persistent user memory and MCP access to Jira and
-   Confluence?
+2. Before May 2026, had Atlassian publicly described each of these functions:
+   cross-source organisational context, company-grounded chat and agents,
+   coding-assistant context, source-linked retrieval, persistent user memory,
+   agent task coordination and MCP access to Jira and Confluence? Identify any
+   function that had not been described by then.
 
-3. Does our comparison accurately describe the relevant functions of Rovo,
-   Teamwork Graph, Rovo Search, Rovo Dev, Agents in Jira and Rovo MCP? Please
-   identify the functional difference for any disputed row.
+3. Do you dispute any row in our product comparison between Perseus and Rovo,
+   Teamwork Graph, Rovo Search, Rovo Dev, Agents in Jira or Rovo MCP? Identify
+   the row and the functional error.
 
-## Employment and invention disclosure
+## Connally's work at Atlassian
 
-4. Can Atlassian confirm Thomas Connally's employment dates, title and relevant
-   product responsibilities while Perseus was developed?
+4. What were Thomas Connally's employment dates, titles, teams and product
+   responsibilities while Perseus was developed?
 
-5. Did those responsibilities involve Rovo, Jira, Confluence, Teamwork Graph,
-   AI agents, context management, persistent memory or developer tooling?
+5. Did his work involve Rovo, Jira, Confluence, Teamwork Graph, AI agents,
+   context management, persistent memory, retrieval, MCP or developer tooling?
 
-6. Is the employee-invention email published by Perseus an authentic and
-   complete representation of Atlassian's response? Did Atlassian authorise its
-   publication?
+6. Did Atlassian assess whether Perseus fell within Connally's job duties or
+   invention-assignment obligations? What conclusion did that assessment reach?
 
-7. The email says Atlassian cannot confirm that Connally has full ownership.
-   Did Atlassian later make an ownership determination or issue an assignment,
-   waiver, release or disclaimer concerning Perseus or the proposed patent?
+7. Did Atlassian assess whether Connally used Atlassian code, confidential
+   information, equipment or paid working time to develop Perseus? What did it
+   conclude?
 
-8. Perseus characterises the response as Atlassian having “declined to review
-   or claim ownership.” Does that wording accurately state Atlassian's
-   position?
+## The published legal email
 
-9. Can Atlassian say whether the disclosed work was assessed under Connally's
-   employment agreement or invention-assignment obligations? We are asking
-   whether an assessment occurred, not for confidential terms Atlassian cannot
-   provide.
+8. Is the employee-invention email published by Perseus authentic and complete?
+   Did Atlassian authorise its publication?
+
+9. The email says Atlassian cannot confirm that Connally has full ownership.
+   Perseus says Atlassian “declined to review or claim ownership.” Does the
+   second statement accurately describe Atlassian's position?
+
+10. Did Atlassian later investigate or decide who owns Perseus or the proposed
+    patent? State the decision Atlassian reached.
+
+11. Has Atlassian assigned, waived, released or disclaimed any rights in
+    Perseus or the proposed patent? Identify the document that did so.
+
+12. Does Atlassian currently assert, reserve or disclaim any ownership or other
+    rights in Perseus or the proposed patent?
 
 ## Product overlap and competition
 
-10. Does Atlassian regard Perseus Context Engine or Perseus Vault as products
-    in the same context, memory, retrieval or agent-workflow category as Rovo
-    and Teamwork Graph?
+13. Our article concludes that Perseus competes directly with Atlassian. Does
+    Atlassian dispute that conclusion? Identify the users, product functions or
+    purchasing decisions that place the products in separate markets.
 
-11. Can Perseus substitute for Atlassian products when a customer chooses where
-    cross-tool context, persistent memory, retrieval policy or agent working
-    state will live?
+14. Can Perseus substitute for Rovo or Teamwork Graph when a customer chooses
+    where cross-tool context, persistent memory, retrieval policy or agent
+    working state will live?
 
-12. Does Perseus's integration with Rovo Dev change Atlassian's view of the
-    broader product overlap? Please distinguish the complementary integration
-    from any areas of substitution.
+15. Perseus integrates with Rovo Dev while offering its own context, memory,
+    retrieval and agent-workflow layer. Which parts complement Atlassian's
+    products, and which parts can replace them?
 
-13. Were the Rovo and Teamwork Graph materials cited in our article public
-    before Perseus's asserted filing month? Does Atlassian know of earlier
-    public material that documents the same capabilities more clearly?
+16. Do Atlassian's pre-May 2026 publications document the same functional
+    category that Perseus later described as its “novel core”? Identify the
+    material distinction if Atlassian believes they do not.
 
 Please identify any factual error we have not asked about and provide any
 statement Atlassian wants included with the article.
