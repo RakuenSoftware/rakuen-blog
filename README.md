@@ -68,6 +68,7 @@ website.
 | [ornith-against-its-base](articles/ornith-against-its-base/) | draft | registered plan; four runs outstanding, no accuracy result yet |
 | [we-forced-it-to-think-and-the-score-fell](articles/we-forced-it-to-think-and-the-score-fell/) | ready | figure map, three prompt arms, seven rerunnable scripts |
 | [failure-as-shared-capability](articles/failure-as-shared-capability/) | paper | working academic paper; ten keyed sources, hashes pinned to an Aimee merge commit |
+| [perseus-the-danger-of-vibe-coding](articles/perseus-the-danger-of-vibe-coding/) | draft | all public proposed claims charted; narrow runtime checks complete; chronology holds, counsel review and right of reply outstanding |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
 `paper` means an academic working paper rather than a blog post. It is not a
