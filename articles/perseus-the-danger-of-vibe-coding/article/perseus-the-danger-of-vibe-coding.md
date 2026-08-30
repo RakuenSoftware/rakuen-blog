@@ -6,7 +6,7 @@ tags: [agents, context, security, patents, aimee]
 excerpt: "Perseus has code, tests, security reviews, claim maps and patent exhibits. The volume looks like proof. Its own documents show a different problem: the artifacts establish that work exists, then reach beyond what the work can establish."
 ---
 
-*Drafted 30 August 2026 from a static review of Perseus at commit
+*Drafted from a static review of Perseus at commit
 [`e7bbeb35`](https://github.com/Perseus-Computing-LLC/perseus/tree/e7bbeb35485e67876947c87eda7e98028ddb4a29).
 Rakuen Software builds aimee, which may overlap parts of the field Perseus
 claims. That interest bears directly on this article. None of the parties
