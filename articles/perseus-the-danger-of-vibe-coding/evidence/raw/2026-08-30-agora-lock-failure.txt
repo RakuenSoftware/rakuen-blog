@@ -1,0 +1,37 @@
+Review date: 2026-08-30
+Perseus commit: e7bbeb35485e67876947c87eda7e98028ddb4a29
+Reproducer: evidence/reproducers/agora_lock_failure.py
+Expected: Exercise the behavior permitted when advisory lock acquisition fails and
+the helper continues without a lock.
+Method: Replace the lock and unlock helpers with no-ops, synchronize both open-state
+reads, then race two calls to _claim_task_under_lock against one task.
+Actual: Both callers returned won=true. The last replacement selected the final
+file owner.
+
+Command:
+python3 evidence/reproducers/agora_lock_failure.py /tmp/perseus-audit.qxUQ5S/perseus.py
+
+Output:
+{
+  "claim_results": [
+    {
+      "agent": "agent-a",
+      "holder": "agent-a",
+      "won": true
+    },
+    {
+      "agent": "agent-b",
+      "holder": "agent-b",
+      "won": true
+    }
+  ],
+  "final_claimed_by": "agent-a",
+  "final_status": "in_progress",
+  "simulated_condition": "advisory lock acquisition failed and helper continued"
+}
+
+Exit: 0
+
+The test demonstrates the documented fail-open branch. It does not establish that
+a supported production filesystem will cause lock acquisition to fail.
+

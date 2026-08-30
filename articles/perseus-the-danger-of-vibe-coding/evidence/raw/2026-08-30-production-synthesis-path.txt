@@ -1,0 +1,23 @@
+Review date: 2026-08-30
+Perseus commit: e7bbeb35485e67876947c87eda7e98028ddb4a29
+Reproducer: evidence/reproducers/production_synthesis_path.py
+Fixture: evidence/fixtures/synthesis-source.md
+Expected: Determine whether the public entry point generates and validates claims
+when generation arguments are supplied.
+Actual: It returned a prompt, generated no claims and validated no claims.
+
+Command:
+python3 evidence/reproducers/production_synthesis_path.py /tmp/perseus-audit.qxUQ5S/perseus.py evidence/fixtures/synthesis-source.md
+
+Output:
+{
+  "claims": [],
+  "dropped_claims": [],
+  "exit_code": 0,
+  "generated": false,
+  "note": "in-process generation removed — Perseus returns the synthesis prompt for the host agent to answer",
+  "prompt_present": true
+}
+
+Exit: 0
+

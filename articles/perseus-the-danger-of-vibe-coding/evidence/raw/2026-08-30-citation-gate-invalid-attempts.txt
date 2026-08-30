@@ -1,0 +1,34 @@
+INVALID ATTEMPTS, retained under the append-only reporting rule.
+
+Review date: 2026-08-30
+Perseus commit: e7bbeb35485e67876947c87eda7e98028ddb4a29
+Environment: local static checkout at /tmp/perseus-audit.qxUQ5S
+
+Attempt 1
+Command: PYTHONPATH=src python -c '<citation-validator invocation>'
+Exit: 127
+Output:
+/bin/bash: line 1: python: command not found
+
+Invalid because this environment exposes Python as python3.
+
+Attempt 2
+Command: PYTHONPATH=src python3 -c '<citation-validator invocation>'
+Exit: 1
+Output:
+ModuleNotFoundError: No module named 'perseus.synthesis'; 'perseus' is not a package
+
+Invalid because the repository-root generated perseus.py shadowed the src package.
+
+Attempt 3
+Command run from /tmp: PYTHONPATH=/tmp/perseus-audit.qxUQ5S/src python3 -c '<citation-validator invocation>'
+Exit: 1
+Output:
+NameError: name 'Path' is not defined
+
+Invalid because src/perseus/synthesis.py is a concatenation fragment whose imports
+are supplied by the generated top-level perseus.py artifact.
+
+Superseded by 2026-08-30-citation-gate-semantic-mismatch.txt, which loads the
+generated artifact directly.
+
