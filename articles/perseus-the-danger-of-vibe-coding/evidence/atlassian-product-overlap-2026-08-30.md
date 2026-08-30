@@ -105,12 +105,15 @@ notes](https://github.com/Perseus-Computing-LLC/perseus/blob/e7bbeb35485e6787694
 ask programs and primes to evaluate Perseus as their context, memory and record
 layer. These are product-adoption documents, not a hobby-project boundary.
 
-Perseus can complement Rovo Dev as an add-on while competing with Rovo and
-Teamwork Graph for the broader context and memory layer. Integration at one
-interface does not eliminate substitution elsewhere. The internal directions
-to avoid head-on competition, publish non-competitive positioning and prohibit
-“Atlassian memory, but better” messaging are themselves competitive-positioning
-decisions.
+Perseus is an Atlassian competitor. It can complement Rovo Dev as an add-on
+while competing with Rovo and Teamwork Graph for the broader context, memory,
+retrieval and agent layer. Integration at one interface does not eliminate
+substitution elsewhere.
+
+The internal directions to avoid head-on competition, publish non-competitive
+positioning and prohibit “Atlassian memory, but better” messaging are themselves
+competitive-positioning decisions. They acknowledge the competition and manage
+its presentation.
 
 ## Direct Rovo Dev integration
 
@@ -133,9 +136,10 @@ multi-source context assembly, persistent memory, retrieval and ranking,
 attributable synthesis, agent configuration, task orchestration, adapters and
 permission-aware serving.
 
-The products also compete for the same architectural role around organizational
-knowledge and agent work. Perseus's complementary label describes its chosen
-positioning. It does not describe a separate market.
+Perseus and Atlassian compete for the same architectural role around
+organizational knowledge and agent work. They target overlapping users, inputs,
+workflows and integration surfaces. Perseus's complementary label describes its
+chosen positioning. It does not describe a separate market.
 
 All dated Atlassian materials above precede Perseus's asserted May 2026 filing
 month. The omission is material to the article's assessment of Perseus's

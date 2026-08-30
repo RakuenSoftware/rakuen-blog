@@ -176,6 +176,11 @@ differences. Atlassian overlaps those surfaces and several more. Perseus's
 “complementary” language is therefore reported as positioning inside a shared
 market, not as proof that the products do not compete.
 
+The article states the conclusion directly: Perseus is an Atlassian competitor.
+Both seek to control the context, memory, retrieval and agent layer around
+organizational work. Perseus's own head-on-competition and messaging guardrails
+corroborate the objective product comparison.
+
 [`ip-claim-matrix-2026-08-30.md`](ip-claim-matrix-2026-08-30.md) records the
 element-level comparison, source dates, gaps and publication holds. The chart
 supports the finding that the Perseus documents omit close predecessors. It

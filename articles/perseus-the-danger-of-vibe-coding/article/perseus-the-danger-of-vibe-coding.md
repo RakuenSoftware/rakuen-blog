@@ -111,6 +111,7 @@ the material discrepancies all move in the same direction.
 | A private helper checks only that some exact quote occurs in a cited range | The same disclosure describes claims as mechanically verified against their sources |
 | `os.replace` prevents partial file publication, while mutual exclusion depends on an advisory lock that may fail open | The Agora disclosure says two agents cannot claim one task and the protocol works across NFS |
 | Atlassian says it cannot confirm whether the employee has full ownership | Perseus's appended analysis says Atlassian declined to claim the project |
+| Perseus targets the context, memory and agent layer occupied by Rovo and Teamwork Graph, and its strategy says to avoid head-on competition | Its external-safe positioning calls the relationship complementary and tells writers to avoid competitive messaging |
 | Exhibit E4 derives model round trips from two chosen architectures | The commit calls it a benchmark that quantifies the patent's core technical effect |
 | Accenture describes query-enriched chunks stored before a later prompt | The claim map calls the patent workflow orchestration with resolution interleaved with model calls |
 
@@ -693,13 +694,17 @@ longer retention, explicit control, explanations and portability. That is a
 market-positioning carve-out inside the same product category. It is not an
 account of a newly pioneered technical field.
 
-### “Complementary” is positioning, not a market boundary
+### Perseus competes directly with Atlassian
 
-Perseus tries to turn the overlap into complementarity by defining Atlassian as
-suite-bound and itself as portable. Competing products differentiate themselves
-this way all the time. A local or on-premises product still competes with a
-managed cloud product when both seek to become the context and memory layer
-around the same teams and agents.
+Perseus is an Atlassian competitor. Both products seek to supply organizational
+context, persistent memory, retrieval, agent workflows and developer context to
+the same class of teams. Both seek to become the layer around the model that
+decides what the agent knows, remembers and can act upon.
+
+Perseus tries to soften that fact by defining Atlassian as suite-bound and
+itself as portable. That is competitive differentiation. A local or on-premises
+product competes with a managed cloud product when they solve the same problem
+for the same users, even when a customer can install both.
 
 Perseus's own [competitive-analysis
 method](https://github.com/Perseus-Computing-LLC/perseus/blob/e7bbeb35485e67876947c87eda7e98028ddb4a29/docs/competitive-analysis-phase1.md)
@@ -717,11 +722,17 @@ primes](https://github.com/Perseus-Computing-LLC/perseus/blob/e7bbeb35485e678769
 to adopt its context and memory layer around their models. It seeks the same
 architectural position that Rovo and Teamwork Graph occupy.
 
-Perseus can extend Rovo Dev in one deployment while competing with Rovo and
-Teamwork Graph for control of cross-tool context and durable memory. Products
-can complement each other at one interface and compete across the rest of the
-stack. Perseus's instruction to avoid “head-on competition” acknowledges the
-competition. It does not erase it.
+For a team deciding where cross-tool context lives, which memory persists, what
+retrieval policy applies and which system supplies an agent's working state,
+Perseus and Atlassian offer competing answers. Perseus can extend Rovo Dev in
+one deployment while competing with Rovo and Teamwork Graph across the rest of
+the stack.
+
+Perseus's own language removes any doubt. It instructs the project to avoid
+“head-on competition,” publish “non-competitive positioning,” and reject
+“Atlassian memory, but better” messaging. A company writes those guardrails
+because it has built a competing product and wants to manage how openly that
+competition is described.
 
 Employment alone establishes no prior art. Atlassian's dated public disclosures
 do. The employment relationship makes their omission from Perseus's novelty
@@ -773,10 +784,10 @@ context and tenant-managed memory, then instructs Perseus: “Do not build
 ‘Atlassian memory, but better.’”
 
 Those documents do not establish Connally's job duties or the scope of his
-employment agreement. They establish that Perseus and its author recognized
-Atlassian as operating in the same AI context and memory field. The legal
+employment agreement. They do establish that Perseus competes with Atlassian's
+products, and that Perseus and its author recognized the competition. The legal
 email's warning about conflicts and its refusal to confirm ownership therefore
-address a concrete overlap identified by Perseus itself.
+address a competing outside product, not a hypothetical adjacency.
 
 The document proves neither Atlassian ownership nor clear title. Chain of title depends on the
 employment agreement, the work performed, the resources used, applicable law
@@ -978,6 +989,12 @@ Perseus could narrow its IP story to the mechanism it can defend, keep its
 security claims inside the audit it has completed and present its benchmarks as
 measurements under named conditions. The context engine would then stand on its
 implementation.
+
+The closest omitted product family belongs to the claimed inventor's employer.
+Perseus competes with that family for the context, memory, retrieval and agent
+layer, integrates directly into Rovo Dev, then excludes Rovo and Teamwork Graph
+from its closest-prior-art comparison. Calling the relationship complementary
+does not make that account honest.
 
 The current package asks its artifacts to testify for one another. They are the
 same witness.
