@@ -13,8 +13,8 @@ claims. That interest bears directly on this article. None of the parties
 contacted have yet had a chance to respond, and the prior-art chronology is
 still open.*
 
-*Publication is blocked until the company receives the specific findings and a
-fair chance to answer. This is technical analysis. Patent-validity conclusions
+*Publication is blocked until all parties contacted have had a fair chance to
+answer. This is technical analysis. Patent-validity conclusions
 remain outside its scope.*
 
 The methods, raw runs and held claims are in the article's [reporting
