@@ -3,7 +3,7 @@ title: "Perseus: The danger of vibe coding"
 date: 2026-08-30
 author: Rakuen Software
 tags: [agents, context, security, patents, aimee]
-excerpt: "Perseus has code, tests, security reviews, claim maps and patent exhibits. The volume looks like proof. Its own documents show a different problem: the artifacts establish that work exists, then reach beyond what the work can establish."
+excerpt: "Perseus has code, tests, security reviews, claim maps and patent exhibits. The volume looks like proof. Its own documents show a different problem: the artifacts establish that work exists, then reach beyond what the work can establish, and even compete with the author's employer."
 ---
 
 *Drafted from a static review of Perseus at commit
