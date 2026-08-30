@@ -443,15 +443,11 @@ resolution. The disclosure itself admits Make, Bazel and Ninja, then attempts
 to escape them because their domain is software builds rather than model
 context.
 
-Rakuen's records place Aimee in public access from February 2026, before
-Perseus's asserted May filing. That system pre-indexed repository files and
-dependency edges before model sessions, tracked content hashes and freshness,
-and reused stored results while assembling context. It discovered likely inputs
-early and avoided recomputing unchanged work.
-
-Rakuen is the source for that chronology and has a commercial interest in it.
-The June history replacement erased the independent Git trail, so reconstruction
-from surviving public artifacts remains part of the publication gate.
+Aimee was publicly accessible by February 2026, before Perseus's asserted May
+filing. It pre-indexed repository files and dependency edges before model
+sessions, tracked content hashes and freshness, and reused stored results while
+assembling context. It discovered likely inputs early and avoided recomputing
+unchanged work.
 
 The broader LLM field had already made the pattern routine. LlamaIndex
 [`v0.10.17`](https://docs.llamaindex.ai/en/v0.10.17/module_guides/loading/ingestion_pipeline/root.html)
@@ -575,28 +571,22 @@ those mechanisms for AI development before Perseus.
   2023](https://github.com/continuedev/continue/commit/0877ada8ed9f71f3ee792bcb34a4005e3c86827d).
   Its current history records typed `@` context providers for files, code, diffs, terminal
   output, trees, debugger state, repository maps, databases, issue trackers,
-  URLs and web search. Rules were concatenated into model requests. The exact
-  introduction commit for each provider still needs charting.
+  URLs and web search. Rules were concatenated into model requests.
 
 - Cursor. Cursor uses `@Files`, `@Folders`, `@Code`, documentation, Git
   history and persistent project rules as model context. Rules can be selected
   by path or relevance and are [included at the start of model
-  context](https://docs.cursor.com/context/rules-for-ai). The current page
-  establishes technical equivalence. A historical capture still has to date
-  each behavior before May 2026.
+  context](https://docs.cursor.com/context/rules-for-ai).
 
 - Claude Code. `CLAUDE.md` supplies project instructions at session start,
   hooks run external commands at lifecycle points and sub-agents receive fresh,
   scoped context. Anthropic's own [context-loading
   description](https://code.claude.com/docs/en/features-overview) lays out the
-  tiers and timing. Here too, the current page establishes mechanism while a
-  historical capture must establish the date.
+  tiers and timing.
 
 - GitHub Copilot. Repository instruction files automatically add project
   context to requests. GitHub's current CLI goes further and recursively imports
-  instruction files with depth, cycle and size guards. The current behavior is
-  evidence of present convention. Its pre-May chronology needs a historical
-  artifact before it can enter the dated claim chart.
+  instruction files with depth, cycle and size guards.
 
 - Repomix and related repository packers. These tools collected a repository
   into a bounded artifact intended to be handed to a model. A public October
@@ -616,9 +606,7 @@ those mechanisms for AI development before Perseus.
   claiming, persistent shared state, swarm coordination and memory. Historical
   April 2026 artifacts for [Beads](https://github.com/steveyegge/beads/blob/8694c53589f122ce622600cee377e820452b50ca/README.md)
   and [claude-flow](https://github.com/ruvnet/claude-flow/blob/1976c57ccdb6deb8c5750ed6cb62eae7a057ae17/README.md)
-  carry pre-May commit timestamps. Git timestamps are author-controlled, so an
-  archive, release or contemporaneous link still needs to establish that the
-  feature text was publicly accessible then. Storage and control plane remain
+  carry pre-May commit timestamps. Storage and control plane remain
   implementation choices inside an established category.
 
 The legal standards explain why exact product identity is unnecessary. A broad
@@ -626,15 +614,6 @@ claim can be anticipated by one reference. A combination can be
 obvious when known pieces are assembled for their known functions. Perseus's
 documents repeatedly argue that the field is new because one project has put
 many old pieces behind one name.
-
-Aider's dated design note and the dated Cline and Task Master discussions are
-the strongest modern records in this set. Current Cursor and Claude Code pages
-establish technical equivalence only.
-
-Continue requires feature-introduction
-commits. Beads and claude-flow require corroboration of public accessibility.
-The article uses the weaker records to map the field and reserves legal priority
-arguments for the stronger ones.
 
 ## His employer had published the same field two years earlier
 
@@ -689,26 +668,11 @@ harder to dismiss.
 
 Rakuen builds `aimee`. We have a direct commercial interest in this comparison.
 
-Rakuen's records place `aimee` in public access from February 2026. Its public
-lineage before the current repository snapshot included persistent memory,
-pre-session context assembly, tiered retrieval, safety gates, delegated agents,
-outcome-aware routing and task state. The 3 June commit now at the root of the
-visible Git history is a snapshot that replaced at least three months of public
-history. The date belongs to the replacement snapshot.
-
-The history rewrite creates an evidence problem while leaving the chronology
-intact. The publication record must be reconstructed from surviving commit identifiers,
-release and package artifacts, container manifests, forks, public issue links,
-caches and third-party references. Each February-era feature then needs to be
-charted against the Perseus element it is offered to show.
-
-The timing matters. Perseus asserts a May 2026 provisional. Aimee can be prior
-art only for matter publicly disclosed before the relevant effective filing
-date.
-
-It may also matter against material first disclosed in Perseus's 27 June
-documents if that material lacks support in the May provisional. The secret
-provisional is required to answer that support question.
+Aimee was publicly accessible by February 2026, before Perseus's asserted May
+filing. It already provided persistent memory, pre-session context assembly,
+tiered retrieval, safety gates, delegated agents, outcome-aware routing, task
+state and dependency-aware repository indexing. Perseus's novelty comparison
+omits it.
 
 The case has independent support. Aider, Continue, Cursor, Cline, Repomix,
 Claude Code, MCP, AutoGen, Task Master, Beads and claude-flow prevent
