@@ -565,6 +565,13 @@ The older systems defeat the idea that the mechanisms were born with LLMs. The
 following projects defeat the narrower suggestion that nobody had assembled
 those mechanisms for AI development before Perseus.
 
+- **Aimee, February 2026.** [Aimee](https://github.com/RakuenSoftware/aimee)
+  was publicly accessible before Perseus's asserted May filing. It combined
+  persistent repository memory, pre-session context assembly, tiered retrieval,
+  source and dependency graphs, safety gates, delegated agents, checkpoint and
+  task state, and outcome-aware routing. That is most of Perseus's claimed field
+  assembled in one earlier AI system.
+
 - **Aider, 2023.** Aider automatically built a repository map with tree-sitter,
   ranked a code dependency graph to fit a token budget and sent the selected map
   with each model request. Its dated [October 2023 design
