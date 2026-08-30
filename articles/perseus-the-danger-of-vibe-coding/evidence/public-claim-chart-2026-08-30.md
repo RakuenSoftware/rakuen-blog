@@ -201,19 +201,26 @@ contradicted by the rerunnable checks.
 compute directive cache keys, and preload matching cache entries before normal
 renderer demand.
 
-**Earlier elements:** Make parses dependency relationships and checks file
-freshness; Bazel computes content/action keys and consults caches before
-execution; HTML prefetch warms a cache before likely demand. Grade A.
+**Earlier elements:** Aimee pre-indexed repository files and dependency edges,
+tracked hashes and freshness, and reused stored results during later context
+assembly before Perseus's asserted filing month, according to Rakuen's
+pre-rewrite records. LlamaIndex `v0.10.17` hashed and cached each
+node-transformation pair and skipped unchanged document hashes. Prompt Cache
+precomputed reusable LLM attention states in 2023. RAGCache cached retrieved
+knowledge states in April 2024. TurboRAG precomputed document KV caches offline
+in October 2024. Make and Bazel supply still older dependency, freshness and
+cache-key machinery. Grades A and first-party C for the erased Aimee chronology.
 
 **Combination rationale:** a directive that names a file exposes its dependency
-before execution. Build systems teach using that knowledge to test freshness and
-consult a cache. Prefetch teaches moving the lookup before demand.
+before execution. LLM ingestion and inference systems already used hashes,
+precomputed context state and caches to avoid repeating unchanged work. A file
+modification time is an ordinary freshness input for the same operation.
 
-**Strongest Perseus response:** Perseus applies the established dependency and
-cache sequence to model context.
+**Strongest Perseus response:** Perseus applies the established sequence to
+file-referencing directives and uses file modification times as freshness data.
 
-**Status:** technically obvious. This is build-system dependency and cache
-machinery applied to model context. Field-of-use language changes no mechanism.
+**Status:** technically obvious and directly preceded in LLM systems. Directive
+syntax and file modification times change no mechanism or result.
 
 ## D6.1: file-based agent task coordination
 

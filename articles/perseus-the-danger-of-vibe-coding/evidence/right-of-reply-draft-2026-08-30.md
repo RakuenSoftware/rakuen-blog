@@ -36,10 +36,11 @@ so without assigning a motive.
 
 2. Our attached public claim chart covers all fifteen proposed claims or claim
    clusters in the public disclosures. We found old elements throughout, a
-   substantial obviousness case for their combinations, and no single
-   anticipatory reference for several narrow combinations. Please identify the
-   precise feature you contend is novel in each charted claim and the strongest
-   earlier reference you considered for it.
+   routine reason to make every combination and no unexpected technical result.
+   Please identify the precise feature you contend is novel in each charted
+   claim and the strongest earlier reference you considered for it. For static
+   dependency prefetch specifically, why does your analysis omit Aimee,
+   LlamaIndex ingestion caching, Prompt Cache, RAGCache and TurboRAG?
 
 3. Git attributes the 28 May commit that introduced six complete technical
    disclosures to Hermes Agent as author and committer. Other commits are

@@ -185,6 +185,16 @@ surviving commits, packages, images, forks, caches and third-party links are
 reconstructed. Perseus's effective priority date and provisional support also
 remain unknown.
 
+Rakuen's pre-rewrite records place Aimee's repository indexing, dependency-edge
+collection, content-hash and freshness tracking, and later index reuse before
+Perseus's asserted May filing. The article identifies Rakuen as the interested
+first-party source and keeps independent reconstruction as a publication gate.
+
+The dependency-prefetch comparison also uses direct LLM sources: Prompt Cache
+(November 2023), LlamaIndex `v0.10.17`, RAGCache (April 2024) and TurboRAG
+(October 2024). Each predates the asserted filing and performs precomputation,
+hash-based reuse or cached context loading for LLM input.
+
 ## First-party reporting inventory
 
 This is a new article. No earlier published article, interview or right-of-reply

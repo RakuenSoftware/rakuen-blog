@@ -257,6 +257,23 @@ current implementation demonstrates.
 
 ### Earlier mechanisms
 
+- Rakuen's pre-rewrite records place Aimee's public repository indexing before
+  Perseus's asserted filing month. Aimee indexed files and dependency edges
+  before model sessions, tracked hashes and freshness, and reused the stored
+  results during context assembly. The June history replacement means this is
+  first-party chronology pending independent artifact reconstruction.
+- LlamaIndex
+  [`v0.10.17`](https://docs.llamaindex.ai/en/v0.10.17/module_guides/loading/ingestion_pipeline/root.html)
+  hashed and cached every node-transformation combination. With a document
+  store, it compared document hashes and skipped unchanged inputs.
+- [Prompt Cache](https://arxiv.org/abs/2311.04934), submitted in November 2023,
+  precomputed and stored attention states for reusable prompt modules including
+  context documents.
+- [RAGCache](https://arxiv.org/abs/2404.12457), submitted in April 2024, cached
+  retrieved knowledge's intermediate states and overlapped retrieval with
+  inference.
+- [TurboRAG](https://arxiv.org/abs/2410.07590), submitted in October 2024,
+  precomputed document-chunk KV caches offline and retrieved them for prefill.
 - Feldman's [1979 Make paper](https://onlinelibrary.wiley.com/doi/10.1002/spe.4380090402)
   says Make had run on Unix since 1975. It models file relationships, traverses
   the graph and executes stale targets.
@@ -269,9 +286,11 @@ current implementation demonstrates.
 ### Assessment
 
 The disclosure concedes Make, Ninja and Bazel, then distinguishes them by field
-of use. The data destination changed from a software target to model context.
-The graph, freshness test, key calculation and speculative cache lookup retain
-their old functions.
+of use. That distinction also ignores direct LLM predecessors. Aimee,
+LlamaIndex, Prompt Cache, RAGCache and TurboRAG performed the same class of
+work on model inputs before Perseus's asserted filing month. Perseus's graph,
+freshness test, key calculation and cache lookup retain their established
+functions and produce the expected result.
 
 ## Public cluster 8: file-based asynchronous multi-agent coordination
 

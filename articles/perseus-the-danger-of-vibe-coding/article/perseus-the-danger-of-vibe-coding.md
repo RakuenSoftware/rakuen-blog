@@ -209,9 +209,9 @@ forcing one serial model round trip per context item.
 ## Every public claim starts with old machinery
 
 The following table covers every substantive cluster in the public claim map
-and its linked disclosures. "Old" marks familiar elements and the need for a
-narrower mechanism. Anticipation still requires every limitation of a future
-claim in one reference.
+and its linked disclosures. Each row strips the Perseus label down to the
+mechanism underneath it. Every mechanism is old, and none of the repackaging
+produces an unexpected result.
 
 | Public claim theme | Earlier work the comparison omits | What remains after the label is removed |
 |---|---|---|
@@ -221,7 +221,7 @@ claim in one reference.
 | Checkpoint-correlated reinforcement | Implicit-feedback recommenders, delayed-feedback bandits and editor suggestion telemetry | Treating a later developer event as an implicit outcome label |
 | One registry as a policy spine | Reference monitors, XACML policy decision and enforcement points, extension manifests and capability tables | Security metadata attached to dispatch entries |
 | Citation-gated synthesis | Attributed generation, RARR, AIS, ALCE and ordinary exact-string validators | Checking that a quote exists, without checking that it entails the generated claim |
-| Static directive graph and predictive prefetch | Make, Ninja, Bazel action caches, speculative execution and web prefetch | Parse dependencies, compute keys and look in a cache before demand |
+| Static directive graph and predictive prefetch | Aimee, LlamaIndex ingestion caching, Prompt Cache, RAGCache, TurboRAG, Make, Ninja and Bazel | A file modification-time wrapper around ordinary precomputation and cache reuse |
 | File-based multi-agent task coordination | Blackboard systems, Linda tuple spaces, spool directories, Maildir, Git task trackers, AutoGen, Task Master and Beads | Task metadata and a claim/complete protocol stored in project files |
 | Uniform grammar over six source classes | Shells, macro processors, Docutils registries, Org Babel, Continue context providers and MCP | Counting six back ends behind one dispatch table |
 | Recursive include resolution with path and inode cycle checks | Recursive preprocessors, bounded include depth, filesystem identity and graph-cycle detection | Applying standard recursion guards to included context files |
@@ -435,7 +435,7 @@ not contain the disclosed end-to-end gate from model answer to validated rendere
 output. Describing every generated claim as mechanically verified crosses from
 optimistic architecture into a false account of the running path.
 
-### Dependency prefetch is a build
+### Dependency prefetch was already routine in LLM systems
 
 Perseus statically identifies directive dependencies, checks file modification
 times, computes cache keys and preloads existing entries before normal
@@ -443,15 +443,34 @@ resolution. The disclosure itself admits Make, Bazel and Ninja, then attempts
 to escape them because their domain is software builds rather than model
 context.
 
-That field label leaves the mechanism unchanged. Make describes a dependency
-graph and the order required to bring targets current. Bazel constructs a target
-and action graph, computes action hashes, checks caches and executes only the
-misses. The HTML standard defines
-[`prefetch`](https://html.spec.whatwg.org/dev/links.html) as preemptively fetching
-and caching a resource likely to be required later.
+Rakuen's records place Aimee in public access from February 2026, before
+Perseus's asserted May filing. That system pre-indexed repository files and
+dependency edges before model sessions, tracked content hashes and freshness,
+and reused stored results while assembling context. It discovered likely inputs
+early and avoided recomputing unchanged work.
 
-Perseus parses a graph, predicts a future need and warms a cache. Each component
-does what it has always done.
+Rakuen is the source for that chronology and has a commercial interest in it.
+The June history replacement erased the independent Git trail, so reconstruction
+from surviving public artifacts remains part of the publication gate.
+
+The broader LLM field had already made the pattern routine. LlamaIndex
+[`v0.10.17`](https://docs.llamaindex.ai/en/v0.10.17/module_guides/loading/ingestion_pipeline/root.html)
+hashed every node-and-transformation pair, persisted the cache, reused matching
+results and skipped documents whose stored hash had not changed.
+
+[Prompt Cache](https://arxiv.org/abs/2311.04934) described precomputing and
+storing attention states for reusable prompt modules, including documents used
+as context, in November 2023. [RAGCache](https://arxiv.org/abs/2404.12457)
+cached retrieved knowledge's intermediate states and overlapped retrieval with
+inference in April 2024. [TurboRAG](https://arxiv.org/abs/2410.07590) precomputed
+document-chunk key-value (KV) caches offline and retrieved them for model
+prefill in October 2024.
+
+Make and Bazel remain older examples of the same engineering rule. The closer
+references are LLM systems that identified reusable model inputs, keyed or
+precomputed them, reused cached work and processed misses. Perseus added a file
+modification time and directive syntax to an optimization Aimee and the rest of
+the LLM field were already using. It pioneered nothing here.
 
 ### Agora inherits the blackboard
 
