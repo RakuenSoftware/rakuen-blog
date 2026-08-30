@@ -35,10 +35,11 @@ that catches that class of bug. A number without it is not evidence.
 
 ## Articles
 
-This table is written for a reader. What is actually live is
+This table is written for a reader. What is officially published is
 [`articles/PUBLISHED`](articles/PUBLISHED), which the site reads directly — a
 `yes` below is a description of that file, not the thing that puts a page on the
-website.
+website. [`articles/REVIEW`](articles/REVIEW) separately names unlisted,
+non-indexed copies being shown to subjects for right of reply.
 
 | article | published | evidence |
 | --- | --- | --- |
@@ -68,7 +69,7 @@ website.
 | [ornith-against-its-base](articles/ornith-against-its-base/) | draft | registered plan; four runs outstanding, no accuracy result yet |
 | [we-forced-it-to-think-and-the-score-fell](articles/we-forced-it-to-think-and-the-score-fell/) | ready | figure map, three prompt arms, seven rerunnable scripts |
 | [failure-as-shared-capability](articles/failure-as-shared-capability/) | paper | working academic paper; ten keyed sources, hashes pinned to an Aimee merge commit |
-| [perseus-the-danger-of-vibe-coding](articles/perseus-the-danger-of-vibe-coding/) | draft | all public proposed claims charted; narrow runtime checks complete; chronology holds, counsel review and right of reply outstanding |
+| [perseus-the-danger-of-vibe-coding](articles/perseus-the-danger-of-vibe-coding/) | right-of-reply review | all public proposed claims charted; narrow runtime checks complete; chronology holds, counsel review and right of reply outstanding |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
 `paper` means an academic working paper rather than a blog post. It is not a
@@ -76,6 +77,9 @@ site publication candidate, `tools/publish.py` does not export it, and the voice
 gate's journalism rules do not apply to it. Its evidence rules do.
 `draft` means the article exists and its provenance gaps are written down, but it
 is not a publication candidate and the voice gate does not check it.
+`right-of-reply review` means the draft is reachable at its eventual public URL
+for the subject to inspect. It remains absent from the blog index, home page and
+sitemap, carries `noindex`, and is not officially published.
 `held` means the article passes every gate and is still not a candidate, because
 the measurement behind it is too thin to publish as guidance. A gate can check
 provenance; it cannot decide that enough has been measured.
@@ -86,6 +90,11 @@ the finding is not stable enough to write around.
 
 ## Publishing
 
+[`articles/REVIEW`](articles/REVIEW) is the right-of-reply review state. A line
+there serves the draft at its eventual `/blog/<slug>` URL without listing or
+indexing it. This is public access for reporting purposes, not publication. A
+slug may never appear in `REVIEW` and `PUBLISHED` at the same time.
+
 [`articles/PUBLISHED`](articles/PUBLISHED) is the live blog. A line in that file
 is an `articles/<slug>` directory, and it is also the URL:
 `rakuensoftware.com/blog/<slug>`.
@@ -95,6 +104,10 @@ polls this branch every three minutes, pulls the named articles, rebuilds and
 swaps itself over. Nothing has to be deployed and nothing has to be committed to
 the site repository. Editing an article that is already listed republishes it the
 same way, on the same timer.
+
+For a review copy, publication is one atomic edit: remove the slug from
+`REVIEW` and add it to `PUBLISHED`. The URL does not change. Its review banner
+and `noindex` metadata disappear, and it enters the normal listings and sitemap.
 
 That list used to live in the site repository, so shipping an article meant a
 commit here and a second commit there, and the two drifted. It moved here on
