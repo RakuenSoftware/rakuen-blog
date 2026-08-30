@@ -9,8 +9,9 @@ excerpt: "Perseus has code, tests, security reviews, claim maps and patent exhib
 *Drafted 30 August 2026 from a static review of Perseus at commit
 [`e7bbeb35`](https://github.com/Perseus-Computing-LLC/perseus/tree/e7bbeb35485e67876947c87eda7e98028ddb4a29).
 Rakuen Software builds aimee, which may overlap parts of the field Perseus
-claims. That interest bears directly on this article. Perseus Computing LLC has
-not yet had a chance to respond, and the prior-art chronology is still open.*
+claims. That interest bears directly on this article. None of the parties
+contacted have yet had a chance to respond, and the prior-art chronology is
+still open.*
 
 *Publication is blocked until the company receives the specific findings and a
 fair chance to answer. This is technical analysis. Patent-validity conclusions
