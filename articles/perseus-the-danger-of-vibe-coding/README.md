@@ -36,9 +36,16 @@ maps Context Engine, Vault, Agora, retrieval, agents, MCP, trust controls and
 federation against Atlassian products published before the asserted filing.
 
 [`evidence/right-of-reply-draft-2026-08-30.md`](evidence/right-of-reply-draft-2026-08-30.md)
-is the send-ready right-of-reply request. Publication remains blocked until it
-has been sent, receipt and deadline have been recorded, and any response has
-been incorporated where it bears.
+is the send-ready right-of-reply request to Perseus.
+
+[`evidence/right-of-reply-atlassian-draft-2026-08-30.md`](evidence/right-of-reply-atlassian-draft-2026-08-30.md)
+asks Atlassian to check the product chronology, employment facts, public legal
+correspondence and competition analysis.
+
+[`evidence/source-questions-prior-art-projects-draft-2026-08-30.md`](evidence/source-questions-prior-art-projects-draft-2026-08-30.md)
+asks the cited project maintainers to verify dates and technical descriptions.
+Publication remains blocked until the material parties have had a fair chance
+to answer and their responses have been incorporated where they bear.
 
 The article carries no measured performance figure. Repository size and test
 count are not used as evidence of quality or authorship.
@@ -57,8 +64,9 @@ comparison.
   establish the effective Perseus priority date, reconstruct the first public
   date for every `aimee` feature proposed as prior art and pin current product
   documentation to historical artifacts.
-- Send the prepared right-of-reply request to a verified Perseus Computing LLC
-  address. Give seven calendar days after confirmed receipt, record any
-  extension, and incorporate the answer where it bears.
+- Send the prepared questions to verified Perseus Computing LLC and Atlassian
+  contacts. Send source-verification questions to the maintainers whose dates
+  or capabilities remain material. Give seven calendar days after confirmed
+  receipt, record any extension, and incorporate each answer where it bears.
 - Have patent counsel review any sentence that moves from technical overlap to
   anticipation, obviousness or validity.

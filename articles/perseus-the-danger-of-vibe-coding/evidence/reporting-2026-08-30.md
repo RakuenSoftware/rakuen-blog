@@ -295,7 +295,7 @@ It is not presented as a verified account of who typed the code.
 
 ## Right of reply
 
-The request is drafted at
+The Perseus request is drafted at
 [`right-of-reply-draft-2026-08-30.md`](right-of-reply-draft-2026-08-30.md).
 The recipient is `perseus@perseus.observer`, published as the company contact in
 the pinned Context Engine README and security policy. It asks about:
@@ -326,14 +326,28 @@ The planned window is seven calendar days after confirmed receipt. The request,
 receipt, exact UTC deadline, any extension and the response must be recorded.
 Silence will be reported without assigning a motive.
 
+The Atlassian request is drafted at
+[`right-of-reply-atlassian-draft-2026-08-30.md`](right-of-reply-atlassian-draft-2026-08-30.md).
+It asks Atlassian to check the dated product account, Connally's public
+employment facts, the published invention-disclosure email, any later ownership
+determination it can disclose, and the product-overlap analysis.
+
+The cited-project questions are drafted at
+[`source-questions-prior-art-projects-draft-2026-08-30.md`](source-questions-prior-art-projects-draft-2026-08-30.md).
+They ask maintainers to verify dates, shipped behaviour, independence and any
+contact with Perseus. These projects are sources, not criticised subjects.
+Aimee remains disclosed first-party evidence and cannot supply independent
+confirmation of Rakuen's own account.
+
 ## Publication gate
 
 - Prior-art element chart: complete as reporting work product; counsel review
   and several source-date holds remain.
 - Perseus effective priority date: outstanding.
 - `aimee` public chronology: outstanding.
-- Right of reply: draft complete; sending, receipt, response window and article
-  integration outstanding. This is a hard publication blocker.
+- Right of reply: Perseus and Atlassian drafts complete; source-verification
+  questions drafted. Sending, receipt, response windows and article integration
+  remain outstanding. This is a hard publication blocker.
 - Legal review of patent-language passages: outstanding.
 - Mechanical voice and provenance gate: passed on 2026-08-30.
 - Editorial review after right of reply: outstanding.
