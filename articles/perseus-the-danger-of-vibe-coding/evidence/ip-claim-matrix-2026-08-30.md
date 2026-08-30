@@ -467,6 +467,11 @@ claim before it can carry a legal conclusion.
 | Beads | [30 April 2026 historical README](https://github.com/steveyegge/beads/blob/8694c53589f122ce622600cee377e820452b50ca/README.md) | dependency graph, ready-work selection and persistent agent task memory | task graph, claiming, durable local coordination |
 | Aimee | February 2026 public availability reported by Rakuen; surviving artifact reconstruction pending | repository memory, session context, safety gates, delegated agents, checkpoints and outcome-aware routing | several clusters, subject to exact feature dates |
 
+The [Atlassian product-overlap
+map](atlassian-product-overlap-2026-08-30.md) expands the first row across
+Context Engine, Vault, Agora, retrieval, cited synthesis, agents, MCP, trust
+controls, federation and Perseus's direct Rovo Dev integration.
+
 Cursor and Claude Code need historical page captures before their current docs
 can carry a pre-May 2026 date. Continue's repository creation date does not date
 every provider. Those sources are technically relevant and chronologically

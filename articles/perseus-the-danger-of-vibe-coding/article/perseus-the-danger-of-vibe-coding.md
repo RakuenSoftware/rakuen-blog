@@ -648,6 +648,31 @@ On [4 February
 Rovo MCP server became generally available, giving AI clients one controlled
 interface to Jira and Confluence context.
 
+The overlap runs across the product, not one patent phrase:
+
+| Perseus surface | Atlassian product published before the asserted filing | Functional overlap |
+|---|---|---|
+| Context Engine renderer, dependency graph and assistant context packs | Teamwork Graph, Rovo Search, Rovo for GitHub Copilot and [Rovo Dev](https://www.atlassian.com/blog/blog/announcements/rovo-dev-command-line-interface) | Collect live work and knowledge from several sources, select relevant context and supply it to an AI assistant before or during a task |
+| Perseus Vault persistent memory | Rovo's Teamwork Graph-backed profile memory | Retain context across conversations, personalize later retrieval and learn from an explicit correction |
+| Vault hybrid recall, source anchors and cited synthesis | [Rovo Search](https://www.atlassian.com/blog/atlassian-engineering/unraveling-rovo-search) across more than fifty connectors | Rank cross-source knowledge, synthesize answers and attach source links or passage-level citations |
+| Guide, agent directives and bounded synthesis | Rovo Agents and Rovo Dev | Give an agent instructions, knowledge and actions, then use it to plan, synthesize and execute work |
+| Agora task state and agent coordination | Jira, Rovo Dev and [Agents in Jira](https://www.atlassian.com/blog/announcements/ai-agents-in-jira) | Represent work, dependencies and ownership; assign it to agents; track execution and preserve a work trail |
+| Unified adapters, assistant profiles and MCP serving | Rovo MCP and [Rovo Studio MCP skills](https://www.atlassian.com/blog/announcements/rovo-mcp-gallery) | Present several data and action surfaces to different AI clients through one controlled interface |
+| Trust profiles, redaction and audit | Teamwork Graph permissions and [Rovo MCP controls](https://confluence.atlassian.com/cloud/blog/2026/02/atlassian-cloud-changes-jan-26-to-feb-2-2026) | Gate context and actions through existing permissions, scopes, domain and IP allowlists, and audit logs |
+| Federation and cross-workspace memory | Teamwork Graph connectors | Join knowledge from Atlassian products and third-party workspaces into one retrieval plane |
+
+Perseus describes its version as local, offline, portable and user-controlled.
+Atlassian's version is managed, permission-aware and embedded in its products.
+Those may be useful product differences. They do not create new context
+assembly, memory, retrieval, agent, task or adapter mechanisms.
+
+The most revealing overlap is operational. Perseus ships a
+[`rovodev` profile](https://github.com/Perseus-Computing-LLC/perseus/blob/e7bbeb35485e67876947c87eda7e98028ddb4a29/README.md#rovo-dev-mcpjson-in-repo-root),
+renders `AGENTS.md` for Rovo Dev and tells users to pair that rendered context
+with Perseus MCP tools. Perseus is designed to extend Atlassian's own coding
+agent with context and tool surfaces that its novelty analysis places inside
+Perseus's claimed core.
+
 Atlassian had therefore published cross-source context assembly, persistent AI
 memory, source-linked retrieval, coding-assistant context and agent workflows
 before Perseus. The products differ in deployment and representation. The
@@ -658,6 +683,13 @@ omits Rovo and Teamwork Graph. The omission is difficult to explain as an
 obscure search miss. The claimed inventor worked for Atlassian, disclosed an
 “AI Context Management Patent” to its legal department, and later wrote Perseus
 strategy documents designed around Atlassian's existing platform.
+
+Perseus's internal strategy is an admission of product proximity. It assigns
+Atlassian product-native relevance, permission-aware retrieval, live work-graph
+context and tenant-managed memory, then tells Perseus to differentiate through
+longer retention, explicit control, explanations and portability. That is a
+market-positioning carve-out inside the same product category. It is not an
+account of a newly pioneered technical field.
 
 Employment alone establishes no prior art. Atlassian's dated public disclosures
 do. The employment relationship makes their omission from Perseus's novelty

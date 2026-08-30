@@ -29,8 +29,11 @@ priority and eligibility conclusions.
 
 [`evidence/public-claim-chart-2026-08-30.md`](evidence/public-claim-chart-2026-08-30.md)
 charts all fifteen public proposed claims at the combination level, including
-the strongest Perseus response and the limitation still missing from a single
-dated reference.
+the established mechanisms, combination rationale and expected result.
+
+[`evidence/atlassian-product-overlap-2026-08-30.md`](evidence/atlassian-product-overlap-2026-08-30.md)
+maps Context Engine, Vault, Agora, retrieval, agents, MCP, trust controls and
+federation against Atlassian products published before the asserted filing.
 
 [`evidence/right-of-reply-draft-2026-08-30.md`](evidence/right-of-reply-draft-2026-08-30.md)
 is the send-ready right-of-reply request. Publication remains blocked until it

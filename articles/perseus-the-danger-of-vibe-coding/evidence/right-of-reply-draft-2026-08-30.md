@@ -84,7 +84,11 @@ so without assigning a motive.
    duties while Perseus was developed? Did those duties involve AI agents,
    context management, memory, Rovo, Jira, Confluence or Teamwork Graph? Do you
    have an agreement, assignment, waiver or release that supports your ownership
-   statement? Please provide it or explain the difference in wording.
+   statement? Please provide it or explain the difference in wording. Do you
+   dispute our product-level mapping of Context Engine, Vault, Agora, cited
+   synthesis, agent workflows, MCP adapters, trust controls and federation to
+   Rovo, Teamwork Graph, Rovo Search, Rovo Dev, Agents in Jira and Rovo MCP? If
+   so, identify the functional distinction for each disputed row.
 
 9. The Context Engine and Vault security reviews call themselves “Independent
    pre-launch” audits. Git attributes their introducing commits to Perseus

@@ -44,13 +44,22 @@ Perseus's asserted filing month:
 | 2024-05-01 | [Rovo introduction](https://www.atlassian.com/blog/announcements/introducing-atlassian-rovo-ai) | Teamwork Graph ingests Atlassian and connected SaaS data; Rovo returns contextual results and company-grounded chat; instructed agents synthesize enterprise information and run from workflow triggers | D1.1, D1.2, U1.1; general agent orchestration |
 | 2025-01-14 | [Rovo for GitHub Copilot](https://www.atlassian.com/blog/development/atlassian-developer-innovation-rovo-for-github-copilot) | Jira and Confluence knowledge is synthesized into additional context used by an AI coding assistant inside the IDE | D1.1 and model-facing context assembly |
 | 2025-07-24 | [Rovo Search quality](https://www.atlassian.com/blog/rovo/rovo-search-quality) | Context-aware answers across more than fifty connected applications, with links to sources | D1.2 and the broader D4.1 attribution problem |
+| 2025-08-12 | [Rovo Search relevance](https://www.atlassian.com/blog/atlassian-engineering/unraveling-rovo-search) | Indexed content and permissions, blended relevance signals and passage-level answer citations | D1.2, D4.1 and retrieval policy |
 | 2025-08-26 | [Rovo persistent memory](https://www.atlassian.com/blog/ai-at-work/rovo-chat-august-2025-updates) | Persistent memory tied to a user profile and backed by Teamwork Graph | U1.3 and persistent context |
+| 2025-11-21 | [Rovo Dev CLI](https://www.atlassian.com/blog/blog/announcements/rovo-dev-command-line-interface) | Coding agent with repository understanding and Jira and Confluence integration | D1.1, D6.1 and assistant integration |
+| 2026-02-02 | [Atlassian Cloud changelog](https://confluence.atlassian.com/cloud/blog/2026/02/atlassian-cloud-changes-jan-26-to-feb-2-2026) | Rovo MCP access to Jira, Confluence and Compass with scopes, allowlists and audit logs | D3.1, U1.1 and external context controls |
 | 2026-02-04 | [Rovo MCP general availability](https://www.atlassian.com/blog/announcements/atlassian-rovo-mcp-ga) | One controlled interface gives AI clients access to Jira and Confluence context | U1.1 and external context sources |
+| 2026-02-25 | [Agents in Jira](https://www.atlassian.com/blog/announcements/ai-agents-in-jira) | Jira assigns and tracks human and agent work in one system of record | D6.1 and agent coordination |
+| 2026-02-25 | [Rovo MCP gallery](https://www.atlassian.com/blog/announcements/rovo-mcp-gallery) | Rovo agents combine Atlassian and third-party MCP skills for context and action | U1.1 and external context sources |
 
 These publications establish Atlassian as prior art to the technical field and
 to several public Perseus elements. Perseus's later internal strategy documents
 confirm that it recognized the overlap. Its published closest-prior-art table
 omits Atlassian entirely.
+
+The separate [product-overlap map](atlassian-product-overlap-2026-08-30.md)
+charts Context Engine, Vault, Agora, retrieval, agents, MCP, trust controls and
+federation against the dated Atlassian family.
 
 ## D1.1: resolve-before-context pipeline
 

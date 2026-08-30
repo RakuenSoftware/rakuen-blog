@@ -147,13 +147,26 @@ establish:
 - Jira and Confluence context supplied to GitHub Copilot on 2025-01-14;
 - context-aware search across more than fifty connected applications with
   source links on 2025-07-24;
-- persistent profile memory backed by Teamwork Graph on 2025-08-26; and
-- general availability of the Rovo MCP server on 2026-02-04.
+- indexed permission checks, blended relevance signals and passage-level
+  citations on 2025-08-12;
+- persistent profile memory backed by Teamwork Graph on 2025-08-26;
+- Rovo Dev CLI with repository understanding and Jira and Confluence integration
+  on 2025-11-21;
+- Rovo MCP controls including OAuth, domain and IP allowlists, and audit logs by
+  2026-02-02;
+- general availability of the Rovo MCP server on 2026-02-04; and
+- Agents in Jira plus third-party MCP skills for Rovo agents on 2026-02-25.
 
 These are official Atlassian publications predating Perseus's asserted May 2026
 filing month. They establish prior art to the broad technical field and several
 public elements. The article does not say one Atlassian publication anticipates
 every limitation of a confidential claim.
+
+[`atlassian-product-overlap-2026-08-30.md`](atlassian-product-overlap-2026-08-30.md)
+separately maps the full products. It records direct functional overlap across
+Context Engine, Vault, Agora, retrieval, cited synthesis, agents, MCP, trust
+controls and federation. It also records Perseus's Rovo Dev profile and its
+instruction to pair Rovo Dev's `AGENTS.md` context with Perseus MCP tools.
 
 [`ip-claim-matrix-2026-08-30.md`](ip-claim-matrix-2026-08-30.md) records the
 element-level comparison, source dates, gaps and publication holds. The chart
