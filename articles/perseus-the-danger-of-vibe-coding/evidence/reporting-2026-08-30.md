@@ -168,6 +168,14 @@ Context Engine, Vault, Agora, retrieval, cited synthesis, agents, MCP, trust
 controls and federation. It also records Perseus's Rovo Dev profile and its
 instruction to pair Rovo Dev's `AGENTS.md` context with Perseus MCP tools.
 
+The map also records the competition finding. Perseus targets technical teams,
+agent and developer workflows, operators, programs and primes with a context and
+memory layer around their models. Its own CogniRepo analysis treats overlap with
+Context Engine and Vault as a high direct competitive threat despite product
+differences. Atlassian overlaps those surfaces and several more. Perseus's
+“complementary” language is therefore reported as positioning inside a shared
+market, not as proof that the products do not compete.
+
 [`ip-claim-matrix-2026-08-30.md`](ip-claim-matrix-2026-08-30.md) records the
 element-level comparison, source dates, gaps and publication holds. The chart
 supports the finding that the Perseus documents omit close predecessors. It

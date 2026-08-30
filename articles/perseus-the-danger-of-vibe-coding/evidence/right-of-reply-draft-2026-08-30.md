@@ -88,7 +88,12 @@ so without assigning a motive.
    dispute our product-level mapping of Context Engine, Vault, Agora, cited
    synthesis, agent workflows, MCP adapters, trust controls and federation to
    Rovo, Teamwork Graph, Rovo Search, Rovo Dev, Agents in Jira and Rovo MCP? If
-   so, identify the functional distinction for each disputed row.
+   so, identify the functional distinction for each disputed row. Do you dispute
+   that Perseus competes with Atlassian for the context and memory layer around
+   teams and agents? If so, reconcile that answer with your instructions to
+   avoid head-on competition, publish non-competitive positioning and avoid
+   “Atlassian memory, but better” messaging, and with your treatment of the
+   narrower CogniRepo overlap as a high direct competitive threat.
 
 9. The Context Engine and Vault security reviews call themselves “Independent
    pre-launch” audits. Git attributes their introducing commits to Perseus

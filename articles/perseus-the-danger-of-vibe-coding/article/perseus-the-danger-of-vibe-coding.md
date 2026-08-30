@@ -693,6 +693,36 @@ longer retention, explicit control, explanations and portability. That is a
 market-positioning carve-out inside the same product category. It is not an
 account of a newly pioneered technical field.
 
+### “Complementary” is positioning, not a market boundary
+
+Perseus tries to turn the overlap into complementarity by defining Atlassian as
+suite-bound and itself as portable. Competing products differentiate themselves
+this way all the time. A local or on-premises product still competes with a
+managed cloud product when both seek to become the context and memory layer
+around the same teams and agents.
+
+Perseus's own [competitive-analysis
+method](https://github.com/Perseus-Computing-LLC/perseus/blob/e7bbeb35485e67876947c87eda7e98028ddb4a29/docs/competitive-analysis-phase1.md)
+makes the point. It calls CogniRepo the most serious competitive threat in the
+context-engine space because CogniRepo overlaps Context Engine and Vault
+memory. It reaches that conclusion even while stressing that CogniRepo is
+code-first and Perseus is workspace-first.
+
+Atlassian overlaps those two surfaces plus agent workflows, task coordination,
+cross-tool retrieval, citations, permission-aware serving, MCP access and
+developer context. Perseus also solicits [technical teams evaluating agent and
+developer workflows](https://github.com/Perseus-Computing-LLC/perseus/blob/e7bbeb35485e67876947c87eda7e98028ddb4a29/docs/design-partner-onboarding.md)
+and [government programs and
+primes](https://github.com/Perseus-Computing-LLC/perseus/blob/e7bbeb35485e67876947c87eda7e98028ddb4a29/docs/federal-buyers.md)
+to adopt its context and memory layer around their models. It seeks the same
+architectural position that Rovo and Teamwork Graph occupy.
+
+Perseus can extend Rovo Dev in one deployment while competing with Rovo and
+Teamwork Graph for control of cross-tool context and durable memory. Products
+can complement each other at one interface and compete across the rest of the
+stack. Perseus's instruction to avoid “head-on competition” acknowledges the
+competition. It does not erase it.
+
 Employment alone establishes no prior art. Atlassian's dated public disclosures
 do. The employment relationship makes their omission from Perseus's novelty
 analysis, and the unresolved ownership warning from Atlassian legal, materially

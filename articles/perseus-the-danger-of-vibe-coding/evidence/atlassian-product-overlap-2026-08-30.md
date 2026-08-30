@@ -70,6 +70,48 @@ support a claim that Perseus pioneered context assembly, persistent AI memory,
 cross-source retrieval, cited answers, agent workflows, task coordination,
 assistant adapters or policy-gated context.
 
+## Competition analysis
+
+Technical overlap alone does not establish commercial competition. The public
+record also shows substitution, common users and a deliberate differentiation
+strategy.
+
+| Competition factor | Perseus evidence | Atlassian comparison |
+|---|---|---|
+| Job to be done | Put current context, durable memory and reviewable records around a model or agent | Rovo and Teamwork Graph put organizational context, memory, retrieval and agents around team workflows |
+| Users | Technical teams evaluating agent and developer workflows; operators; Government programs and primes | Enterprise teams, developers and administrators using Rovo, Jira, Confluence and Rovo Dev |
+| Inputs | Workspace state, tasks, durable memory, external sources and tool results | Work items, pages, code-adjacent requirements, connected SaaS knowledge and Teamwork Graph relationships |
+| Outputs | Assistant briefings, recalled memory, cited synthesis, agent tasks and handoffs | Contextual answers, persistent memory, cited synthesis, agent actions, plans, work items and code workflows |
+| Integration boundary | Assistant files, MCP, Rovo Dev profile and local or network deployment | Product-native Rovo surfaces, Rovo MCP, Rovo Dev and connected applications |
+| Differentiation | Local-first, portable, long-horizon, explicit correction and operator control | Managed, product-native, permission-aware, graph-backed and embedded in Atlassian products |
+| Choice affected | Which system owns cross-tool context, durable memory, retrieval policy and the records supplied to an agent | The same architectural position is occupied by Rovo and Teamwork Graph inside the Atlassian system |
+
+Perseus's own [CogniRepo competitive
+analysis](https://github.com/Perseus-Computing-LLC/perseus/blob/e7bbeb35485e67876947c87eda7e98028ddb4a29/docs/competitive-analysis-phase1.md)
+defines significant overlap with Context Engine and Vault persistent memory as
+a high direct competitive threat even when the products have different primary
+use cases. It calls CogniRepo code-first and Perseus workspace-first, then still
+labels CogniRepo the most serious threat in the context-engine space.
+
+Atlassian overlaps Context Engine and Vault plus Agora, agents, cross-tool
+retrieval, citations, permission-aware serving, MCP access and developer
+workflows. Under Perseus's own test, Atlassian is a competitor.
+
+The [design-partner
+guide](https://github.com/Perseus-Computing-LLC/perseus/blob/e7bbeb35485e67876947c87eda7e98028ddb4a29/docs/design-partner-onboarding.md)
+addresses technical teams evaluating real agent or developer workflows. The
+[Federal buyer
+notes](https://github.com/Perseus-Computing-LLC/perseus/blob/e7bbeb35485e67876947c87eda7e98028ddb4a29/docs/federal-buyers.md)
+ask programs and primes to evaluate Perseus as their context, memory and record
+layer. These are product-adoption documents, not a hobby-project boundary.
+
+Perseus can complement Rovo Dev as an add-on while competing with Rovo and
+Teamwork Graph for the broader context and memory layer. Integration at one
+interface does not eliminate substitution elsewhere. The internal directions
+to avoid head-on competition, publish non-competitive positioning and prohibit
+“Atlassian memory, but better” messaging are themselves competitive-positioning
+decisions.
+
 ## Direct Rovo Dev integration
 
 Perseus's pinned
@@ -90,6 +132,10 @@ surfaces differ. The underlying product functions recur on both sides:
 multi-source context assembly, persistent memory, retrieval and ranking,
 attributable synthesis, agent configuration, task orchestration, adapters and
 permission-aware serving.
+
+The products also compete for the same architectural role around organizational
+knowledge and agent work. Perseus's complementary label describes its chosen
+positioning. It does not describe a separate market.
 
 All dated Atlassian materials above precede Perseus's asserted May 2026 filing
 month. The omission is material to the article's assessment of Perseus's
