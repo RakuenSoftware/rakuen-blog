@@ -20,6 +20,13 @@ commit `0e91c26c7c35f991336b990bfb29454b5757c179`. We are giving you the materia
 findings before publication and invite corrections, source records and a
 statement for publication.
 
+The complete review copy is available at:
+https://rakuensoftware.com/blog/perseus-the-danger-of-vibe-coding
+
+That is the article's permanent URL. The page is presently labelled as an
+unpublished right-of-reply draft and excluded from Rakuen's article listings,
+sitemap and search indexing.
+
 Please respond by **[DATE, TIME UTC, seven calendar days after confirmed
 receipt]**. If a narrow extension is needed to retrieve a specific record,
 please identify the record and proposed date before the deadline. We will place
