@@ -83,6 +83,14 @@ confidential, please say which question that prevents it from answering.
     category that Perseus later described as its “novel core”? Identify the
     material distinction if Atlassian believes they do not.
 
+17. Perseus is seeking patent claims over context assembly, persistent memory,
+    retrieval, agent workflows and MCP integration that Atlassian had already
+    shipped in its own products. Does Atlassian consider that application to
+    conflict with Rovo, Teamwork Graph, Rovo Dev or Rovo MCP, or with
+    Atlassian's freedom to continue developing them? If Atlassian believes the
+    claims do not cover its products, identify the claim limitation that places
+    those products outside them.
+
 Please identify any factual error we have not asked about and provide any
 statement Atlassian wants included with the article.
 
