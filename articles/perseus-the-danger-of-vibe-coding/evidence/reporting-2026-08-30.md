@@ -180,6 +180,11 @@ reason to combine them and the expected result. The engineering conclusion is
 that every combination is old and obvious. Perseus could not have pioneered
 the mechanisms or their routine combinations.
 
+The chart also supports a direct reporting finding about Perseus's use of
+“closest prior art.” Its comparison does not identify any of the closest art
+documented in this review. It omits the relevant predecessor classes, direct
+LLM systems, Aimee, and Atlassian's Rovo and Teamwork Graph family.
+
 The named-patent check read the summaries and bibliographic records for
 Accenture US 12,511,287 and Intuit US 2025/0139367 and US 12,423,313. The article
 uses those primary documents to challenge Perseus's descriptions. It does not

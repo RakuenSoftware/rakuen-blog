@@ -363,6 +363,7 @@ that normally causes a competent developer to join them. None states an
 unexpected interaction or result. Perseus could not have pioneered these
 mechanisms or their routine combinations.
 
-Perseus's public “closest prior art” work remains inadequate because it omits
-these predecessor classes and supplies no element chart of its own. That is the
-publishable finding from the public record.
+Perseus's public “closest prior art” work does not identify any of the closest
+art documented in this chart. It omits every relevant predecessor class and
+supplies no element chart of its own. That is the publishable finding from the
+public record.

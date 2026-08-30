@@ -269,8 +269,10 @@ The [full fifteen-item chart](../evidence/public-claim-chart-2026-08-30.md)
 records the exact combination, source grade, combination rationale, strongest
 Perseus framing and expected technical result. Every row reaches the same
 engineering conclusion: old mechanisms, routine combinations and predictable
-results. Perseus's claim that its own short comparison identified the closest
-prior art also remains unsupported.
+results. Perseus's short comparison did not identify any of the closest prior
+art documented in this review. It omitted the relevant predecessor classes,
+the direct LLM systems, Aimee, and the Rovo and Teamwork Graph products built
+by the claimed inventor's employer.
 
 ### Resolve before context is preprocessing
 
