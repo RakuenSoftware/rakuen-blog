@@ -51,25 +51,12 @@ non-indexed copies being shown to subjects for right of reply.
 | [local-llm-fact-extraction-head-to-head](articles/local-llm-fact-extraction-head-to-head/) | yes | 32 runs, figure map, full results tree |
 | [speculative-decoding-was-free](articles/speculative-decoding-was-free/) | yes | figure map, shared results tree |
 | [the-harness-measured-itself](articles/the-harness-measured-itself/) | ready | figure map, shared results tree |
-| [one-sentence-turned-the-reasoning-off](articles/one-sentence-turned-the-reasoning-off/) | ready | figure map, shared results tree |
-| [repeatable-is-not-identical](articles/repeatable-is-not-identical/) | ready | figure map, shared results tree |
-| [the-benchmark-audited-production](articles/the-benchmark-audited-production/) | ready | figure map, shared results tree |
-| [the-corpus-is-the-experiment](articles/the-corpus-is-the-experiment/) | ready | figure map, shared results tree |
-| [the-parallelism-limit-was-never-vram](articles/the-parallelism-limit-was-never-vram/) | ready | figure map, shared results tree |
 | [synthesis-model-selection](articles/synthesis-model-selection/) | yes | nine-model paired GPU matrix, Qwen3.8 follow-up complete |
 | [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | yes | 37 runs on both tasks, paired intervals on each; first of the quantization series |
 | [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | retired | headline published as `one-call-one-turn`; surviving finding moved to `the-harness-measured-itself` |
 | [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |
 | [the-work-should-survive-the-model](articles/the-work-should-survive-the-model/) | yes | 0.4.0 series overview; product, market, token-use and cross-model reporting record |
 | [aimee-recursive-self-learning](articles/aimee-recursive-self-learning/) | yes | 0.4.0 series, article 1 of 4; deployed-path checks, paired self-learning evidence and reporting record |
-| [the-remembering-is-the-learning](articles/the-remembering-is-the-learning/) | draft | 0.4.0 series, article 2 of 4; aimee mechanism from `your-memory-has-no-authority-model` re-verified, plus the 0.4.0 lifecycle and seams |
-| [everything-crosses-one-transport](articles/everything-crosses-one-transport/) | draft | 0.4.0 series, article 3 of 4; bus baseline, grants and module docs in `aimee` |
-| [kv-cache-precision](articles/kv-cache-precision/) | investigation | four cache configurations on one model recorded; no article written yet |
-| [your-memory-has-no-authority-model](articles/your-memory-has-no-authority-model/) | draft, partly superseded | source map, sixteen-repository source audit; right of reply outstanding; aimee sections carried into `the-remembering-is-the-learning`; comparison stays unpublished by decision of 2026-08-24, folder and evidence retained |
-| [ornith-against-its-base](articles/ornith-against-its-base/) | draft | registered plan; four runs outstanding, no accuracy result yet |
-| [we-forced-it-to-think-and-the-score-fell](articles/we-forced-it-to-think-and-the-score-fell/) | ready | figure map, three prompt arms, seven rerunnable scripts |
-| [failure-as-shared-capability](articles/failure-as-shared-capability/) | paper | working academic paper; ten keyed sources, hashes pinned to an Aimee merge commit |
-| [perseus-the-danger-of-vibe-coding](articles/perseus-the-danger-of-vibe-coding/) | draft | review copy withdrawn 2026-08-31; all public proposed claims charted; narrow runtime checks complete; counsel review and right of reply outstanding |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
 `paper` means an academic working paper rather than a blog post. It is not a
