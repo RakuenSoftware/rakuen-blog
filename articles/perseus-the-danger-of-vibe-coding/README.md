@@ -9,6 +9,10 @@ faster than the work needed to establish what each artifact proves.
 
 Draft, 2026-08-30. Not publication-ready.
 
+The public right-of-reply review copy was withdrawn on 2026-08-31. The slug is
+not listed in `articles/REVIEW` or `articles/PUBLISHED`, so the story is not
+available on the blog.
+
 The current draft is based on a static review of Perseus at commit
 `e7bbeb35485e67876947c87eda7e98028ddb4a29`, the project's own security review,
 its public claim map and its linked technical disclosures. The Vault material is
