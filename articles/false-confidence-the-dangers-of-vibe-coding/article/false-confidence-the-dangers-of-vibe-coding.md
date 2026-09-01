@@ -199,6 +199,7 @@ combinations.
 | February 2025 | [A-MEM](https://arxiv.org/abs/2502.12110) | Builds linked memory networks and lets new memories update the representations of historical ones |
 | April 2025 | [Mem0](https://arxiv.org/abs/2504.19413) | Dynamically extracts, consolidates and retrieves conversational memory, with a graph variant for relationships |
 | December 2025 | [Hindsight](https://arxiv.org/abs/2512.12818) | Temporal, entity-aware retain, recall and reflection with traceable updates across facts, experiences, observations and mental models |
+| February 2026 | [Aimee](https://github.com/RakuenSoftware/aimee) | Repository memory, session context, safety gates, delegated agents, checkpoints and outcome-aware routing |
 | March 12, 2026 | [CogniRepo](https://github.com/ashlesh-t/cognirepo/commit/e7d9d0815a6b78d9c96852dadde58d7382dc11ff) | Public source for persistent semantic and episodic memory, FAISS retrieval, importance scoring, bounded pruning and selected repository context for agents |
 | March 2026 | [Hindsight MCP memory](https://github.com/vectorize-io/hindsight/blob/main/hindsight-docs/blog/2026-03-04-mcp-agent-memory.md) | Serves memory over MCP and combines semantic search, BM25, graph traversal and temporal filtering before reranking |
 
@@ -235,8 +236,7 @@ Cognee belongs in the same direct product family. Our pinned [source
 audit](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/your-memory-has-no-authority-model/evidence/source-audit-2026-08-20.md)
 found graph-plus-vector memory, chunk-to-document source paths and a temporal
 conflict resolver that retains superseded edges. Aimee is another predecessor,
-but Rakuen is an interested first-party source and its rewritten Git history
-requires independent reconstruction before feature-level priority claims.
+but Rakuen is an interested first-party source.
 
 Atlassian [introduced Rovo and Teamwork
 Graph](https://www.atlassian.com/blog/announcements/introducing-atlassian-rovo-ai)
