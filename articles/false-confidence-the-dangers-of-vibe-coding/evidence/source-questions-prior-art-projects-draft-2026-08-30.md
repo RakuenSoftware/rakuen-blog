@@ -228,8 +228,8 @@ Record one row per separate message. Do not use a bulk recipient list.
 | A-MEM | `wujiang.xu@rutgers.edu` | 2026-09-01 13:12:35 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | Mem0 | `research@mem0.ai` | 2026-09-01 13:15:35 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | Hindsight / Vectorize | `contact@vectorize.io` | 2026-09-01 13:18:06 UTC | pending | 2026-09-07 17:00 UTC | pending |
-| CogniRepo | `ashleshat5@gmail.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
-| Cognee | `info@topoteretes.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
+| CogniRepo | `ashleshat5@gmail.com` | 2026-09-01 13:20:55 UTC | pending | 2026-09-07 17:00 UTC | pending |
+| Cognee | `info@topoteretes.com` | deferred to interview | interview scheduled 2026-09-02 | 2026-09-07 17:00 UTC | pending interview record |
 | codebase-memory-mcp | `martin.vogel.tech@gmail.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
 | memory-mesh | `kilhub.projects@gmail.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
 | memtrace-public | `axth@syncable.dev` | pending | pending | 2026-09-07 17:00 UTC | pending |
