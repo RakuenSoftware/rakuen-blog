@@ -160,10 +160,6 @@ security and Vault. After receiving the preprint and reviewing the questions,
 Perseus did not refute any reported finding, including the product-level
 competition with Atlassian.
 
-Its only response was that the questions did not describe claims in its patent.
-This article analyzes the claims Perseus made public. That response does not
-refute any finding about them.
-
 The later public record clarifies the filing sequence. A [conversion
 issue](https://github.com/Perseus-Computing-LLC/perseus/issues/493), opened June
 28 UTC after the June 27 IP work, treats the non-provisional as future work due
