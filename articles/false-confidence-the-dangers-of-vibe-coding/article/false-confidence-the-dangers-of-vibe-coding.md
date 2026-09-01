@@ -156,16 +156,11 @@ own categories and searched for distinctions inside them.
 
 We sent Perseus the advance preprint and twenty-two numbered questions
 covering the filing and prior art, authorship and review, implementation claims,
-security and Vault. Perseus
-[answered](https://github.com/Perseus-Computing-LLC/perseus/issues/1026#issuecomment-5472033486):
-“We've reviewed them and they do not describe claims we make in our patent.” It
-answered none of the twenty-two questions individually and closed the issue.
-
-After receiving the preprint and reviewing the questions, Perseus did not
-refute any reported finding, including the product-level competition with
-Atlassian. It answered none of the questions about its public claims,
-implementation or evidence. It supplied no technical evidence, reviewer
-identity, disputed product-mapping row, assignment, waiver or release.
+security and Vault. After receiving the preprint and reviewing the questions,
+Perseus did not refute any reported finding, including the product-level
+competition with Atlassian. It answered none of the questions about its public
+claims, implementation or evidence. It supplied no technical evidence,
+reviewer identity, disputed product-mapping row, assignment, waiver or release.
 
 Its only response was that the questions did not describe claims in its patent.
 This article analyzes the claims Perseus made public. That response does not
