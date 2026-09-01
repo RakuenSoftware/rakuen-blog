@@ -225,7 +225,7 @@ Record one row per separate message. Do not use a bulk recipient list.
 | Microsoft AutoGen | `autogen@microsoft.com` | 2026-09-01 12:59:18 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | Zep / Graphiti | `preston@getzep.com` | 2026-09-01 13:04:19 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | Mastra | `legal@mastra.ai` | 2026-09-01 13:09:50 UTC | pending | 2026-09-07 17:00 UTC | pending |
-| A-MEM | `wujiang.xu@rutgers.edu` | pending | pending | 2026-09-07 17:00 UTC | pending |
+| A-MEM | `wujiang.xu@rutgers.edu` | 2026-09-01 13:12:35 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | Mem0 | `research@mem0.ai` | pending | pending | 2026-09-07 17:00 UTC | pending |
 | Hindsight / Vectorize | `contact@vectorize.io` | pending | pending | 2026-09-07 17:00 UTC | pending |
 | CogniRepo | `ashleshat5@gmail.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
