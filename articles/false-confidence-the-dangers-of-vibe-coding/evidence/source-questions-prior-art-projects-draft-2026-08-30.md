@@ -220,7 +220,7 @@ Record one row per separate message. Do not use a bulk recipient list.
 | Generative Agents | `joonspk@stanford.edu` | 2026-09-01 12:47:09 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | MemoryBank | `wangylin36@mail.sysu.edu.com` | 2026-09-01 12:50:46 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | CoALA / Theodore R. Sumers | `sumers@princeton.edu` | 2026-09-01 12:53:34 UTC | bounced 2026-09-01 | 2026-09-07 17:00 UTC | address-not-found delivery failure reported by sender |
-| CoALA / Karthik Narasimhan | `karthikn@cs.princeton.edu` | pending | pending | 2026-09-07 17:00 UTC | pending |
+| CoALA / Karthik Narasimhan | `karthikn@cs.princeton.edu` | 2026-09-01 13:01:25 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | MemGPT / Letta | `cpacker@berkeley.edu` | 2026-09-01 12:55:59 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | Microsoft AutoGen | `autogen@microsoft.com` | 2026-09-01 12:59:18 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | Zep / Graphiti | `preston@getzep.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
