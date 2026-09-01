@@ -66,7 +66,7 @@ columns. Send each recipient a separate message.
 | Reflexion | Noah Shinn, `noahshinn024@gmail.com` | [paper author block](https://arxiv.org/pdf/2303.11366) | By March 2023, Reflexion stored linguistic feedback in an episodic memory buffer and used it in later trials. | Persistent episodic memory that changes later agent behaviour. |
 | Generative Agents | Joon Sung Park, `joonspk@stanford.edu` | [paper author block](https://arxiv.org/pdf/2304.03442) | By April 2023, Generative Agents stored natural-language experience, synthesized reflections and retrieved memories dynamically for planning. | Persistent experience, reflection, retrieval and planning. |
 | MemoryBank | Yanlin Wang, `wangylin36@mail.sysu.edu.com` | [published paper; corresponding author](https://ojs.aaai.org/index.php/AAAI/article/download/29946/31654) | By May 2023, MemoryBank provided cross-session memory, continuous updates, user modelling and time-based forgetting. | Persistent memory, consolidation, profiles and Ebbinghaus-style decay. |
-| CoALA | Theodore R. Sumers, `sumers@princeton.edu` | [paper author block](https://arxiv.org/pdf/2309.02427) | By September 2023, CoALA organized agents around working, episodic, semantic and procedural memory with internal read and write actions. | Typed memory layers and agent memory operations. |
+| CoALA | Karthik Narasimhan, `karthikn@cs.princeton.edu` | [current Princeton faculty profile](https://www.cs.princeton.edu/people/profile/karthikn) | By September 2023, CoALA organized agents around working, episodic, semantic and procedural memory with internal read and write actions. | Typed memory layers and agent memory operations. |
 | MemGPT / Letta | Charles Packer, `cpacker@berkeley.edu` | [MemGPT paper author block](https://arxiv.org/pdf/2310.08560) | By October 2023, MemGPT managed memory tiers for bounded context and persistent multi-session agents. | Tiered persistent memory, recall and reflection for agents. |
 | Microsoft AutoGen Teachability | AutoGen team, `autogen@microsoft.com` | [Microsoft Research contact](https://www.microsoft.com/en-us/research/project/autogen/opportunities/) | By October 2023, AutoGen Teachability persisted user teachings in a vector database and selectively recalled facts, preferences and skills across chats. | Persistent vector memory and selective cross-session recall. |
 | Zep / Graphiti | Preston Rasmussen, `preston@getzep.com` | [Zep paper author block](https://blog.getzep.com/content/files/2025/01/ZEP__USING_KNOWLEDGE_GRAPHS_TO_POWER_LLM_AGENT_MEMORY_2025011700.pdf) | By January 2025, Zep and Graphiti provided temporal knowledge-graph memory integrating conversations and business data while retaining historical relationships. | Graph memory, temporal history, correction and source-linked retrieval. |
@@ -87,6 +87,12 @@ contact pages, project profiles or public Git metadata on September 1, 2026.
 They have not been tested for delivery. MemoryBank's address is reproduced as
 printed in the published paper. ContextForge has no verified public email in
 the reviewed sources.
+
+The first CoALA request went to Theodore R. Sumers at the address printed in
+the paper, `sumers@princeton.edu`. It returned an address-not-found delivery
+failure. Sumers is listed by Princeton as a 2024 graduate alumnus. The
+replacement recipient is co-author Karthik Narasimhan at the address on his
+current Princeton faculty profile.
 
 The last five rows require special care. Ask the recipient to identify the exact
 pre-filing version and artifact. Perseus's June competitor report establishes
@@ -213,9 +219,10 @@ Record one row per separate message. Do not use a bulk recipient list.
 | Reflexion | `noahshinn024@gmail.com` | 2026-09-01 12:41:57 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | Generative Agents | `joonspk@stanford.edu` | 2026-09-01 12:47:09 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | MemoryBank | `wangylin36@mail.sysu.edu.com` | 2026-09-01 12:50:46 UTC | pending | 2026-09-07 17:00 UTC | pending |
-| CoALA | `sumers@princeton.edu` | 2026-09-01 12:53:34 UTC | pending | 2026-09-07 17:00 UTC | pending |
+| CoALA / Theodore R. Sumers | `sumers@princeton.edu` | 2026-09-01 12:53:34 UTC | bounced 2026-09-01 | 2026-09-07 17:00 UTC | address-not-found delivery failure reported by sender |
+| CoALA / Karthik Narasimhan | `karthikn@cs.princeton.edu` | pending | pending | 2026-09-07 17:00 UTC | pending |
 | MemGPT / Letta | `cpacker@berkeley.edu` | 2026-09-01 12:55:59 UTC | pending | 2026-09-07 17:00 UTC | pending |
-| Microsoft AutoGen | `autogen@microsoft.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
+| Microsoft AutoGen | `autogen@microsoft.com` | 2026-09-01 12:59:18 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | Zep / Graphiti | `preston@getzep.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
 | Mastra | `legal@mastra.ai` | pending | pending | 2026-09-07 17:00 UTC | pending |
 | A-MEM | `wujiang.xu@rutgers.edu` | pending | pending | 2026-09-07 17:00 UTC | pending |
