@@ -53,6 +53,7 @@ non-indexed copies being shown to subjects for right of reply.
 | [the-harness-measured-itself](articles/the-harness-measured-itself/) | ready | figure map, shared results tree |
 | [synthesis-model-selection](articles/synthesis-model-selection/) | yes | nine-model paired GPU matrix, Qwen3.8 follow-up complete |
 | [which-quant-beats-how-many-bits](articles/which-quant-beats-how-many-bits/) | yes | 37 runs on both tasks, paired intervals on each; first of the quantization series |
+| [false-confidence-the-dangers-of-vibe-coding](articles/false-confidence-the-dangers-of-vibe-coding/) | right-of-reply review | pre-print; public-claim chart, IP matrix, source review, reproducers and right-of-reply record |
 | [three-zeros-and-a-wrong-answer](articles/three-zeros-and-a-wrong-answer/) | retired | headline published as `one-call-one-turn`; surviving finding moved to `the-harness-measured-itself` |
 | [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |
 | [the-work-should-survive-the-model](articles/the-work-should-survive-the-model/) | yes | 0.4.0 series overview; product, market, token-use and cross-model reporting record |

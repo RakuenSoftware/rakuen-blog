@@ -1,0 +1,393 @@
+# Reporting record: Perseus and vibe coding
+
+Date: 2026-08-30
+
+Status: expanded draft. Publication hold.
+
+## Form and thesis
+
+The article is reported analysis with a closing recommendation. The source
+findings come from a static review of public Perseus source and documentation.
+The thesis that proof-shaped volume is a characteristic danger of vibe coding
+is Rakuen Software's analysis.
+
+The piece does not claim that a court or patent office would find any Perseus
+claim invalid. Anticipation, obviousness, priority and inventorship are legal
+questions that require a complete record and counsel.
+
+## Interest
+
+Rakuen Software builds `aimee`. `aimee` operates in repository memory,
+code-intelligence and agent-context infrastructure. Rakuen benefits if readers
+conclude that Perseus's claimed field contains earlier work or that its
+differentiation is narrow.
+
+The article discloses this interest before the first comparison and again where
+`aimee` appears.
+
+## Perseus source pin
+
+- Repository: <https://github.com/Perseus-Computing-LLC/perseus>
+- Commit: `e7bbeb35485e67876947c87eda7e98028ddb4a29`
+- Commit date reported by Git: 2026-08-29
+- Static review date: 2026-08-30
+
+Material reviewed for the initial draft:
+
+- `README.md` and `SECURITY.md`;
+- `docs/disclosures/CLAIM-MAP.md`;
+- all nine documents in `docs/disclosures/`, including the six numbered
+  disclosures, the three 27 June disclosures and `CLAIM-MAP.md`;
+- `docs/ip/README.md` and `docs/ip/2026-06-01-atlassian-legal-response.md`;
+- `docs/strategy/perseus-durable-cognition-strategy-2026-07-20.md`,
+  `docs/strategy/perseus-memory-one-page-2026-07-20.md` and
+  `docs/strategy/durable-cognition-positioning-2026-07-21.md`;
+- all four Markdown and JSON exhibit pairs in `docs/ip/exhibits/`;
+- `docs/security-review-2026-07-05.md`;
+- `docs/SECURITY-INDEX.md` and `docs/SECURITY-MILESTONES.md`;
+- `src/perseus/registry.py`, `renderer.py`, `mcp.py`, `serve.py`;
+- directive implementations for query, tool, agent, read, include, services
+  and remote Perseus resolution; and
+- federation, webhook, redaction and local Vault-index implementations.
+
+The source review was static. It was not a runtime penetration test, deployment
+review or dependency audit.
+
+## Perseus Vault source pin
+
+- Repository: <https://github.com/Perseus-Computing-LLC/perseus-vault>
+- Commit: `0e91c26c7c35f991336b990bfb29454b5757c179`
+- Static review date: 2026-08-30
+
+Material reviewed for the memory section:
+
+- `README.md`, `SECURITY.md` and `CLAIMS-AUDIT.md`;
+- `docs/THREAT-MODEL.md` and `docs/SECURITY-MILESTONES.md`;
+- `docs/security-review-2026-07-05.md`; and
+- the Git history that introduced the July security review.
+
+The threat model identifies its own code scope as v2.2.1. Current v2.23-series
+behaviour is attributed only where the current README or security policy repeats
+the property. No Vault runtime or source-code security test was performed.
+
+## Evidence classes
+
+### Public project claims
+
+The article attributes product, benchmark, patent and security statements to
+Perseus's own documents. Those documents establish what the project says. They
+do not independently establish the truth, novelty or legal effect of the
+claims.
+
+### Static source observations
+
+The reviewed source establishes where the registry declares metadata and where
+resolver and transport code enforce policy. The article uses the project's own
+July security review for its list of historical confirmed findings. It does not
+publish newly discovered vulnerability claims from the 30 August source read.
+
+Git attributes the commit that introduced all six original Context Engine
+disclosures to Hermes Agent as author and committer. Git also attributes commits
+in the reviewed history to Codex and Claude identities. Metadata establishes the
+published attribution. It does not establish who physically composed each line
+or the amount of human review.
+
+The two documents titled “Independent pre-launch audit” were introduced in
+commits attributed to Perseus Computing and co-authored by Claude Opus. Neither
+document names an external auditor. Both repositories separately describe a
+full independent or independent external audit as open. The article reports the
+label, provenance and unresolved meaning. It does not infer a hidden author.
+
+### Narrow runtime checks
+
+Three standard-library reproducers were run against the pinned Context Engine
+checkout:
+
+1. `citation_gate_semantic_mismatch.py` passed a false NASA-audit claim with an
+   unrelated exact quote to the private citation validator. The validator
+   accepted it. **Disposition:** used to distinguish exact quotation from
+   semantic support. Raw record:
+   [`raw/2026-08-30-citation-gate-semantic-mismatch.txt`](raw/2026-08-30-citation-gate-semantic-mismatch.txt).
+2. `production_synthesis_path.py` called the public synthesis entry point with
+   generation enabled and a configured model. It returned a prompt,
+   `generated: false` and no claims. **Disposition:** used to describe the
+   reviewed production entry point, not every possible external integration.
+   Raw record:
+   [`raw/2026-08-30-production-synthesis-path.txt`](raw/2026-08-30-production-synthesis-path.txt).
+3. `agora_lock_failure.py` forced the lock helper's documented fail-open branch
+   and synchronized two claimers after their open-state reads. Both returned
+   success. **Disposition:** used only to show that the permitted fail-open path
+   cannot support an unconditional mutual-exclusion guarantee. It does not show
+   lock failure on a supported filesystem. Raw record:
+   [`raw/2026-08-30-agora-lock-failure.txt`](raw/2026-08-30-agora-lock-failure.txt).
+
+A targeted `pytest` attempt did not start because the reporting environment had
+no pytest module. **Disposition:** invalid as a product test; no pass or fail
+claim. Raw record:
+[`raw/2026-08-30-pytest-unavailable.txt`](raw/2026-08-30-pytest-unavailable.txt).
+
+Three earlier citation reproducer attempts were invalid because they used a
+missing interpreter, shadowed the package or omitted imports. They remain in
+[`raw/2026-08-30-citation-gate-invalid-attempts.txt`](raw/2026-08-30-citation-gate-invalid-attempts.txt)
+under the append-only artifact rule.
+
+### Prior-art examples
+
+GNU m4, Docutils, Org Babel, Make, Bazel, RAG, FTS5, BM25, XACML, Hearsay-II,
+Maildir and implicit-feedback systems are used as technically relevant
+predecessor classes. Aider, Continue, Cursor, Claude Code, GitHub Copilot,
+Repomix, Cline, AutoGen, Claude Task Master, Beads and claude-flow are used as
+AI-tool equivalents.
+
+Atlassian is a separate first-party prior-art family. Its dated public materials
+establish:
+
+- Rovo and Teamwork Graph cross-tool context, grounded chat, agents and workflow
+  triggers on 2024-05-01;
+- Jira and Confluence context supplied to GitHub Copilot on 2025-01-14;
+- context-aware search across more than fifty connected applications with
+  source links on 2025-07-24;
+- indexed permission checks, blended relevance signals and passage-level
+  citations on 2025-08-12;
+- persistent profile memory backed by Teamwork Graph on 2025-08-26;
+- Rovo Dev CLI with repository understanding and Jira and Confluence integration
+  on 2025-11-21;
+- Rovo MCP controls including OAuth, domain and IP allowlists, and audit logs by
+  2026-02-02;
+- general availability of the Rovo MCP server on 2026-02-04; and
+- Agents in Jira plus third-party MCP skills for Rovo agents on 2026-02-25.
+
+These are official Atlassian publications predating Perseus's asserted May 2026
+filing month. They establish prior art to the broad technical field and several
+public elements. The article does not say one Atlassian publication anticipates
+every limitation of an unreleased claim.
+
+[`atlassian-product-overlap-2026-08-30.md`](atlassian-product-overlap-2026-08-30.md)
+separately maps the full products. It records direct functional overlap across
+Context Engine, Vault, Agora, retrieval, cited synthesis, agents, MCP, trust
+controls and federation. It also records Perseus's Rovo Dev profile and its
+instruction to pair Rovo Dev's `AGENTS.md` context with Perseus MCP tools.
+
+The map also records the competition finding. Perseus targets technical teams,
+agent and developer workflows, operators, programs and primes with a context and
+memory layer around their models. Its own CogniRepo analysis treats overlap with
+Context Engine and Vault as a high direct competitive threat despite product
+differences. Atlassian overlaps those surfaces and several more. Perseus's
+“complementary” language is therefore reported as positioning inside a shared
+market, not as proof that the products do not compete.
+
+[`cognirepo-prior-art-2026-09-01.md`](cognirepo-prior-art-2026-09-01.md)
+separately reconstructs the CogniRepo chronology. Public source on 12 March 2026
+already implemented persistent semantic and episodic memory, FAISS retrieval,
+importance scoring and bounded pruning. Perseus's inspection, dated 18 June and
+committed on 19 June, then classified overlap with Context Engine and Vault as
+high and called CogniRepo its most serious threat in the context-engine space.
+
+The evidence note keeps three events separate: pre-May public availability,
+Perseus's documented knowledge by 19 June, and future non-provisional work
+described on 27 June. Issue 493 does not establish a 27 June refiling. It records
+two receipts with the same application number and keeps non-provisional
+conversion on a May 2027 deadline.
+
+The article states the conclusion directly: Perseus is an Atlassian competitor.
+Both seek to control the context, memory, retrieval and agent layer around
+organizational work. Perseus's own head-on-competition and messaging guardrails
+corroborate the objective product comparison.
+
+[`ip-claim-matrix-2026-08-30.md`](ip-claim-matrix-2026-08-30.md) records the
+element-level comparison, source dates, gaps and publication holds. The chart
+supports the finding that the Perseus documents omit close predecessors. It
+does not state that one reference anticipates a complete patent claim.
+
+[`public-claim-chart-2026-08-30.md`](public-claim-chart-2026-08-30.md) separately
+charts every public proposed claim or dependent limitation at combination level.
+It records the strongest Perseus framing, the established mechanisms, the
+reason to combine them and the expected result. The engineering conclusion is
+that every combination is old and obvious. Perseus could not have pioneered
+the mechanisms or their routine combinations.
+
+The chart also supports a direct reporting finding about Perseus's use of
+“closest prior art.” Its comparison does not identify any of the closest art
+documented in this review. It omits the relevant predecessor classes, direct
+LLM systems, Aimee, and Atlassian's Rovo and Teamwork Graph family.
+
+The named-patent check read the summaries and bibliographic records for
+Accenture US 12,511,287 and Intuit US 2025/0139367 and US 12,423,313. The article
+uses those primary documents to challenge Perseus's descriptions. It does not
+claim those patents anticipate Perseus.
+
+The application-access check uses 35 U.S.C. 122 as reproduced in USPTO MPEP
+section 101. The statute requires the Patent Office to preserve an unpublished
+application in confidence unless the applicant or owner authorizes disclosure.
+It does not impose that confidentiality obligation on the applicant. The USPTO
+provisional-application guidance separately lists “Patent Pending” notice and
+immediate commercial promotion as features of filing. The article therefore
+attributes the missing application text to an absent public record and
+Perseus's decision not to supply it, not to a statutory prohibition on release.
+
+### Aimee overlap
+
+Rakuen's records place `aimee` in public access from February 2026. The visible
+Git root dated 3 June is a history-replacement snapshot, not the launch. It
+removed at least three months of public ancestry from the current graph.
+
+The current repository cannot by itself prove which feature was public on
+which February date. The draft therefore describes the chronology and the
+evidence loss, while withholding an element-level prior-art conclusion until
+surviving commits, packages, images, forks, caches and third-party links are
+reconstructed. Perseus's effective priority date and provisional support also
+remain unknown.
+
+Rakuen's pre-rewrite records place Aimee's repository indexing, dependency-edge
+collection, content-hash and freshness tracking, and later index reuse before
+Perseus's asserted May filing. The article identifies Rakuen as the interested
+first-party source and keeps independent reconstruction as a publication gate.
+
+The dependency-prefetch comparison also uses direct LLM sources: Prompt Cache
+(November 2023), LlamaIndex `v0.10.17`, RAGCache (April 2024) and TurboRAG
+(October 2024). Each predates the asserted filing and performs precomputation,
+hash-based reuse or cached context loading for LLM input.
+
+## First-party reporting inventory
+
+This is a new article. No earlier published article or interview exists to
+preserve. Perseus's 30 August right-of-reply response is preserved in
+[`right-of-reply-perseus-response-2026-08-30.md`](right-of-reply-perseus-response-2026-08-30.md).
+This draft now contains the first-party checks listed below.
+
+First-party work completed before this draft:
+
+1. Static checkout review of Perseus at the pinned commit. **Disposition:** used
+   for architecture and documentation analysis only.
+2. Static inspection of Perseus's IP disclosures and claim map. **Disposition:**
+   used to describe the project's proposed distinction.
+3. Static inspection of the project's own July security review. **Disposition:**
+   cited as a vendor-maintained review, not an independent audit.
+4. Element-by-element comparison with predecessor systems. **Disposition:**
+   recorded in the IP claim matrix and used to challenge the completeness of
+   Perseus's novelty analysis; no validity conclusion published.
+5. Historical-artifact checks for Aider, Continue, Repomix, Cline, AutoGen,
+   Claude Task Master, Beads and claude-flow. **Disposition:** dated artifacts
+   used where available; current Cursor and Claude Code pages retained as
+   technically relevant but placed on a chronology hold.
+6. Preliminary comparison with `aimee`. **Disposition:** February public access
+   and the June history replacement described; feature-level dates and legal
+   priority conclusions withheld.
+7. Historical GitHub artifact check for the named AI projects. **Disposition:**
+   commit permalinks used for Continue, Task Master, Beads and claude-flow;
+   repository creation dates treated only as repository dates, never as feature
+   dates.
+8. URL audit after the IP rewrite. **Disposition:** one dead LlamaIndex page was
+   removed and a moved GNU Find link was replaced. Every retained link returned
+   content during the final check except the Wiley DOI landing page, which
+   rejected automated access with HTTP 403. The DOI remains the publisher's
+   canonical identifier for Feldman's paper. The article's absolute link back
+   to this reporting record returns 404 until the new article is committed to
+   the linked branch; it is a publication-path check, not an external source.
+9. Git provenance review for the original disclosures and both July security
+   reviews. **Disposition:** used to report repository attribution and to ask
+   what “independent” means; authorship beyond Git metadata withheld.
+10. Named-patent source check. **Disposition:** used to identify inaccurate or
+    collapsed descriptions in Perseus's closest-prior-art table.
+11. Vault claims and security-document audit. **Disposition:** current
+    plaintext-index statements and recorded historical corrections used with
+    their version limits; no current general insecurity claim.
+12. Three narrow Context Engine runtime reproducers and one unavailable pytest
+    attempt. **Disposition:** recorded under Narrow runtime checks above.
+13. Public right-of-reply request in Perseus issue
+    [#1026](https://github.com/Perseus-Computing-LLC/perseus/issues/1026) and
+    Perseus's single response. **Disposition:** the response is reported as
+    received. It supplied no source record or other evidence responsive to the
+    findings, so it changes no technical disposition.
+
+## Claims withheld
+
+The following claims require more work and do not appear as findings:
+
+- Perseus was written by a model or principally produced through AI coding;
+- any named patent claim is anticipated or obvious;
+- `aimee` predates the effective Perseus filing date for every relevant
+  element;
+- the current Cursor or Claude Code documentation proves the same behavior was
+  public before May 2026;
+- any newly observed static security concern is exploitable in a supported
+  deployment; and
+- either July security review was performed by an external auditor, or that the
+  “independent” label proves a particular author's intent;
+- current Vault workspace scoping lacks the stricter controls added after the
+  v2.2.1 threat model;
+- the volume of source, tests or documentation measures quality.
+
+The phrase "vibe coding" names the governance mechanism argued in the article.
+It is not presented as a verified account of who typed the code.
+
+## Right of reply
+
+A public Perseus request was delivered on 30 August 2026 as repository issue
+[#1026](https://github.com/Perseus-Computing-LLC/perseus/issues/1026). The
+request contained twenty-two numbered questions and linked the advance review
+copy. Perseus responded the same day, declined a point-by-point answer and
+closed the issue. The response said the questions did not describe claims in
+its patent, but supplied no patent text, element mapping, filing receipt,
+technical artifact, raw result or reviewer identity with which to test that
+assertion. The response therefore changes no finding about the public claim
+summaries, pinned implementation or security representations. The record and
+disposition are preserved in
+[`right-of-reply-perseus-response-2026-08-30.md`](right-of-reply-perseus-response-2026-08-30.md).
+
+The prepared Perseus request is retained at
+[`right-of-reply-draft-2026-08-30.md`](right-of-reply-draft-2026-08-30.md).
+It asks about:
+
+- the thesis that its claim map does not address the closest predecessor
+  classes;
+- the specific challenges to its RAG, LangChain and MCP comparisons;
+- the argument that the registry describes policy while enforcement remains
+  distributed;
+- the distinction between parser non-reentry and model-facing prompt
+  injection; and
+- the proposed description of `aimee` overlap, including the explicit refusal
+  to draw a feature-level prior-art conclusion before reconstructing its
+  erased ancestry;
+- the citation-validator counterexample and the distinction between quotation
+  presence and semantic support;
+- the Agora double-claim race, advisory-lock dependency and NFS claim;
+- the interpretation placed on Atlassian's legal email; and
+- the element-level predecessor table, with a request that Perseus identify the
+  narrower mechanism it says remains novel;
+- the Hermes Agent attribution and human review process;
+- the provenance and meaning of both “Independent pre-launch audit” labels;
+- the named patent descriptions;
+- Vault's encryption boundary and historical claims corrections; and
+- the filing date, receipt and support for the 27 June elements.
+
+The Atlassian request is drafted at
+[`right-of-reply-atlassian-draft-2026-08-30.md`](right-of-reply-atlassian-draft-2026-08-30.md).
+It asks Atlassian five focused questions about the dated product account,
+competition, the published invention-disclosure email, any assignment or
+waiver, and whether the proposed claims reach Atlassian's products or its
+freedom to continue developing them.
+
+The named-party questions are drafted at
+[`source-questions-prior-art-projects-draft-2026-08-30.md`](source-questions-prior-art-projects-draft-2026-08-30.md).
+They provide a base email and four questions covering the dated capability,
+specific technical overlap, patent-related contact and sourced corrections.
+Accenture and Intuit receive tailored patent-description questions. Aimee
+remains disclosed first-party evidence and cannot supply independent
+confirmation of Rakuen's own account.
+
+## Publication gate
+
+- Prior-art element chart: complete as reporting work product; counsel review
+  and several source-date holds remain.
+- Perseus effective priority date: outstanding.
+- `aimee` public chronology: outstanding.
+- Right of reply: Perseus request delivered and response incorporated;
+  Atlassian and source-verification requests remain outstanding. Sending,
+  receipt, response windows and article integration for those parties remain a
+  hard publication blocker.
+- Legal review of patent-language passages: outstanding.
+- Mechanical voice and provenance gate: passed on 2026-08-30.
+- Editorial review after right of reply: outstanding.
+
+The article remains a draft.

@@ -1,0 +1,31 @@
+Review date: 2026-08-30
+Perseus commit: e7bbeb35485e67876947c87eda7e98028ddb4a29
+Reproducer: evidence/reproducers/citation_gate_semantic_mismatch.py
+Expected: Determine whether an unrelated claim with a real exact quote passes.
+Actual: The claim was accepted and nothing was dropped.
+
+Command:
+python3 evidence/reproducers/citation_gate_semantic_mismatch.py /tmp/perseus-audit.qxUQ5S/perseus.py
+
+Output:
+{
+  "accepted": [
+    {
+      "citations": [
+        {
+          "label": "source.md",
+          "line_end": 3,
+          "line_start": 3,
+          "path": "source.md",
+          "quote": "The resolver builds a dependency graph.",
+          "source_id": "src1"
+        }
+      ],
+      "text": "Perseus was independently audited by NASA."
+    }
+  ],
+  "dropped": []
+}
+
+Exit: 0
+
