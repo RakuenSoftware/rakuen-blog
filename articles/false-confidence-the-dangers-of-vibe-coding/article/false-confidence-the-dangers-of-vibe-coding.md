@@ -192,12 +192,16 @@ combinations.
 | October 2023 | [MemGPT](https://arxiv.org/abs/2310.08560) | Manages memory tiers for bounded context and multi-session agents that remember, reflect and evolve |
 | October 2023 | [AutoGen Teachability](https://github.com/microsoft/autogen/discussions/404) | Persists user teachings in a vector database and selectively recalls facts, preferences and skills across chats, including proposed codebase use |
 | April 2024 | [LLM-agent memory survey](https://arxiv.org/abs/2404.13501) | Reviews an already populated field of agent-memory mechanisms and applications |
+| May 1, 2024 | [Rovo and Teamwork Graph](https://www.atlassian.com/blog/announcements/introducing-atlassian-rovo-ai) | Combines Atlassian and connected SaaS data so search, chat and configurable agents can retrieve, synthesize and act on organizational context |
 | January 2025 | [Zep and Graphiti](https://arxiv.org/abs/2501.13956) | Temporal knowledge-graph memory integrating conversations and business data while retaining historical relationships |
+| January 14, 2025 | [Rovo for GitHub Copilot](https://www.atlassian.com/blog/development/atlassian-developer-innovation-rovo-for-github-copilot) | Supplies Jira and Confluence knowledge as additional context for a coding assistant |
 | February 2025 | [Mastra](https://mastra.ai/blog/agent-memory-guide) | Persistent storage, semantic search, context management, resource and thread scopes, and thread sharing between agents |
 | February 2025 | [A-MEM](https://arxiv.org/abs/2502.12110) | Builds linked memory networks and lets new memories update the representations of historical ones |
 | April 2025 | [Mem0](https://arxiv.org/abs/2504.19413) | Dynamically extracts, consolidates and retrieves conversational memory, with a graph variant for relationships |
+| August 26, 2025 | [Rovo persistent memory](https://www.atlassian.com/blog/ai-at-work/rovo-chat-august-2025-updates) | Persists profile memory through Teamwork Graph, carries it across conversations and learns from explicit correction |
 | December 2025 | [Hindsight](https://arxiv.org/abs/2512.12818) | Temporal, entity-aware retain, recall and reflection with traceable updates across facts, experiences, observations and mental models |
 | February 2026 | [Aimee](https://github.com/RakuenSoftware/aimee) | Repository memory, session context, safety gates, delegated agents, checkpoints and outcome-aware routing |
+| February 4, 2026 | [Rovo MCP](https://www.atlassian.com/blog/announcements/atlassian-rovo-mcp-ga) | Exposes Jira, Confluence and Compass context to external AI clients through one controlled MCP interface |
 | March 12, 2026 | [CogniRepo](https://github.com/ashlesh-t/cognirepo/commit/e7d9d0815a6b78d9c96852dadde58d7382dc11ff) | Public source for persistent semantic and episodic memory, FAISS retrieval, importance scoring, bounded pruning and selected repository context for agents |
 | March 2026 | [Hindsight MCP memory](https://github.com/vectorize-io/hindsight/blob/main/hindsight-docs/blog/2026-03-04-mcp-agent-memory.md) | Serves memory over MCP and combines semantic search, BM25, graph traversal and temporal filtering before reranking |
 
