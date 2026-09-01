@@ -236,4 +236,4 @@ Record one row per separate message. Do not use a bulk recipient list.
 | YourMemory | `mishrasachit1@gmail.com` | 2026-09-01 13:30:45 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | ContextForge | GitHub Issues | not sent | skipped by publisher 2026-09-01 | 2026-09-07 17:00 UTC | no outreach planned |
 | Accenture | `cliff.angelo@accenture.com` | 2026-09-01 13:35:49 UTC | pending | 2026-09-07 17:00 UTC | pending |
-| Intuit | `press-inquiries@intuit.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
+| Intuit | `press-inquiries@intuit.com` | 2026-09-01 13:38:29 UTC | pending | 2026-09-07 17:00 UTC | pending |
