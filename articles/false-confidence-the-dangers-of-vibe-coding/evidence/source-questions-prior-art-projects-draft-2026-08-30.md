@@ -233,7 +233,7 @@ Record one row per separate message. Do not use a bulk recipient list.
 | codebase-memory-mcp | `martin.vogel.tech@gmail.com` | 2026-09-01 13:23:32 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | memory-mesh | `kilhub.projects@gmail.com` | 2026-09-01 13:25:49 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | memtrace-public | `axth@syncable.dev` | 2026-09-01 13:28:14 UTC | pending | 2026-09-07 17:00 UTC | pending |
-| YourMemory | `mishrasachit1@gmail.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
+| YourMemory | `mishrasachit1@gmail.com` | 2026-09-01 13:30:45 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | ContextForge | GitHub Issues | pending | pending | 2026-09-07 17:00 UTC | pending |
 | Accenture | `cliff.angelo@accenture.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
 | Intuit | `press-inquiries@intuit.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
