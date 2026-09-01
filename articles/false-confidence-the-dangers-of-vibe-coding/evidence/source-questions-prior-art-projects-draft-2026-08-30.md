@@ -213,7 +213,7 @@ Record one row per separate message. Do not use a bulk recipient list.
 | Reflexion | `noahshinn024@gmail.com` | 2026-09-01 12:41:57 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | Generative Agents | `joonspk@stanford.edu` | 2026-09-01 12:47:09 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | MemoryBank | `wangylin36@mail.sysu.edu.com` | 2026-09-01 12:50:46 UTC | pending | 2026-09-07 17:00 UTC | pending |
-| CoALA | `sumers@princeton.edu` | pending | pending | 2026-09-07 17:00 UTC | pending |
+| CoALA | `sumers@princeton.edu` | 2026-09-01 12:53:34 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | MemGPT / Letta | `cpacker@berkeley.edu` | pending | pending | 2026-09-07 17:00 UTC | pending |
 | Microsoft AutoGen | `autogen@microsoft.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
 | Zep / Graphiti | `preston@getzep.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
