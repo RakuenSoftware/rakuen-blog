@@ -1,7 +1,6 @@
 # Source verification and right of reply: named prior-art parties
 
-Status: outreach in progress. Reflexion and Generative Agents sent 2026-09-01;
-remaining requests pending.
+Status: outreach in progress. See the send record below.
 
 This file covers the external parties whose patents, papers or products are
 material to the article's prior-art findings. Perseus has already received the
@@ -213,7 +212,7 @@ Record one row per separate message. Do not use a bulk recipient list.
 |---|---|---|---|---|---|
 | Reflexion | `noahshinn024@gmail.com` | 2026-09-01 12:41:57 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | Generative Agents | `joonspk@stanford.edu` | 2026-09-01 12:47:09 UTC | pending | 2026-09-07 17:00 UTC | pending |
-| MemoryBank | `wangylin36@mail.sysu.edu.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
+| MemoryBank | `wangylin36@mail.sysu.edu.com` | 2026-09-01 12:50:46 UTC | pending | 2026-09-07 17:00 UTC | pending |
 | CoALA | `sumers@princeton.edu` | pending | pending | 2026-09-07 17:00 UTC | pending |
 | MemGPT / Letta | `cpacker@berkeley.edu` | pending | pending | 2026-09-07 17:00 UTC | pending |
 | Microsoft AutoGen | `autogen@microsoft.com` | pending | pending | 2026-09-07 17:00 UTC | pending |
