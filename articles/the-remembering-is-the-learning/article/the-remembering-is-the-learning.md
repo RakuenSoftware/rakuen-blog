@@ -20,12 +20,6 @@ figures are traced in the
 [reporting
 record](https://github.com/RakuenSoftware/rakuen-blog/blob/main/articles/the-remembering-is-the-learning/evidence/figures.md).*
 
-Aimee is an open-source knowledge platform for company AI work, available as a
-managed cloud service or self-hosted. It brings documents, code, facts,
-decisions and work history into one governed knowledge base. It scales from one
-user to an entire company, with identity and scope deciding what each person and
-AI model can retrieve.
-
 Aimee gives every learned thing an authority class, evidence chain, confidence,
 scope and lifecycle. Confirmation can make it durable. Missing support can
 expire it. A correction supersedes it without erasing the old value, and recall
