@@ -58,6 +58,7 @@ non-indexed copies being shown to subjects for right of reply.
 | [one-call-one-turn](articles/one-call-one-turn/) | yes | figure map, nine cells, `recompute_table.py` |
 | [the-work-should-survive-the-model](articles/the-work-should-survive-the-model/) | yes | 0.4.0 series overview; product, market, token-use and cross-model reporting record |
 | [aimee-recursive-self-learning](articles/aimee-recursive-self-learning/) | yes | 0.4.0 series, article 1 of 4; deployed-path checks, paired self-learning evidence and reporting record |
+| [the-remembering-is-the-learning](articles/the-remembering-is-the-learning/) | right-of-reply review | pre-print; Aimee memory lifecycle, authority, correction, recall and evidence record |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
 `paper` means an academic working paper rather than a blog post. It is not a
