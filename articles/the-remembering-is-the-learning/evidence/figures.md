@@ -381,3 +381,67 @@ is available with cloud or local hosting and provides self-learning memory from
 one user to the models and users an entire company enrolls. The series' identity,
 scope, model-independence and audit arguments supply the mechanism behind that
 product description; it introduces no new measurement.
+
+## Failure-learning revision inventory, 2026-09-06
+
+Recorded before rewriting the 378-line article at blog commit `8509c8b36ba9`.
+The editorial review and the author's direct statements are preserved in
+[`editorial-review-2026-09-06.md`](editorial-review-2026-09-06.md). This revision
+adds no runtime measurement or implementation audit. The dispositions below
+govern the rewrite; all earlier entries and raw artifacts remain intact.
+
+| prior reporting | evidence class | disposition |
+| --- | --- | --- |
+| fixed-consumer failure-memory study | first-party paired study, reported in Article One | Retain a local description and link, including unchanged results on new tasks. Full conditions and counts remain in Article One. |
+| classes, extraction authority, authenticated provenance and ignored model confidence | source audit | Retain; distinguish precedence from factual truth. |
+| endpoint-presence check and false-relation limit | source audit | Retain together at admission. |
+| scheduled promotion, expiry and unchanged class after reinforcement | source audit and lifecycle tests | Retain; distinguish durability from authority. |
+| confirmation counts changed from 1 to 20 and 2 to 100 | live observation and source audit | Retain counts and continued successful reads/writes; bound expiry effect to affected facts. |
+| co-occurrence collision with assertion triples | live observation and source audit | Retain separately from count normalisation. |
+| correction policies, class ordering and single-valued relations | source audit | Retain, with a labelled illustrative employment example. |
+| four authority-escalation paths and fix | PR and source audit | Retain; possible misuse remains conditional. |
+| valid and transaction time | source audit | Retain definitions; remove unsupported categorical comparison with a log. |
+| relation endpoint rules and extensible vocabulary | source audit | Retain. |
+| committed sightings, attributable activation and removed automatic threshold | source audit | Retain once in vocabulary passage; describe authentication without implying a cryptographic signature. |
+| removed catch-all guard and surviving prompt instruction | source audit | Retain beside vocabulary review. |
+| identity resolution, literal bypass, reversible merges and ambiguity queue | source audit | Retain beside graph recall. |
+| top twelve candidates, forty-eight seeds and graph feature gate | source audit | Retain with gate attached. |
+| thirteen score terms, code-proximity alias and display confidence | source audit | Retain thirteen-term count and display-confidence distinction in prose; detailed enumeration and alias remain above. |
+| fitted ranking weights and evaluation-gated proposal promotion | source audit | Retain; distinguish fitted ranking from class multipliers. |
+| 0.80 baseline and A/B/C multipliers | source audit | Retain together. |
+| excluded typed facts and omitted relation name causing 0.45 fallback | source audit and live observation | Retain as two defects. |
+| visibility bands, exact-scope band, query filtering and stable ordering | source audit | Retain; do not turn filtering into a general side-channel guarantee. |
+| five functional tiers, six storage levels and operator approval of directives | source audit | Retain; separate maturity, visibility and instruction role. |
+| pattern synthesis at three sessions and entity promotion at three sources | source audit | Retain current mechanisms with separate gates; distinct sources alone are not described as independent corroboration. |
+| outcome-only demotion, exclusions and minimum-evidence decline | source audit | Retain; remove unsupported counterfactual attribution claim. |
+| contradiction retention and review backlog | source audit | Retain policy selection alongside preservation of conflicting claims. |
+| error propagation through graph and synthesis | mechanism-based analysis | Retain beside graph expansion. |
+| recalled text fenced as untrusted evidence | module contract | Retain behavioural limitation and distinguish approved directives. |
+| named-provider failure behaviour | module/bus audit | Retain write deferral, extraction error, privacy withholding and retraction refusal; avoid universalising across embedding's separate contract. |
+| ledger, changesets, compensating revert, lifecycle states and purge receipts | PR and source audit | Retain; distinguish retained history from content purge. |
+| derived staleness and scoped recall explanations | source audit | Retain. |
+| comparison with gradient-step provenance and reversal | architectural argument without a supporting comparison here | Remove from prose; prior wording remains in the reviewed Git revision and editorial review. State the memory system's own correction capability directly. |
+| caution is cheaper than rebuilding trust; provenance is cheap on day one | author judgement without cost measurement | Replace with concrete costs of delayed approval and later reconstruction. No cost ranking is claimed. |
+
+The author reports that models generally gain more transferable value from
+remembering failed approaches than from remembering one successful approach,
+whose usefulness may depend on repeating the exact task. The article attributes
+this to use. No failure-versus-success comparison was supplied. The existing
+fixed-consumer study improved repeated-task outcomes and left new-task outcomes
+unchanged; it does not establish the comparative generalisation claim.
+
+The compiler-flag scenario and employment scenario are explicitly illustrative.
+They add no observed task outcome or claim that the entire described lifecycle
+was exercised in one run. Requirements for a transferable failure record are
+editorial reasoning about the author's observation, not a newly audited schema.
+
+Current provenance uses the existing source audits, including `958af1c5` and
+`6bcc87e`; the article's source note now identifies the later recheck. No claim
+of present-day implementation verification is added. Shipped configuration
+defaults remain unverified except for the entity-promotion header's stated
+default, which remains attributed as such.
+
+Current comparison status follows the README's recorded decision of
+2026-08-24: the fourteen-project comparison remains unpublished with its
+evidence and right-of-reply blocker. The earlier pending-decision note above is
+historical. Storage-backend selection remains outside this article.
