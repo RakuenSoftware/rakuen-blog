@@ -1,9 +1,9 @@
 # The Remembering Is The Learning
 
-Article Two of four, and the second technical entry. A fact begins in a
-confidence class, can become durable, expires without confirmation, and keeps
-its prior value legible after
-supersession. Those changes decide what a later turn receives.
+Article Two of four, and the second technical entry. Remembered failures can
+narrow a later attempt. The article follows the authority, evidence, recall
+and correction mechanisms needed to use a lesson and revise it when its
+conditions change.
 
 ## The series
 
@@ -20,19 +20,30 @@ every reporting record that uses them.
 
 ## Spine
 
-Written to make the memory claim directly. Every mechanism is presented as a
-learning operation rather than a storage feature. Promotion is learning, expiry
-is forgetting, supersession is correction, and the recall score is the learned
-model being applied.
+Stored experience becomes learning when it changes a later decision. The
+author's observation that failed approaches often supply more transferable
+lessons gives the article its practical example. Fixed authority rules govern
+what experience may change; retained records, lifecycle state and fitted
+ranking weights carry the changes into later work.
 
-That framing is the reason this is not the earlier memory article rewritten. It
-has a different job.
+The failure-versus-success comparison is attributed to the author's use. The
+paired study in Article One supports improved repeated-task outcomes and has
+unchanged new-task results. It does not establish the comparative transfer
+claim. The compiler and employment examples are explicitly illustrative.
 
 ## Status
 
 Pre-print for public review, 2026-09-02. Not final publication.
 
-Revised in PR review on 2026-08-25. The article now runs 3,072 words, down from
+Revised 2026-09-06 after the [editorial review](evidence/editorial-review-2026-09-06.md).
+The current body has 2,672 whitespace-separated words with Markdown links
+reduced to their labels, including headings, table text and disclosure. Eight
+sections connect failed approaches to admission, retention, recall, attributed
+outcomes, scope and correction. The
+[rewrite inventory](evidence/figures.md#failure-learning-revision-inventory-2026-09-06)
+records the disposition of the prior reporting before the rewrite.
+
+Revised in PR review on 2026-08-25. That version ran 3,072 words, down from
 4,032. It retains the original progression from authority and lifecycle through
 correction, learned vocabulary, identity, recall, scope, synthesis, demotion,
 provenance and the closing design rule. Backend selection remains outside the
@@ -87,9 +98,13 @@ earlier article. The paired-study raw output remains preserved under part one's
 
 ## Open items before publication
 
-- ~~Pin. Mechanism was read at `testing` rather than at a commit.~~ **Closed,
-  2026-08-24.** `testing` is the 0.4.0 release, so the read is a read of 0.4.0
-  and there is no separate tag to pin to.
+- **Source revisions.** The earlier note treated the moving `testing` branch
+  as a release pin. The article now identifies the recorded 25 August recheck
+  at `6bcc87e`; the reporting record retains the earlier audits and their pins.
+  This editorial revision adds no current implementation audit.
+- **Scope-promotion authorisation.** Verify the complete permission path for
+  moving evidence into wider scope. The article states the limit of the
+  existing source checks beside the mechanism.
 - Storage-backend selection is outside this article.
 - ~~The comparison decision above.~~ **Decided, 2026-08-24: the fourteen-project
   comparison stays unpublished.** It is not retired and its folder, evidence and
