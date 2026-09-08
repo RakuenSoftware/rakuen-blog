@@ -445,3 +445,22 @@ Current comparison status follows the README's recorded decision of
 2026-08-24: the fourteen-project comparison remains unpublished with its
 evidence and right-of-reply blocker. The earlier pending-decision note above is
 historical. Storage-backend selection remains outside this article.
+
+## Publication check, 2026-09-08
+
+The author requested publication of the reviewed article from PR #122 at
+`4169334`. The figure map and the 2026-09-06 revision inventory cover the
+current figures and the disposition of prior first-party reporting. This
+publication edit changes the frontmatter date and removes the pre-print label;
+every reported result, source, example and limitation remains in place.
+
+Material criticism concerns Rakuen's own implementation and its documented
+repairs. This article carries no third-party comparison or outstanding
+third-party right-of-reply request. The comparative article retains its own
+unpublished status and right-of-reply blocker.
+
+The source dates and pins remain August 2026. Publication adds no current
+implementation audit or runtime result. The failure-versus-success observation
+remains attributed and unmeasured; scope-promotion authorisation remains an
+explicit verification limit, and the entity-promotion default remains
+attributed to its header. These limits remain visible beside the claims.

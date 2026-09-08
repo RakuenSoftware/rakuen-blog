@@ -33,7 +33,12 @@ claim. The compiler and employment examples are explicitly illustrative.
 
 ## Status
 
-Pre-print for public review, 2026-09-02. Not final publication.
+Published 2026-09-08. Live at
+[rakuensoftware.com/blog/the-remembering-is-the-learning](https://rakuensoftware.com/blog/the-remembering-is-the-learning).
+Previously available as a pre-print from 2026-09-02. The reviewed revision in
+PR #122 is the publication baseline; the
+[publication check](evidence/figures.md#publication-check-2026-09-08) records
+the evidence and claim boundaries.
 
 Revised 2026-09-06 after the [editorial review](evidence/editorial-review-2026-09-06.md).
 The current body has 2,672 whitespace-separated words with Markdown links
@@ -96,7 +101,7 @@ sections were carried over versus newly reported, and the disposition of the
 earlier article. The paired-study raw output remains preserved under part one's
 `evidence/raw/self-learning-efficacy-2026-08-26/` directory.
 
-## Open items before publication
+## Reporting limits and follow-up
 
 - **Source revisions.** The earlier note treated the moving `testing` branch
   as a release pin. The article now identifies the recorded 25 August recheck

@@ -1,13 +1,11 @@
 ---
 title: "The Remembering Is The Learning"
 slug: the-remembering-is-the-learning
-date: 2026-08-24
+date: 2026-09-08
 author: Rakuen Software
 tags: [aimee, memory, knowledge-graph, ontology, authority]
 excerpt: "Remembered failures can narrow the next attempt. Aimee keeps the evidence, authority and history needed to use those lessons, correct them when conditions change, and carry them into later work."
 ---
-
-*Pre-print for public review. Not final publication.*
 
 *Rakuen Software builds aimee, the system written about here. This is the
 second technical article in the series. The
