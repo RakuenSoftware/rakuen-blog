@@ -1,0 +1,129 @@
+{
+  "collected_utc": "2026-09-20T14:30:44.358002+00:00",
+  "method": "Read-only git show of existing local source objects",
+  "environment": "Local Linux checkout; no deployed service or benchmark invoked",
+  "fixture": "August 2026 article source pins; later baseline correction pinned separately",
+  "git_version": "git version 2.47.3",
+  "results": [
+    {
+      "command": [
+        "git",
+        "-C",
+        "/home/virant/dev/aimee",
+        "show",
+        "6bcc87ea73f4e39947a5bc101d4033403b0e2324:docs/EVENT_BUS.md"
+      ],
+      "commit": "6bcc87ea73f4e39947a5bc101d4033403b0e2324",
+      "source": "docs/EVENT_BUS.md",
+      "artifact": "docs__EVENT_BUS.md",
+      "sha256": "8dca559348c0da20147fab6e6689664a73e1582996345c5a13a0c3d3bc3ef255",
+      "expected": "Pinned source is readable",
+      "actual": "Read successfully; static source only"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/home/virant/dev/aimee",
+        "show",
+        "5b110b500bf936fa17ef966169ea24fb84de5716:bench/bus_baseline.json"
+      ],
+      "commit": "5b110b500bf936fa17ef966169ea24fb84de5716",
+      "source": "bench/bus_baseline.json",
+      "artifact": "bench__bus_baseline.json",
+      "sha256": "69f4de381ec99dd2d8e87ead4649cd0d2760cf92d848f680e40d9729aef9d821",
+      "expected": "Pinned source is readable",
+      "actual": "Read successfully; static source only"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/home/virant/dev/aimee",
+        "show",
+        "5b110b500bf936fa17ef966169ea24fb84de5716:scripts/check_bus_perf_gate.sh"
+      ],
+      "commit": "5b110b500bf936fa17ef966169ea24fb84de5716",
+      "source": "scripts/check_bus_perf_gate.sh",
+      "artifact": "scripts__check_bus_perf_gate.sh",
+      "sha256": "baab5d4094f6bf48c7fd0673d0b6e4aefeaa7de6e374c1c2ef04b07185e64c88",
+      "expected": "Pinned source is readable",
+      "actual": "Read successfully; static source only"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/home/virant/dev/aimee",
+        "show",
+        "6bcc87ea73f4e39947a5bc101d4033403b0e2324:docs/validation/memory-changeset-worm-seal-2026-08-25.md"
+      ],
+      "commit": "6bcc87ea73f4e39947a5bc101d4033403b0e2324",
+      "source": "docs/validation/memory-changeset-worm-seal-2026-08-25.md",
+      "artifact": "docs__validation__memory-changeset-worm-seal-2026-08-25.md",
+      "sha256": "a0e5a181a3445c233fb2d95ea4a19dfc1b5ccb4a83fbd069d60d946d04df2a1e",
+      "expected": "Pinned source is readable",
+      "actual": "Read successfully; static source only"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/home/virant/dev/aimee",
+        "show",
+        "6bcc87ea73f4e39947a5bc101d4033403b0e2324:docs/runbooks/witness-evidence-and-egress-gate.md"
+      ],
+      "commit": "6bcc87ea73f4e39947a5bc101d4033403b0e2324",
+      "source": "docs/runbooks/witness-evidence-and-egress-gate.md",
+      "artifact": "docs__runbooks__witness-evidence-and-egress-gate.md",
+      "sha256": "6fcf567fe29226d229bfef6e7c123d909d618b9c8689d2de61ec4f342c845ef9",
+      "expected": "Pinned source is readable",
+      "actual": "Read successfully; static source only"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/home/virant/dev/aimee",
+        "show",
+        "6bcc87ea73f4e39947a5bc101d4033403b0e2324:server-go/modules/sandbox/proxy.go"
+      ],
+      "commit": "6bcc87ea73f4e39947a5bc101d4033403b0e2324",
+      "source": "server-go/modules/sandbox/proxy.go",
+      "artifact": "server-go__modules__sandbox__proxy.go",
+      "sha256": "26dae1be22f99c3a82dc3d1e11faca24282e916212bcc465542012dbabe74f0c",
+      "expected": "Pinned source is readable",
+      "actual": "Read successfully; static source only"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/home/virant/dev/aimee",
+        "show",
+        "6bcc87ea73f4e39947a5bc101d4033403b0e2324:server-go/modules/sandbox/proxy_policy.go"
+      ],
+      "commit": "6bcc87ea73f4e39947a5bc101d4033403b0e2324",
+      "source": "server-go/modules/sandbox/proxy_policy.go",
+      "artifact": "server-go__modules__sandbox__proxy_policy.go",
+      "sha256": "608af2a0f84cf182b1bb5daa020eb47d7de4fdef15c60dd4e529bd180723a94e",
+      "expected": "Pinned source is readable",
+      "actual": "Read successfully; static source only"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/home/virant/dev/aimee",
+        "show",
+        "6bcc87ea73f4e39947a5bc101d4033403b0e2324:docs/DELEGATE_SANDBOX.md"
+      ],
+      "commit": "6bcc87ea73f4e39947a5bc101d4033403b0e2324",
+      "source": "docs/DELEGATE_SANDBOX.md",
+      "artifact": "docs__DELEGATE_SANDBOX.md",
+      "sha256": "bd65562766a8613ba150d776bdb678e0af21f2887d2a4a91f07c8b6c34313de6",
+      "expected": "Pinned source is readable",
+      "actual": "Read successfully; static source only"
+    }
+  ]
+}

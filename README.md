@@ -58,6 +58,7 @@ non-indexed copies being shown to subjects for right of reply.
 | [the-work-should-survive-the-model](articles/the-work-should-survive-the-model/) | yes | 0.4.0 series overview; product, market, token-use and cross-model reporting record |
 | [aimee-recursive-self-learning](articles/aimee-recursive-self-learning/) | yes | 0.4.0 series, article 1 of 4; deployed-path checks, paired self-learning evidence and reporting record |
 | [the-remembering-is-the-learning](articles/the-remembering-is-the-learning/) | yes | Aimee memory lifecycle, authority, correction, recall and evidence record |
+| [everything-crosses-one-transport](articles/everything-crosses-one-transport/) | yes | Transport architecture, first-party measurements, source audits and reporting inventory |
 
 `ready` means publication-ready and gated, but not yet pushed to the live site.
 `paper` means an academic working paper rather than a blog post. It is not a

@@ -1,0 +1,11 @@
+{
+  "collected_utc": "2026-09-20T14:39:36.708029+00:00",
+  "method": "Python urllib.request.urlopen of pinned Go source",
+  "url": "https://raw.githubusercontent.com/golang/go/go1.24.4/src/cmd/cgo/internal/test/test.go",
+  "software": "Go go1.24.4; source read only",
+  "environment": "Local editor host; no cgo benchmark executed",
+  "fixture": "benchCgoCall implementation",
+  "expected": "Determine direction and workload",
+  "actual": "benchCgoCall invokes C functions from Go; no observed timing derived from this read",
+  "sha256": "3c9969b195780dd12e287f521143cd3590b63da53fbdfa3a134008fd6ad47153"
+}

@@ -1,0 +1,36 @@
+{
+  "browser": "151.0.7922.34",
+  "figures": 4,
+  "svg": 4,
+  "desktop": {
+    "viewport": 1000,
+    "bodyWidth": 1000
+  },
+  "labelsOutsideSVG": [],
+  "mobile": {
+    "viewport": 390,
+    "bodyWidth": 390,
+    "scrollRegions": [
+      {
+        "client": 342,
+        "scroll": 620,
+        "tabindex": 0
+      },
+      {
+        "client": 342,
+        "scroll": 620,
+        "tabindex": 0
+      },
+      {
+        "client": 342,
+        "scroll": 620,
+        "tabindex": 0
+      },
+      {
+        "client": 342,
+        "scroll": 620,
+        "tabindex": 0
+      }
+    ]
+  }
+}

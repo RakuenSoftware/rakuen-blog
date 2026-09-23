@@ -1,0 +1,10 @@
+{
+  "collected_utc": "2026-09-20T14:39:36.708729+00:00",
+  "command": "node /tmp/transport-final-review/render.mjs",
+  "software": "Chromium 151.0.7922.34; marked from local site dependency",
+  "fixture": "Revised article with four generated diagrams; site SmoothGUI and site.css",
+  "environment": "Local headless browser; desktop 1000px, mobile 390px; light/dark themes",
+  "expected": "Four diagrams, no document overflow, readable labels",
+  "actual": "Four diagrams and no page overflow; visual review found capture-box labels too close to the right border",
+  "disposition": "Superseded for layout by render-check-02; preserve this first check"
+}

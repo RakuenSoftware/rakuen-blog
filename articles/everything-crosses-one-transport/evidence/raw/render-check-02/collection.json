@@ -1,0 +1,10 @@
+{
+  "collected_utc": "2026-09-20T14:41:42.987563+00:00",
+  "command": "node /tmp/transport-final-review-final/render.mjs",
+  "software": "Chromium 151.0.7922.34; installed site marked parser and CSS",
+  "fixture": "Final article SHA-256 f42340a9af1a4d8152a3e748ec3d930cbb5e2e310a26a25e6ac64cca73677ded",
+  "environment": "Local Linux headless browser; desktop 1000px, mobile 390px; light/dark themes",
+  "expected": "Four diagrams, matching SVGs, labels within canvas, no page overflow, keyboard-focusable mobile scroll regions",
+  "actual": "All automated checks passed; screenshots retained for visual review",
+  "supersedes": "render-check-01 (capture labels shortened)"
+}
