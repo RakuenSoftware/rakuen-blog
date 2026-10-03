@@ -43,6 +43,7 @@ non-indexed copies being shown to subjects for right of reply.
 
 | article | published | evidence |
 | --- | --- | --- |
+| [native-memory-without-retraining](articles/native-memory-without-retraining/) | yes | Companion to the published native-memory paper; per-claim source map |
 | [hello-rakuen-software](articles/hello-rakuen-software/) | yes | none |
 | [smoothgui-0-9-site-primitives](articles/smoothgui-0-9-site-primitives/) | yes | none |
 | [token-compression-tools-cost-more-than-they-save](articles/token-compression-tools-cost-more-than-they-save/) | yes | external sources, cited inline |
